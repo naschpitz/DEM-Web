@@ -1,0 +1,11 @@
+#scenery #nonSolidObjects .card-body {
+    padding: 0px;
+}
+
+#scenery #solidObjects .card-body {
+    padding: 0px;
+}
+
+#scenery #materials .card-body {
+    padding: 0px;
+}

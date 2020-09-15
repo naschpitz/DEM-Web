@@ -1,0 +1,30 @@
+import './accounts.js';
+
+import '../../api/cameras/server/publications.js';
+
+import '../../api/frames/server/methods.js';
+import '../../api/frames/server/publications.js';
+
+import '../../api/framesImages/server/methods.js';
+import '../../api/framesImages/server/publications.js';
+
+import '../../api/materials/server/publications.js';
+
+import '../../api/nonSolidObjects/server/publications.js';
+
+import '../../api/objectsProperties/server/publications.js';
+
+import '../../api/rest/server/rest.js';
+
+import '../../api/sceneries/server/publications.js';
+
+import '../../api/servers/server/publications.js';
+
+import '../../api/simulations/server/methods.js';
+import '../../api/simulations/server/publications.js';
+
+import '../../api/simulationsLogs/server/publications.js';
+
+import '../../api/solidObjects/server/publications.js';
+
+import '../../api/users/server/methods.js';
