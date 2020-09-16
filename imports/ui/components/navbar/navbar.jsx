@@ -1,18 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import React  from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Link } from 'react-router-dom';
+
 
 import Users from '../../../api/users/both/class.js';
 
 import Alert from 'react-s-alert';
 import ChangePassword from '../user/changePassword/changePassword.jsx';
+import { Link } from 'react-router-dom';
 import Login from '../user/login/login.jsx';
 import Register from '../user/register/register.jsx';
 import ResetPassword from '../user/resetPassword/resetPassword.jsx';
 import { UniqueModalController } from '@naschpitz/unique-modal';
 
-import { FaSignInAlt, FaPlus, FaSignOutAlt, FaSyncAlt, FaKey, FaUserEdit } from 'react-icons/fa';
+import { FaSignInAlt, FaPlus, FaSignOutAlt, FaSyncAlt, FaKey, FaDesktop, FaServer } from 'react-icons/fa';
 
 import './navbar.css';
 
@@ -26,7 +27,13 @@ const Navbar = (props) => {
     function getLeftItems() {
         return (
             <React.Fragment>
+                <li className="nav-item">
+                    <Link className="nav-link" id="inventory" to="/simulations"><FaDesktop className="align-middle"/> Simulations</Link>
+                </li>
 
+                <li className="nav-item">
+                    <Link className="nav-link" id="backpack" to="/servers"><FaServer className="align-middle"/> Servers</Link>
+                </li>
             </React.Fragment>
         );
     }
@@ -116,7 +123,7 @@ const Navbar = (props) => {
     return (
         <nav id="navbar" className="navbar navbar-expand-lg navbar-light bg-light">
             <a className="navbar-brand" href="/">
-
+                DEM
             </a>
 
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMainContent" aria-controls="navbarMainContent" aria-expanded="false" aria-label="Toggle navigation">
