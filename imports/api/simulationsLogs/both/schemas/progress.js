@@ -6,6 +6,11 @@ export default Progress = new SimpleSchema({
         label: "Step",
         optional: true
     },
+    totalSteps: {
+        type: Number,
+        label: "Step",
+        optional: true
+    },
     time: {
         type: Number,
         label: "Time",

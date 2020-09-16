@@ -155,8 +155,7 @@ export default Simulations = (props) => {
         if (!simulationLog)
             return {value: 0, text: "N/A"};
 
-        const totalSteps = parseInt(simulation.totalTime / simulation.timeStep);
-        const percentage = (simulationLog.progress.step / totalSteps) * 100;
+        const percentage = (simulationLog.progress.step / simulationLog.progress.totalSteps) * 100;
 
         return {value: percentage, text: percentage.toFixed(3) + "%"}
     }
