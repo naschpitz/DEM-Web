@@ -13,10 +13,12 @@ import ObjectsProperties from './objectsProperties/objectsProperties.jsx';
 
 import './viewer.css';
 
+const framesImages = new Map();
+
 export default Viewer = ({sceneryId}) => {
+    const [ currentFrameImage, setCurrentFrameImage ] = useState(null);
     const [ dimensions, setDimensions ] = useState({});
     const [ frame, setFrame ] = useState({});
-    const [ frameImage, setFrameImage ] = useState(null);
     const [ isRendering, setIsRendering ] = useState(false);
 
     const actionTimer = useRef();
@@ -45,14 +47,20 @@ export default Viewer = ({sceneryId}) => {
     }, [ dimensions ]);
 
     useDeepEffect(() => {
-        renderImage();
-    }, [ frame ])
+        if (!framesImages.has(frame._id))
+            renderImage();
+    }, [ frame ]);
+
+    function getFrameImage() {
+        return framesImages.has(frame._id) ? framesImages.get(frame._id) : currentFrameImage;
+    }
 
     function onFrameChange(newFrame) {
         if (newFrame)
             setFrame(newFrame);
 
-        renderImage();
+        else
+            renderImage();
     }
 
     function renderImage() {
@@ -65,8 +73,10 @@ export default Viewer = ({sceneryId}) => {
             if (error)
                 Alert.error("Error rendering frame image: " + error.reason);
 
-            else
-                setFrameImage(result);
+            else {
+                framesImages.set(frame._id, result);
+                setCurrentFrameImage(result);
+            }
 
             setIsRendering(false);
         });
@@ -75,7 +85,7 @@ export default Viewer = ({sceneryId}) => {
     return (
         <div id="viewer" className="row">
             <div className="col-sm-12 col-md-8">
-                <Canvas frameImage={frameImage} isRendering={isRendering}/>
+                <Canvas frameImage={getFrameImage()} isRendering={isRendering}/>
             </div>
 
             <div className="col-sm-12 col-md-4">

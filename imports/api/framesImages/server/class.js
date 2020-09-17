@@ -1,3 +1,4 @@
+import { Random } from 'meteor/random';
 import _ from 'lodash';
 
 import Cameras from '../../cameras/both/class.js';
@@ -26,7 +27,9 @@ export default class FramesImages {
         nonSolidObjects.forEach(nonSolidObject => (script += getNonSolidObjectScript(nonSolidObject) + "\n\n"));
         solidObjects.forEach(solidObject => (script += getSolidObjectScript(solidObject) + "\n\n"));
 
-        const scriptName = frameId + ".pov";
+        const id = Random.id();
+
+        const scriptName = id + ".pov";
         writeFileSync(scriptName, script);
 
         const command = "povray";
@@ -39,7 +42,7 @@ export default class FramesImages {
 
         execFileSync(command, args);
 
-        const imageName = frameId + ".png";
+        const imageName = id + ".png";
         const data = readFileSync(imageName);
 
         unlinkSync(scriptName);
