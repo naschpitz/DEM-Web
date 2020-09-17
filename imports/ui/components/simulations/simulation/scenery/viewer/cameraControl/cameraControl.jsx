@@ -35,6 +35,11 @@ export default CameraControl = (props) => {
             Meteor.call('cameras.update', newCamera, (error) => {
                 if (error)
                     Alert.error("Error saving camera: " + error.reason);
+
+                else {
+                    if (props.onChange)
+                        props.onChange();
+                }
             });
         }
     }

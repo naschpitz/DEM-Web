@@ -8,7 +8,9 @@ import Alert from 'react-s-alert';
 
 import './properties.css';
 
-export default Properties = ({objectProperty}) => {
+export default Properties = (props) => {
+    const objectProperty = props.objectProperty;
+
     function onColorChange(color) {
         const newObjectProperty = _.cloneDeep(objectProperty);
 
@@ -17,6 +19,11 @@ export default Properties = ({objectProperty}) => {
         Meteor.call('objectsProperties.update', newObjectProperty, (error) => {
             if (error)
                 Alert.error("Error saving object property: " + error.reason);
+
+            else {
+                if (props.onChange)
+                    props.onChange();
+            }
         })
     }
 

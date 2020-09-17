@@ -7,7 +7,6 @@ import _ from 'lodash';
 import {unlinkSync, writeFileSync, readFileSync, readdirSync} from 'fs';
 
 import FramesBoth from '../both/class.js';
-import FramesImages from '../../framesImages/both/class.js';
 import Simulations from '../../simulations/both/class.js';
 
 export default class Frames extends FramesBoth {
@@ -80,9 +79,6 @@ export default class Frames extends FramesBoth {
     }
 
     static removeByOwner(simulationId) {
-        const framesIds = FramesBoth.find({owner: simulationId}).map((frame) => (frame._id));
-        FramesImages.remove({owner: {$in: framesIds}});
-
         // For the same reason of the insertion, but in an opposite order, frames must be removed before it's file, thus
         // avoiding them to be used in an incomplete state.
         FramesBoth.remove({owner: simulationId});

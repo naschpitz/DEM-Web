@@ -17,8 +17,6 @@ export default class Simulations extends SimulationsBoth {
 
         simulation.url = Meteor.absoluteUrl();
 
-        console.log(simulation.url);
-
         const scenery = Sceneries.findOne({owner: simulationId});
         const materials = Materials.find({owner: scenery._id}).fetch();
         const nonSolidObjects = NonSolidObjects.find({owner: scenery._id}).fetch();

@@ -2,79 +2,13 @@ import _ from 'lodash';
 
 import Cameras from '../../cameras/both/class.js';
 import Frames from '../../frames/server/class.js';
-import FramesImagesBoth from '../both/class.js';
 import ObjectsProperties from '../../objectsProperties/both/class.js';
 
 import { writeFileSync, readFileSync, unlinkSync } from 'fs';
 import { execFileSync } from 'child_process';
 
-export default class FramesImages extends FramesImagesBoth {
+export default class FramesImages {
     static render(frameId, dimensions) {
-        const frame = Frames.findOne(frameId);
-
-        if (!frame)
-            return;
-
-        let frameImage = FramesImages.findOne({owner: frameId});
-
-        if (frameImage) {
-            const sceneryId = frame.scenery._id;
-            const camera = Cameras.findOne({owner: sceneryId});
-
-            let shouldRender = false;
-            shouldRender |= isOlder(frameImage, camera);
-            shouldRender |= !_.isEqual(frameImage.dimensions, dimensions);
-
-            frameImage.dimensions = dimensions;
-
-            if (shouldRender)
-                this.dispatchPovray(frameImage);
-        }
-
-        else {
-            frameImage = {
-                owner: frameId,
-                dimensions: dimensions
-            };
-
-            const frameImageId = FramesImages.insert(frameImage);
-
-            frameImage = FramesImages.findOne(frameImageId);
-            this.dispatchPovray(frameImage);
-        }
-
-        function isOlder(obj1, obj2) {
-            if (obj1.updatedAt) {
-                if (obj2.updatedAt) {
-                    if (new Date(obj1.updatedAt) < new Date(obj2.updatedAt)) return true;
-                }
-
-                else {
-                    if (new Date(obj1.updatedAt) < new Date(obj2.createdAt)) return true;
-                }
-            }
-
-            else {
-                if (obj2.updatedAt) {
-                    if (new Date(obj1.createdAt) < new Date(obj2.updatedAt)) return true;
-                }
-
-                else {
-                    if (new Date(obj1.createdAt) < new Date(obj2.createdAt)) return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
-    static dispatchPovray(frameImage) {
-        const frameImageId = frameImage._id;
-        const frameId = frameImage.owner;
-        const dimensions = frameImage.dimensions;
-
-        this.setState(frameImageId, 'gatheringData');
-
         const frame = Frames.getFullFrame(frameId);
         const scenery = frame.scenery;
 
@@ -103,18 +37,15 @@ export default class FramesImages extends FramesImagesBoth {
         args.push("+WT2");
         args.push("-D");
 
-        this.setState(frameImageId, 'rendering');
         execFileSync(command, args);
 
         const imageName = frameId + ".png";
         const data = readFileSync(imageName);
-        frameImage.data = Buffer.from(data, 'binary').toString('base64');
-
-        this.updateObj(frameImage);
-        this.setState(frameImageId, 'done');
 
         unlinkSync(scriptName);
         unlinkSync(imageName);
+
+        return Buffer.from(data, 'binary').toString('base64');
 
         function getBackgroudScript() {
             return "background { color rgb <0, 0, 0> }";

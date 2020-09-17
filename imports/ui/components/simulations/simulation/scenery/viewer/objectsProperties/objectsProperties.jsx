@@ -80,7 +80,7 @@ export default ObjectsProperties = (props) => {
                             defaultPageSize={5}
                             collapseOnDataChange={false}
                             className="-striped -highlight"
-                            SubComponent={({index, original}) => (<Properties objectProperty={getObjectProperty(original._id)}/>)}
+                            SubComponent={({index, original}) => (<Properties objectProperty={getObjectProperty(original._id)} onChange={props.onChange}/>)}
                 /> :
                 <div className="text-center">
                     <ClipLoader size={50} color={"#DDD"} loading={true}/>

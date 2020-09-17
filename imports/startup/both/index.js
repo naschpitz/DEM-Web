@@ -5,7 +5,6 @@ import _ from 'lodash';
 
 import '../../api/cameras/both/methods.js';
 import '../../api/frames/both/methods.js';
-import '../../api/framesImages/both/methods.js';
 import '../../api/materials/both/methods.js';
 import '../../api/nonSolidObjects/both/methods.js';
 import '../../api/objectsProperties/both/methods.js';

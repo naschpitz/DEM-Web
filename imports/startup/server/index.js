@@ -6,7 +6,6 @@ import '../../api/frames/server/methods.js';
 import '../../api/frames/server/publications.js';
 
 import '../../api/framesImages/server/methods.js';
-import '../../api/framesImages/server/publications.js';
 
 import '../../api/materials/server/publications.js';
 
