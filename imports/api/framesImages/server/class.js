@@ -27,9 +27,7 @@ export default class FramesImages {
         nonSolidObjects.forEach(nonSolidObject => (script += getNonSolidObjectScript(nonSolidObject) + "\n\n"));
         solidObjects.forEach(solidObject => (script += getSolidObjectScript(solidObject) + "\n\n"));
 
-        const id = Random.id();
-
-        const scriptName = id + ".pov";
+        const scriptName = frameId + ".pov";
         writeFileSync(scriptName, script);
 
         const command = "povray";
@@ -42,7 +40,7 @@ export default class FramesImages {
 
         execFileSync(command, args);
 
-        const imageName = id + ".png";
+        const imageName = frameId + ".png";
         const data = readFileSync(imageName);
 
         unlinkSync(scriptName);
@@ -144,5 +142,15 @@ export default class FramesImages {
 
             return script;
         }
+    }
+
+    static renderAll(sceneryId, dimensions) {
+        const frames = Frames.find({'scenery._id': sceneryId}).fetch();
+
+        return frames.map((frame) => {
+            const data = this.render(frame._id, dimensions);
+
+            return [frame._id, data];
+        });
     }
 }

@@ -11,5 +11,15 @@ Meteor.methods({
         catch (error) {
             throw new Meteor.Error('500', error.message);
         }
+    },
+
+    'framesImages.renderAll'(sceneryId, dimensions) {
+        try {
+            return FramesImages.renderAll(sceneryId, dimensions);
+        }
+
+        catch (error) {
+            throw new Meteor.Error('500', error.message);
+        }
     }
 });

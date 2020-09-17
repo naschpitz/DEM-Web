@@ -13,7 +13,7 @@ import ObjectsProperties from './objectsProperties/objectsProperties.jsx';
 
 import './viewer.css';
 
-const framesImages = new Map();
+let framesImages = new Map();
 
 export default Viewer = ({sceneryId}) => {
     const [ currentFrameImage, setCurrentFrameImage ] = useState(null);
@@ -59,12 +59,16 @@ export default Viewer = ({sceneryId}) => {
         if (newFrame)
             setFrame(newFrame);
 
-        else
+        else {
+            // Invalidates all frames images.
+            framesImages.clear();
+
             renderImage();
+        }
     }
 
     function renderImage() {
-        if (_.isEmpty(frame))
+        if (_.isEmpty(frame) || _.isEmpty(dimensions))
             return;
 
         setIsRendering(true);
@@ -79,6 +83,19 @@ export default Viewer = ({sceneryId}) => {
             }
 
             setIsRendering(false);
+        });
+    }
+
+    function renderAllDone(result) {
+        if (!result)
+            return;
+
+        Meteor.apply('framesImages.renderAll', [sceneryId, dimensions], (error, result) => {
+            if (error)
+                Alert.error("Error rendering all frame images: " + error.reason);
+
+            else
+                framesImages = new Map(result);
         });
     }
 
