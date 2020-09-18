@@ -164,7 +164,7 @@ export default MainLayout = () => {
                 </Switch>
             </header>
 
-            <div id="mainLayoutContent" className="mt-auto">
+            <div id="mainLayoutContent">
                 <Switch>
                     {routes.map((route, index) => (
                         <Route key={index}
