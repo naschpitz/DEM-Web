@@ -34,7 +34,8 @@ export default class FramesImages {
 
         writeFileSync(scriptPath, script);
 
-        const nCpus = cpus().length;
+        let nCpus = cpus().length;
+        nCpus = nCpus > 1 ? nCpus - 1 : 1;
 
         const command = "povray";
         const args = [];
@@ -174,8 +175,8 @@ export default class FramesImages {
             if (initialFrame > finalFrame)
                 throw {message: "Initial frame can't be higher than final frame"}
 
-            if (initialFrame < 0 || finalFrame < 0)
-                throw {message: "Frames can't get negative values"}
+            if (initialFrame <= 0 || finalFrame <= 0)
+                throw {message: "Frames can't have negative or zero values"}
 
             if (initialFrame > frames.length || finalFrame > frames.length)
                 throw {message: "Frames can't be higher than the total frames count"}
