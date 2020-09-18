@@ -34,7 +34,7 @@ export default Video = ({sceneryId}) => {
         if (!result)
             return;
 
-        Meteor.apply('videos.render', [sceneryId, settings], (error) => {
+        Meteor.apply('videos.render', [sceneryId, settings], {noRetry: true}, (error) => {
             if (error)
                 Alert.error("Error rendering video: " + error.reason);
 
