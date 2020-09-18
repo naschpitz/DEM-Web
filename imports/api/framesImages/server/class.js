@@ -184,13 +184,13 @@ export default class FramesImages {
                 throw {message: "Frames cannot have the same value"}
 
             if (initialFrame) {
-                const frame = frames[initialFrame];
+                const frame = frames[initialFrame - 1];
 
                 selector.$and = [{step: {$gte: frame.step}}];
             }
 
             if (finalFrame) {
-                const frame = frames[finalFrame];
+                const frame = frames[finalFrame - 1];
 
                 if (selector.$and)
                     selector.$and.push({step: {$lte: frame.step}});
