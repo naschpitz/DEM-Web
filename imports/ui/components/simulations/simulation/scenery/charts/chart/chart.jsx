@@ -31,7 +31,7 @@ export default Chart = ({sceneryId, objectId, dataName, minInterval, maxInterval
             filter.push({time: {$lte: maxInterval}});
 
         const selector = {
-            'scenery._id': sceneryId,
+            owner: sceneryId,
             $or: [
                 {'scenery.objects.nonSolidObjects._id': objectId},
                 {'scenery.objects.solidObjects._id': objectId}

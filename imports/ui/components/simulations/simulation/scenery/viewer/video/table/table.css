@@ -1,0 +1,8 @@
+#videosTable #btnDownload a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+#videosTable .rt-td #formInput {
+    margin: 0px;
+}

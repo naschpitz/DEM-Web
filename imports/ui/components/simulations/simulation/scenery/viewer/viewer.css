@@ -1,3 +1,7 @@
 #viewer #objectsProperties .card-body {
     padding: 0px;
 }
+
+#viewer #video.card {
+    margin-top: 20px;
+}

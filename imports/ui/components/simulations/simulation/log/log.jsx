@@ -154,8 +154,7 @@ export default Log = (props) => {
             <div id="log">
                 <div className="row">
                     <div className="col-sm-4 col-md-3 col-lg-2">
-                        <FormInput key="state"
-                                   label="State"
+                        <FormInput label="State"
                                    name="state"
                                    value={state}
                                    type="field"
@@ -178,8 +177,7 @@ export default Log = (props) => {
                     </div>
 
                     <div className="col-sm-4 col-md-3 col-lg-2">
-                        <FormInput key="et"
-                                   label="ET"
+                        <FormInput label="ET"
                                    name="et"
                                    value={et}
                                    type="field"
@@ -191,8 +189,7 @@ export default Log = (props) => {
                     </div>
 
                     <div className="col-sm-4 col-md-3 col-lg-2">
-                        <FormInput key="eta"
-                                   label="ETA"
+                        <FormInput label="ETA"
                                    name="eta"
                                    value={eta}
                                    type="field"

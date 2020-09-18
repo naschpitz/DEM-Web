@@ -47,7 +47,6 @@ export default Properties = (props) => {
             case 'adiabatic_compression': {
                 coefficients.push(
                     {
-                        key: 'p0',
                         label: 'P0',
                         name: 'coefficients[0]',
                         value: _.get(material, 'coefficients[0]')
@@ -56,7 +55,6 @@ export default Properties = (props) => {
 
                 coefficients.push(
                     {
-                        key: 'gamma',
                         label: 'Gamma',
                         name: 'coefficients[1]',
                         value: _.get(material, 'coefficients[1]')
@@ -69,7 +67,6 @@ export default Properties = (props) => {
             case 'hooks_law': {
                 coefficients.push(
                     {
-                        key: 'k',
                         label: 'K',
                         name: 'coefficients[0]',
                         value: _.get(material, 'coefficients[0]')
@@ -82,7 +79,6 @@ export default Properties = (props) => {
             case 'inverse_linear': {
                 coefficients.push(
                     {
-                        key: 'k',
                         label: 'K',
                         name: 'coefficients[0]',
                         value: _.get(material, 'coefficients[0]')
@@ -95,7 +91,6 @@ export default Properties = (props) => {
             case 'inverse_quadratic': {
                 coefficients.push(
                     {
-                        key: 'k',
                         label: 'K',
                         name: 'coefficients[0]',
                         value: _.get(material, 'coefficients[0]')
@@ -108,7 +103,6 @@ export default Properties = (props) => {
             case 'inverse_cubic': {
                 coefficients.push(
                     {
-                        key: 'k',
                         label: 'K',
                         name: 'coefficients[0]',
                         value: _.get(material, 'coefficients[0]')
@@ -120,13 +114,11 @@ export default Properties = (props) => {
             case 'lennard_jones': {
                 coefficients.push(
                     {
-                        key: 'e',
                         label: 'Epsilon',
                         name: 'coefficients[0]',
                         value: _.get(material, 'coefficients[0]')
                     },
                     {
-                        key: 'n',
                         label: 'N',
                         name: 'coefficients[1]',
                         value: _.get(material, 'coefficients[1]')
@@ -139,7 +131,6 @@ export default Properties = (props) => {
             case 'realistic_material': {
                 coefficients.push(
                     {
-                        key: 'rupture',
                         label: 'Rupture',
                         name: 'coefficients[0]',
                         value: _.get(material, 'coefficients[0]')
@@ -148,7 +139,6 @@ export default Properties = (props) => {
 
                 coefficients.push(
                     {
-                        key: 'elasticLimit',
                         label: 'Elastic limit',
                         name: 'coefficients[1]',
                         value:_.get(material, 'coefficients[1]')
@@ -157,7 +147,6 @@ export default Properties = (props) => {
 
                 coefficients.push(
                     {
-                        key: 'plasticMaximum',
                         label: 'Plastic maximum',
                         name: 'coefficients[2]',
                         value: _.get(material, 'coefficients[2]')
@@ -180,7 +169,6 @@ export default Properties = (props) => {
             case 'linear':
                 dragCoefficients.push(
                     {
-                        key: 'c0',
                         label: 'C0',
                         name: 'dragCoefficients[0]',
                         value:_.get(props.material, 'dragCoefficients[0]')
@@ -191,7 +179,6 @@ export default Properties = (props) => {
             case 'quadratic':
                 dragCoefficients.push(
                     {
-                        key: 'c0',
                         label: 'C0',
                         name: 'dragCoefficients[0]',
                         value:_.get(props.material, 'dragCoefficients[0]')
@@ -202,7 +189,6 @@ export default Properties = (props) => {
             case 'cubic':
                 dragCoefficients.push(
                     {
-                        key: 'c0',
                         label: 'C0',
                         name: 'dragCoefficients[0]',
                         value:_.get(material, 'dragCoefficients[0]')
@@ -218,8 +204,7 @@ export default Properties = (props) => {
         return (
             <div>
                 {coefficients.map((coefficient) => (
-                    <FormInput key={coefficient.key}
-                               label={coefficient.label}
+                    <FormInput label={coefficient.label}
                                name={coefficient.name}
                                value={coefficient.value}
                                type="field"
@@ -266,8 +251,7 @@ export default Properties = (props) => {
         <div id="materialProperties">
             <div className="row">
                 <div className="col-md-4">
-                    <FormInput key="material1"
-                               label="Material 1"
+                    <FormInput label="Material 1"
                                name="material1"
                                value={material.material1}
                                type="dropdown"
@@ -281,8 +265,7 @@ export default Properties = (props) => {
                 </div>
 
                 <div className="col-md-4">
-                    <FormInput key="material2"
-                               label="Material 2"
+                    <FormInput label="Material 2"
                                name="material2"
                                value={material.material2}
                                type="dropdown"
@@ -296,8 +279,7 @@ export default Properties = (props) => {
                 </div>
 
                 <div className="col-md-4">
-                    <FormInput key="distanceThreshold"
-                               label="Distance Threshold"
+                    <FormInput label="Distance Threshold"
                                name="distanceThreshold"
                                value={material.distanceThreshold}
                                type="field"
@@ -314,8 +296,7 @@ export default Properties = (props) => {
 
             <div className="row">
                 <div className="col-md-4">
-                    <FormInput key="forceType"
-                               label="Force"
+                    <FormInput label="Force"
                                name="forceType"
                                value={material.forceType}
                                type="dropdown"
@@ -331,8 +312,7 @@ export default Properties = (props) => {
                 </div>
 
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="dragForceType"
-                               label="Drag"
+                    <FormInput label="Drag"
                                name="dragForceType"
                                value={material.dragForceType}
                                type="dropdown"

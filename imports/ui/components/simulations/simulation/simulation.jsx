@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
+import _ from 'lodash';
 
 import SimulationsClass from '../../../../api/simulations/both/class.js';
 
@@ -13,14 +14,14 @@ import Scenery from './scenery/scenery.jsx';
 import './simulation.css';
 
 export default Simulation = (props) => {
-    const [ isSimulationReady, setIsSimulationReady ] = useState(false);
+    const [ isReady, setIsReady ] = useState(false);
 
     const simulationId = props.match.params.simulationId;
 
     useTracker(() => {
         Meteor.subscribe('simulations.simulation', simulationId, {
             onStop: (error) => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-            onReady: () => (setIsSimulationReady(true))
+            onReady: () => (setIsReady(true))
         });
     }, [ simulationId ]);
 
@@ -28,11 +29,18 @@ export default Simulation = (props) => {
         return SimulationsClass.findOne(simulationId);
     });
 
-    if (isSimulationReady) {
+    useEffect(() => {
+        if (isReady && !simulation)
+            props.history.push('/simulations');
+    }, [ isReady, simulation ]);
+
+    const name = _.get(simulation, 'name');
+
+    if (isReady) {
         return (
             <div className="container-fluid" id="simulation">
                 <div>
-                    <h2 className="text-center">{simulation.name}</h2>
+                    <h2 className="text-center">{name}</h2>
 
                     <div className="card">
                         <div className="card-header">
@@ -40,7 +48,7 @@ export default Simulation = (props) => {
                         </div>
 
                         <div className="card-body">
-                            <Control simulationId={simulation._id} showFields={true}/>
+                            <Control simulationId={simulationId} showFields={true}/>
                         </div>
                     </div>
 
@@ -50,7 +58,7 @@ export default Simulation = (props) => {
                         </div>
 
                         <div className="card-body">
-                            <Log simulationId={simulation._id}/>
+                            <Log simulationId={simulationId}/>
                         </div>
                     </div>
 
@@ -60,7 +68,7 @@ export default Simulation = (props) => {
                         </div>
 
                         <div className="card-body">
-                            <Scenery simulationId={simulation._id}/>
+                            <Scenery simulationId={simulationId}/>
                         </div>
                     </div>
                 </div>

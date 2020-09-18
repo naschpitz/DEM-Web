@@ -8,7 +8,7 @@ const Frames = new Mongo.Collection('frames');
 Frames.schema = new SimpleSchema({
     owner: {
         type: String,
-        label: "Simulation owner",
+        label: "Scenery owner",
         optional: false
     },
     time: {

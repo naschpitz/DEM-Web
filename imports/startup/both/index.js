@@ -13,6 +13,7 @@ import '../../api/servers/both/methods.js';
 import '../../api/simulations/both/methods.js';
 import '../../api/simulationsLogs/both/methods.js';
 import '../../api/solidObjects/both/methods.js';
+import '../../api/videos/both/methods.js';
 
 bsSize = function () {
     const winWidth = window.innerWidth;

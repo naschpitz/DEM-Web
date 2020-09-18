@@ -52,8 +52,7 @@ export default CameraControl = (props) => {
                 <hr/>
                 <div className="row">
                     <div className="col-sm-4 col-md-4">
-                        <FormInput key="position[0]"
-                                   label="X"
+                        <FormInput label="X"
                                    name="position[0]"
                                    value={_.get(camera, "position[0]")}
                                    type="field"
@@ -65,8 +64,7 @@ export default CameraControl = (props) => {
                         />
                     </div>
                     <div className="col-sm-4 col-md-4">
-                        <FormInput key="position[1]"
-                                   label="Y"
+                        <FormInput label="Y"
                                    name="position[1]"
                                    value={_.get(camera, "position[1]")}
                                    type="field"
@@ -78,8 +76,7 @@ export default CameraControl = (props) => {
                         />
                     </div>
                     <div className="col-sm-4 col-md-4">
-                        <FormInput key="position[2]"
-                                   label="Z"
+                        <FormInput label="Z"
                                    name="position[2]"
                                    value={_.get(camera, "position[2]")}
                                    type="field"
@@ -96,8 +93,7 @@ export default CameraControl = (props) => {
                 <hr/>
                 <div className="row">
                     <div className="col-sm-4 col-md-4">
-                        <FormInput key="lookAt[0]"
-                                   label="X"
+                        <FormInput label="X"
                                    name="lookAt[0]"
                                    value={_.get(camera, "lookAt[0]")}
                                    type="field"
@@ -109,8 +105,7 @@ export default CameraControl = (props) => {
                         />
                     </div>
                     <div className="col-sm-4 col-md-4">
-                        <FormInput key="lookAt[1]"
-                                   label="Y"
+                        <FormInput label="Y"
                                    name="lookAt[1]"
                                    value={_.get(camera, "lookAt[1]")}
                                    type="field"
@@ -122,8 +117,7 @@ export default CameraControl = (props) => {
                         />
                     </div>
                     <div className="col-sm-4 col-md-4">
-                        <FormInput key="lookAt[2]"
-                                   label="Z"
+                        <FormInput label="Z"
                                    name="lookAt[2]"
                                    value={_.get(camera, "lookAt[2]")}
                                    type="field"

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useDeepEffect from 'use-deep-compare-effect';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
@@ -10,12 +10,13 @@ import CameraControl from './cameraControl/cameraControl.jsx';
 import ERD from 'element-resize-detector';
 import FrameControl from './frameControl/frameControl.jsx';
 import ObjectsProperties from './objectsProperties/objectsProperties.jsx';
+import Video from './video/video.jsx';
 
 import './viewer.css';
 
 let framesImages = new Map();
 
-export default Viewer = ({sceneryId}) => {
+export default Viewer = ({simulationId, sceneryId}) => {
     const [ currentFrameImage, setCurrentFrameImage ] = useState(null);
     const [ dimensions, setDimensions ] = useState({});
     const [ frame, setFrame ] = useState({});
@@ -86,23 +87,26 @@ export default Viewer = ({sceneryId}) => {
         });
     }
 
-    function renderAllDone(result) {
-        if (!result)
-            return;
-
-        Meteor.apply('framesImages.renderAll', [sceneryId, dimensions], (error, result) => {
-            if (error)
-                Alert.error("Error rendering all frame images: " + error.reason);
-
-            else
-                framesImages = new Map(result);
-        });
-    }
-
     return (
         <div id="viewer" className="row">
             <div className="col-sm-12 col-md-8">
-                <Canvas frameImage={getFrameImage()} isRendering={isRendering}/>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <Canvas frameImage={getFrameImage()} isRendering={isRendering}/>
+                    </div>
+
+                    <div className="col-sm-12">
+                        <div className="card" id="video">
+                            <div className="card-header">
+                                Video
+                            </div>
+
+                            <div className="card-body">
+                                <Video sceneryId={sceneryId}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="col-sm-12 col-md-4">

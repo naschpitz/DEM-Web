@@ -23,8 +23,6 @@ export default Charts = (props) => {
 
     const disabled = !objectId || !dataName;
 
-    const className = "btn btn-danger" + (disabled ? " disabled" : "");
-
     return (
         <div id="charts">
             <div id="selector" className="card">

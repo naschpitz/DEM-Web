@@ -27,3 +27,6 @@ import '../../api/simulationsLogs/server/publications.js';
 import '../../api/solidObjects/server/publications.js';
 
 import '../../api/users/server/methods.js';
+
+import '../../api/videos/server/methods.js';
+import '../../api/videos/server/publications.js';

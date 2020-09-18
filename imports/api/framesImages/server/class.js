@@ -1,15 +1,17 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import _ from 'lodash';
+
+import { cpus } from 'os';
+import { writeFileSync, readFileSync, unlinkSync } from 'fs';
+import { execFileSync } from 'child_process';
 
 import Cameras from '../../cameras/both/class.js';
 import Frames from '../../frames/server/class.js';
 import ObjectsProperties from '../../objectsProperties/both/class.js';
 
-import { writeFileSync, readFileSync, unlinkSync } from 'fs';
-import { execFileSync } from 'child_process';
-
 export default class FramesImages {
-    static render(frameId, dimensions) {
+    static render(frameId, dimensions, keepImageFile, path, imageName) {
         const frame = Frames.getFullFrame(frameId);
         const scenery = frame.scenery;
 
@@ -27,24 +29,41 @@ export default class FramesImages {
         nonSolidObjects.forEach(nonSolidObject => (script += getNonSolidObjectScript(nonSolidObject) + "\n\n"));
         solidObjects.forEach(solidObject => (script += getSolidObjectScript(solidObject) + "\n\n"));
 
-        const scriptName = frameId + ".pov";
-        writeFileSync(scriptName, script);
+        const random = Random.id(6);
+        const scriptPath = (path ? path + "/" : Meteor.settings.ramdiskPath + "/") + frameId + "_" + random + ".pov";
+
+        writeFileSync(scriptPath, script);
+
+        const nCpus = cpus().length;
 
         const command = "povray";
         const args = [];
-        args.push("+I" + scriptName);
+        args.push("+I" + scriptPath);
         args.push("+W" + dimensions.width);
         args.push("+H" + dimensions.height);
-        args.push("+WT2");
+        args.push("+A");
+        args.push("+AM2");
+        args.push("+R1");
+        args.push("+WT" + nCpus);
         args.push("-D");
 
-        execFileSync(command, args);
+        let data;
 
-        const imageName = frameId + ".png";
-        const data = readFileSync(imageName);
+        if (keepImageFile) {
+            const imagePath = (path ? path + "/" : "") + (imageName ? imageName : frameId + "_" + random + ".png");
+            args.push("+O" + imagePath);
 
-        unlinkSync(scriptName);
-        unlinkSync(imageName);
+            execFileSync(command, args);
+            data = readFileSync(imagePath);
+        }
+
+        else {
+            args.push("+O-");
+
+            data = execFileSync(command, args);
+        }
+
+        unlinkSync(scriptPath);
 
         return Buffer.from(data, 'binary').toString('base64');
 
@@ -144,11 +163,49 @@ export default class FramesImages {
         }
     }
 
-    static renderAll(sceneryId, dimensions) {
-        const frames = Frames.find({'scenery._id': sceneryId}).fetch();
+    static renderAll(sceneryId, dimensions, keepImageFile, path, initialFrame, finalFrame) {
+        const selector = {
+            'owner': sceneryId
+        };
 
-        return frames.map((frame) => {
-            const data = this.render(frame._id, dimensions);
+        if (initialFrame || finalFrame) {
+            const frames = Frames.find(selector, {sort: {step: 1}}).fetch();
+
+            if (initialFrame > finalFrame)
+                throw {message: "Initial frame can't be higher than final frame"}
+
+            if (initialFrame < 0 || finalFrame < 0)
+                throw {message: "Frames can't get negative values"}
+
+            if (initialFrame > frames.length || finalFrame > frames.length)
+                throw {message: "Frames can't be higher than the total frames count"}
+
+            if (initialFrame === finalFrame)
+                throw {message: "Frames cannot have the same value"}
+
+            if (initialFrame) {
+                const frame = frames[initialFrame];
+
+                selector.$and = [{step: {$gte: frame.step}}];
+            }
+
+            if (finalFrame) {
+                const frame = frames[finalFrame];
+
+                if (selector.$and)
+                    selector.$and.push({step: {$lte: frame.step}});
+
+                else
+                    selector.$and = [{step: {$lte: frame.step}}];
+            }
+        }
+
+        const frames = Frames.find(selector, {sort: {step: 1}}).fetch();
+
+        return frames.map((frame, index) => {
+            const imageName = index + ".png";
+
+            const data = this.render(frame._id, dimensions, keepImageFile, path, imageName);
 
             return [frame._id, data];
         });

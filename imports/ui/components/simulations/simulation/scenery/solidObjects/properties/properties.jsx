@@ -49,8 +49,7 @@ export default Properties = (props) => {
         <div id="solidObjectProperties">
             <div className="row">
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="mass"
-                               label="Mass"
+                    <FormInput label="Mass"
                                name="mass"
                                value={object.mass}
                                type="field"
@@ -62,8 +61,7 @@ export default Properties = (props) => {
                     />
                 </div>
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="fixed"
-                               label="Fixed"
+                    <FormInput label="Fixed"
                                name="fixed"
                                value={object.fixed}
                                type="checkbox"
@@ -77,8 +75,7 @@ export default Properties = (props) => {
 
             <div className="row">
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="position[0]"
-                               label="Position X"
+                    <FormInput label="Position X"
                                name="position[0]"
                                value={_.get(object, "position[0]")}
                                type="field"
@@ -91,8 +88,7 @@ export default Properties = (props) => {
                 </div>
 
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="position[1]"
-                               label="Position Y"
+                    <FormInput label="Position Y"
                                name="position[1]"
                                value={_.get(object, "position[1]")}
                                type="field"
@@ -104,8 +100,7 @@ export default Properties = (props) => {
                     />
                 </div>
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="position[2]"
-                               label="Position Z"
+                    <FormInput label="Position Z"
                                name="position[2]"
                                value={_.get(object, "position[2]")}
                                type="field"
@@ -120,8 +115,7 @@ export default Properties = (props) => {
 
             <div className="row">
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="velocity[0]"
-                               label="Velocity X"
+                    <FormInput label="Velocity X"
                                name="velocity[0]"
                                value={_.get(object, "velocity[0]")}
                                type="field"
@@ -133,8 +127,7 @@ export default Properties = (props) => {
                     />
                 </div>
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="velocity[1]"
-                               label="Velocity Y"
+                    <FormInput label="Velocity Y"
                                name="velocity[1]"
                                value={_.get(object, "velocity[1]")}
                                type="field"
@@ -146,8 +139,7 @@ export default Properties = (props) => {
                     />
                 </div>
                 <div className="col-sm-12 col-md-4">
-                    <FormInput key="velocity[2]"
-                               label="Velocity Z"
+                    <FormInput label="Velocity Z"
                                name="velocity[2]"
                                value={_.get(object, "velocity[2]")}
                                type="field"
@@ -162,8 +154,7 @@ export default Properties = (props) => {
 
             <div className="row">
                 <div className="col-sm-12 col-md-8 col-md-lg-8">
-                    <FormInput key="material"
-                               label="Material"
+                    <FormInput label="Material"
                                name="material"
                                value={object.material}
                                type="dropdown"
@@ -179,8 +170,7 @@ export default Properties = (props) => {
 
             <div className="row">
                 <div className="col-sm-12 col-md-12">
-                    <FormInput key="stl"
-                               label="STL"
+                    <FormInput label="STL"
                                name="stl"
                                value={object.stl}
                                type="textarea"

@@ -7,11 +7,13 @@ import _ from 'lodash';
 import {unlinkSync, writeFileSync, readFileSync, readdirSync} from 'fs';
 
 import FramesBoth from '../both/class.js';
+import Sceneries from '../../sceneries/both/class.js';
 import Simulations from '../../simulations/both/class.js';
 
 export default class Frames extends FramesBoth {
     static insert(frame) {
-        const simulation = Simulations.findOne(frame.owner);
+        const scenery = Sceneries.findOne(frame.owner);
+        const simulation = Simulations.findOne(scenery.owner);
         const state = simulation.state;
 
         // Refuses the frame if the simulation has been stopped or is new.
@@ -22,10 +24,9 @@ export default class Frames extends FramesBoth {
         // I could insert the frame before and use the returned id, but some kind of control would be necessary to
         // avoid frames being used before all it's files have been created, while still incomplete.
         frame._id = Random.id();
-        const scenery = frame.scenery;
 
-        const nonSolidObjects = _.get(scenery, 'objects.nonSolidObjects', []);
-        const solidObjects = _.get(scenery, 'objects.solidObjects', []);
+        const nonSolidObjects = _.get(frame, 'scenery.objects.nonSolidObjects', []);
+        const solidObjects = _.get(frame, 'scenery.objects.solidObjects', []);
 
         nonSolidObjects.forEach((nonSolidObject) => {
             const particles = nonSolidObject.particles;
@@ -52,10 +53,9 @@ export default class Frames extends FramesBoth {
 
     static getFullFrame(frameId) {
         const frame = FramesBoth.findOne(frameId);
-        const scenery = frame.scenery;
 
-        const nonSolidObjects = _.get(scenery, 'objects.nonSolidObjects', []);
-        const solidObjects = _.get(scenery, 'objects.solidObjects', []);
+        const nonSolidObjects = _.get(frame, 'scenery.objects.nonSolidObjects', []);
+        const solidObjects = _.get(frame, 'scenery.objects.solidObjects', []);
 
         nonSolidObjects.forEach((nonSolidObject) => {
             const fileName = Meteor.settings.storagePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id;
@@ -78,23 +78,21 @@ export default class Frames extends FramesBoth {
         return frame;
     }
 
-    static removeByOwner(simulationId) {
+    static removeByOwner(sceneryId) {
         // For the same reason of the insertion, but in an opposite order, frames must be removed before it's file, thus
         // avoiding them to be used in an incomplete state.
-        FramesBoth.remove({owner: simulationId});
+        FramesBoth.remove({owner: sceneryId});
 
-        if (Meteor.isServer) {
-            const files = readdirSync(Meteor.settings.storagePath);
+        const files = readdirSync(Meteor.settings.storagePath);
 
-            files.forEach((file) => {
-                const expression = simulationId + "*";
-                const regex = new RegExp(expression, 'i');
+        files.forEach((file) => {
+            const expression = sceneryId + "*";
+            const regex = new RegExp(expression, 'i');
 
-                const match = file.match(regex);
+            const match = file.match(regex);
 
-                if (match !== null)
-                    unlinkSync(Meteor.settings.storagePath + "/" + file);
-            });
-        }
+            if (match !== null)
+                unlinkSync(Meteor.settings.storagePath + "/" + file);
+        });
     }
 }

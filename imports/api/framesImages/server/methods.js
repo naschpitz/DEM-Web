@@ -5,7 +5,7 @@ import FramesImages from './class.js';
 Meteor.methods({
     'framesImages.render'(frameId, dimensions) {
         try {
-            return FramesImages.render(frameId, dimensions);
+            return FramesImages.render(frameId, dimensions, false);
         }
 
         catch (error) {
@@ -15,6 +15,7 @@ Meteor.methods({
 
     'framesImages.renderAll'(sceneryId, dimensions) {
         try {
+            this.unblock();
             return FramesImages.renderAll(sceneryId, dimensions);
         }
 

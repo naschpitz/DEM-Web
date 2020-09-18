@@ -24,7 +24,7 @@ export default FrameControl = (props) => {
     }, [ props.sceneryId ]);
 
     const frames = useTracker(() => {
-        return FramesClass.find({'scenery._id': props.sceneryId}, {sort: {'step': 1}}).fetch();
+        return FramesClass.find({owner: props.sceneryId}, {sort: {'step': 1}}).fetch();
     });
 
     useEffect(() => {
@@ -154,8 +154,7 @@ export default FrameControl = (props) => {
 
             <div className="row">
                 <div className="col-sm-12 col-md-5 offset-md-1">
-                    <FormInput key="currentFrameIndex"
-                               label="Frame"
+                    <FormInput label="Frame"
                                name="currentFrameIndex"
                                value={currentFrame}
                                type="field"
@@ -168,8 +167,7 @@ export default FrameControl = (props) => {
                 </div>
 
                 <div className="col-sm-12 col-md-5 offset-md-1">
-                    <FormInput key="lastFrameIndex"
-                               label="of"
+                    <FormInput label="of"
                                value={totalFrames}
                                type="field"
                                subtype="number"

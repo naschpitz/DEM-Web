@@ -17,12 +17,12 @@ import './servers.css';
 export default Servers = (props) => {
     const [ isCreating, setIsCreating ] = useState(false);
     const [ isRemoving, setIsRemoving ] = useState(false);
-    const [ isServersReady, setIsServersReady ] = useState(false);
+    const [ isReady, setIsReady ] = useState(false);
 
     useTracker(() => {
         Meteor.subscribe('servers.list', {
             onStop: (error) => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-            onReady: () => (setIsServersReady(true))
+            onReady: () => (setIsReady(true))
         });
     }, []);
 
@@ -96,7 +96,7 @@ export default Servers = (props) => {
                                                                  data: cellInfo,
                                                                  className: "btn btn-sm btn-danger ml-auto mr-auto",
                                                                  isAction: isRemoving,
-                                                                 actionText: "removing...",
+                                                                 actionText: "Removing...",
                                                                  type: "button"}}
                                                  confirmationOptions={{title: "Confirm server removal",
                                                                        text: <span>Do you really want to remove the server <strong>{cellInfo.original.name}</strong> ?</span>,

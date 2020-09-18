@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 
-import Frames from '../../frames/server/class.js';
 import Materials from '../../materials/both/class.js';
 import NonSolidObjects from '../../nonSolidObjects/both/class.js';
-import Sceneries from '../../sceneries/both/class.js';
+import Sceneries from '../../sceneries/server/class.js';
 import Servers from '../../servers/both/class.js';
 import SimulationsBoth from '../both/class.js';
 import SimulationsLogs from '../../simulationsLogs/both/class.js';
@@ -62,7 +61,7 @@ export default class Simulations extends SimulationsBoth {
         if (state === 'running' || state === 'paused')
             throw {message: "Running or paused simulations cannot be reset"};
 
-        Frames.removeByOwner(simulationId);
+        Sceneries.resetByOwner(simulationId);
         SimulationsLogs.removeByOwner(simulationId);
         this.setState(simulationId, 'new');
     }
@@ -78,7 +77,6 @@ export default class Simulations extends SimulationsBoth {
         SimulationsBoth.remove(simulationId);
 
         Sceneries.removeByOwner(simulationId);
-        Frames.removeByOwner(simulationId);
         SimulationsLogs.removeByOwner(simulationId);
     }
 

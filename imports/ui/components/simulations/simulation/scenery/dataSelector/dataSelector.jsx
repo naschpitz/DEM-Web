@@ -74,8 +74,7 @@ export default DataSelector = (props) => {
         ];
 
         return (
-            <FormInput key="dataName"
-                       label="Data"
+            <FormInput label="Data"
                        name="dataName"
                        value={data.dataName}
                        type="dropdown"
@@ -97,8 +96,7 @@ export default DataSelector = (props) => {
         options.unshift({value:'', text: "-- Select an Object --"});
 
         return (
-            <FormInput key="objectId"
-                       label="Object"
+            <FormInput label="Object"
                        name="objectId"
                        value={data.objectId}
                        type="dropdown"
@@ -121,8 +119,7 @@ export default DataSelector = (props) => {
         }
 
         return (
-            <FormInput key={name}
-                       label={title}
+            <FormInput label={title}
                        name={name}
                        value={value}
                        type="field"

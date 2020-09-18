@@ -29,24 +29,6 @@ export default Material = (props) => {
         return MaterialsClass.find({owner: props.sceneryId}).fetch();
     });
 
-    function onRemoveDone(result, data) {
-        if (!result) return;
-
-        setIsRemoving(true);
-
-        const materialId = data.original._id;
-
-        Meteor.call('materials.remove', materialId, (error) => {
-            if (error)
-                Alert.error("Error removing material: " + error.reason);
-
-            else
-                Alert.success("Material successfully removed.");
-
-            setIsRemoving(false);
-        });
-    }
-
     function getColumns() {
         return [{
             Header: "Name",
@@ -97,6 +79,24 @@ export default Material = (props) => {
                     Alert.error("Error updating material: " + getErrorMessage(error));
             });
         }
+    }
+
+    function onRemoveDone(result, data) {
+        if (!result) return;
+
+        setIsRemoving(true);
+
+        const materialId = data.original._id;
+
+        Meteor.call('materials.remove', materialId, (error) => {
+            if (error)
+                Alert.error("Error removing material: " + error.reason);
+
+            else
+                Alert.success("Material successfully removed.");
+
+            setIsRemoving(false);
+        });
     }
 
     return (

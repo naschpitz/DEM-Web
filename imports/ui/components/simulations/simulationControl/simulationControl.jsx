@@ -50,6 +50,9 @@ export default SimulationControl = (props) => {
     });
 
     function onEvent(event, name, value) {
+        if (!simulation)
+            return;
+
         const newSimulation = {_id: simulation._id};
 
         _.set(newSimulation, name, value);
@@ -226,10 +229,10 @@ export default SimulationControl = (props) => {
                                                                     <br/><br/>
                                                                     <span>ALL DATA WILL BE LOST!</span>
                                                                 </span>,
-                                                            confirmButtonText: "Remove",
-                                                            confirmButtonAction: "Removing...",
-                                                            cancelButtonText: "Cancel",
-                                                            onDone: onSimulationRemoveDone}}
+                                                          confirmButtonText: "Remove",
+                                                          confirmButtonAction: "Removing...",
+                                                          cancelButtonText: "Cancel",
+                                                          onDone: onSimulationRemoveDone}}
                     />
                 </div>
             </div>
@@ -240,10 +243,9 @@ export default SimulationControl = (props) => {
 
                     <div className="row">
                         <div className="col-sm-4 col-md-3 col-lg-2 offset-lg-1">
-                            <FormInput key="server"
-                                       label="Server"
+                            <FormInput label="Server"
                                        name="server"
-                                       value={simulation.server}
+                                       value={_.get(simulation, 'server')}
                                        type="dropdown"
                                        subtype="string"
                                        size="small"
@@ -255,10 +257,9 @@ export default SimulationControl = (props) => {
                         </div>
 
                         <div className="col-sm-4 col-md-3 col-lg-2">
-                            <FormInput key="totalTime"
-                                       label="Total Time"
+                            <FormInput label="Total Time"
                                        name="totalTime"
-                                       value={simulation.totalTime}
+                                       value={_.get(simulation, 'totalTime')}
                                        type="field"
                                        subtype="number"
                                        size="small"
@@ -269,10 +270,9 @@ export default SimulationControl = (props) => {
                         </div>
 
                         <div className="col-sm-4 col-md-3 col-lg-2">
-                            <FormInput key="timeStep"
-                                       label="Time Step"
+                            <FormInput label="Time Step"
                                        name="timeStep"
-                                       value={simulation.timeStep}
+                                       value={_.get(simulation, 'timeStep')}
                                        type="field"
                                        subtype="number"
                                        size="small"
@@ -283,10 +283,9 @@ export default SimulationControl = (props) => {
                         </div>
 
                         <div className="col-sm-4 col-md-3 col-lg-2">
-                            <FormInput key="frameTime"
-                                       label="Frame Time"
+                            <FormInput label="Frame Time"
                                        name="frameTime"
-                                       value={simulation.frameTime}
+                                       value={_.get(simulation, 'frameTime')}
                                        type="field"
                                        subtype="number"
                                        size="small"
@@ -297,10 +296,9 @@ export default SimulationControl = (props) => {
                         </div>
 
                         <div className="col-sm-4 col-md-3 col-lg-2">
-                            <FormInput key="logTime"
-                                       label="Log Time"
+                            <FormInput label="Log Time"
                                        name="logTime"
-                                       value={simulation.logTime}
+                                       value={_.get(simulation, 'logTime')}
                                        type="field"
                                        subtype="number"
                                        size="small"

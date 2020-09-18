@@ -107,8 +107,7 @@ export default Scenery = (props) => {
                             </div>
 
                             <div className="card-body">
-                                <FormInput key="gravity[0]"
-                                           label="Gx"
+                                <FormInput label="Gx"
                                            name="gravity[0]"
                                            value={_.get(scenery, "gravity[0]")}
                                            type="field"
@@ -119,8 +118,7 @@ export default Scenery = (props) => {
                                            onEvent={onEvent}
                                 />
 
-                                <FormInput key="gravity[1]"
-                                           label="Gy"
+                                <FormInput label="Gy"
                                            name="gravity[1]"
                                            value={_.get(scenery, "gravity[1]")}
                                            type="field"
@@ -131,8 +129,7 @@ export default Scenery = (props) => {
                                            onEvent={onEvent}
                                 />
 
-                                <FormInput key="gravity[2]"
-                                           label="Gz"
+                                <FormInput label="Gz"
                                            name="gravity[2]"
                                            value={_.get(scenery, "gravity[2]")}
                                            type="field"

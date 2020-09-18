@@ -27,15 +27,5 @@ Meteor.methods({
         catch (error) {
             throw new Meteor.Error('500', error.message);
         }
-    },
-
-    'frames.removeByOwner'(simulationId) {
-        try {
-            Frames.removeByOwner(simulationId);
-        }
-
-        catch (error) {
-            throw new Meteor.Error('500', error.message);
-        }
     }
 });

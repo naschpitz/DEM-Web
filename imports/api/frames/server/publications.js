@@ -9,7 +9,7 @@ if (Meteor.isServer) {
 
         return Frames.find(
             {
-                'scenery._id': sceneryId
+                owner: sceneryId
             },
             {
                 sort: {'step': 1}
