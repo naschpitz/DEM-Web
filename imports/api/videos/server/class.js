@@ -60,11 +60,11 @@ export default class Videos extends VideosBoth {
 
         // Equivalent to bitrate quality.
         args.push("-crf");
-        args.push("28");
+        args.push("26");
 
         // Compression efficiency.
         args.push("-preset");
-        args.push("medium");
+        args.push("veryfast");
 
         // Output fps.
         args.push("-r");
