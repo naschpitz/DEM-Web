@@ -11,7 +11,7 @@ WebApp.connectHandlers.use(connectRoute(function (router) {
     router.post('/api/frames', function (req, res, next) {
         let body = [];
 
-        req.on('data', (chunk) => body.push(chunk));
+        req.on('data', (chunk) => (body.push(chunk)));
         req.on('end', Meteor.bindEnvironment(() => {
             const compressedData = Buffer.concat(body);
             const data = zlib.inflateSync(compressedData);
@@ -22,6 +22,7 @@ WebApp.connectHandlers.use(connectRoute(function (router) {
 
             res.end("OK");
         }));
+        req.on('error', (error) => (res.writeHead(400, "Error receiving frame")));
     });
 }));
 
@@ -29,7 +30,7 @@ WebApp.connectHandlers.use(connectRoute(function (router) {
     router.post('/api/simulationsLogs', function (req, res, next) {
         let body = [];
 
-        req.on('data', (chunk) => body.push(chunk));
+        req.on('data', (chunk) => (body.push(chunk)));
         req.on('end', Meteor.bindEnvironment(() => {
             const compressedData = Buffer.concat(body);
             const data = zlib.inflateSync(compressedData);
@@ -41,5 +42,6 @@ WebApp.connectHandlers.use(connectRoute(function (router) {
 
             res.end("OK");
         }));
+        req.on('error', (error) => (res.writeHead(400, "Error receiving log")));
     });
 }));

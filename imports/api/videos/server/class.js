@@ -41,7 +41,16 @@ export default class Videos extends VideosBoth {
         const imagesPath = Meteor.settings.ramdiskPath + "/" + sceneryId + "_" + Random.id(6);
 
         mkdirSync(imagesPath);
-        FramesImages.renderAll(sceneryId, settings.dimensions, true, imagesPath, settings.initialFrame, settings.finalFrame);
+
+        try {
+            FramesImages.renderAll(sceneryId, settings.dimensions, true, imagesPath, settings.initialFrame, settings.finalFrame);
+        }
+
+        catch (error) {
+            rmdirSync(imagesPath, {recursive: true});
+            VideosBoth.setState(videoId, 'errorRendering');
+            return;
+        }
 
         const command = "ffmpeg";
         const args = [];
@@ -77,9 +86,18 @@ export default class Videos extends VideosBoth {
 
         VideosBoth.setState(videoId, 'encoding');
 
-        execFileSync(command, args);
+        try {
+            execFileSync(command, args);
+        }
 
-        rmdirSync(imagesPath, {recursive: true});
+        catch (error) {
+            VideosBoth.setState(videoId, 'errorEncoding');
+            return;
+        }
+
+        finally {
+            rmdirSync(imagesPath, {recursive: true});
+        }
 
         waitOn({resources: [videoFilePath]});
 

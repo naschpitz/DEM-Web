@@ -91,8 +91,10 @@ export default class Frames extends FramesBoth {
 
             const match = file.match(regex);
 
-            if (match !== null)
-                unlinkSync(Meteor.settings.storagePath + "/" + file);
+            if (match !== null) {
+                try { unlinkSync(Meteor.settings.storagePath + "/" + file); }
+                catch (error) { /* Do nothing if file not found */ }
+            }
         });
     }
 }

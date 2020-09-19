@@ -101,9 +101,11 @@ export default Table = ({sceneryId}) => {
 
     function getState(state) {
         switch (state) {
-            case ('rendering'): return "Rendering";
-            case ('encoding'): return "Encoding";
-            case ('done'):    return "Done";
+            case ('rendering'):     return "Rendering";
+            case ('errorRender'):   return "Error rendering";
+            case ('encoding'):      return "Encoding";
+            case ('errorEncoding'): return "Error encoding";
+            case ('done'):          return "Done";
         }
     }
 
