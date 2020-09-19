@@ -13,6 +13,10 @@ import ObjectsProperties from '../../objectsProperties/both/class.js';
 export default class FramesImages {
     static render(frameId, dimensions, keepImageFile, path, imageName) {
         const frame = Frames.getFullFrame(frameId);
+
+        if (!frame)
+            return;
+
         const scenery = frame.scenery;
 
         const camera = Cameras.findOne({owner: frame.owner});

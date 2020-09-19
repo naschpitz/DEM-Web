@@ -16,10 +16,13 @@ import './viewer.css';
 
 let framesImages = new Map();
 
-export default Viewer = ({simulationId, sceneryId}) => {
+export default Viewer = ({sceneryId}) => {
     const [ currentFrameImage, setCurrentFrameImage ] = useState(null);
+
+    // useDeepEffect cannot handle null or undefined.
     const [ dimensions, setDimensions ] = useState({});
     const [ frame, setFrame ] = useState({});
+
     const [ isRendering, setIsRendering ] = useState(false);
 
     const actionTimer = useRef();
@@ -56,16 +59,25 @@ export default Viewer = ({simulationId, sceneryId}) => {
         return framesImages.has(frame._id) ? framesImages.get(frame._id) : currentFrameImage;
     }
 
+    function onCameraChange() {
+        framesImages.clear();
+        renderImage();
+    }
+
     function onFrameChange(newFrame) {
         if (newFrame)
             setFrame(newFrame);
 
         else {
-            // Invalidates all frames images.
             framesImages.clear();
-
-            renderImage();
+            setFrame({});
+            setCurrentFrameImage(null);
         }
+    }
+
+    function onPropertyChange() {
+        framesImages.clear();
+        renderImage();
     }
 
     function renderImage() {
@@ -75,8 +87,9 @@ export default Viewer = ({simulationId, sceneryId}) => {
         setIsRendering(true);
 
         Meteor.apply('framesImages.render', [frame._id, dimensions], (error, result) => {
-            if (error)
+            if (error) {
                 Alert.error("Error rendering frame image: " + error.reason);
+            }
 
             else {
                 framesImages.set(frame._id, result);
@@ -116,7 +129,7 @@ export default Viewer = ({simulationId, sceneryId}) => {
                     </div>
 
                     <div className="card-body">
-                        <CameraControl sceneryId={sceneryId} onChange={onFrameChange}/>
+                        <CameraControl sceneryId={sceneryId} onChange={onCameraChange}/>
                     </div>
                 </div>
 
@@ -136,7 +149,7 @@ export default Viewer = ({simulationId, sceneryId}) => {
                     </div>
 
                     <div className="card-body">
-                        <ObjectsProperties sceneryId={sceneryId} onChange={onFrameChange}/>
+                        <ObjectsProperties sceneryId={sceneryId} onChange={onPropertyChange}/>
                     </div>
                 </div>
             </div>

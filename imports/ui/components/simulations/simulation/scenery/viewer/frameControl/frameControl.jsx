@@ -28,12 +28,14 @@ export default FrameControl = (props) => {
     });
 
     useEffect(() => {
-        if (currentFrameIndex !== 0 && !frames.length) {
+        if (currentFrameIndex !== 0 && !frames.length)
             setCurrentFrameIndex(0);
-        }
 
         if (currentFrameIndex === 0 && frames.length)
-            props.onChange(frames[currentFrameIndex]);
+            props.onChange(frames[0]);
+
+        if (!frames.length)
+            props.onChange();
     }, [ currentFrameIndex, frames.length ]);
 
     function onBackwardClick() {
@@ -99,6 +101,14 @@ export default FrameControl = (props) => {
     function onEvent(event, name, value) {
         if (event !== 'onBlur')
             return;
+
+        if (frames.length) {
+            value = value > frames.length ? frames.length : value;
+            value = value < 1 ? 1 : value;
+        }
+
+        else
+            value = 0;
 
         const newFrameIndex = value > 0 ? value - 1 : 0;
 
