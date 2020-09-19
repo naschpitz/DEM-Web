@@ -15,7 +15,7 @@ export default class FramesImages {
         const frame = Frames.getFullFrame(frameId);
         const scenery = frame.scenery;
 
-        const camera = Cameras.findOne({owner: scenery._id});
+        const camera = Cameras.findOne({owner: frame.owner});
 
         const nonSolidObjects = _.get(scenery, 'objects.nonSolidObjects', []);
         const solidObjects = _.get(scenery, 'objects.solidObjects', []);
