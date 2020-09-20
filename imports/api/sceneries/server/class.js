@@ -7,18 +7,16 @@ import SolidObjects from '../../solidObjects/both/class.js';
 
 export default class Sceneries extends SceneriesBoth {
     static resetByOwner(simulationId) {
-        const sceneries = SceneriesBoth.find({owner: simulationId});
+        const scenery = SceneriesBoth.findOne({owner: simulationId});
 
-        sceneries.forEach((scenery) => {
-            Frames.removeByOwner(scenery._id);
-        });
+        Frames.removeByOwner(scenery._id);
     }
 
     static removeByOwner(simulationId) {
         const scenery = SceneriesBoth.findOne({owner: simulationId});
         const sceneryId = scenery._id;
 
-        this.remove(sceneryId);
+        SceneriesBoth.remove(sceneryId);
 
         Frames.removeByOwner(sceneryId);
         NonSolidObjects.removeByOwner(sceneryId);
