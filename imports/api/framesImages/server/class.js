@@ -54,21 +54,30 @@ export default class FramesImages {
 
         let data;
 
-        if (keepImageFile) {
-            const imagePath = (path ? path + "/" : "") + (imageName ? imageName : frameId + "_" + random + ".png");
-            args.push("+O" + imagePath);
+        try {
+            if (keepImageFile) {
+                const imagePath = (path ? path + "/" : "") + (imageName ? imageName : frameId + "_" + random + ".png");
+                args.push("+O" + imagePath);
 
-            execFileSync(command, args);
-            data = readFileSync(imagePath);
+                execFileSync(command, args);
+                data = readFileSync(imagePath);
+            }
+
+            else {
+                args.push("+O-");
+
+                // 10MB of maximum buffer to stdout or stderr.
+                data = execFileSync(command, args, {maxBuffer: 10485760});
+            }
         }
 
-        else {
-            args.push("+O-");
-
-            data = execFileSync(command, args);
+        catch (error) {
+            throw error;
         }
 
-        unlink(scriptPath, (error) => { /* Do nothing */});
+        finally {
+            unlink(scriptPath, (error) => { /* Do nothing */});
+        }
 
         return Buffer.from(data, 'binary').toString('base64');
 
