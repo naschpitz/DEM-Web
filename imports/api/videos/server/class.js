@@ -19,13 +19,13 @@ export default class Videos extends VideosBoth {
 
         const videoId = Random.id();
 
-        const videoFilePath = Meteor.settings.storagePath + "/" + videoId + ".mpeg";
+        const videoFilePath = Meteor.settings.storagePath + "/" + videoId + ".mp4";
 
         const opts = {
             fileId: videoId,
-            fileName: simulation.name + '.mpeg',
+            fileName: simulation.name + '.mp4',
             userId: userId,
-            type: 'video/mpeg4',
+            type: 'video/mp4',
             size: 0,
             meta: {
                 owner: sceneryId,
@@ -69,7 +69,7 @@ export default class Videos extends VideosBoth {
 
         // Equivalent to bitrate quality.
         args.push("-crf");
-        args.push("26");
+        args.push("24");
 
         // Compression efficiency.
         args.push("-preset");
@@ -120,8 +120,8 @@ export default class Videos extends VideosBoth {
     static remove(videoId) {
         const file = VideosBoth.findOne(videoId);
 
-        if (file.meta.state !== 'done')
-            throw {message: "Only videos in 'done' state can be removed."};
+        if (file.meta.state === 'rendering' || file.meta.state === 'encoding')
+            throw {message: "Videos in 'rendering' or 'encoding' states cannot be removed."};
 
         unlink(file.path, (error) => { /* Do nothing */});
 

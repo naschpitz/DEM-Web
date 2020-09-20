@@ -38,7 +38,7 @@ export default Table = ({sceneryId}) => {
         function isDisabled(cellInfo) {
             const state = cellInfo.original.meta.state;
 
-            return state !== 'done';
+            return (state === 'rendering' || state === 'encoding');
         }
 
         return [{
@@ -101,11 +101,11 @@ export default Table = ({sceneryId}) => {
 
     function getState(state) {
         switch (state) {
-            case ('rendering'):     return "Rendering";
-            case ('errorRender'):   return "Error rendering";
-            case ('encoding'):      return "Encoding";
-            case ('errorEncoding'): return "Error encoding";
-            case ('done'):          return "Done";
+            case ('rendering'):      return "Rendering";
+            case ('errorRendering'): return "Error rendering";
+            case ('encoding'):       return "Encoding";
+            case ('errorEncoding'):  return "Error encoding";
+            case ('done'):           return "Done";
         }
     }
 
