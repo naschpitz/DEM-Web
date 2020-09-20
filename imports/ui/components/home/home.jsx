@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactPlayer from 'react-player';
 
 import './home.css';
 
@@ -22,7 +23,7 @@ export default Home = () => {
             <h4>What programming languages were used?</h4>
             <p>This web interface is built in Node.js using MeteorJS framework. The math engine uses C++ 17 and OpenCL under Qt's framework.</p>
 
-            <h4></h4>
+            <ReactPlayer style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', maxWidth: '70vw'}} playing loop={true} url='https://www.youtube.com/watch?v=XwFRhSVuVIo'/>
         </div>
     );
 }

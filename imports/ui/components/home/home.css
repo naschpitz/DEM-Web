@@ -1,5 +1,6 @@
 #home {
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #home h4 {
@@ -9,4 +10,9 @@
 #home p {
     margin-bottom: 10px;
     text-align: justify;
+}
+
+#home #videoPlayer {
+    margin-left: auto;
+    margin-right: auto;
 }
