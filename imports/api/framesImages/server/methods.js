@@ -5,6 +5,7 @@ import FramesImages from './class.js';
 Meteor.methods({
     'framesImages.render'(frameId, dimensions) {
         try {
+            this.unblock();
             return FramesImages.render(frameId, dimensions, false);
         }
 

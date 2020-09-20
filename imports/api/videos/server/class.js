@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import { closeSync, mkdirSync, openSync, rmdirSync, statSync, unlinkSync } from 'fs';
+import { closeSync, mkdirSync, openSync, rmdirSync, statSync, unlink } from 'fs';
 import { execFileSync } from 'child_process';
 import waitOn from 'wait-on';
 
@@ -123,7 +123,7 @@ export default class Videos extends VideosBoth {
         if (file.meta.state !== 'done')
             throw {message: "Only videos in 'done' state can be removed."};
 
-        unlinkSync(file.path);
+        unlink(file.path, (error) => { /* Do nothing */});
 
         VideosBoth.remove(videoId);
     }

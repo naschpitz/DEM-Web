@@ -4,7 +4,7 @@ import { Random } from 'meteor/random';
 import zlib from 'zlib';
 import _ from 'lodash';
 
-import {unlinkSync, writeFileSync, readFileSync, readdirSync} from 'fs';
+import {unlink, writeFileSync, readFileSync, readdirSync} from 'fs';
 
 import FramesBoth from '../both/class.js';
 import Sceneries from '../../sceneries/both/class.js';
@@ -91,10 +91,8 @@ export default class Frames extends FramesBoth {
 
             const match = file.match(regex);
 
-            if (match !== null) {
-                try { unlinkSync(Meteor.settings.storagePath + "/" + file); }
-                catch (error) { /* Do nothing if file not found */ }
-            }
+            if (match !== null)
+                unlink(Meteor.settings.storagePath + "/" + file, (error) => {/* Do nothing */});
         });
     }
 }

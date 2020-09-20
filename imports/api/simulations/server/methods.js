@@ -35,6 +35,7 @@ Meteor.methods({
 
     'simulations.reset'(simulationId) {
         try {
+            this.unblock();
             Simulations.reset(simulationId);
         }
 

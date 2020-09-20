@@ -3,7 +3,7 @@ import { Random } from 'meteor/random';
 import _ from 'lodash';
 
 import { cpus } from 'os';
-import { writeFileSync, readFileSync, unlinkSync } from 'fs';
+import { writeFileSync, readFileSync, unlink } from 'fs';
 import { execFileSync } from 'child_process';
 
 import Cameras from '../../cameras/both/class.js';
@@ -68,7 +68,7 @@ export default class FramesImages {
             data = execFileSync(command, args);
         }
 
-        unlinkSync(scriptPath);
+        unlink(scriptPath, (error) => { /* Do nothing */});
 
         return Buffer.from(data, 'binary').toString('base64');
 
