@@ -18,12 +18,12 @@ import './simulations.css';
 
 export default Simulations = (props) => {
     const [ isCreating, setIsCreating ] = useState(false);
-    const [ isSimulationsLogsReady, setIsSimulationsLogsReady ] = useState(false);
+    const [ isReady, setIsReady ] = useState(false);
 
     useTracker(() => {
         Meteor.subscribe('simulationsLogs.last', {
             onStop: (error) => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-            onReady: () => (setIsSimulationsLogsReady(true))
+            onReady: () => (setIsReady(true))
         });
     }, []);
 
@@ -229,6 +229,8 @@ export default Simulations = (props) => {
             </h2>
 
             <ReactTable data={simulations}
+                        loading={!isReady}
+                        loadingText="Loading simulations list..."
                         columns={getColumns()}
                         defaultPageSize={5}
                         collapseOnDataChange={false}

@@ -167,6 +167,8 @@ export default Servers = (props) => {
             </h2>
 
             <ReactTable data={servers}
+                        loading={!isReady}
+                        loadingText="Loading servers list..."
                         columns={getColumns()}
                         defaultPageSize={5}
                         collapseOnDataChange={false}
