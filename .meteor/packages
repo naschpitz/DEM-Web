@@ -31,3 +31,4 @@ peerlibrary:reactive-publish
 http
 webapp
 ostrio:files
+reywood:publish-composite
