@@ -32,7 +32,7 @@ export default Simulations = (props) => {
     });
 
     const simulationsLogs = useTracker(() => {
-        return SimulationsLogsClass.find({progress: {$exists: true}}).fetch();
+        return SimulationsLogsClass.find({progress: {$exists: true}}, {sort: {'createdAt': -1}}).fetch();
     });
 
     function getColumns() {

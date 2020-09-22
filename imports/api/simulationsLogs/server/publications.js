@@ -26,7 +26,7 @@ if (Meteor.isServer) {
             const simulations = Simulations.find({owner: this.userId}, {sort: {'createdAt': -1}});
             const simulationsIds = simulations.map((simulation) => (simulation._id));
 
-            const simulationsLogs = SimulationsLogs.find({owner: {$in: simulationsIds}, progress: {$exists: true}}, {sort: {'createdAt': -1}, limit: 1});
+            const simulationsLogs = SimulationsLogs.find({owner: {$in: simulationsIds}, progress: {$exists: true}}, {sort: {'createdAt': -1}});
 
             return [ simulations, simulationsLogs ];
         });
