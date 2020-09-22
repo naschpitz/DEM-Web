@@ -33,13 +33,13 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
     }
 
     static removeByOwner(sceneryId) {
-        NonSolidObjectsDAO.remove({owner: sceneryId});
-
-        const nonSolidObjects = NonSolidObjects.find({owner: sceneryId}).fetch();
+        const nonSolidObjects = NonSolidObjects.find({owner: sceneryId});
 
         nonSolidObjects.forEach((nonSolidObject) => {
             ObjectsProperties.removeByOwner(nonSolidObject._id);
         });
+
+        NonSolidObjectsDAO.remove({owner: sceneryId});
     }
 
     static usesMaterial(materialId) {

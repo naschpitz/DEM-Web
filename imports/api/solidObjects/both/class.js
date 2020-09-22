@@ -33,13 +33,13 @@ export default class SolidObjects extends SolidObjectsDAO {
     }
 
     static removeByOwner(sceneryId) {
-        SolidObjectsDAO.remove({owner: sceneryId});
-
-        const solidObjects = SolidObjectsDAO.find({owner: sceneryId}).fetch();
+        const solidObjects = SolidObjectsDAO.find({owner: sceneryId});
 
         solidObjects.forEach((solidObject) => {
             ObjectsProperties.removeByOwner(solidObject._id);
         });
+
+        SolidObjectsDAO.remove({owner: sceneryId});
     }
 
     static usesMaterial(materialId) {
