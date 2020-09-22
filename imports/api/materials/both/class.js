@@ -1,10 +1,38 @@
+import { Random } from 'meteor/random';
+import _ from 'lodash';
+
 import MaterialsDAO from './dao.js';
 import NonSolidObjects from '../../nonSolidObjects/both/class.js';
 import SolidObjects from '../../solidObjects/both/class.js';
 
 export default class Materials extends MaterialsDAO {
+    static clone(oldSceneryId, newSceneryId) {
+        const oldMaterials = MaterialsDAO.find({owner: oldSceneryId});
+
+        const materialsMap = new Map();
+
+        oldMaterials.forEach((oldMaterial) => {
+            const oldMaterialId = oldMaterial._id;
+            const newMaterialId = Random.id();
+
+            materialsMap.set(oldMaterialId, newMaterialId);
+        });
+
+        oldMaterials.forEach((oldMaterial) => {
+            const newMaterial = _.clone(oldMaterial);
+            newMaterial._id = materialsMap.get(oldMaterial._id);
+            newMaterial.owner = newSceneryId;
+            newMaterial.material1 = materialsMap.get(oldMaterial.material1);
+            newMaterial.material2 = materialsMap.get(oldMaterial.material2);
+
+            MaterialsDAO.insert(newMaterial);
+        });
+
+        return materialsMap;
+    }
+
     static create(owner) {
-        return this.insert({owner: owner});
+        return MaterialsDAO.insert({owner: owner});
     }
 
     static usesMaterial(materialId) {

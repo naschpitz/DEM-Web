@@ -63,7 +63,7 @@ export default class Simulations extends SimulationsBoth {
 
         Sceneries.resetByOwner(simulationId);
         SimulationsLogs.removeByOwner(simulationId);
-        this.setState(simulationId, 'new');
+        SimulationsBoth.setState(simulationId, 'new');
     }
 
     static remove(simulationId) {

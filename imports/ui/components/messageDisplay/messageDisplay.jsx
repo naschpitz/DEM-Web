@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Random } from 'meteor/random'
+import { Random } from 'meteor/random';
 
 export default class MessageDisplay extends Component {
     constructor (props) {

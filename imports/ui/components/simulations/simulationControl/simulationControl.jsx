@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import _ from 'lodash';
 
+import { FaClone, FaPause, FaPlay, FaStop, FaSync, FaTrashAlt } from 'react-icons/fa';
 import Alert from 'react-s-alert';
 import ButtonEnhanced from '@naschpitz/button-enhanced';
 import FormInput from '@naschpitz/form-input';
@@ -17,6 +18,7 @@ export default SimulationControl = (props) => {
     const [ isPausing, setIsPausing ] = useState(false);
     const [ isStopping, setIsStopping ] = useState(false);
     const [ isResetting, setIsResetting ] = useState(false);
+    const [ isCloning, setIsCloning ] = useState(false);
     const [ isRemoving, setIsRemoving ] = useState(false);
     const [ isSimulationsReady, setIsSimulationsReady ] = useState(false);
     const [ isServersReady, setIsServersReady ] = useState(false);
@@ -130,6 +132,22 @@ export default SimulationControl = (props) => {
         });
     }
 
+    function onSimulationCloneDone(result) {
+        if (!result) return;
+
+        setIsCloning(true);
+
+        Meteor.call('simulations.clone', props.simulationId, (error) => {
+            if (error)
+                Alert.error("Error cloning simulation: " + error.reason);
+
+            else
+                Alert.success("Simulation successfully cloned.");
+
+            setIsCloning(false);
+        });
+    }
+
     function onSimulationRemoveDone(result) {
         if (!result) return;
 
@@ -157,8 +175,8 @@ export default SimulationControl = (props) => {
     return (
         <div id="simulationControl">
             <div className="row">
-                <div className="col-md-2 offset-md-1 text-center">
-                    <ButtonEnhanced buttonOptions={{regularText: "Start Simulation",
+                <div className="col-md-2 text-center">
+                    <ButtonEnhanced buttonOptions={{regularText: <span><FaPlay className="align-middle"/> Play</span>,
                                                     className: "btn btn-sm btn-success",
                                                     isAction: isStarting,
                                                     actionText: "Starting...",
@@ -173,7 +191,7 @@ export default SimulationControl = (props) => {
                 </div>
 
                 <div className="col-md-2 text-center">
-                    <ButtonEnhanced buttonOptions={{regularText: "Pause Simulation",
+                    <ButtonEnhanced buttonOptions={{regularText: <span><FaPause className="align-middle"/> Pause</span>,
                                                     className: "btn btn-sm btn-info",
                                                     isAction: isPausing,
                                                     actionText: "Pausing...",
@@ -188,7 +206,7 @@ export default SimulationControl = (props) => {
                 </div>
 
                 <div className="col-md-2 text-center">
-                    <ButtonEnhanced buttonOptions={{regularText: "Stop Simulation",
+                    <ButtonEnhanced buttonOptions={{regularText: <span><FaStop className="align-middle"/> Stop</span>,
                                                     className: "btn btn-sm btn-danger",
                                                     isAction: isStopping,
                                                     actionText: "Stopping...",
@@ -203,7 +221,7 @@ export default SimulationControl = (props) => {
                 </div>
 
                 <div className="col-md-2 text-center">
-                    <ButtonEnhanced buttonOptions={{regularText: "Reset Simulation",
+                    <ButtonEnhanced buttonOptions={{regularText: <span><FaSync className="align-middle"/> Reset</span>,
                                                     className: "btn btn-sm btn-danger",
                                                     isAction: isResetting,
                                                     actionText: "Resetting...",
@@ -218,8 +236,23 @@ export default SimulationControl = (props) => {
                 </div>
 
                 <div className="col-md-2 text-center">
-                    <ButtonEnhanced buttonOptions={{regularText: "Remove Simulation",
+                    <ButtonEnhanced buttonOptions={{regularText: <span><FaClone className="align-middle"/> Clone</span>,
                                                     className: "btn btn-sm btn-danger",
+                                                    isAction: isCloning,
+                                                    actionText: "Cloning...",
+                                                    type: "button"}}
+                                    confirmationOptions={{title: "Confirm simulation clone",
+                                                          text: <span>Do you really want to clone this simulation?</span>,
+                                                          confirmButtonText: "Clone",
+                                                          confirmButtonAction: "Cloning...",
+                                                          cancelButtonText: "Cancel",
+                                                          onDone: onSimulationCloneDone}}
+                    />
+                </div>
+
+                <div className="col-md-2 text-center">
+                    <ButtonEnhanced buttonOptions={{regularText: <span><FaTrashAlt className="align-middle"/> Remove</span>,
+                                                    className: "btn btn-sm btn-dark",
                                                     isAction: isRemoving,
                                                     actionText: "Removing...",
                                                     type: "button"}}
