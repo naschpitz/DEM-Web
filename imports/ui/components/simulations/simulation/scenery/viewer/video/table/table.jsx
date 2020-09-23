@@ -36,9 +36,15 @@ export default Table = ({sceneryId}) => {
         }
 
         function isDisabled(cellInfo) {
+            const id = cellInfo.column.id;
+
             const state = cellInfo.original.meta.state;
 
-            return (state === 'rendering' || state === 'encoding');
+            if (id === 'downloadButton')
+                return (state !== 'done');
+
+            if (id === 'removeButton')
+                return (state === 'rendering' || state === 'encoding');
         }
 
         return [{
