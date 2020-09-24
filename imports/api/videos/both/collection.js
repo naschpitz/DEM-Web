@@ -42,6 +42,12 @@ Videos.schema = new SimpleSchema(_.extend(
             label: "State",
             optional: true
         },
+        'meta.error': {
+            type: Object,
+            label: "Error",
+            optional: true,
+            blackbox: true
+        },
         'meta.createdAt': {
             type: Date,
             label: "Created at",

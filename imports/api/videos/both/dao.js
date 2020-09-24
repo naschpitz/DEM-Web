@@ -13,6 +13,12 @@ export default class VideosDAO {
     static remove(...args) {return VideosCol.remove(...args)}
 
     static updateObj(video) {
+        const error = _.get(video, 'meta.error');
+
+        // Removes circular reference.
+        if (_.get(error, 'error'))
+            delete error.error;
+
         const dottedVideo = dot.dot(video);
 
         const set = {};

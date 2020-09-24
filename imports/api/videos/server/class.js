@@ -38,7 +38,7 @@ export default class Videos extends VideosBoth {
 
         VideosBoth.addFile(videoFilePath, opts);
 
-        const imagesPath = Meteor.settings.ramdiskPath + "/" + sceneryId + "_" + Random.id(6);
+        const imagesPath = Meteor.settings.tmpPath + "/" + sceneryId + "_" + Random.id(6);
 
         mkdirSync(imagesPath);
 
@@ -48,7 +48,7 @@ export default class Videos extends VideosBoth {
 
         catch (error) {
             rmdirSync(imagesPath, {recursive: true});
-            VideosBoth.setState(videoId, 'errorRendering');
+            VideosBoth.setState(videoId, 'errorRendering', error);
             return;
         }
 
@@ -91,7 +91,7 @@ export default class Videos extends VideosBoth {
         }
 
         catch (error) {
-            VideosBoth.setState(videoId, 'errorEncoding');
+            VideosBoth.setState(videoId, 'errorEncoding', error);
             return;
         }
 
