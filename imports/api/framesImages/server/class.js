@@ -34,7 +34,7 @@ export default class FramesImages {
         solidObjects.forEach(solidObject => (script += getSolidObjectScript(solidObject) + "\n\n"));
 
         const random = Random.id(6);
-        const scriptPath = (path ? path + "/" : Meteor.settings.ramdiskPath + "/") + frameId + "_" + random + ".pov";
+        const scriptPath = (path ? path + "/" : Meteor.settings.tmpPath + "/") + frameId + "_" + random + ".pov";
 
         writeFileSync(scriptPath, script);
 
@@ -50,6 +50,7 @@ export default class FramesImages {
         args.push("+AM2");
         args.push("+R1");
         args.push("+WT" + nCpus);
+        args.push("+MI" + 1024);
         args.push("-D");
 
         let data;
