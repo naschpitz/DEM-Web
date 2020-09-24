@@ -5,6 +5,7 @@ import Videos from '../server/class.js';
 Meteor.methods({
     'videos.render'(sceneryId, settings) {
         async function render(...args) {
+            this.unblock();
             Videos.render(...args);
         }
 
