@@ -7,7 +7,7 @@ import SceneriesClass from '../../../../../api/sceneries/both/class.js';
 
 import { FaPlus } from 'react-icons/fa';
 import Alert from 'react-s-alert';
-import ButtonEnhanced from  '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from  '@naschpitz/button-enhanced';
 import Charts from './charts/charts.jsx';
 import ClipLoader from 'react-spinners/ClipLoader';
 import FormInput from '@naschpitz/form-input';

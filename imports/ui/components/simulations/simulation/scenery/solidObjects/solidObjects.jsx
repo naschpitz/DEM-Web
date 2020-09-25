@@ -7,7 +7,7 @@ import _ from 'lodash';
 import SolidObjectsClass from '../../../../../../api/solidObjects/both/class.js';
 
 import Alert from 'react-s-alert';
-import ButtonEnhanced from '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 import FormInput from '@naschpitz/form-input';
 import Properties from './properties/properties.jsx';
 import ReactTable from 'react-table-v6';

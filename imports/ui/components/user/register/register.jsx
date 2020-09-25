@@ -95,7 +95,7 @@ export default Register = (props) => {
     }
 
     return (
-        <form className="form-register" onSubmit={onFormSubmit}>
+        <form id="form-register" onSubmit={onFormSubmit}>
             <div className="form-group">
                 <label htmlFor="inputEmail">E-mail</label>
                 <input className="form-control form-control-sm" id="inputEmail" ref={emailRef} onChange={onEmailChange} placeholder="mail@domain.com" required autoFocus type="email"/>

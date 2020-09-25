@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import Alert from 'react-s-alert';
-import ButtonEnhanced from '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 import FormInput from '@naschpitz/form-input';
 import Table from './table/table.jsx';
 

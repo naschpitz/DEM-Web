@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import { FaClone, FaPause, FaPlay, FaStop, FaSync, FaTrashAlt } from 'react-icons/fa';
 import Alert from 'react-s-alert';
-import ButtonEnhanced from '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 import FormInput from '@naschpitz/form-input';
 
 import ServersClass from '../../../../api/servers/both/class.js';

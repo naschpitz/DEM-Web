@@ -6,7 +6,7 @@ import fileDownload from 'js-file-download';
 
 import { FaFileExport } from 'react-icons/fa';
 import Alert from 'react-s-alert';
-import ButtonEnhanced from '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 
 import './dataExporter.css';
 

@@ -7,7 +7,7 @@ import FramesClass from '../../../../../../../api/frames/both/class.js';
 
 import { FaFastBackward, FaStepBackward, FaStepForward, FaFastForward } from 'react-icons/fa';
 import Alert from 'react-s-alert';
-import ButtonEnhanced from '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 import FormInput from '@naschpitz/form-input';
 
 import './frameControl.css';

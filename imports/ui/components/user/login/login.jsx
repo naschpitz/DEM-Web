@@ -69,7 +69,7 @@ export default Login = (props) => {
     }
 
     return (
-        <form className="form-login" onSubmit={onFormSubmit}>
+        <form id="form-login" onSubmit={onFormSubmit}>
             <div className="form-group">
                 <label htmlFor="inputEmail">E-mail</label>
                 <input id="inputEmail" ref={emailRef} className="form-control form-control-sm" placeholder="mail@domain.com" required autoFocus type="email"/>

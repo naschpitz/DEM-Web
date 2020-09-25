@@ -1,14 +1,14 @@
-.form-register {
+#form-register {
     max-width: 330px;
     padding: 15px;
     margin: 0 auto;
 }
 
-#blockExternalServices {
+#form-register #blockExternalServices {
     padding-top: 15px;
 }
 
-#blockClose {
+#form-register #blockClose {
     padding-top: 15px;
     text-align: center;
 }

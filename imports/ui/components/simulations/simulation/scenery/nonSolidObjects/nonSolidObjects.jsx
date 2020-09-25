@@ -7,7 +7,7 @@ import _ from "lodash";
 import NonSolidObjectsClass from '../../../../../../api/nonSolidObjects/both/class.js';
 
 import Alert from 'react-s-alert';
-import ButtonEnhanced from '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 import Properties from './properties/properties.jsx';
 import ReactTable from 'react-table-v6';
 

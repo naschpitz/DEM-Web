@@ -17,7 +17,7 @@ const PasswordFields = (props) => {
     }
 
     return (
-        <div className="form-group">
+        <div id="form-passwordFields" className="form-group">
             <label htmlFor="inputPassword">Password</label>
             <input className="form-control form-control-sm" id="inputPassword" ref={passwordRef} onKeyUp={onKeyUp}  placeholder="Password" required type="password" />
             <input className="form-control form-control-sm" id="inputPasswordCheck" ref={passwordCheckRef} onKeyUp={onKeyUp} placeholder="Type your password again" required type="password" />

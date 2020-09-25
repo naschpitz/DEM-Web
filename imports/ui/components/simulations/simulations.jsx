@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import { FaPlus } from 'react-icons/fa';
 import Alert from 'react-s-alert';
-import ButtonEnhanced from '@naschpitz/button-enhanced';
+import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 import Control from './simulationControl/simulationControl.jsx';
 import FormInput from '@naschpitz/form-input';
 import ReactTable from 'react-table-v6';

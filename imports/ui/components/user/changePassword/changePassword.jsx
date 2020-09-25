@@ -74,7 +74,7 @@ export default ChangePassword = (props) => {
     }
 
     return (
-        <form className="form-resetPassword" onSubmit={onFormSubmit}>
+        <form id="form-changePassword" onSubmit={onFormSubmit}>
             <div className="form-group">
                 <label htmlFor="inputOldPassword">Current password</label>
                 <input id="inputOldPassword" ref={oldPasswordRef} className="form-control form-control-sm" placeholder="Current password" required autoFocus type="password" />

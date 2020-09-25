@@ -65,7 +65,7 @@ export default ResetPassword = (props) => {
     }
 
     return (
-        <form className="form-resetPassword" onSubmit={onFormSubmit}>
+        <form id="form-resetPassword" onSubmit={onFormSubmit}>
             <PasswordFields ref={passwordFieldsRef} onChange={onPasswordChange} />
 
             <MessageDisplay ref={messageDisplayRef} />

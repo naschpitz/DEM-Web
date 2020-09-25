@@ -1,18 +1,18 @@
-.form-login {
+#form-login {
     max-width: 330px;
     padding: 15px;
     margin: 0 auto;
 }
 
-#blockForgotPassword {
+#form-login #blockForgotPassword {
     text-align: center;
 }
 
-#blockExternalServices {
+#form-login #blockExternalServices {
     padding-top: 15px;
 }
 
-#blockClose {
+#form-login #blockClose {
     padding-top: 15px;
     text-align: center;
 }
