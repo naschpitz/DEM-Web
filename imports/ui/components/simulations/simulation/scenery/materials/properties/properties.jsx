@@ -131,15 +131,15 @@ export default Properties = (props) => {
             case 'realistic_material': {
                 coefficients.push(
                     {
-                        label: 'Rupture',
+                        label: "Young's module",
                         name: 'coefficients[0]',
-                        value: _.get(material, 'coefficients[0]')
+                        value:_.get(material, 'coefficients[0]')
                     }
                 );
 
                 coefficients.push(
                     {
-                        label: 'Elastic limit',
+                        label: "Elastic limit",
                         name: 'coefficients[1]',
                         value:_.get(material, 'coefficients[1]')
                     }
@@ -150,6 +150,14 @@ export default Properties = (props) => {
                         label: 'Plastic maximum',
                         name: 'coefficients[2]',
                         value: _.get(material, 'coefficients[2]')
+                    }
+                );
+
+                coefficients.push(
+                    {
+                        label: "Rupture",
+                        name: 'coefficients[3]',
+                        value: _.get(material, 'coefficients[3]')
                     }
                 );
 
