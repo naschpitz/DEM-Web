@@ -36,7 +36,7 @@ export default Scenery = (props) => {
     });
 
     function onEvent(event, name, value) {
-        const newScenery = {_id: scenery._id};
+        const newScenery = _.cloneDeep(scenery);
 
         _.set(newScenery, name, value);
 

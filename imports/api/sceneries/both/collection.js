@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
@@ -19,7 +18,7 @@ Sceneries.schema = new SimpleSchema({
     },
     'gravity.$': {
         type: Number,
-        },
+    },
     createdAt: {
         type: Date,
         label: "Created at",
