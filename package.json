@@ -51,8 +51,7 @@
     "simpl-schema": "^1.7.3",
     "tsparticles": "^1.14.3",
     "use-deep-compare-effect": "^1.4.0",
-    "wait-on": "^5.0.0",
-    "zlib": "^1.0.5"
+    "wait-on": "^5.0.0"
   },
   "meteor": {
     "mainModule": {
