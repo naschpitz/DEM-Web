@@ -10,7 +10,10 @@ import FramesBoth from '../both/class.js';
 import Sceneries from '../../sceneries/both/class.js';
 import Simulations from '../../simulations/both/class.js';
 
+const storagePath = Meteor.settings.localPath;
+
 export default class Frames extends FramesBoth {
+
     static insert(frame) {
         const scenery = Sceneries.findOne(frame.owner);
         const simulation = Simulations.findOne(scenery.owner);
@@ -33,7 +36,7 @@ export default class Frames extends FramesBoth {
             const data = EJSON.stringify(particles);
             const compressedData = zlib.deflateSync(data.toString(), {level: 9});
 
-            const fileName = Meteor.settings.storagePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id;
+            const fileName = storagePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id;
 
             writeFileSync(fileName, compressedData);
         });
@@ -43,7 +46,7 @@ export default class Frames extends FramesBoth {
             const data = EJSON.stringify(faces);
             const compressedData = zlib.deflateSync(data.toString(), {level: 9});
 
-            const fileName = Meteor.settings.storagePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id;
+            const fileName = storagePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id;
 
             writeFileSync(fileName, compressedData);
         });
@@ -58,7 +61,7 @@ export default class Frames extends FramesBoth {
         const solidObjects = _.get(frame, 'scenery.objects.solidObjects', []);
 
         nonSolidObjects.forEach((nonSolidObject) => {
-            const fileName = Meteor.settings.storagePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id;
+            const fileName = storagePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id;
 
             const compressedData = readFileSync(fileName);
             const data = zlib.inflateSync(compressedData);
@@ -67,7 +70,7 @@ export default class Frames extends FramesBoth {
         });
 
         solidObjects.forEach((solidObject) => {
-            const fileName = Meteor.settings.storagePath + "/" + frame.owner + "-" + frameId + "-" + solidObject._id;
+            const fileName = storagePath + "/" + frame.owner + "-" + frameId + "-" + solidObject._id;
 
             const compressedData = readFileSync(fileName);
             const data = zlib.inflateSync(compressedData);
@@ -83,7 +86,7 @@ export default class Frames extends FramesBoth {
         // avoiding them to be used in an incomplete state.
         FramesBoth.remove({owner: sceneryId});
 
-        const files = readdirSync(Meteor.settings.storagePath);
+        const files = readdirSync(storagePath);
 
         files.forEach((file) => {
             const expression = sceneryId + "*";
@@ -92,7 +95,7 @@ export default class Frames extends FramesBoth {
             const match = file.match(regex);
 
             if (match !== null)
-                unlink(Meteor.settings.storagePath + "/" + file, (error) => {/* Do nothing */});
+                unlink(storagePath + "/" + file, (error) => {/* Do nothing */});
         });
     }
 }

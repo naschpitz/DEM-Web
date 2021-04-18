@@ -19,7 +19,7 @@ export default class Videos extends VideosBoth {
 
         const videoId = Random.id();
 
-        const videoFilePath = Meteor.settings.storagePath + "/" + videoId + ".mp4";
+        const videoFilePath = Meteor.settings.s3Path + "/" + videoId + ".mp4";
 
         const opts = {
             fileId: videoId,

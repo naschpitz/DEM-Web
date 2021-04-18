@@ -4,6 +4,7 @@ import Materials from '../../materials/both/class.js';
 import NonSolidObjects from '../../nonSolidObjects/both/class.js';
 import SceneriesBoth from '../../sceneries/both/class.js';
 import SolidObjects from '../../solidObjects/both/class.js';
+import Videos from "../../videos/both/class";
 
 export default class Sceneries extends SceneriesBoth {
     static resetByOwner(simulationId) {
@@ -23,5 +24,6 @@ export default class Sceneries extends SceneriesBoth {
         SolidObjects.removeByOwner(sceneryId);
         Materials.removeByOwner(sceneryId);
         Cameras.removeByOwner(sceneryId);
+        Videos.removeByOwner(sceneryId);
     }
 }

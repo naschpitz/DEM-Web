@@ -12,4 +12,8 @@ export default class Videos extends VideosDAO {
 
         VideosDAO.updateObj(video);
     }
+
+    static removeByOwner(sceneryId) {
+        VideosDAO.remove({'meta.owner': sceneryId});
+    }
 }

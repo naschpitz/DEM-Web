@@ -7,7 +7,7 @@ import Simulations from '../../simulations/both/class.js';
 
 const Videos = new FilesCollection({
     collectionName: 'videos',
-    storagePath: Meteor.settings.storagePath,
+    storagePath: Meteor.settings.s3Path,
     downloadRoute: "/videos",
     protected: function (fileObj) {
         const scenery = Sceneries.findOne(fileObj.meta.owner);
