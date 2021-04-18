@@ -15,6 +15,7 @@ import '../../api/objectsProperties/server/publications.js';
 
 import '../../api/rest/server/rest.js';
 
+import '../../api/sceneries/server/methods.js';
 import '../../api/sceneries/server/publications.js';
 
 import '../../api/servers/server/publications.js';

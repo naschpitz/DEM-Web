@@ -8,11 +8,11 @@ import NonSolidObjectsClass from '../../../../../../api/nonSolidObjects/both/cla
 
 import Alert from 'react-s-alert';
 import { ButtonEnhanced } from '@naschpitz/button-enhanced';
+import FormInput from "@naschpitz/form-input";
 import Properties from './properties/properties.jsx';
 import ReactTable from 'react-table-v6';
 
 import './nonSolidObjects.css';
-import FormInput from "@naschpitz/form-input";
 
 export default NonSolidObjects = (props) => {
     const [ isReady, setIsReady ] = useState(false);

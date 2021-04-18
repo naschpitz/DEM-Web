@@ -14,6 +14,7 @@ import FormInput from '@naschpitz/form-input';
 import Materials from './materials/materials.jsx';
 import NonSolidObjects from './nonSolidObjects/nonSolidObjects.jsx';
 import SolidObjects from './solidObjects/solidObjects.jsx';
+import Storage from './storage/storage.jsx';
 import Viewer from './viewer/viewer.jsx';
 
 import './scenery.css';
@@ -101,6 +102,16 @@ export default Scenery = (props) => {
             <div id="scenery">
                 <div className="row">
                     <div className="col-sm-12 col-md-12 col-lg-2">
+                        <div className="card">
+                            <div className="card-header">
+                                Storage
+                            </div>
+
+                            <div className="card-body">
+                                <Storage scenery={scenery}/>
+                            </div>
+                        </div>
+
                         <div className="card">
                             <div className="card-header">
                                 Gravity

@@ -9,6 +9,11 @@ Sceneries.schema = new SimpleSchema({
         label: "Simulation owner",
         optional: false
     },
+    storage: {
+        type: String,
+        defaultValue: 'local',
+        allowedValues: ["local", "s3"]
+    },
     gravity: {
         type: Array,
         minCount: 1,

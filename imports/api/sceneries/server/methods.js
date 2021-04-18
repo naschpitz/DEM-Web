@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import Sceneries from './class.js';
+import Sceneries from '../server/class';
 
 Meteor.methods({
-    'sceneries.create'(simulationId) {
+    'sceneries.removeByOwner'(simulationId) {
         try {
-            Sceneries.create(simulationId);
+            Sceneries.removeByOwner(simulationId);
         }
 
         catch (error) {
@@ -13,13 +13,13 @@ Meteor.methods({
         }
     },
 
-    'sceneries.update'(scenery) {
+    'sceneries.setStorage'(sceneryId, storage) {
         try {
-            Sceneries.updateObj(scenery);
+            Sceneries.setStorage(sceneryId, storage);
         }
 
         catch (error) {
             throw new Meteor.Error('500', error.message);
         }
     },
-});
+})

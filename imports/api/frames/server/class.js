@@ -4,15 +4,19 @@ import { Random } from 'meteor/random';
 import zlib from 'zlib';
 import _ from 'lodash';
 
-import {unlink, writeFileSync, readFileSync, readdirSync} from 'fs';
+import {unlink, unlinkSync, writeFileSync, readFileSync, readdirSync, copyFileSync} from 'fs';
 
 import FramesBoth from '../both/class.js';
 import Sceneries from '../../sceneries/both/class.js';
 import Simulations from '../../simulations/both/class.js';
 
-const storagePath = Meteor.settings.localPath;
-
 export default class Frames extends FramesBoth {
+    static getStoragePath(storage) {
+        switch (storage) {
+            case 'local': return Meteor.settings.localPath;
+            case 's3': return Meteor.settings.s3Path;
+        }
+    }
 
     static insert(frame) {
         const scenery = Sceneries.findOne(frame.owner);
@@ -31,12 +35,14 @@ export default class Frames extends FramesBoth {
         const nonSolidObjects = _.get(frame, 'scenery.objects.nonSolidObjects', []);
         const solidObjects = _.get(frame, 'scenery.objects.solidObjects', []);
 
+        const currentStoragePath = Frames.getStoragePath(scenery.storage);
+
         nonSolidObjects.forEach((nonSolidObject) => {
             const particles = nonSolidObject.particles;
             const data = EJSON.stringify(particles);
             const compressedData = zlib.deflateSync(data.toString(), {level: 9});
 
-            const fileName = storagePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id;
+            const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id;
 
             writeFileSync(fileName, compressedData);
         });
@@ -46,7 +52,7 @@ export default class Frames extends FramesBoth {
             const data = EJSON.stringify(faces);
             const compressedData = zlib.deflateSync(data.toString(), {level: 9});
 
-            const fileName = storagePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id;
+            const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id;
 
             writeFileSync(fileName, compressedData);
         });
@@ -56,12 +62,15 @@ export default class Frames extends FramesBoth {
 
     static getFullFrame(frameId) {
         const frame = FramesBoth.findOne(frameId);
+        const scenery = Sceneries.findOne(frame.owner);
 
         const nonSolidObjects = _.get(frame, 'scenery.objects.nonSolidObjects', []);
         const solidObjects = _.get(frame, 'scenery.objects.solidObjects', []);
 
+        const currentStoragePath = Frames.getStoragePath(scenery.storage);
+
         nonSolidObjects.forEach((nonSolidObject) => {
-            const fileName = storagePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id;
+            const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id;
 
             const compressedData = readFileSync(fileName);
             const data = zlib.inflateSync(compressedData);
@@ -70,7 +79,7 @@ export default class Frames extends FramesBoth {
         });
 
         solidObjects.forEach((solidObject) => {
-            const fileName = storagePath + "/" + frame.owner + "-" + frameId + "-" + solidObject._id;
+            const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + solidObject._id;
 
             const compressedData = readFileSync(fileName);
             const data = zlib.inflateSync(compressedData);
@@ -82,20 +91,52 @@ export default class Frames extends FramesBoth {
     }
 
     static removeByOwner(sceneryId) {
+        const scenery = Sceneries.findOne(sceneryId);
+        const currentStoragePath = Frames.getStoragePath(scenery.storage);
+
         // For the same reason of the insertion, but in an opposite order, frames must be removed before it's file, thus
         // avoiding them to be used in an incomplete state.
         FramesBoth.remove({owner: sceneryId});
 
-        const files = readdirSync(storagePath);
+        const expression = sceneryId + "*";
+        const regex = new RegExp(expression, 'i');
 
-        files.forEach((file) => {
-            const expression = sceneryId + "*";
-            const regex = new RegExp(expression, 'i');
+        const files = [];
 
+        readdirSync(currentStoragePath).map((file) => {
             const match = file.match(regex);
 
             if (match !== null)
-                unlink(storagePath + "/" + file, (error) => {/* Do nothing */});
+                files.push(file);
+        });
+
+        files.forEach((file) => unlinkSync(currentStoragePath + "/" + file, (error) => {/* Do nothing */} ));
+    }
+
+    static setStorage(sceneryId, currentStorage, newStorage) {
+        const currentStoragePath = Frames.getStoragePath(currentStorage);
+        const newStoragePath = Frames.getStoragePath(newStorage);
+
+        const expression = sceneryId + "*";
+        const regex = new RegExp(expression, 'i');
+
+        const files = [];
+
+        readdirSync(currentStoragePath).forEach((file) => {
+            const match = file.match(regex);
+
+            if (match !== null)
+                files.push(file);
+        });
+
+        files.forEach((file) => {
+            const src = currentStoragePath + "/" + file;
+            const dst = newStoragePath + "/" + file;
+
+            copyFileSync(src, dst);
+
+            if (currentStorage === 's3') unlinkSync(src, (error) => {/* Do nothing */});
+            else unlink(src, (error) => {/* Do nothing */});
         });
     }
 }

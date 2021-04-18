@@ -26,4 +26,15 @@ export default class Sceneries extends SceneriesBoth {
         Cameras.removeByOwner(sceneryId);
         Videos.removeByOwner(sceneryId);
     }
+
+    static setStorage(sceneryId, newStorage) {
+        const scenery = SceneriesBoth.findOne(sceneryId);
+        const currentStorage = scenery.storage;
+
+        if (currentStorage === newStorage) return;
+
+        Frames.setStorage(sceneryId, currentStorage, newStorage);
+
+        SceneriesBoth.update(sceneryId, {$set: {storage: newStorage}});
+    }
 }
