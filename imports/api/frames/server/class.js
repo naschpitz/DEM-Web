@@ -62,6 +62,10 @@ export default class Frames extends FramesBoth {
 
     static getFullFrame(frameId) {
         const frame = FramesBoth.findOne(frameId);
+
+        if (!frame)
+            return;
+
         const scenery = Sceneries.findOne(frame.owner);
 
         const nonSolidObjects = _.get(frame, 'scenery.objects.nonSolidObjects', []);
