@@ -5,6 +5,7 @@ import Alert from 'react-s-alert';
 import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 
 import './storage.css';
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default Storage = ({scenery}) => {
     const [ isMoving, setIsMoving ] = useState(false);
@@ -38,23 +39,33 @@ export default Storage = ({scenery}) => {
     const currentStorageText = getStorageText(scenery.storage);
     const newStorageText = getStorageText(getNewStorage());
 
-    return (
-        <div id="storage" className="text-center">
-            <p>Current Storage: <strong>{currentStorageText}</strong></p>
-            <ButtonEnhanced buttonOptions={{regularText: <span>Move to <strong>{newStorageText}</strong></span>,
-                                            className: "btn btn-sm btn-danger",
-                                            isAction: isMoving,
-                                            actionText: "Moving to " + newStorageText + "...",
-                                            type: "button"}}
-                            confirmationOptions={{title: "Confirm non-solid object creation",
-                                                  text: <span>Do you really want to move from <strong>{currentStorageText}</strong> to <strong>{newStorageText}</strong> ?</span>,
-                                                  confirmButtonText: "Move",
-                                                  confirmButtonAction: "Moving...",
-                                                  cancelButtonText: "Cancel",
-                                                  onDone: onMoveDone}}
-            />
-        </div>
-    )
+    if (scenery) {
+        return (
+            <div id="storage" className="text-center">
+                <p>Current Storage: <strong>{currentStorageText}</strong></p>
+                <ButtonEnhanced buttonOptions={{regularText: <span>Move to <strong>{newStorageText}</strong></span>,
+                                                className: "btn btn-sm btn-danger",
+                                                isAction: isMoving,
+                                                actionText: "Moving to " + newStorageText + "...",
+                                                type: "button"}}
+                                confirmationOptions={{title: "Confirm non-solid object creation",
+                                                      text: <span>Do you really want to move from <strong>{currentStorageText}</strong> to <strong>{newStorageText}</strong> ?</span>,
+                                                      confirmButtonText: "Move",
+                                                      confirmButtonAction: "Moving...",
+                                                      cancelButtonText: "Cancel",
+                                                      onDone: onMoveDone}}
+                />
+            </div>
+        )
+    }
+
+    else {
+        return (
+            <div className="container-fluid text-center" id="storage">
+                <ClipLoader size={50} color={"#DDD"} loading={true}/>
+            </div>
+        );
+    }
 }
 
 /*

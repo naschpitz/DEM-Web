@@ -17,14 +17,14 @@ export default class Sceneries extends SceneriesBoth {
         const scenery = SceneriesBoth.findOne({owner: simulationId});
         const sceneryId = scenery._id;
 
-        SceneriesBoth.remove(sceneryId);
-
         Frames.removeByOwner(sceneryId);
         NonSolidObjects.removeByOwner(sceneryId);
         SolidObjects.removeByOwner(sceneryId);
         Materials.removeByOwner(sceneryId);
         Cameras.removeByOwner(sceneryId);
         Videos.removeByOwner(sceneryId);
+
+        SceneriesBoth.remove(sceneryId);
     }
 
     static setStorage(sceneryId, newStorage) {
