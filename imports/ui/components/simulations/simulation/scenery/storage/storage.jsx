@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
+import ClipLoader from "react-spinners/ClipLoader";
 
 import Alert from 'react-s-alert';
 import { ButtonEnhanced } from '@naschpitz/button-enhanced';
 
 import './storage.css';
-import ClipLoader from "react-spinners/ClipLoader";
 
 export default Storage = ({scenery}) => {
     const [ isMoving, setIsMoving ] = useState(false);

@@ -123,7 +123,7 @@ const routes = [{
         content: (props) => <Servers {...props}/>,
         footer: () => <Footer/>
     }, {
-        path: '/simulations/:simulationId',
+        path: '/simulations/:simulationId/:tab?',
         exact: true,
         strict: false,
         header: (props) => <Navbar {...props}/>,

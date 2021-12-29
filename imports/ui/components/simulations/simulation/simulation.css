@@ -1,7 +1,37 @@
 #simulation {
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-#simulation .card {
-    margin-bottom: 20px;
+#simulation .nav-tabs {
+    border-radius: 10px 10px 0px 0px;
+}
+
+#simulation .nav > li > a {
+    color: black;
+
+    border-color: darkgray;
+    border-radius: 10px 10px 0px 0px;
+}
+
+#simulation .nav-link {
+    background-color: darkgray;
+}
+
+#simulation .nav-link.active {
+    background-color: lightgray;
+}
+
+#simulation .tab-content {
+    color: black;
+
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-width: 0px 1px 1px 1px;
+    border-style: solid;
+    border-color: darkgray;
+    border-radius: 0px 0px 10px 10px;
 }
