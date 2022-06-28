@@ -34,14 +34,12 @@ Meteor.methods({
     },
 
     'servers.getPostOptions'(serverId, path, data) {
-        const server = Servers.findOne(serverId);
+        try {
+            return Servers.getPostOptions(serverId, path, data)
+        }
 
-        return {
-            url: "http://" + server.url + ":" + server.port + path,
-            data: data,
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8'
-            }
+        catch (error) {
+            throw new Meteor.Error('500', error.message);
         }
     }
 });
