@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Control from '../../simulationControl/simulationControl.jsx';
 import Log from './../log/log.jsx';
 import Scenery from '../scenery/scenery.jsx';
+import SimulationControl from '../../simulationControl/simulationControl.jsx';
 
 import './main.css';
 
@@ -17,7 +17,7 @@ export default Main = (props) => {
                 </div>
 
                 <div className="card-body">
-                    <Control simulationId={simulationId} showFields={true}/>
+                    <SimulationControl simulationId={simulationId} showFields={true}/>
                 </div>
             </div>
 

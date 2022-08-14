@@ -4,13 +4,13 @@ import { useTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import NonSolidObjectsClass from '../../../../../../api/nonSolidObjects/both/class.js';
-import SolidObjectsClass from '../../../../../../api/solidObjects/both/class.js';
+import NonSolidObjectsClass from '../../../../../../../api/nonSolidObjects/both/class.js';
+import SolidObjectsClass from '../../../../../../../api/solidObjects/both/class.js';
 
+import Alert from "react-s-alert";
 import FormInput from '@naschpitz/form-input';
 
 import './dataSelector.css';
-import Alert from "react-s-alert";
 
 export default DataSelector = (props) => {
     const [ isNonSolidObjectsReady, setIsNonSolidObjectsReady ] = useState(false);

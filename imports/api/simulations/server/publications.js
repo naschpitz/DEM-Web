@@ -24,10 +24,10 @@ if (Meteor.isServer) {
         return Simulations.find({_id: simulationId, owner: this.userId});
     });
 
-    Meteor.publish('simulations.simulationsWithParent', function (simulationId) {
+    Meteor.publish('simulations.byParent', function (simulationId) {
         if (!this.userId)
             return this.error(new Meteor.Error('401', "Unauthorized", "User not logged in."));
 
-        return Simulations.find({parent: simulationId, owner: this.userId});
+        return Simulations.find({owner: this.userId, parent: simulationId});
     });
 }

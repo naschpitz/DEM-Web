@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 
 import Chart from './chart/chart.jsx';
-import DataExporter from '../dataExporter/dataExporter.jsx';
-import DataSelector from '../dataSelector/dataSelector.jsx';
+import DataExporter from './dataExporter/dataExporter.jsx';
+import DataSelector from './dataSelector/dataSelector.jsx';
 
 import './charts.css';
 

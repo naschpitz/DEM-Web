@@ -17,8 +17,8 @@ export default class Simulations extends SimulationsDAO {
         Sceneries.clone(simulationId, newSimulationId);
     }
 
-    static create() {
-        const simulationId = SimulationsDAO.insert({});
+    static create(owner) {
+        const simulationId = SimulationsDAO.insert({owner: owner});
 
         Sceneries.create(simulationId);
     }

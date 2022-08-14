@@ -1,33 +1,21 @@
-import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-const Simulations = new Mongo.Collection('simulations');
+import SimulationsDAO from "../../simulations/both/dao";
 
-Simulations.schema = new SimpleSchema({
-    owner: {
+const Calibrations = new Mongo.Collection('calibrations');
+
+Calibrations.schema = new SimpleSchema({
+    simulation: {
         type: String,
-        label: "User Owner",
+        label: "Simulation Owner",
         regEx: SimpleSchema.RegEx.Id,
+        optional: false,
+        unique: true,
         autoValue: function () {
-            if (this.isInsert)
-                return this.userId;
-
             if (this.isUpdate)
                 this.unset();
         }
-    },
-    parent: {
-        type: String,
-        label: "Parent Simulation",
-        regEx: SimpleSchema.RegEx.Id,
-        optional: true
-    },
-    name: {
-        type: String,
-        label: "Name",
-        defaultValue: "New Simulation",
-        optional: true
     },
     server: {
         type: String,
@@ -35,25 +23,24 @@ Simulations.schema = new SimpleSchema({
         regEx: SimpleSchema.RegEx.Id,
         optional: true
     },
-    frameTime: {
+    agents: {
         type: Number,
-        label: "Frame time",
+        label: "Agents",
         optional: true
     },
-    logTime: {
+    domain: {
         type: Number,
-        label: "Log time",
-        defaultValue: 5,
+        label: "Domain",
         optional: true
     },
-    totalTime: {
+    instances: {
         type: Number,
-        label: "Total time",
+        label: "Instances",
         optional: true
     },
-    timeStep: {
+    stopDiff: {
         type: Number,
-        label: "Time step",
+        label: "StopDiff",
         optional: true
     },
     state: {
@@ -87,27 +74,27 @@ Simulations.schema = new SimpleSchema({
     },
 });
 
-Simulations.schema.addValidator(function () {
+Calibrations.schema.addValidator(function () {
     const userId = this.userId;
 
     if (!userId && this.connection)
         return 'notAuthorized';
 
     if (this.isUpdate && this.connection) {
-        const simulation = Simulations.findOne(this.docId);
+        const simulation = SimulationsDAO.findOne(this.owner);
 
         if (simulation.owner !== userId)
             return 'notOwner';
     }
 });
 
-Simulations.schema.messageBox.messages({
+Calibrations.schema.messageBox.messages({
     'en': {
         'notAuthorized': "User not logged in",
         'notOwner': "The user is not the simulation's owner"
     }
 });
 
-Simulations.attachSchema(Simulations.schema);
+Calibrations.attachSchema(Calibrations.schema);
 
-export default Simulations;
+export default Calibrations;

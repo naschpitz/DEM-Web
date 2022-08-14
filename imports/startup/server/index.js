@@ -1,5 +1,8 @@
 import './accounts.js';
 
+import '../../api/calibrations/server/methods.js';
+import '../../api/calibrations/server/publications.js';
+
 import '../../api/cameras/server/publications.js';
 
 import '../../api/frames/server/methods.js';
