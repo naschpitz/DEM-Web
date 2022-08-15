@@ -50,7 +50,7 @@ export default class MessageDisplay extends Component {
             return(<div className="alert alert-warning" role="alert">{message.text}</div>);
 
         if (message.type === 'error')
-            return(<div className="alert s-alert-error" role="alert">{message.text}</div>);
+            return(<div className="alert alert-danger" role="alert">{message.text}</div>);
     }
 
     render() {

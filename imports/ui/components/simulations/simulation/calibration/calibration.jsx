@@ -54,7 +54,7 @@ export default Calibration = (props) => {
         }
 
         else {
-            return (<div id="calibration">No Calibration found.</div>)
+            return (<div id="calibration" className="alert alert-warning" role="alert">No Calibration found.</div>)
         }
     }
 
