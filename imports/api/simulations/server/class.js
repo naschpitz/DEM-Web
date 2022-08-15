@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 
+import Calibrations from "../../calibrations/server/class";
 import Materials from '../../materials/both/class.js';
 import NonSolidObjects from '../../nonSolidObjects/both/class.js';
 import Sceneries from '../../sceneries/server/class.js';
@@ -76,6 +77,7 @@ export default class Simulations extends SimulationsBoth {
 
         SimulationsBoth.remove(simulationId);
 
+        Calibrations.removeByOwner(simulationId);
         Sceneries.removeByOwner(simulationId);
         SimulationsLogs.removeByOwner(simulationId);
     }

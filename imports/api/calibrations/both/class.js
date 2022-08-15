@@ -4,7 +4,7 @@ import CalibrationsDAO from './dao.js';
 
 export default class Calibrations extends CalibrationsDAO {
     static create(simulationId) {
-        CalibrationsDAO.insert({simulation: simulationId});
+        CalibrationsDAO.insert({owner: simulationId});
     }
 
     static setState(calibrationId, state) {

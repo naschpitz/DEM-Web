@@ -18,4 +18,8 @@ export default class Calibrations extends CalibrationsBoth {
     static reset(calibrationId) {
 
     }
+
+    static removeByOwner(simulationId) {
+
+    }
 }

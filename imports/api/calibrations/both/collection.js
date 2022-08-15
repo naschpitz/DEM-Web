@@ -6,7 +6,7 @@ import SimulationsDAO from "../../simulations/both/dao";
 const Calibrations = new Mongo.Collection('calibrations');
 
 Calibrations.schema = new SimpleSchema({
-    simulation: {
+    owner: {
         type: String,
         label: "Simulation Owner",
         regEx: SimpleSchema.RegEx.Id,

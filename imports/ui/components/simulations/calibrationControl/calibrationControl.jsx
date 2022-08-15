@@ -24,7 +24,7 @@ export default CalibrationControl = (props) => {
     const [ isReady, setIsReady ] = useState(false);
 
     useTracker(() => {
-        Meteor.subscribe('calibrations.bySimulation', props.simulationId, {
+        Meteor.subscribe('calibrations.byOwner', props.simulationId, {
             onStop: (error) => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
             onReady: () => (setIsCalibrationsReady(true))
         });

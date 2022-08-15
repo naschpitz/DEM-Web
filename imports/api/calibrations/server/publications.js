@@ -4,7 +4,7 @@ import Calibrations from "../../calibrations/server/class";
 import Simulations from "../../simulations/both/class";
 
 if (Meteor.isServer) {
-    Meteor.publish('calibrations.bySimulation', function (simulationId) {
+    Meteor.publish('calibrations.byOwner', function (simulationId) {
         if (!this.userId)
             return this.error(new Meteor.Error('401', "Unauthorized", "User not logged in."));
 
@@ -16,6 +16,6 @@ if (Meteor.isServer) {
         if (simulation.owner !== this.userId)
             return this.error(new Meteor.Error('401', "Unauthorized", "The current user is not the owner of this Calibration."));
 
-        return Calibrations.find({simulation: simulationId});
+        return Calibrations.find({owner: simulationId});
     });
 }
