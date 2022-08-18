@@ -32,3 +32,4 @@ http
 webapp@1.13.1
 reywood:publish-composite
 ostrio:files
+aldeed:schema-index

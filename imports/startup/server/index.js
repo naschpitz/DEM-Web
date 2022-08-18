@@ -37,6 +37,7 @@ import '../../api/videos/server/publications.js';
 
 //====================================================================================================================//
 
+import CalibrationsCol from "../../api/calibrations/both/collection.js";
 import CamerasCol from '../../api/cameras/both/collection.js';
 import FramesCol from '../../api/frames/both/collection.js';
 import MaterialsCol from '../../api/materials/both/collection.js';
@@ -49,6 +50,8 @@ import SimulationsLogsCol from '../../api/simulationsLogs/both/collection.js';
 import SolidObjectsCol from '../../api/solidObjects/both/collection.js';
 import VideosCol from '../../api/videos/both/collection.js';
 
+CalibrationsCol.rawCollection().createIndex({owner: 1}, {background: true});
+CamerasCol.rawCollection().createIndex({owner: 1}, {background: true});
 CamerasCol.rawCollection().createIndex({owner: 1}, {background: true});
 FramesCol.rawCollection().createIndex({owner: 1}, {background: true});
 MaterialsCol.rawCollection().createIndex({owner: 1}, {background: true});
@@ -60,3 +63,16 @@ SimulationsCol.rawCollection().createIndex({owner: 1}, {background: true});
 SimulationsLogsCol.rawCollection().createIndex({owner: 1}, {background: true});
 SolidObjectsCol.rawCollection().createIndex({owner: 1}, {background: true});
 VideosCol.collection.rawCollection().createIndex({'meta.owner': 1}, {background: true});
+
+const simulations = SimulationsCol.find({}).fetch();
+
+simulations.forEach((simulation) => {
+  try {
+    CalibrationsCol.insert({owner: simulation._id});
+  }
+
+  catch(error) {
+    console.log(error.message);
+  }
+})
+
