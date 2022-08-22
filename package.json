@@ -53,6 +53,11 @@
     "use-deep-compare-effect": "^1.4.0",
     "wait-on": "^5.0.0"
   },
+  "devDependencies": {
+  "cypress": "^4.12.1",
+  "prettier": "2.7.1",
+  "start-server-and-test": "^1.11.3"
+  },
   "meteor": {
     "mainModule": {
       "client": "client/main.jsx",
@@ -60,8 +65,12 @@
     },
     "testModule": "tests/main.js"
   },
-  "devDependencies": {
-    "cypress": "^4.12.1",
-    "start-server-and-test": "^1.11.3"
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "max-len": 120,
+    "printWidth": 120,
+    "tabWidth": 2,
+    "arrowParens": "avoid"
   }
 }

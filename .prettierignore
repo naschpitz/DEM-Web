@@ -1,0 +1,5 @@
+# Ignore artifacts:
+.meteor
+results
+screenshots
+videos

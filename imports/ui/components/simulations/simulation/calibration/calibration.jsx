@@ -6,7 +6,7 @@ import Alert from "react-s-alert";
 import ClipLoader from "react-spinners/ClipLoader";
 
 import CalibrationControl from '../../calibrationControl/calibrationControl.jsx';
-import ExperimentalData from './experimentalData/experimentalData.jsx'
+import ExperimentalData from './experimentalDataSets/experimentalData/experimentalData.jsx'
 
 import CalibrationClass from "../../../../../api/calibrations/both/class";
 
