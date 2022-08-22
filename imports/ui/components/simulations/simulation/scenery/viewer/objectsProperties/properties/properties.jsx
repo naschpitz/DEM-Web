@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import React, { useEffect, useState } from "react"
+import { Meteor } from "meteor/meteor"
+import PropTypes from "prop-types"
+import _ from "lodash"
 
-import { SketchPicker } from 'react-color';
-import Alert from 'react-s-alert';
+import { SketchPicker } from "react-color"
+import Alert from "react-s-alert"
 
-import './properties.css';
+import "./properties.css"
 
-export default Properties = (props) => {
-    const objectProperty = props.objectProperty;
+export default Properties = props => {
+  const objectProperty = props.objectProperty
 
-    function onColorChange(color) {
-        const newObjectProperty = _.cloneDeep(objectProperty);
+  function onColorChange(color) {
+    const newObjectProperty = _.cloneDeep(objectProperty)
 
-        _.set(newObjectProperty, 'color', color.rgb);
+    _.set(newObjectProperty, "color", color.rgb)
 
-        Meteor.call('objectsProperties.update', newObjectProperty, (error) => {
-            if (error)
-                Alert.error("Error saving object property: " + error.reason);
+    Meteor.call("objectsProperties.update", newObjectProperty, error => {
+      if (error) Alert.error("Error saving object property: " + error.reason)
+      else {
+        if (props.onChange) props.onChange()
+      }
+    })
+  }
 
-            else {
-                if (props.onChange)
-                    props.onChange();
-            }
-        })
-    }
-
-    return (
-        <div id="properties">
-            <div id="colorPicker">
-                <SketchPicker color={{r: _.get(objectProperty, 'color.r', 255),
-                                      g: _.get(objectProperty, 'color.g', 255),
-                                      b: _.get(objectProperty, 'color.b', 255),
-                                      a: _.get(objectProperty, 'color.a', 255)}}
-                              onChangeComplete={onColorChange}
-                />
-            </div>
-        </div>
-    );
+  return (
+    <div id="properties">
+      <div id="colorPicker">
+        <SketchPicker
+          color={{
+            r: _.get(objectProperty, "color.r", 255),
+            g: _.get(objectProperty, "color.g", 255),
+            b: _.get(objectProperty, "color.b", 255),
+            a: _.get(objectProperty, "color.a", 255),
+          }}
+          onChangeComplete={onColorChange}
+        />
+      </div>
+    </div>
+  )
 }
 
 /*

@@ -1,30 +1,27 @@
-import _ from 'lodash';
+import _ from "lodash"
 
 class EventsManager {
-    constructor() {
-        this.map = [];
-    }
+  constructor() {
+    this.map = []
+  }
 
-    connect(signal, slot) {
-        this.map.push({
-            signal: signal,
-            slot: slot
-        });
-    }
+  connect(signal, slot) {
+    this.map.push({
+      signal: signal,
+      slot: slot,
+    })
+  }
 
-    disconnect(element) {
-        if (typeof element === 'function')
-            _.remove(this.map, pair => pair.slot === element);
+  disconnect(element) {
+    if (typeof element === "function") _.remove(this.map, pair => pair.slot === element)
+    else _.remove(this.map, pair => pair.signal === element)
+  }
 
-        else
-            _.remove(this.map, pair => pair.signal === element);
-    }
+  emit(signal, ...args) {
+    const filteredMap = _.filter(this.map, { signal: signal })
 
-    emit(signal, ...args) {
-        const filteredMap = _.filter(this.map, {signal: signal});
-
-        filteredMap.forEach(pair => pair.slot(...args));
-    }
+    filteredMap.forEach(pair => pair.slot(...args))
+  }
 }
 
-export default eventsManager = new EventsManager();
+export default eventsManager = new EventsManager()

@@ -1,113 +1,98 @@
-import './accounts.js';
-import './simplSchema.js';
+import "./accounts.js"
+import "./simplSchema.js"
 
-import _ from 'lodash';
+import _ from "lodash"
 
-import '../../api/calibrations/both/methods.js';
-import '../../api/cameras/both/methods.js';
-import '../../api/frames/both/methods.js';
-import '../../api/materials/both/methods.js';
-import '../../api/nonSolidObjects/both/methods.js';
-import '../../api/objectsProperties/both/methods.js';
-import '../../api/sceneries/both/methods.js';
-import '../../api/servers/both/methods.js';
-import '../../api/simulations/both/methods.js';
-import '../../api/simulationsLogs/both/methods.js';
-import '../../api/solidObjects/both/methods.js';
-import '../../api/videos/both/methods.js';
+import "../../api/calibrations/both/methods.js"
+import "../../api/cameras/both/methods.js"
+import "../../api/frames/both/methods.js"
+import "../../api/materials/both/methods.js"
+import "../../api/nonSolidObjects/both/methods.js"
+import "../../api/objectsProperties/both/methods.js"
+import "../../api/sceneries/both/methods.js"
+import "../../api/servers/both/methods.js"
+import "../../api/simulations/both/methods.js"
+import "../../api/simulationsLogs/both/methods.js"
+import "../../api/solidObjects/both/methods.js"
+import "../../api/videos/both/methods.js"
 
 bsSize = function () {
-    const winWidth = window.innerWidth;
+  const winWidth = window.innerWidth
 
-    if (winWidth < 576)
-        return 'xs';
+  if (winWidth < 576) return "xs"
+  else if (winWidth <= 768) return "sm"
+  else if (winWidth <= 992) return "md"
+  else if (winWidth <= 1200) return "lg"
+  else return "xl"
+}
 
-    else if (winWidth <= 768)
-        return 'sm';
+getLanguage = function () {
+  if (window.navigator.languages) return window.navigator.languages[0]
+  else return window.navigator.language
+}
 
-    else if (winWidth <= 992)
-        return 'md';
+getDecimalSeparator = function () {
+  //fallback
+  let decSep = "."
 
-    else if (winWidth <= 1200)
-        return 'lg';
+  try {
+    // this works in FF, Chrome, IE, Safari and Opera
+    let sep = parseFloat(3 / 2)
+      .toLocaleString()
+      .substring(1, 2)
 
-    else
-        return 'xl';
-};
-
-getLanguage = function() {
-    if (window.navigator.languages)
-        return window.navigator.languages[0];
-
-    else
-        return window.navigator.language;
-};
-
-getDecimalSeparator = function() {
-    //fallback
-    let decSep = ".";
-
-    try {
-        // this works in FF, Chrome, IE, Safari and Opera
-        let sep = parseFloat(3/2).toLocaleString().substring(1,2);
-
-        if (sep === '.' || sep === ',') {
-            decSep = sep;
-        }
+    if (sep === "." || sep === ",") {
+      decSep = sep
     }
+  } catch (e) {}
 
-    catch(e) {}
-
-    return decSep;
-};
+  return decSep
+}
 
 getThousandSeparator = function () {
-    switch (getDecimalSeparator()) {
-        case '.':
-            return ',';
+  switch (getDecimalSeparator()) {
+    case ".":
+      return ","
 
-        case ',':
-            return '.';
-    }
-};
+    case ",":
+      return "."
+  }
+}
 
 getErrorMessage = function (error) {
-    let errorMessage = "";
+  let errorMessage = ""
 
-    if (error) {
-        if (error.reason) errorMessage += "[Reason: " + error.reason + "]";
-        if (error.details) errorMessage += "[Details: " + error.details + "]";
-    }
+  if (error) {
+    if (error.reason) errorMessage += "[Reason: " + error.reason + "]"
+    if (error.details) errorMessage += "[Details: " + error.details + "]"
+  }
 
-    return errorMessage;
-};
+  return errorMessage
+}
 
 getArraysPaths = function (object) {
-    const arraysPaths = [];
+  const arraysPaths = []
 
-    Object.keys(object).forEach(key => {
-        const value = _.get(object, key);
+  Object.keys(object).forEach(key => {
+    const value = _.get(object, key)
 
-        if (_.isArray(value))
-            arraysPaths.push(key);
+    if (_.isArray(value)) arraysPaths.push(key)
 
-        if (_.isObject(value)) {
-            const subArraysPaths = getArraysPaths(value);
+    if (_.isObject(value)) {
+      const subArraysPaths = getArraysPaths(value)
 
-            subArraysPaths.forEach((subArrayPath) => (arraysPaths.push(key + "." + subArrayPath)));
-        }
-    });
+      subArraysPaths.forEach(subArrayPath => arraysPaths.push(key + "." + subArrayPath))
+    }
+  })
 
-    return arraysPaths;
-};
+  return arraysPaths
+}
 
-const original_get = _.get;
+const original_get = _.get
 
-_.get = function(...args) {
-    const defaultValue = args.length === 3 ? _.last(args) : undefined;
-    const result = original_get(...args);
+_.get = function (...args) {
+  const defaultValue = args.length === 3 ? _.last(args) : undefined
+  const result = original_get(...args)
 
-    return _.isNaN(result) ? defaultValue : result;
-};
-
-
+  return _.isNaN(result) ? defaultValue : result
+}

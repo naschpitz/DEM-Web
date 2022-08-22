@@ -1,65 +1,78 @@
-import React, { Component } from 'react';
-import { Random } from 'meteor/random';
+import React, { Component } from "react"
+import { Random } from "meteor/random"
 
 export default class MessageDisplay extends Component {
-    constructor (props) {
-        super(props);
+  constructor(props) {
+    super(props)
 
-        this.state = {
-            messages: new Map(),
-        };
-
-        this.show = this.show.bind(this);
-        this.hide = this.hide.bind(this);
-        this.renderMessage = this.renderMessage.bind(this);
-
-        if (this.props.message) {
-            this.show(this.props.type, this.props.message);
-        }
+    this.state = {
+      messages: new Map(),
     }
 
-    show(type, text, id) {
-        if (!id)
-            id = Random.id();
+    this.show = this.show.bind(this)
+    this.hide = this.hide.bind(this)
+    this.renderMessage = this.renderMessage.bind(this)
 
-        const message = {
-            type: type,
-            text: text
-        };
+    if (this.props.message) {
+      this.show(this.props.type, this.props.message)
+    }
+  }
 
-        const messages = this.state.messages;
-        messages.set(id, message);
+  show(type, text, id) {
+    if (!id) id = Random.id()
 
-        this.setState({messages: messages});
-
-        return id;
+    const message = {
+      type: type,
+      text: text,
     }
 
-    hide(id) {
-        const messages = this.state.messages;
-        messages.delete(id);
+    const messages = this.state.messages
+    messages.set(id, message)
 
-        this.setState({messages: messages});
-    }
+    this.setState({ messages: messages })
 
-    renderMessage(message) {
-        if (message.type === 'success')
-            return(<div className="alert alert-success" role="alert">{message.text}</div>);
+    return id
+  }
 
-        if (message.type === 'warning')
-            return(<div className="alert alert-warning" role="alert">{message.text}</div>);
+  hide(id) {
+    const messages = this.state.messages
+    messages.delete(id)
 
-        if (message.type === 'error')
-            return(<div className="alert alert-danger" role="alert">{message.text}</div>);
-    }
+    this.setState({ messages: messages })
+  }
 
-    render() {
-        return (
-            <div>
-                {Array.from(this.state.messages).map((message, index) => (
-                    <span key={index} className="shaker">{this.renderMessage(message[1])}</span>
-                ))}
-            </div>
-        );
-    }
+  renderMessage(message) {
+    if (message.type === "success")
+      return (
+        <div className="alert alert-success" role="alert">
+          {message.text}
+        </div>
+      )
+
+    if (message.type === "warning")
+      return (
+        <div className="alert alert-warning" role="alert">
+          {message.text}
+        </div>
+      )
+
+    if (message.type === "error")
+      return (
+        <div className="alert alert-danger" role="alert">
+          {message.text}
+        </div>
+      )
+  }
+
+  render() {
+    return (
+      <div>
+        {Array.from(this.state.messages).map((message, index) => (
+          <span key={index} className="shaker">
+            {this.renderMessage(message[1])}
+          </span>
+        ))}
+      </div>
+    )
+  }
 }

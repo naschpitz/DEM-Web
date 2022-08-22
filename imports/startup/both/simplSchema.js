@@ -1,3 +1,3 @@
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from "simpl-schema"
 
-SimpleSchema.extendOptions(['index', 'unique', 'denyInsert', 'denyUpdate']);
+SimpleSchema.extendOptions(["index", "unique", "denyInsert", "denyUpdate"])

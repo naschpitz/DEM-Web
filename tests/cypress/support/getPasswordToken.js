@@ -1,3 +1,3 @@
-const user = db.users.findOne({'emails.address': email});
+const user = db.users.findOne({ "emails.address": email })
 
-printjson(user.services.password.reset.token);
+printjson(user.services.password.reset.token)

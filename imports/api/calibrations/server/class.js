@@ -1,25 +1,15 @@
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from "meteor/meteor"
 
-import CalibrationsBoth from '../both/class.js';
+import CalibrationsBoth from "../both/class.js"
 
 export default class Calibrations extends CalibrationsBoth {
-    static start(calibrationId) {
+  static start(calibrationId) {}
 
-    }
+  static pause(calibrationId) {}
 
-    static pause(calibrationId) {
+  static stop(calibrationId) {}
 
-    }
+  static reset(calibrationId) {}
 
-    static stop(calibrationId) {
-
-    }
-
-    static reset(calibrationId) {
-
-    }
-
-    static removeByOwner(simulationId) {
-
-    }
+  static removeByOwner(simulationId) {}
 }

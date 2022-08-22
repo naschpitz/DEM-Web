@@ -54,9 +54,9 @@
     "wait-on": "^5.0.0"
   },
   "devDependencies": {
-  "cypress": "^4.12.1",
-  "prettier": "2.7.1",
-  "start-server-and-test": "^1.11.3"
+    "cypress": "^4.12.1",
+    "prettier": "2.7.1",
+    "start-server-and-test": "^1.11.3"
   },
   "meteor": {
     "mainModule": {

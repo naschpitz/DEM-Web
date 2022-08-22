@@ -1,12 +1,11 @@
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from "meteor/meteor"
 
-import CamerasDAO from '../both/dao.js';
+import CamerasDAO from "../both/dao.js"
 
 if (Meteor.isServer) {
-    Meteor.publish('cameras.camera', function (sceneryId) {
-        if (!this.userId)
-            throw this.error(new Meteor.Error('401', "Unauthorized", "User not logged in."));
+  Meteor.publish("cameras.camera", function (sceneryId) {
+    if (!this.userId) throw this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
 
-        return CamerasDAO.find({owner: sceneryId});
-    });
+    return CamerasDAO.find({ owner: sceneryId })
+  })
 }

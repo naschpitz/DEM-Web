@@ -1,74 +1,72 @@
-import { Meteor } from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
-import _ from 'lodash';
+import { Meteor } from "meteor/meteor";
+import SimpleSchema from "simpl-schema";
+import _ from "lodash";
 
-import Sceneries from '../../sceneries/both/class.js';
-import Simulations from '../../simulations/both/class.js';
+import Sceneries from "../../sceneries/both/class.js";
+import Simulations from "../../simulations/both/class.js";
 
 const Videos = new FilesCollection({
-    collectionName: 'videos',
-    storagePath: Meteor.settings.s3Path,
-    downloadRoute: "/videos",
-    protected: function (fileObj) {
-        const scenery = Sceneries.findOne(fileObj.meta.owner);
+  collectionName: "videos",
+  storagePath: Meteor.settings.s3Path,
+  downloadRoute: "/videos",
+  protected: function(fileObj) {
+    const scenery = Sceneries.findOne(fileObj.meta.owner);
 
-        const simulationId = scenery.owner;
-        const simulation = Simulations.findOne(simulationId);
+    const simulationId = scenery.owner;
+    const simulation = Simulations.findOne(simulationId);
 
-        const userId = this.params.query.xmtok;
+    const userId = this.params.query.xmtok;
 
-        return userId === simulation.owner;
-    },
-    disableUpload: true
+    return userId === simulation.owner;
+  },
+  disableUpload: true
 });
 
 Videos.schema = new SimpleSchema(_.extend(
-    FilesCollection.schema,
-    {
-        'meta.owner': {
-            type: String,
-            label: "Scenery owner",
-            regEx: SimpleSchema.RegEx.Id,
-            denyUpdate: true,
-        },
-        'meta.notes': {
-            type: String,
-            label: "Notes",
-            optional: true,
-            max: 300
-        },
-        'meta.state': {
-            type: String,
-            label: "State",
-            optional: true
-        },
-        'meta.error': {
-            type: Object,
-            label: "Error",
-            optional: true,
-            blackbox: true
-        },
-        'meta.createdAt': {
-            type: Date,
-            label: "Created at",
-            optional: true,
-            autoValue: function () {
-                if (this.isInsert)
-                    return new Date();
+  FilesCollection.schema,
+  {
+    "meta.owner": {
+      type: String,
+      label: "Scenery owner",
+      regEx: SimpleSchema.RegEx.Id,
+      denyUpdate: true
+    },
+    "meta.notes": {
+      type: String,
+      label: "Notes",
+      optional: true,
+      max: 300
+    },
+    "meta.state": {
+      type: String,
+      label: "State",
+      optional: true
+    },
+    "meta.error": {
+      type: Object,
+      label: "Error",
+      optional: true,
+      blackbox: true
+    },
+    "meta.createdAt": {
+      type: Date,
+      label: "Created at",
+      optional: true,
+      autoValue: function() {
+        if (this.isInsert)
+          return new Date();
 
-                else if (this.isUpsert)
-                    return {$setOnInsert: new Date()};
+        else if (this.isUpsert)
+          return { $setOnInsert: new Date() };
 
-                else
-                    this.unset();
-            }
-        }
+        else
+          this.unset();
+      }
     }
+  }
 ));
 
-Videos.schema.messageBox.messages({
-
-});
+Videos.schema.messageBox.messages({});
 
 Videos.collection.attachSchema(Videos.schema);
 

@@ -1,19 +1,19 @@
-import VideosDAO from './dao.js';
+import VideosDAO from "./dao.js";
 
 export default class Videos extends VideosDAO {
-    static setState(videoId, state, error) {
-        const video = {
-            _id: videoId,
-            meta: {
-                state: state,
-                error: error
-            }
-        };
+  static setState(videoId, state, error) {
+    const video = {
+      _id: videoId,
+      meta: {
+        state: state,
+        error: error
+      }
+    };
 
-        VideosDAO.updateObj(video);
-    }
+    VideosDAO.updateObj(video);
+  }
 
-    static removeByOwner(sceneryId) {
-        VideosDAO.remove({'meta.owner': sceneryId});
-    }
+  static removeByOwner(sceneryId) {
+    VideosDAO.remove({ "meta.owner": sceneryId });
+  }
 }

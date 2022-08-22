@@ -1,76 +1,62 @@
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from "meteor/meteor"
 
-import Users from '../both/class.js';
+import Users from "../both/class.js"
 
 if (Meteor.isServer) {
-    Meteor.methods({
-        'users.getUserByEmail'(email) {
-            return Meteor.users.findOne(
-                {
-                    'emails.address': email
-                }
-            );
-        },
+  Meteor.methods({
+    "users.getUserByEmail"(email) {
+      return Meteor.users.findOne({
+        "emails.address": email,
+      })
+    },
 
-        'users.getUserById'(id) {
-            return Meteor.users.findOne(id);
-        },
+    "users.getUserById"(id) {
+      return Meteor.users.findOne(id)
+    },
 
-        'users.sendVerificationEmail'() {
-            if (this.userId && Meteor.isServer)
-                Accounts.sendVerificationEmail(this.userId);
-        },
+    "users.sendVerificationEmail"() {
+      if (this.userId && Meteor.isServer) Accounts.sendVerificationEmail(this.userId)
+    },
 
-        'users.create'(options, callback) {
-            const userId = Accounts.createUser(options, callback);
+    "users.create"(options, callback) {
+      const userId = Accounts.createUser(options, callback)
 
-            if (userId)
-                Accounts.sendVerificationEmail(userId);
-        },
+      if (userId) Accounts.sendVerificationEmail(userId)
+    },
 
-        'users.invite'(email) {
-            if (!this.userId)
-                throw new Meteor.Error('401', "Unauthorized", "User not logged in.");
+    "users.invite"(email) {
+      if (!this.userId) throw new Meteor.Error("401", "Unauthorized", "User not logged in.")
 
-            const options = {
-                email: email
-            };
+      const options = {
+        email: email,
+      }
 
-            const userFound = Meteor.call('users.getUserByEmail', email);
+      const userFound = Meteor.call("users.getUserByEmail", email)
 
-            if (userFound)
-                throw new Meteor.Error('403', "There is already an user registered with this e-mail address.");
+      if (userFound) throw new Meteor.Error("403", "There is already an user registered with this e-mail address.")
 
-            let userId = null;
+      let userId = null
 
-            if (userFound)
-                userId = userFound._id;
+      if (userFound) userId = userFound._id
+      else userId = Accounts.createUser(options)
 
-            else
-                userId = Accounts.createUser(options);
+      if (userId) Accounts.sendEnrollmentEmail(userId)
+      else throw new Meteor.Error("500", "Error creating user.")
 
-            if (userId)
-                Accounts.sendEnrollmentEmail(userId);
+      return true
+    },
 
-            else
-                throw new Meteor.Error('500', "Error creating user.");
+    "users.resendInvitation"(userId) {
+      if (!this.userId) throw new Meteor.Error("401", "Unauthorized", "User not logged in.")
 
-            return true;
-        },
+      const userFound = Meteor.users.findOne(userId)
 
-        'users.resendInvitation'(userId) {
-            if (!this.userId)
-                throw new Meteor.Error('401', "Unauthorized", "User not logged in.");
+      if (!userFound) throw new Meteor.Error("403", "Forbidden", "User not found.")
 
-            const userFound = Meteor.users.findOne(userId);
+      if (Users.isVerified(userFound))
+        throw new Meteor.Error("500", "Cannot resend invitation to an already verified user.")
 
-            if (!userFound)
-                throw new Meteor.Error('403', "Forbidden", "User not found.");
-
-            if (Users.isVerified(userFound))
-                throw new Meteor.Error('500', "Cannot resend invitation to an already verified user.");
-
-            Accounts.sendEnrollmentEmail(userId);
-        },
-    });
+      Accounts.sendEnrollmentEmail(userId)
+    },
+  })
 }

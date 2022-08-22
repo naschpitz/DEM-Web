@@ -1,160 +1,144 @@
-import React, { useEffect, useRef, useState } from 'react';
-import useDeepEffect from 'use-deep-compare-effect';
-import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import React, { useEffect, useRef, useState } from "react"
+import useDeepEffect from "use-deep-compare-effect"
+import { Meteor } from "meteor/meteor"
+import PropTypes from "prop-types"
+import _ from "lodash"
 
-import Alert from 'react-s-alert';
-import Canvas from './canvas/canvas.jsx';
-import CameraControl from './cameraControl/cameraControl.jsx';
-import ERD from 'element-resize-detector';
-import FrameControl from './frameControl/frameControl.jsx';
-import ObjectsProperties from './objectsProperties/objectsProperties.jsx';
-import Video from './video/video.jsx';
+import Alert from "react-s-alert"
+import Canvas from "./canvas/canvas.jsx"
+import CameraControl from "./cameraControl/cameraControl.jsx"
+import ERD from "element-resize-detector"
+import FrameControl from "./frameControl/frameControl.jsx"
+import ObjectsProperties from "./objectsProperties/objectsProperties.jsx"
+import Video from "./video/video.jsx"
 
-import './viewer.css';
+import "./viewer.css"
 
-let framesImages = new Map();
+let framesImages = new Map()
 
-export default Viewer = ({sceneryId}) => {
-    const [ currentFrameImage, setCurrentFrameImage ] = useState(null);
+export default Viewer = ({ sceneryId }) => {
+  const [currentFrameImage, setCurrentFrameImage] = useState(null)
 
-    // useDeepEffect cannot handle null or undefined.
-    const [ dimensions, setDimensions ] = useState({});
-    const [ frame, setFrame ] = useState({});
+  // useDeepEffect cannot handle null or undefined.
+  const [dimensions, setDimensions] = useState({})
+  const [frame, setFrame] = useState({})
 
-    const [ isRendering, setIsRendering ] = useState(false);
+  const [isRendering, setIsRendering] = useState(false)
 
-    const actionTimer = useRef();
+  const actionTimer = useRef()
 
-    useEffect(() => {
-        const erd = ERD();
+  useEffect(() => {
+    const erd = ERD()
 
-        erd.listenTo(document.getElementById('canvas'), function(element) {
-            const dimensions = {
-                width: element.offsetWidth,
-                height: element.offsetWidth * (9 / 16)
-            };
+    erd.listenTo(document.getElementById("canvas"), function (element) {
+      const dimensions = {
+        width: element.offsetWidth,
+        height: element.offsetWidth * (9 / 16),
+      }
 
-            setDimensions(dimensions);
-        });
-    }, []);
+      setDimensions(dimensions)
+    })
+  }, [])
 
-    useDeepEffect(() => {
-        if (_.isEmpty(frame) || _.isEmpty(dimensions))
-            return;
+  useDeepEffect(() => {
+    if (_.isEmpty(frame) || _.isEmpty(dimensions)) return
 
-        if (actionTimer.current)
-            clearTimeout(actionTimer.current);
+    if (actionTimer.current) clearTimeout(actionTimer.current)
 
-        actionTimer.current = setTimeout(renderImage, 1000);
-    }, [ dimensions ]);
+    actionTimer.current = setTimeout(renderImage, 1000)
+  }, [dimensions])
 
-    useDeepEffect(() => {
-        if (!framesImages.has(frame._id))
-            renderImage();
-    }, [ frame ]);
+  useDeepEffect(() => {
+    if (!framesImages.has(frame._id)) renderImage()
+  }, [frame])
 
-    function getFrameImage() {
-        return framesImages.has(frame._id) ? framesImages.get(frame._id) : currentFrameImage;
+  function getFrameImage() {
+    return framesImages.has(frame._id) ? framesImages.get(frame._id) : currentFrameImage
+  }
+
+  function onCameraChange() {
+    framesImages.clear()
+    renderImage()
+  }
+
+  function onFrameChange(newFrame) {
+    if (newFrame) setFrame(newFrame)
+    else {
+      framesImages.clear()
+      setFrame({})
+      setCurrentFrameImage(null)
     }
+  }
 
-    function onCameraChange() {
-        framesImages.clear();
-        renderImage();
-    }
+  function onPropertyChange() {
+    framesImages.clear()
+    renderImage()
+  }
 
-    function onFrameChange(newFrame) {
-        if (newFrame)
-            setFrame(newFrame);
+  function renderImage() {
+    if (_.isEmpty(frame) || _.isEmpty(dimensions)) return
 
-        else {
-            framesImages.clear();
-            setFrame({});
-            setCurrentFrameImage(null);
-        }
-    }
+    setIsRendering(true)
 
-    function onPropertyChange() {
-        framesImages.clear();
-        renderImage();
-    }
+    Meteor.apply("framesImages.render", [frame._id, dimensions], (error, result) => {
+      if (error) {
+        Alert.error("Error rendering frame image: " + error.reason)
+      } else {
+        framesImages.set(frame._id, result)
+        setCurrentFrameImage(result)
+      }
 
-    function renderImage() {
-        if (_.isEmpty(frame) || _.isEmpty(dimensions))
-            return;
+      setIsRendering(false)
+    })
+  }
 
-        setIsRendering(true);
+  return (
+    <div id="viewer" className="row">
+      <div className="col-sm-12 col-md-8">
+        <div className="row">
+          <div className="col-sm-12">
+            <Canvas frameImage={getFrameImage()} isRendering={isRendering} />
+          </div>
 
-        Meteor.apply('framesImages.render', [frame._id, dimensions], (error, result) => {
-            if (error) {
-                Alert.error("Error rendering frame image: " + error.reason);
-            }
+          <div className="col-sm-12">
+            <div className="card" id="video">
+              <div className="card-header">Video</div>
 
-            else {
-                framesImages.set(frame._id, result);
-                setCurrentFrameImage(result);
-            }
-
-            setIsRendering(false);
-        });
-    }
-
-    return (
-        <div id="viewer" className="row">
-            <div className="col-sm-12 col-md-8">
-                <div className="row">
-                    <div className="col-sm-12">
-                        <Canvas frameImage={getFrameImage()} isRendering={isRendering}/>
-                    </div>
-
-                    <div className="col-sm-12">
-                        <div className="card" id="video">
-                            <div className="card-header">
-                                Video
-                            </div>
-
-                            <div className="card-body">
-                                <Video sceneryId={sceneryId}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              <div className="card-body">
+                <Video sceneryId={sceneryId} />
+              </div>
             </div>
-
-            <div className="col-sm-12 col-md-4">
-                <div className="card">
-                    <div className="card-header">
-                        Camera Control
-                    </div>
-
-                    <div className="card-body">
-                        <CameraControl sceneryId={sceneryId} onChange={onCameraChange}/>
-                    </div>
-                </div>
-
-                <div className="card">
-                    <div className="card-header">
-                        Frames Control
-                    </div>
-
-                    <div className="card-body">
-                        <FrameControl sceneryId={sceneryId} onChange={onFrameChange}/>
-                    </div>
-                </div>
-
-                <div className="card" id="objectsProperties">
-                    <div className="card-header">
-                        Objects Properties
-                    </div>
-
-                    <div className="card-body">
-                        <ObjectsProperties sceneryId={sceneryId} onChange={onPropertyChange}/>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    );
+      </div>
+
+      <div className="col-sm-12 col-md-4">
+        <div className="card">
+          <div className="card-header">Camera Control</div>
+
+          <div className="card-body">
+            <CameraControl sceneryId={sceneryId} onChange={onCameraChange} />
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="card-header">Frames Control</div>
+
+          <div className="card-body">
+            <FrameControl sceneryId={sceneryId} onChange={onFrameChange} />
+          </div>
+        </div>
+
+        <div className="card" id="objectsProperties">
+          <div className="card-header">Objects Properties</div>
+
+          <div className="card-body">
+            <ObjectsProperties sceneryId={sceneryId} onChange={onPropertyChange} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 /*

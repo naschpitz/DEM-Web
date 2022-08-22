@@ -1,42 +1,55 @@
-import dot from 'dot-object';
-import _ from 'lodash';
+import dot from "dot-object"
+import _ from "lodash"
 
-import SolidObjectsCol from './collection.js';
+import SolidObjectsCol from "./collection.js"
 
 export default class SolidObjects {
-    static find(...args) {return SolidObjectsCol.find(...args)}
-    static findOne(...args) {return SolidObjectsCol.findOne(...args)}
-    static insert(...args) {return SolidObjectsCol.insert(...args)}
-    static update(...args) {return SolidObjectsCol.update(...args)}
-    static upsert(...args) {return SolidObjectsCol.upsert(...args)}
-    static remove(...args) {return SolidObjectsCol.remove(...args)}
+  static find(...args) {
+    return SolidObjectsCol.find(...args)
+  }
 
-    static updateObj(solidObject) {
-        const dottedSolidObject = dot.dot(solidObject);
-        const arraysPaths = getArraysPaths(solidObject);
+  static findOne(...args) {
+    return SolidObjectsCol.findOne(...args)
+  }
 
-        const set = {};
-        const unset = {};
+  static insert(...args) {
+    return SolidObjectsCol.insert(...args)
+  }
 
-        _.keys(dottedSolidObject).forEach((key) => {
-            if (_.find(arraysPaths, (arrayPath) => (key.includes(arrayPath))))
-                return;
+  static update(...args) {
+    return SolidObjectsCol.update(...args)
+  }
 
-            const value = dottedSolidObject[key];
-            value != null ? set[key] = value : unset[key] = "";
-        });
+  static upsert(...args) {
+    return SolidObjectsCol.upsert(...args)
+  }
 
-        arraysPaths.forEach((key) => {
-            const value = _.get(solidObject, key);
-            !_.isEmpty(value) ? set[key] = value : unset[key] = "";
-        });
+  static remove(...args) {
+    return SolidObjectsCol.remove(...args)
+  }
 
-        SolidObjectsCol.update(
-            dottedSolidObject._id,
-            {
-                $set: set,
-                $unset: unset
-            }
-        );
-    }
+  static updateObj(solidObject) {
+    const dottedSolidObject = dot.dot(solidObject)
+    const arraysPaths = getArraysPaths(solidObject)
+
+    const set = {}
+    const unset = {}
+
+    _.keys(dottedSolidObject).forEach(key => {
+      if (_.find(arraysPaths, arrayPath => key.includes(arrayPath))) return
+
+      const value = dottedSolidObject[key]
+      value != null ? (set[key] = value) : (unset[key] = "")
+    })
+
+    arraysPaths.forEach(key => {
+      const value = _.get(solidObject, key)
+      !_.isEmpty(value) ? (set[key] = value) : (unset[key] = "")
+    })
+
+    SolidObjectsCol.update(dottedSolidObject._id, {
+      $set: set,
+      $unset: unset,
+    })
+  }
 }
