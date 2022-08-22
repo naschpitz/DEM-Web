@@ -14,7 +14,7 @@
   "dependencies": {
     "@babel/runtime": "^7.8.3",
     "@naschpitz/button-enhanced": "1.0.20",
-    "@naschpitz/form-input": "1.0.45",
+    "@naschpitz/form-input": "^1.0.46",
     "@naschpitz/unique-modal": "latest",
     "bcrypt": "^4.0.1",
     "bootstrap": "^4.5.0",

@@ -16,6 +16,9 @@ export default Calibration = (props) => {
     const [ isReady, setIsReady ] = useState(false);
 
     useTracker(() => {
+        if (!props.simulationId)
+            return;
+
         Meteor.subscribe('calibrations.byOwner', props.simulationId, {
             onStop: (error) => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
             onReady: () => (setIsReady(true))
@@ -23,7 +26,7 @@ export default Calibration = (props) => {
     }, [ props.simulationId ]);
 
     const calibration = useTracker(() => {
-        return CalibrationClass.findOne({simulation: props.simulationId});
+        return CalibrationClass.findOne({owner: props.simulationId});
     });
 
     if (isReady) {
