@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-import Calibrations from "../../calibrations/both/class"
+import Calibrations from "../../calibrations/both/class.js"
 import Sceneries from "../../sceneries/both/class.js"
 import SimulationsDAO from "./dao.js"
 
@@ -16,6 +16,7 @@ export default class Simulations extends SimulationsDAO {
     const newSimulationId = SimulationsDAO.insert(newSimulation)
 
     Sceneries.clone(simulationId, newSimulationId)
+    Calibrations.clone(simulationId, newSimulationId)
   }
 
   static create(owner) {

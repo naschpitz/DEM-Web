@@ -5,6 +5,7 @@ import _ from "lodash"
 
 import "../../api/calibrations/both/methods.js"
 import "../../api/cameras/both/methods.js"
+import "../../api/dataSets/both/methods.js"
 import "../../api/frames/both/methods.js"
 import "../../api/materials/both/methods.js"
 import "../../api/nonSolidObjects/both/methods.js"

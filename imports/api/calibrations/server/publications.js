@@ -18,4 +18,21 @@ if (Meteor.isServer) {
 
     return Calibrations.find({ owner: simulationId })
   })
+
+  Meteor.publish("calibrations.calibration", function (calibrationId) {
+    if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
+
+    const calibration = Calibrations.find({ _id: calibrationId })
+
+    const simulation = Simulations.findOne({ _id: calibration?.owner })
+
+    if (!simulation) return this.error(new Meteor.Error("404", "Not found", "No Simulation found."))
+
+    if (simulation.owner !== this.userId)
+      return this.error(
+        new Meteor.Error("401", "Unauthorized", "The current user is not the owner of this Calibration.")
+      )
+
+    return calibration
+  })
 }

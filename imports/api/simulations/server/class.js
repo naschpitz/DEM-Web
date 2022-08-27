@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor"
 import { HTTP } from "meteor/http"
 
-import Calibrations from "../../calibrations/server/class"
+import Calibrations from "../../calibrations/both/class.js"
 import Materials from "../../materials/both/class.js"
 import NonSolidObjects from "../../nonSolidObjects/both/class.js"
 import Sceneries from "../../sceneries/server/class.js"

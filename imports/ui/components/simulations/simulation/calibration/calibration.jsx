@@ -6,9 +6,9 @@ import Alert from "react-s-alert"
 import ClipLoader from "react-spinners/ClipLoader"
 
 import CalibrationControl from "../../calibrationControl/calibrationControl.jsx"
-import ExperimentalData from "./experimentalDataSets/experimentalData/experimentalData.jsx"
+import DataSets from "./dataSets/dataSets.jsx"
 
-import CalibrationClass from "../../../../../api/calibrations/both/class"
+import CalibrationClass from "../../../../../api/calibrations/both/class.js"
 
 import "./calibration.css"
 
@@ -42,15 +42,7 @@ export default Calibration = props => {
             </div>
           </div>
 
-          <div className="card">
-            <div className="card-header">
-              <div className="panel-title">Experimental Data Sets</div>
-            </div>
-
-            <div className="card-body">
-              <ExperimentalData simulationId={props.simulationId} calibrationId={calibration._id} />
-            </div>
-          </div>
+          <DataSets calibrationId={calibration._id} />
         </div>
       )
     } else {

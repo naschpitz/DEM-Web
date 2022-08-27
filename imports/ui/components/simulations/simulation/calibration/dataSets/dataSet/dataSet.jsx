@@ -3,22 +3,22 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
-import SceneriesClass from "../../../../../../../api/sceneries/both/class"
+import SceneriesClass from "../../../../../../../api/sceneries/both/class.js"
 
 import Alert from "react-s-alert"
 
 import DataSelector from "./dataSelector/dataSelector.jsx"
 
-import "./experimentalData.css"
+import "./dataSet.css"
 
-export default ExperimentalData = props => {
-  const [isSceneryReady, setIsSceneryReady] = useState(false)
+export default DataSet = props => {
+  const [isCalibrationReady, setIsCalibrationReady] = useState(false)
   const [selectedData, setSelectedData] = useState(null)
 
   useTracker(() => {
-    Meteor.subscribe("sceneries.scenery", props.simulationId, {
+    Meteor.subscribe("sceneries.scenery", props.dataSet.owner, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-      onReady: () => setIsSceneryReady(true),
+      onReady: () => setIsCalibrationReady(true),
     })
   }, [props.simulationId])
 
@@ -36,7 +36,7 @@ export default ExperimentalData = props => {
     <div id="experimentalData">
       <div className="card">
         <div className="card-header">
-          <div className="panel-title">Experimental Data</div>
+          <div className="panel-title">Data Set</div>
         </div>
 
         <div className="card-body">
