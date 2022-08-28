@@ -15,9 +15,9 @@ DataSets.schema = new SimpleSchema({
     label: "Object",
     regEx: SimpleSchema.RegEx.Id,
   },
-  dataType: {
+  dataName: {
     type: String,
-    label: "Data type",
+    label: "Data name",
     optional: true,
     custom: function () {
       if ((this.isUpdate || this.isUpsert) && !this.isSet) {

@@ -15,7 +15,6 @@ import "./dataSelector.css"
 export default DataSelector = props => {
   const [isNonSolidObjectsReady, setIsNonSolidObjectsReady] = useState(false)
   const [isSolidObjectsReady, setIsSolidObjectsReady] = useState(false)
-  const [data, setData] = useState({})
 
   useTracker(() => {
     Meteor.subscribe("nonSolidObjects.list", props.sceneryId, {
@@ -43,11 +42,9 @@ export default DataSelector = props => {
     if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId")))) return
 
     const newData = {
-      objectId: name === "objectId" ? value : _.get(data, "objectId"),
-      dataName: name === "dataName" ? value : _.get(data, "dataName"),
+      objectId: name === "objectId" ? value : _.get(props.data, "objectId"),
+      dataName: name === "dataName" ? value : _.get(props.data, "dataName"),
     }
-
-    setData(newData)
 
     if (props.onChange) props.onChange(newData)
   }
@@ -73,7 +70,7 @@ export default DataSelector = props => {
       <FormInput
         label="Data"
         name="dataName"
-        value={data.dataName}
+        value={props.data.dataName}
         type="dropdown"
         subtype="string"
         options={options}
@@ -96,7 +93,7 @@ export default DataSelector = props => {
       <FormInput
         label="Object"
         name="objectId"
-        value={data.objectId}
+        value={props.data.objectId}
         type="dropdown"
         subtype="string"
         size="small"

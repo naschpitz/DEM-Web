@@ -48,16 +48,27 @@ export default DataSet = props => {
   function onChange(selectedData) {
     const dataSetId = props.dataSet?._id
 
-    Meteor.call("dataSets.changeData", dataSetId, selectedData, error => {
+    const dataSet = {
+      _id: dataSetId,
+      object: selectedData.objectId,
+      dataName: selectedData.dataName,
+    }
+
+    Meteor.call("dataSets.update", dataSet, error => {
       if (error) {
         Alert.error("Error: " + getErrorMessage(error))
       } else {
-        Alert.success("DataSet successfully changed.")
+        Alert.success("DataSet successfully updated.")
       }
     })
   }
 
   const sceneryId = scenery?._id
+
+  const data = {
+    objectId: props.dataSet.object,
+    dataName: props.dataSet.dataName,
+  }
 
   return (
     <div id="experimentalData">
@@ -67,7 +78,7 @@ export default DataSet = props => {
         </div>
 
         <div className="card-body">
-          <DataSelector sceneryId={sceneryId} onChange={onChange} />
+          <DataSelector sceneryId={sceneryId} data={data} onChange={onChange} />
         </div>
       </div>
     </div>
