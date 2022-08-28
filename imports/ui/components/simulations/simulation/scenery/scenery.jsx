@@ -26,7 +26,7 @@ export default Scenery = props => {
   const [isSceneryReady, setIsSceneryReady] = useState(false)
 
   useTracker(() => {
-    Meteor.subscribe("sceneries.scenery", props.simulationId, {
+    Meteor.subscribe("sceneries.byOwner", props.simulationId, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsSceneryReady(true),
     })

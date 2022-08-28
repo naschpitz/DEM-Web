@@ -7,7 +7,13 @@ DataSets.schema = new SimpleSchema({
   owner: {
     type: String,
     label: "Calibration owner",
+    regEx: SimpleSchema.RegEx.Id,
     optional: false,
+  },
+  object: {
+    type: String,
+    label: "Object",
+    regEx: SimpleSchema.RegEx.Id,
   },
   dataType: {
     type: String,
