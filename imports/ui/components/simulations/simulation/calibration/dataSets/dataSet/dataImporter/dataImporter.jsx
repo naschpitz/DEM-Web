@@ -14,7 +14,7 @@ export default DataImporter = props => {
     // Return multiple arrays containing a pair of each element from props.xData and props.yData
     const data = props.xData.map((xData, i) => [xData, props.yData[i]])
 
-    const csv = Papa.unparse(data)
+    setCsv(Papa.unparse(data))
   }, [props.xData, props.yData])
 
   function onEvent(event, name, value) {
