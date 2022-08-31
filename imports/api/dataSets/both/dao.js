@@ -40,8 +40,6 @@ export default class DataSetsDAO {
       value != null ? (set[key] = value) : (unset[key] = "")
     })
 
-    if (dataSet.data) set["data"] = dataSet.data
-
     DataSetsCol.update(dataSet._id, {
       $set: set,
       $unset: unset,

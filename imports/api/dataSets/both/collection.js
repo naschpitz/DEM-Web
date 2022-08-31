@@ -14,6 +14,12 @@ DataSets.schema = new SimpleSchema({
     type: String,
     label: "Object",
     regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+    custom: function () {
+      if ((this.isUpdate || this.isUpsert) && !this.isSet) {
+        return "missingField"
+      }
+    },
   },
   dataName: {
     type: String,

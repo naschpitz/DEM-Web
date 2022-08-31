@@ -31,11 +31,12 @@ export default DataImporter = props => {
   return (
     <FormInput
       label="CSV Data"
+      labelPos="top"
       name="csv"
       value={csv}
       type="textarea"
       rows={10}
-      labelPos="top"
+      maxLength={30000000}
       labelSizes={{ sm: 12, md: 12, lg: 12 }}
       inputSizes={{ sm: 12, md: 12, lg: 12 }}
       onEvent={onEvent}
