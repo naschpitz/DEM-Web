@@ -42,11 +42,11 @@ export default DataSelector = props => {
     if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId")))) return
 
     const newData = {
-      objectId: name === "objectId" ? value : _.get(props.data, "objectId"),
-      dataName: name === "dataName" ? value : _.get(props.data, "dataName"),
+      objectId: name === "objectId" ? value : props.objectId,
+      dataName: name === "dataName" ? value : props.dataName,
     }
 
-    if (props.onChange) props.onChange(newData)
+    if (props.onData) props.onData(newData)
   }
 
   function renderDataList() {
@@ -70,7 +70,7 @@ export default DataSelector = props => {
       <FormInput
         label="Data"
         name="dataName"
-        value={props.data.dataName}
+        value={props.dataName}
         type="dropdown"
         subtype="string"
         options={options}
@@ -93,7 +93,7 @@ export default DataSelector = props => {
       <FormInput
         label="Object"
         name="objectId"
-        value={props.data.objectId}
+        value={props.objectId}
         type="dropdown"
         subtype="string"
         size="small"
@@ -109,7 +109,6 @@ export default DataSelector = props => {
     <div id="selector">
       <div className="row">
         <div className="col-sm-12 col-md-6 col-lg-6">{renderObjectsList()}</div>
-
         <div className="col-sm-12 col-md-6 col-lg-6">{renderDataList()}</div>
       </div>
     </div>

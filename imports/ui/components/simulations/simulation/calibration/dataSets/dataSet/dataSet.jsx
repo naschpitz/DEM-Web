@@ -6,7 +6,9 @@ import CalibrationsClass from "../../../../../../../api/calibrations/both/class.
 import SceneriesClass from "../../../../../../../api/sceneries/both/class.js"
 
 import Alert from "react-s-alert"
+import FormInput from "@naschpitz/form-input"
 
+import DataImporter from "./dataImporter/dataImporter.jsx"
 import DataSelector from "./dataSelector/dataSelector.jsx"
 
 import "./dataSet.css"
@@ -45,13 +47,15 @@ export default DataSet = props => {
     return SceneriesClass.findOne({ owner: calibration.owner })
   }, [calibration])
 
-  function onChange(selectedData) {
+  function onData(data) {
     const dataSetId = props.dataSet?._id
 
     const dataSet = {
       _id: dataSetId,
-      object: selectedData.objectId,
-      dataName: selectedData.dataName,
+      object: data.objectId,
+      dataName: data.dataName,
+      xData: data.xData,
+      yData: data.yData,
     }
 
     Meteor.call("dataSets.update", dataSet, error => {
@@ -78,7 +82,8 @@ export default DataSet = props => {
         </div>
 
         <div className="card-body">
-          <DataSelector sceneryId={sceneryId} data={data} onChange={onChange} />
+          <DataSelector sceneryId={sceneryId} objectId={data.objectId} dataName={data.dataName} onData={onData} />
+          <DataImporter xData={data.xData} yData={data.yData} onData={onData} />
         </div>
       </div>
     </div>
