@@ -29,6 +29,7 @@ export default class DataSetsDAO {
   }
 
   static updateObj(dataSet) {
+    dot.keepArray = true
     const dottedDataSet = dot.dot(dataSet)
 
     const set = {}
@@ -38,6 +39,8 @@ export default class DataSetsDAO {
       const value = dottedDataSet[key]
       value != null ? (set[key] = value) : (unset[key] = "")
     })
+
+    if (dataSet.data) set["data"] = dataSet.data
 
     DataSetsCol.update(dataSet._id, {
       $set: set,

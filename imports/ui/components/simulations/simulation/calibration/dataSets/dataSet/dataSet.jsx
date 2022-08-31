@@ -47,18 +47,17 @@ export default DataSet = props => {
     return SceneriesClass.findOne({ owner: calibration.owner })
   }, [calibration])
 
-  function onData(data) {
+  function onData(dataSet) {
     const dataSetId = props.dataSet?._id
 
-    const dataSet = {
+    const newDataSet = {
       _id: dataSetId,
-      object: data.objectId,
-      dataName: data.dataName,
-      xData: data.xData,
-      yData: data.yData,
+      object: dataSet.objectId,
+      dataName: dataSet.dataName,
+      data: dataSet.data,
     }
 
-    Meteor.call("dataSets.update", dataSet, error => {
+    Meteor.call("dataSets.update", newDataSet, error => {
       if (error) {
         Alert.error("Error: " + getErrorMessage(error))
       } else {
@@ -72,6 +71,7 @@ export default DataSet = props => {
   const data = {
     objectId: props.dataSet.object,
     dataName: props.dataSet.dataName,
+    data: props.dataSet.data,
   }
 
   return (
@@ -83,7 +83,7 @@ export default DataSet = props => {
 
         <div className="card-body">
           <DataSelector sceneryId={sceneryId} objectId={data.objectId} dataName={data.dataName} onData={onData} />
-          <DataImporter xData={data.xData} yData={data.yData} onData={onData} />
+          <DataImporter data={data.data} onData={data => onData({ data })} />
         </div>
       </div>
     </div>

@@ -25,9 +25,9 @@ DataSets.schema = new SimpleSchema({
       }
     },
   },
-  xData: {
+  data: {
     type: Array,
-    label: "X data",
+    label: "Data",
     optional: true,
     custom: function () {
       if ((this.isUpdate || this.isUpsert) && !this.isSet) {
@@ -35,20 +35,12 @@ DataSets.schema = new SimpleSchema({
       }
     },
   },
-  "xData.$": {
-    type: Number,
-  },
-  yData: {
+  "data.$": {
     type: Array,
-    label: "Y data",
-    optional: true,
-    custom: function () {
-      if ((this.isUpdate || this.isUpsert) && !this.isSet) {
-        return "missingField"
-      }
-    },
+    minCount: 2,
+    maxCount: 2,
   },
-  "yData.$": {
+  "data.$.$": {
     type: Number,
   },
   createdAt: {

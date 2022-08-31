@@ -9,17 +9,14 @@ export default DataImporter = props => {
   const [csv, setCsv] = useState("")
 
   useEffect(() => {
-    if (!props.xData || !props.yData) return
+    if (!props.data) return
 
-    // Return multiple arrays containing a pair of each element from props.xData and props.yData
-    const data = props.xData.map((xData, i) => [xData, props.yData[i]])
-
-    setCsv(Papa.unparse(data))
-  }, [props.xData, props.yData])
+    setCsv(Papa.unparse(props.data))
+  }, [props.data])
 
   function onEvent(event, name, value) {
     if (!props.onData) return
-    if (event !== "onBlur" && event !== "onChange") return
+    if (event !== "onChange") return
 
     const result = Papa.parse(value, { dynamicTyping: true })
 
@@ -28,22 +25,7 @@ export default DataImporter = props => {
       return
     }
 
-    // Return the first element of each array in result.data array as an xData array,
-    // and the second element of each array in result.data array as an yData array.
-    function getXandYData(data) {
-      const xData = []
-      const yData = []
-
-      for (let i = 0; i < data.length; i++) {
-        xData.push(data[i][0])
-        yData.push(data[i][1])
-      }
-
-      return { xData, yData }
-    }
-
-    const { xData, yData } = getXandYData(result.data)
-    props.onData({ xData, yData })
+    props.onData(result.data)
   }
 
   return (
