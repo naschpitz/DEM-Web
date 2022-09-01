@@ -44,7 +44,7 @@ export default DataSets = props => {
 
   if (isDataSetsReady) {
     return (
-      <div id="experimentalDataSets">
+      <div id="dataSets">
         <div className="card">
           <div className="card-header">
             <div className="panel-title">

@@ -106,7 +106,7 @@ export default DataSelector = props => {
   }
 
   return (
-    <div id="selector">
+    <div id="dataSelector">
       <div className="row">
         <div className="col-sm-12 col-md-6 col-lg-6">{renderObjectsList()}</div>
         <div className="col-sm-12 col-md-6 col-lg-6">{renderDataList()}</div>

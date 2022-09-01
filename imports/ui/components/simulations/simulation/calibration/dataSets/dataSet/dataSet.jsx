@@ -75,7 +75,7 @@ export default DataSet = props => {
   }
 
   return (
-    <div id="experimentalData">
+    <div id="dataSet">
       <div className="card">
         <div className="card-header">
           <div className="panel-title">Data Set</div>
