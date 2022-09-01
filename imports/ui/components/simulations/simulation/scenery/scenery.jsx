@@ -202,34 +202,30 @@ export default Scenery = props => {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col">
-            <div className="card" id="materials">
-              <div className="card-header">
-                Materials &nbsp;
-                <ButtonEnhanced
-                  buttonOptions={{
-                    regularText: <FaPlus className="align-middle" />,
-                    className: "btn btn-sm btn-success",
-                    isAction: isCreatingMaterial,
-                    actionText: "Creating...",
-                    type: "button",
-                  }}
-                  confirmationOptions={{
-                    title: "Confirm material creation",
-                    text: <span>Do you really want to create a new material?</span>,
-                    confirmButtonText: "Create",
-                    confirmButtonAction: "Creating...",
-                    cancelButtonText: "Cancel",
-                    onDone: onCreateMaterialDone,
-                  }}
-                />
-              </div>
+        <div className="card" id="materials">
+          <div className="card-header">
+            Materials &nbsp;
+            <ButtonEnhanced
+              buttonOptions={{
+                regularText: <FaPlus className="align-middle" />,
+                className: "btn btn-sm btn-success",
+                isAction: isCreatingMaterial,
+                actionText: "Creating...",
+                type: "button",
+              }}
+              confirmationOptions={{
+                title: "Confirm material creation",
+                text: <span>Do you really want to create a new material?</span>,
+                confirmButtonText: "Create",
+                confirmButtonAction: "Creating...",
+                cancelButtonText: "Cancel",
+                onDone: onCreateMaterialDone,
+              }}
+            />
+          </div>
 
-              <div className="card-body">
-                <Materials sceneryId={sceneryId} />
-              </div>
-            </div>
+          <div className="card-body">
+            <Materials sceneryId={sceneryId} />
           </div>
         </div>
 

@@ -9,3 +9,7 @@
 #scenery #materials .card-body {
     padding: 0px;
 }
+
+#scenery .row [class*="col-"] {
+    margin-bottom: 20px;
+}
