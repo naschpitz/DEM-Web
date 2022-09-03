@@ -25,7 +25,6 @@ export default Chart = ({ sceneryId, objectId, dataName, minInterval, maxInterva
     const filter = []
 
     if (minInterval) filter.push({ time: { $gte: minInterval } })
-
     if (maxInterval) filter.push({ time: { $lte: maxInterval } })
 
     const selector = {
@@ -87,64 +86,3 @@ export default Chart = ({ sceneryId, objectId, dataName, minInterval, maxInterva
     </div>
   )
 }
-
-/*
-Chart.propTypes = {
-    sceneryId: PropTypes.string.isRequired,
-    objectId: PropTypes.string.isRequired,
-    dataName: PropTypes.string.isRequired,
-    minInterval: PropTypes.number,
-    maxInterval: PropTypes.number,
-};
-*/
-
-/*
-export default Chart = withTracker(({sceneryId, objectId, dataName, minInterval, maxInterval}) => {
-    const framesReady = Meteor.subscribe('frames', sceneryId).ready();
-
-    const filter = [];
-
-    if (minInterval)
-        filter.push({time: {$gte: minInterval}});
-
-    if (maxInterval)
-        filter.push({time: {$lte: maxInterval}});
-
-    const selector = {
-        'scenery._id': sceneryId,
-        $or: [
-            {'scenery.objects.nonSolidObjects._id': objectId},
-            {'scenery.objects.solidObjects._id': objectId}
-        ]
-    };
-
-    if (minInterval || maxInterval)
-        selector.$and = filter;
-
-    const frames = FramesCol.find(selector).fetch();
-
-    const data = [];
-    frames.forEach((frame) => {
-        let object = null;
-
-        const nonSolidObjects = _.get(frame, 'scenery.objects.nonSolidObjects', null);
-
-        if (nonSolidObjects) {
-            object = nonSolidObjects.find((nonSolidObject) => nonSolidObject._id === objectId);
-        }
-
-        const solidObjects = _.get(frame, 'scenery.objects.solidObjects', null);
-
-        if (solidObjects && !object) {
-            object = solidObjects.find((solidObject) => solidObject._id === objectId);
-        }
-
-        data.push({x: frame.time, y: _.get(object, dataName)});
-    });
-
-    return {
-        isReady: framesReady,
-        data: data
-    };
-})(_Chart);
-*/
