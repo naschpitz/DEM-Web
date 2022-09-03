@@ -6,8 +6,8 @@ import CalibrationsClass from "../../../../../../../api/calibrations/both/class.
 import SceneriesClass from "../../../../../../../api/sceneries/both/class.js"
 
 import Alert from "react-s-alert"
-import FormInput from "@naschpitz/form-input"
 
+import Chart from "./chart/chart.jsx"
 import DataImporter from "./dataImporter/dataImporter.jsx"
 import DataSelector from "./dataSelector/dataSelector.jsx"
 
@@ -68,11 +68,9 @@ export default DataSet = props => {
 
   const sceneryId = scenery?._id
 
-  const data = {
-    objectId: props.dataSet.object,
-    dataName: props.dataSet.dataName,
-    data: props.dataSet.data,
-  }
+  const objectId = props.dataSet?.object
+  const dataName = props.dataSet?.dataName
+  const data = props.dataSet?.data
 
   return (
     <div id="dataSet">
@@ -82,8 +80,17 @@ export default DataSet = props => {
         </div>
 
         <div className="card-body">
-          <DataSelector sceneryId={sceneryId} objectId={data.objectId} dataName={data.dataName} onData={onData} />
-          <DataImporter data={data.data} onData={data => onData({ data })} />
+          <DataSelector sceneryId={sceneryId} objectId={objectId} dataName={dataName} onData={onData} />
+
+          <div className="row">
+            <div className="col">
+              <DataImporter data={data} onData={data => onData({ data })} />
+            </div>
+
+            <div className="col">
+              <Chart data={data} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
