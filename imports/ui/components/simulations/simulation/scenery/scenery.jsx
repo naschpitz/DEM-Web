@@ -145,25 +145,27 @@ export default Scenery = props => {
 
           <div className="col-sm-12 col-md-12 col-lg-5">
             <div className="card" id="nonSolidObjects">
-              <div className="card-header">
-                Non-Solid Objects &nbsp;
-                <ButtonEnhanced
-                  buttonOptions={{
-                    regularText: <FaPlus className="align-middle" />,
-                    className: "btn btn-sm btn-success",
-                    isAction: isCreatingNSO,
-                    actionText: "Creating...",
-                    type: "button",
-                  }}
-                  confirmationOptions={{
-                    title: "Confirm non-solid object creation",
-                    text: <span>Do you really want to create a new non-solid object?</span>,
-                    confirmButtonText: "Create",
-                    confirmButtonAction: "Creating...",
-                    cancelButtonText: "Cancel",
-                    onDone: onCreateNSODone,
-                  }}
-                />
+              <div className="card-header d-flex">
+                <div className="align-self-center">Non-Solid Objects</div>
+                <div className="ml-auto align-self-center">
+                  <ButtonEnhanced
+                    buttonOptions={{
+                      regularText: <FaPlus className="align-middle" />,
+                      className: "btn btn-sm btn-success",
+                      isAction: isCreatingNSO,
+                      actionText: "Creating...",
+                      type: "button",
+                    }}
+                    confirmationOptions={{
+                      title: "Confirm non-solid object creation",
+                      text: <span>Do you really want to create a new non-solid object?</span>,
+                      confirmButtonText: "Create",
+                      confirmButtonAction: "Creating...",
+                      cancelButtonText: "Cancel",
+                      onDone: onCreateNSODone,
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="card-body">
@@ -174,25 +176,27 @@ export default Scenery = props => {
 
           <div className="col-sm-12 col-md-12 col-lg-5">
             <div className="card" id="solidObjects">
-              <div className="card-header">
-                Solid Objects &nbsp;
-                <ButtonEnhanced
-                  buttonOptions={{
-                    regularText: <FaPlus className="align-middle" />,
-                    className: "btn btn-sm btn-success",
-                    isAction: isCreatingSO,
-                    actionText: "Creating...",
-                    type: "button",
-                  }}
-                  confirmationOptions={{
-                    title: "Confirm solid object creation",
-                    text: <span>Do you really want to create a new solid object?</span>,
-                    confirmButtonText: "Create",
-                    confirmButtonAction: "Creating...",
-                    cancelButtonText: "Cancel",
-                    onDone: onCreateSODone,
-                  }}
-                />
+              <div className="card-header d-flex">
+                <div className="align-self-center">Solid Objects</div>
+                <div className="ml-auto align-self-center">
+                  <ButtonEnhanced
+                    buttonOptions={{
+                      regularText: <FaPlus className="align-middle" />,
+                      className: "btn btn-sm btn-success",
+                      isAction: isCreatingSO,
+                      actionText: "Creating...",
+                      type: "button",
+                    }}
+                    confirmationOptions={{
+                      title: "Confirm solid object creation",
+                      text: <span>Do you really want to create a new solid object?</span>,
+                      confirmButtonText: "Create",
+                      confirmButtonAction: "Creating...",
+                      cancelButtonText: "Cancel",
+                      onDone: onCreateSODone,
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="card-body">
@@ -203,25 +207,27 @@ export default Scenery = props => {
         </div>
 
         <div className="card" id="materials">
-          <div className="card-header">
-            Materials &nbsp;
-            <ButtonEnhanced
-              buttonOptions={{
-                regularText: <FaPlus className="align-middle" />,
-                className: "btn btn-sm btn-success",
-                isAction: isCreatingMaterial,
-                actionText: "Creating...",
-                type: "button",
-              }}
-              confirmationOptions={{
-                title: "Confirm material creation",
-                text: <span>Do you really want to create a new material?</span>,
-                confirmButtonText: "Create",
-                confirmButtonAction: "Creating...",
-                cancelButtonText: "Cancel",
-                onDone: onCreateMaterialDone,
-              }}
-            />
+          <div className="card-header d-flex">
+            <div className="align-self-center">Materials</div>
+            <div className="ml-auto align-self-center">
+              <ButtonEnhanced
+                buttonOptions={{
+                  regularText: <FaPlus className="align-middle" />,
+                  className: "btn btn-sm btn-success",
+                  isAction: isCreatingMaterial,
+                  actionText: "Creating...",
+                  type: "button",
+                }}
+                confirmationOptions={{
+                  title: "Confirm material creation",
+                  text: <span>Do you really want to create a new material?</span>,
+                  confirmButtonText: "Create",
+                  confirmButtonAction: "Creating...",
+                  cancelButtonText: "Cancel",
+                  onDone: onCreateMaterialDone,
+                }}
+              />
+            </div>
           </div>
 
           <div className="card-body">

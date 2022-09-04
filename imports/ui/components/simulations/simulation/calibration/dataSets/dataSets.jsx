@@ -47,25 +47,27 @@ export default DataSets = props => {
       <div id="dataSets">
         <div className="card">
           <div className="card-header">
-            <div className="panel-title">
-              Data Sets &nbsp;
-              <ButtonEnhanced
-                buttonOptions={{
-                  regularText: <FaPlus className="align-middle" />,
-                  className: "btn btn-sm btn-success",
-                  isAction: isCreatingDataSet,
-                  actionText: "Creating...",
-                  type: "button",
-                }}
-                confirmationOptions={{
-                  title: "Confirm data set creation",
-                  text: <span>Do you really want to create a new data set?</span>,
-                  confirmButtonText: "Create",
-                  confirmButtonAction: "Creating...",
-                  cancelButtonText: "Cancel",
-                  onDone: onCreateDataSetDone,
-                }}
-              />
+            <div className="panel-title d-flex">
+              <div className="align-self-center">Data Sets &nbsp;</div>
+              <div className="ml-auto align-self-center">
+                <ButtonEnhanced
+                  buttonOptions={{
+                    regularText: <FaPlus className="align-middle" />,
+                    className: "btn btn-sm btn-success",
+                    isAction: isCreatingDataSet,
+                    actionText: "Creating...",
+                    type: "button",
+                  }}
+                  confirmationOptions={{
+                    title: "Confirm data set creation",
+                    text: <span>Do you really want to create a new data set?</span>,
+                    confirmButtonText: "Create",
+                    confirmButtonAction: "Creating...",
+                    cancelButtonText: "Cancel",
+                    onDone: onCreateDataSetDone,
+                  }}
+                />
+              </div>
             </div>
           </div>
 

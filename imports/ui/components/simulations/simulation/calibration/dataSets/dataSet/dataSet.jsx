@@ -96,26 +96,28 @@ export default DataSet = props => {
     <div id="dataSet">
       <div className="card">
         <div className="card-header">
-          <div className="panel-title">
-            Data Set &nbsp;
-            <ButtonEnhanced
-              buttonOptions={{
-                regularText: <FaTrashAlt className="align-middle" />,
-                className: "btn btn-sm btn-danger",
-                data: dataSetId,
-                isAction: isRemovingDataSet,
-                actionText: <div className="loaderSpinner loader-small" />,
-                type: "button",
-              }}
-              confirmationOptions={{
-                title: "Confirm data set removal",
-                text: <span>Do you really want to remove this data set?</span>,
-                confirmButtonText: "Remove",
-                confirmButtonAction: "Removing...",
-                cancelButtonText: "Cancel",
-                onDone: onRemoveDataSetDone,
-              }}
-            />
+          <div className="panel-title d-flex">
+            <div className="align-self-center">Data Set &nbsp;</div>
+            <div className="ml-auto align-self-center">
+              <ButtonEnhanced
+                buttonOptions={{
+                  regularText: <FaTrashAlt className="align-middle" />,
+                  className: "btn btn-sm btn-danger",
+                  data: dataSetId,
+                  isAction: isRemovingDataSet,
+                  actionText: <div className="loaderSpinner loader-small" />,
+                  type: "button",
+                }}
+                confirmationOptions={{
+                  title: "Confirm data set removal",
+                  text: <span>Do you really want to remove this data set?</span>,
+                  confirmButtonText: "Remove",
+                  confirmButtonAction: "Removing...",
+                  cancelButtonText: "Cancel",
+                  onDone: onRemoveDataSetDone,
+                }}
+              />
+            </div>
           </div>
         </div>
 
