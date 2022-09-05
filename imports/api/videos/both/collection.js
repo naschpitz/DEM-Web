@@ -70,4 +70,6 @@ Videos.schema.messageBox.messages({});
 
 Videos.collection.attachSchema(Videos.schema);
 
+Videos.collection.rawCollection().createIndex({ "meta.owner": 1 }, { background: true })
+
 export default Videos;

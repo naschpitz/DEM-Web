@@ -50,4 +50,6 @@ SimulationsLogs.schema = new SimpleSchema({
 
 SimulationsLogs.attachSchema(SimulationsLogs.schema)
 
+SimulationsLogs.rawCollection().createIndex({ owner: 1 }, { background: true })
+
 export default SimulationsLogs

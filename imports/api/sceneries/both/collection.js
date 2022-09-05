@@ -58,4 +58,6 @@ Sceneries.schema.messageBox.messages({
 
 Sceneries.attachSchema(Sceneries.schema)
 
+Sceneries.rawCollection().createIndex({ owner: 1 }, { background: true })
+
 export default Sceneries

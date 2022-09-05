@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -104,5 +103,7 @@ Materials.schema.messageBox.messages({
 })
 
 Materials.attachSchema(Materials.schema)
+
+Materials.rawCollection().createIndex({ owner: 1, name: 1 }, { background: true })
 
 export default Materials

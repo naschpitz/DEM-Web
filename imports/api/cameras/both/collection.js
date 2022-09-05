@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -66,5 +65,7 @@ Cameras.schema.messageBox.messages({
 })
 
 Cameras.attachSchema(Cameras.schema)
+
+Cameras.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default Cameras

@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -100,5 +99,7 @@ Simulations.schema.messageBox.messages({
 })
 
 Simulations.attachSchema(Simulations.schema)
+
+Simulations.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default Simulations

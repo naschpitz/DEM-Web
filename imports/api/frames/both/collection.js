@@ -47,4 +47,6 @@ Frames.schema = new SimpleSchema({
 
 Frames.attachSchema(Frames.schema)
 
+Frames.rawCollection().createIndex({ owner: 1 }, { background: true })
+
 export default Frames
