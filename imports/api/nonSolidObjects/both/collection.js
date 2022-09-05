@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -95,6 +96,6 @@ NonSolidObjects.schema.messageBox.messages({
 
 NonSolidObjects.attachSchema(NonSolidObjects.schema)
 
-NonSolidObjects.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && NonSolidObjects.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default NonSolidObjects

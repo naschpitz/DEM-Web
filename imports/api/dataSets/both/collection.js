@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -81,5 +82,7 @@ DataSets.schema.messageBox.messages({
 })
 
 DataSets.attachSchema(DataSets.schema)
+
+Meteor.isServer && DataSets.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default DataSets

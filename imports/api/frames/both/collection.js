@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -47,6 +48,6 @@ Frames.schema = new SimpleSchema({
 
 Frames.attachSchema(Frames.schema)
 
-Frames.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && Frames.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default Frames

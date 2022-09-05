@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -58,6 +59,6 @@ Sceneries.schema.messageBox.messages({
 
 Sceneries.attachSchema(Sceneries.schema)
 
-Sceneries.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && Sceneries.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default Sceneries

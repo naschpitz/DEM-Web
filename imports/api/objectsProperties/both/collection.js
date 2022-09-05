@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -57,6 +58,6 @@ ObjectsProperties.schema.messageBox.messages({
 
 ObjectsProperties.attachSchema(ObjectsProperties.schema)
 
-ObjectsProperties.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && ObjectsProperties.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default ObjectsProperties

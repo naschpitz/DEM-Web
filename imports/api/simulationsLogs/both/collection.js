@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -50,6 +51,6 @@ SimulationsLogs.schema = new SimpleSchema({
 
 SimulationsLogs.attachSchema(SimulationsLogs.schema)
 
-SimulationsLogs.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && SimulationsLogs.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default SimulationsLogs

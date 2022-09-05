@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
@@ -66,6 +67,6 @@ Servers.schema.messageBox.messages({
 
 Servers.attachSchema(Servers.schema)
 
-Servers.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && Servers.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default Servers

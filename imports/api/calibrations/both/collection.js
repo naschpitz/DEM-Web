@@ -1,8 +1,8 @@
+import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
 import SimulationsDAO from "../../simulations/both/dao"
-import Cameras from "../../cameras/both/collection"
 
 const Calibrations = new Mongo.Collection("calibrations")
 
@@ -92,6 +92,6 @@ Calibrations.schema.messageBox.messages({
 
 Calibrations.attachSchema(Calibrations.schema)
 
-Calibrations.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && Calibrations.rawCollection().createIndex({ owner: 1 }, { background: true })
 
 export default Calibrations
