@@ -179,6 +179,7 @@ export default FrameControl = props => {
         <div className="col-sm-12 col-md-5 offset-md-1">
           <FormInput
             label="of"
+            name="totalFrames"
             value={totalFrames}
             type="field"
             subtype="number"
