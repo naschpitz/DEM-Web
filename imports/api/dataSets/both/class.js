@@ -4,13 +4,15 @@ export default class DataSets extends DataSetsDAO {
   static clone(oldCalibrationId, newCalibrationId) {
     const oldDataSets = DataSetsDAO.find({ owner: oldCalibrationId })
 
-    oldDataSets.forEach(oldDataSet => {
+    const dataSetIds = oldDataSets.map(oldDataSet => {
       const newDataSet = _.cloneDeep(oldDataSet)
       delete newDataSet._id
       newDataSet.owner = newCalibrationId
 
       DataSetsDAO.insert(newDataSet)
     })
+
+    return dataSetIds
   }
 
   static create(calibrationId) {

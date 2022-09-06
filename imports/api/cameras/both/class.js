@@ -10,7 +10,9 @@ export default class Cameras extends CamerasDAO {
     delete newCamera._id
     newCamera.owner = newSceneryId
 
-    CamerasDAO.insert(newCamera)
+    const newCameraId = CamerasDAO.insert(newCamera)
+
+    return newCameraId
   }
 
   static create(sceneryId) {

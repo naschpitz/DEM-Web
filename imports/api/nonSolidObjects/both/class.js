@@ -7,7 +7,7 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
   static clone(oldSceneryId, newSceneryId, materialsMap) {
     const oldNonSolidObjects = NonSolidObjects.find({ owner: oldSceneryId })
 
-    oldNonSolidObjects.forEach(oldNonSolidObject => {
+    const newNonSolidObjectsIds = oldNonSolidObjects.map(oldNonSolidObject => {
       const newNonSolidObject = _.cloneDeep(oldNonSolidObject)
       delete newNonSolidObject._id
       newNonSolidObject.owner = newSceneryId
@@ -17,7 +17,11 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
       const newNonSolidObjectId = NonSolidObjectsDAO.insert(newNonSolidObject)
 
       ObjectsProperties.clone(oldNonSolidObjectId, newNonSolidObjectId)
+
+      return newNonSolidObjectId
     })
+
+    return newNonSolidObjectsIds
   }
 
   static create(sceneryId) {

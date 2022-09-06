@@ -10,7 +10,9 @@ export default class ObjectsProperties extends ObjectsPropertiesDAO {
     delete newObjectProperty._id
     newObjectProperty.owner = newObjectId
 
-    ObjectsPropertiesDAO.insert(newObjectProperty)
+    const newObjectPropertyId = ObjectsPropertiesDAO.insert(newObjectProperty)
+
+    return newObjectPropertyId
   }
 
   static create(objectId) {

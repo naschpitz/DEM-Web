@@ -5,6 +5,7 @@ import Calibrations from "./class.js"
 Meteor.methods({
   "calibrations.start"(calibrationId) {
     try {
+      this.unblock()
       Calibrations.start(calibrationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)

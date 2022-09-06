@@ -22,6 +22,8 @@ export default class Sceneries extends SceneriesDAO {
     const materialsMap = Materials.clone(oldSceneryId, newSceneryId)
     NonSolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
     SolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
+
+    return newSceneryId
   }
 
   static create(simulationId) {

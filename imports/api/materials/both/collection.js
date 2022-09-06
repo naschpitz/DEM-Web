@@ -11,6 +11,17 @@ Materials.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
   },
+  callSign: {
+    type: String,
+    label: "Unique ID",
+    regEx: SimpleSchema.RegEx.Id,
+    autoValue: function () {
+      if (!this.isSet) {
+        return Meteor.uuid()
+      }
+    },
+    optional: true,
+  },
   name: {
     type: String,
     label: "Name",
@@ -105,6 +116,6 @@ Materials.schema.messageBox.messages({
 
 Materials.attachSchema(Materials.schema)
 
-Meteor.isServer && Materials.rawCollection().createIndex({ owner: 1, name: 1 }, { background: true })
+Meteor.isServer && Materials.rawCollection().createIndex({ owner: 1, callSign: 1 }, { unique: true, background: true })
 
 export default Materials
