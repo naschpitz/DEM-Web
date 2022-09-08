@@ -32,4 +32,10 @@ export default class Sceneries extends SceneriesDAO {
 
     return sceneryId
   }
+
+  static getMaterialsBoundaries(sceneryId, variation) {
+    const materialsIds = Materials.find({ owner: sceneryId }, { fields: { _id: 1 } })
+
+    return materialsIds.map(materialId => Materials.getBoundaries(materialId, variation))
+  }
 }

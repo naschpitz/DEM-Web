@@ -20,9 +20,9 @@ Agents.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
   },
-  number: {
+  index: {
     type: Number,
-    label: "Number",
+    label: "Index",
     optional: false,
   },
   iteration: {

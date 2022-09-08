@@ -34,19 +34,19 @@ Calibrations.schema = new SimpleSchema({
     defaultValue: 0,
     optional: true,
   },
-  agents: {
+  agentsNumber: {
     type: Number,
     label: "Agents",
     defaultValue: 20,
     optional: true,
   },
-  domain: {
+  variation: {
     type: Number,
-    label: "Domain",
+    label: "Domain variation",
     defaultValue: 0.2,
     optional: true,
   },
-  instances: {
+  instancesNumber: {
     type: Number,
     label: "Instances",
     defaultValue: 2,

@@ -8,7 +8,7 @@ export default class Calibrations extends CalibrationsBoth {
   static start(calibrationId) {
     const calibration = Calibrations.findOne(calibrationId)
 
-    const agents = _.times(calibration.agents, i => Agents.create(calibrationId, i))
+    const agents = _.times(calibration.agentsNumber, index => Agents.create(calibrationId, index))
   }
 
   static pause(calibrationId) {}

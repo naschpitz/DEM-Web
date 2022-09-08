@@ -6,27 +6,32 @@ import Materials from "../../materials/both/class"
 import Sceneries from "../../sceneries/both/class"
 
 export default class Agents extends AgentsDAO {
-  static create(calibrationId, number) {
+  static create(calibrationId, index) {
     const calibration = Calibrations.findOne(calibrationId)
 
     // Clones the original simulation (thus, scenery and materials)
     const simulationId = Simulations.clone(calibration.owner)
 
     // Updates the materials for the cloned simulation's scenery
-    updateMaterials(simulationId)
+    initializeMaterials(simulationId, calibrationId, index)
 
-    const agentId = AgentsDAO.insert({
+    return AgentsDAO.insert({
       owner: calibrationId,
       simulation: simulationId,
-      number: number,
+      index: index,
     })
 
     // Updates the materials coefficients with the boundaries
-    function updateMaterials(simulationId) {
+    function initializeMaterials(simulationId, calibrationId, index) {
+      const calibration = Calibrations.findOne(calibrationId)
+
+      const variation = calibration.variation
+      const agentsNumber = calibration.agentsNumber
+
       const scenery = Sceneries.findOne({ owner: simulationId })
       const materials = Materials.find({ owner: scenery._id })
 
-      const materialsBoundaries = Calibrations.getMaterialsBoundaries(calibrationId)
+      const materialsBoundaries = Sceneries.getMaterialsBoundaries(scenery._id, variation)
 
       materials.forEach(material => {
         const materialBoundary = materialsBoundaries.find(
@@ -34,16 +39,16 @@ export default class Agents extends AgentsDAO {
         )
 
         const newCoefficients = materialBoundary.coefficients.map(materialBoundary =>
-          calculateCoefficient(materialBoundary, calibration.agents, i)
+          calculateCoefficient(materialBoundary, agentsNumber, index)
         )
 
         const newDragCoefficients = materialBoundary.dragCoefficients.map(materialBoundary =>
-          calculateCoefficient(materialBoundary, calibration.agents, i)
+          calculateCoefficient(materialBoundary, agentsNumber, index)
         )
 
-        function calculateCoefficient(materialBoundary, agents, index) {
+        function calculateCoefficient(materialBoundary, elementsNumber, index) {
           const width = materialBoundary.max - materialBoundary.min
-          const step = width / agents
+          const step = width / elementsNumber
 
           return materialBoundary.min + step * index
         }
@@ -55,7 +60,5 @@ export default class Agents extends AgentsDAO {
         })
       })
     }
-
-    return agentId
   }
 }

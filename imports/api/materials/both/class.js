@@ -57,4 +57,23 @@ export default class Materials extends MaterialsDAO {
   static removeByOwner(sceneryId) {
     MaterialsDAO.remove({ owner: sceneryId })
   }
+
+  static getBoundaries(materialId, variation) {
+    const material = Materials.findOne(materialId, { fields: { callSign: 1, coefficients: 1, dragCoefficients: 1 } })
+
+    return {
+      callSign: material.callSign,
+      coefficients: getMaxMin(material.coefficients),
+      dragCoefficients: getMaxMin(material.dragCoefficients),
+    }
+
+    function getMaxMin(array) {
+      return array.map(value => {
+        return {
+          max: value * (1 + variation),
+          min: value * (1 - variation),
+        }
+      })
+    }
+  }
 }

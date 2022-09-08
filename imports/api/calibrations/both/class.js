@@ -53,27 +53,4 @@ export default class Calibrations extends CalibrationsDAO {
       }
     )
   }
-
-  static getMaterialsBoundaries(calibrationId) {
-    const calibration = CalibrationsDAO.findOne(calibrationId)
-    const scenery = Sceneries.findOne({ owner: calibration.owner })
-    const materials = Materials.find({ owner: scenery._id })
-
-    return materials.map(material => {
-      return {
-        callSign: material.callSign,
-        coefficients: getMaxMin(material.coefficients, calibration.domain),
-        dragCoefficients: getMaxMin(material.dragCoefficients, calibration.domain),
-      }
-
-      function getMaxMin(array, variation) {
-        return array.map(value => {
-          return {
-            max: value * (1 + variation),
-            min: value * (1 - variation),
-          }
-        })
-      }
-    })
-  }
 }
