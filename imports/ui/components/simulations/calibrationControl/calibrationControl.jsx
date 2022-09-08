@@ -250,9 +250,9 @@ export default CalibrationControl = props => {
 
             <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
-                label="Agents"
-                name="agents"
-                value={_.get(calibration, "agents")}
+                label="# Agents"
+                name="agentsNumber"
+                value={_.get(calibration, "agentsNumber")}
                 type="field"
                 subtype="number"
                 allowNegative={false}
@@ -265,9 +265,9 @@ export default CalibrationControl = props => {
 
             <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
-                label="Domain"
-                name="domain"
-                value={_.get(calibration, "domain")}
+                label="Variation"
+                name="variation"
+                value={_.get(calibration, "variation")}
                 type="field"
                 subtype="percent"
                 append="%"
@@ -281,9 +281,9 @@ export default CalibrationControl = props => {
 
             <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
-                label="Instances"
-                name="instances"
-                value={_.get(calibration, "instances")}
+                label="# Instances"
+                name="instancesNumber"
+                value={_.get(calibration, "instancesNumber")}
                 type="field"
                 subtype="number"
                 allowNegative={false}
