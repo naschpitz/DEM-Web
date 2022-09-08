@@ -5,14 +5,12 @@ import Sceneries from "../../sceneries/both/class.js"
 import SimulationsDAO from "./dao.js"
 
 export default class Simulations extends SimulationsDAO {
-  static clone(simulationId, owner) {
+  static clone(simulationId) {
     const oldSimulation = SimulationsDAO.findOne(simulationId)
 
     const newSimulation = _.cloneDeep(oldSimulation)
     delete newSimulation._id
 
-    // If 'owner' is not undefined, sets it as the new simulation's owner.
-    if (owner) newSimulation.owner = owner
     newSimulation.name = oldSimulation.name + " (clone)"
     newSimulation.state = "new"
 

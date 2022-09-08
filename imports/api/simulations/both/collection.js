@@ -15,12 +15,6 @@ Simulations.schema = new SimpleSchema({
       if (this.isUpdate) this.unset()
     },
   },
-  parent: {
-    type: String,
-    label: "Parent Simulation",
-    regEx: SimpleSchema.RegEx.Id,
-    optional: true,
-  },
   name: {
     type: String,
     label: "Name",
