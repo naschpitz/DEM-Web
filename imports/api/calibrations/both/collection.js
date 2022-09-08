@@ -22,6 +22,18 @@ Calibrations.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true,
   },
+  maxIterations: {
+    type: Number,
+    label: "Maximum number of iterations",
+    defaultValue: 20,
+    optional: true,
+  },
+  currentIteration: {
+    type: Number,
+    label: "Current Iteration",
+    defaultValue: 0,
+    optional: true,
+  },
   agents: {
     type: Number,
     label: "Agents",
