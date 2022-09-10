@@ -13,7 +13,7 @@ Materials.schema = new SimpleSchema({
   },
   callSign: {
     type: String,
-    label: "Unique ID",
+    label: "Call sign",
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
       if (!this.isSet) {

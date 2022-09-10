@@ -34,3 +34,4 @@ reywood:publish-composite
 ostrio:files
 aldeed:schema-index
 nathantreid:css-modules
+percolate:migrations

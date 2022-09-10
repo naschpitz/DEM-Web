@@ -11,6 +11,17 @@ SolidObjects.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
   },
+  callSign: {
+    type: String,
+    label: "Call sign",
+    regEx: SimpleSchema.RegEx.Id,
+    autoValue: function () {
+      if (!this.isSet) {
+        return Meteor.uuid()
+      }
+    },
+    optional: true,
+  },
   name: {
     type: String,
     label: "Name",
