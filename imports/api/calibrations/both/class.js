@@ -2,8 +2,6 @@ import _ from "lodash"
 
 import CalibrationsDAO from "./dao.js"
 import DataSets from "../../dataSets/both/class.js"
-import Materials from "../../materials/both/class"
-import Sceneries from "../../sceneries/both/class"
 
 export default class Calibrations extends CalibrationsDAO {
   static clone(oldSimulationId, newSimulationId) {
