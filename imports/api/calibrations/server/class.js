@@ -26,6 +26,7 @@ export default class Calibrations extends CalibrationsBoth {
   static reset(calibrationId) {
     const agents = Agents.find({ owner: calibrationId })
 
+    CalibrationsBoth.update(calibrationId, { currentIteration: 0 })
     agents.forEach(agent => Agents.reset(agent._id))
   }
 
