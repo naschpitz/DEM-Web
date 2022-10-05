@@ -10,31 +10,37 @@ export default class Agents extends AgentsBoth {
   }
 
   static pause(agentId) {
-    const agent = Agents.findOne(agentId)
+    const agent = AgentsBoth.findOne(agentId)
 
     Simulations.pause(agent.simulation)
   }
 
   static stop(agentId) {
-    const agent = Agents.findOne(agentId)
+    const agent = AgentsBoth.findOne(agentId)
 
     Simulations.stop(agent.simulation)
   }
 
   static reset(agentId) {
-    const agent = Agents.findOne(agentId)
+    const agent = AgentsBoth.findOne(agentId)
 
     AgentsBoth.update(agentId, { iteration: 0 })
     Simulations.reset(agent.simulation)
   }
 
   static observe(agentId, callback) {
-    const agent = Agents.findOne(agentId)
+    const agent = AgentsBoth.findOne(agentId)
 
-    const agentObserve = AgentsBoth.find({ _id: agentId }).observe({ changed: callback })
-    const simulationObserve = Simulations.find({ _id: agent.simulation }).observe({ changed: callback })
+    const agentObserve = AgentsBoth.find({ _id: agentId }).observe({
+      changed: result => callback("agent", result),
+    })
+    const simulationObserve = Simulations.find({ _id: agent.simulation }).observe({
+      changed: result => callback("simulation", result),
+    })
 
     return {
+      agentObserve: agentObserve,
+      simulationObserve: simulationObserve,
       stop() {
         agentObserve.stop()
         simulationObserve.stop()

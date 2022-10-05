@@ -12,7 +12,9 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "cssModules": {
-    "extensions": ["module.css"]
+    "extensions": [
+      "module.css"
+    ]
   },
   "dependencies": {
     "@babel/runtime": "^7.8.3",

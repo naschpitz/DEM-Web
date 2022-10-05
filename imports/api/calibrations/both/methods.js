@@ -11,9 +11,9 @@ Meteor.methods({
     }
   },
 
-  "calibrations.update"(simulation) {
+  "calibrations.update"(calibration) {
     try {
-      Calibrations.updateObj(simulation)
+      Calibrations.updateObj(calibration)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

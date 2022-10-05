@@ -62,4 +62,11 @@ export default class Agents extends AgentsDAO {
       })
     }
   }
+
+  static getState(agentId) {
+    const agent = Agents.findOne(agentId)
+    const simulation = Simulations.findOne(agent.simulation)
+
+    return simulation.state
+  }
 }

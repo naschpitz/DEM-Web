@@ -7,35 +7,42 @@ export default class Hypervisor {
   constructor(calibrationId) {
     this.calibrationId = calibrationId
 
-    const calibration = Calibrations.findOne(calibrationId)
-    const calibrationObserver = Calibrations.find({ _id: calibrationId }).observe({ changed: this.keepAlive })
+    const calibration = Calibrations.findOne(this.calibrationId)
+    this.calibrationObserver = Calibrations.observe(calibrationId, this.calibrationHandler)
 
-    const agents = _.times(calibration.agentsNumber, index => Agents.create(calibrationId, index))
-    const agentsObservers = agents.map(agent => Agents.observe(agent._id, this.keepAlive))
+    const agents = _.times(calibration.agentsNumber, index => Agents.create(this.calibrationId, index))
+    this.agentsObservers = agents.map(agent => Agents.observe(agent._id, this.agentHandler))
   }
 
-  run() {
-    const calibration = Calibrations.findOne(this.calibrationId)
-
-    Calibrations.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
+  stopObservers() {
+    this.calibrationObserver.stop()
+    this.agentsObservers.forEach(observer => observer.stop())
   }
 
-  keepAlive() {
-    const calibration = Calibrations.findOne(this.calibrationId)
-
-    if (calibration.state !== "running") return
-    if (calibration.currentIteration >= calibration.maxIterations) return
-
-    const agents = Agents.find(
-      { owner: calibration._id, iteration: { $lt: calibration.currentIteration } },
-      { limit: calibration.instancesNumber }
-    )
-
-    if (_.isEmpty(agents)) {
-      this.run()
+  calibrationHandler(calibration) {
+    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
+      this.stopObservers()
       return
     }
 
-    agents.forEach(agent => Agents.start(agent._id))
+    let numRunningAgents = Calibrations.getNumRunningAgents(this.calibrationId)
+    const numMissingAgents = calibration.instancesNumber - numRunningAgents
+
+    if (numMissingAgents === 0) return
+
+    const eligibleAgents = Agents.find({
+      owner: this.calibrationId,
+      iteration: { lt: calibration.currentIteration },
+    }).fetch()
+
+    if (eligibleAgents.length === 0) {
+      Calibrations.nextIteration(this.calibrationId)
+      return
+    }
+
+    const agentsToStart = _.take(eligibleAgents, numMissingAgents)
+    agentsToStart.forEach(agent => Agents.start(agent._id))
   }
+
+  agentHandler(type, object) {}
 }
