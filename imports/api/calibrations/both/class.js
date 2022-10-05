@@ -38,6 +38,13 @@ export default class Calibrations extends CalibrationsDAO {
     return !!calibrationFound
   }
 
+  static removeByOwner(simulationId) {
+    const calibration = CalibrationsDAO.findOne({ owner: simulationId })
+
+    DataSets.removeByOwner(calibration._id)
+    CalibrationsDAO.remove(calibration._id)
+  }
+
   static removeServer(serverId) {
     CalibrationsDAO.update(
       {

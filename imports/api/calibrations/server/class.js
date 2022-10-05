@@ -1,11 +1,11 @@
 import Agents from "../../agents/server/class"
 import CalibrationsBoth from "../both/class.js"
-import DataSets from "../../dataSets/both/class"
 import Hypervisor from "./hypervisor"
 
 export default class Calibrations extends CalibrationsBoth {
   static start(calibrationId) {
-    new Hypervisor(calibrationId)
+    const hypervisor = new Hypervisor(calibrationId)
+    hypervisor.initialize()
 
     CalibrationsBoth.updateObj({ _id: calibrationId, state: "running" })
   }
@@ -29,13 +29,6 @@ export default class Calibrations extends CalibrationsBoth {
 
     const agents = Agents.find({ owner: calibrationId })
     agents.forEach(agent => Agents.reset(agent._id))
-  }
-
-  static removeByOwner(simulationId) {
-    const calibration = CalibrationsBoth.findOne({ owner: simulationId })
-
-    DataSets.removeByOwner(calibration._id)
-    CalibrationsBoth.remove(calibration._id)
   }
 
   static nextIteration(calibrationId) {
