@@ -24,13 +24,13 @@ export default CalibrationControl = props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
-    if (!props.simulationId) return
+    if (!props.calibrationId) return
 
-    Meteor.subscribe("calibrations.byOwner", props.simulationId, {
+    Meteor.subscribe("calibrations.calibration", props.calibrationId, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsCalibrationsReady(true),
     })
-  }, [props.simulationId])
+  }, [props.calibrationId])
 
   useTracker(() => {
     Meteor.subscribe("servers.list", {
@@ -44,7 +44,7 @@ export default CalibrationControl = props => {
   }, [isCalibrationsReady, isServersReady])
 
   const calibration = useTracker(() => {
-    return CalibrationClass.findOne(props.simulationId)
+    return CalibrationClass.findOne(props.calibrationId)
   })
 
   const servers = useTracker(() => {
@@ -70,7 +70,7 @@ export default CalibrationControl = props => {
 
     setIsStarting(true)
 
-    Meteor.call("calibrations.start", props.simulationId, error => {
+    Meteor.call("calibrations.start", props.calibrationId, error => {
       if (error) Alert.error("Error running calibration: " + error.reason)
       else Alert.success("Run order successfully issued.")
 
@@ -83,7 +83,7 @@ export default CalibrationControl = props => {
 
     setIsPausing(true)
 
-    Meteor.call("calibrations.pause", props.simulationId, error => {
+    Meteor.call("calibrations.pause", props.calibrationId, error => {
       if (error) Alert.error("Error pausing calibration: " + error.reason)
       else Alert.success("Pause order successfully issued.")
 
@@ -96,7 +96,7 @@ export default CalibrationControl = props => {
 
     setIsStopping(true)
 
-    Meteor.call("calibrations.stop", props.simulationId, error => {
+    Meteor.call("calibrations.stop", props.calibrationId, error => {
       if (error) Alert.error("Error stopping calibration: " + error.reason)
       else Alert.success("Stop order successfully issued.")
 
@@ -109,7 +109,7 @@ export default CalibrationControl = props => {
 
     setIsResetting(true)
 
-    Meteor.call("calibrations.reset", props.simulationId, error => {
+    Meteor.call("calibrations.reset", props.calibrationId, error => {
       if (error) Alert.error("Error resetting calibration: " + error.reason)
       else Alert.success("Calibration successfully reset.")
 
