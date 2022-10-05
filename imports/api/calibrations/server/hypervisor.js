@@ -6,9 +6,11 @@ import Calibrations from "./class"
 export default class Hypervisor {
   constructor(calibrationId) {
     this.calibrationId = calibrationId
+  }
 
+  initialize() {
     const calibration = Calibrations.findOne(this.calibrationId)
-    this.calibrationObserver = Calibrations.observe(calibrationId, this.calibrationHandler)
+    this.calibrationObserver = Calibrations.observe(this.calibrationId, this.calibrationHandler)
 
     const agents = _.times(calibration.agentsNumber, index => Agents.create(this.calibrationId, index))
     this.agentsObservers = agents.map(agent => Agents.observe(agent._id, this.agentHandler))
@@ -44,5 +46,8 @@ export default class Hypervisor {
     agentsToStart.forEach(agent => Agents.start(agent._id))
   }
 
-  agentHandler(type, object) {}
+  agentHandler(type, object) {
+    console.log("Hypervisor agentHandler() called.")
+    console.log(type, object)
+  }
 }
