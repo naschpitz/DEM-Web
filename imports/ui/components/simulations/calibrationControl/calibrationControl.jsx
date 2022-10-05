@@ -24,13 +24,13 @@ export default CalibrationControl = props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
-    if (!props.simulationId) return
+    if (!props.calibrationId) return
 
-    Meteor.subscribe("calibrations.byOwner", props.simulationId, {
+    Meteor.subscribe("calibrations.calibration", props.calibrationId, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsCalibrationsReady(true),
     })
-  }, [props.simulationId])
+  }, [props.calibrationId])
 
   useTracker(() => {
     Meteor.subscribe("servers.list", {
@@ -44,7 +44,7 @@ export default CalibrationControl = props => {
   }, [isCalibrationsReady, isServersReady])
 
   const calibration = useTracker(() => {
-    return CalibrationClass.findOne(props.simulationId)
+    return CalibrationClass.findOne(props.calibrationId)
   })
 
   const servers = useTracker(() => {
