@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
+import { Random } from "meteor/random"
 import SimpleSchema from "simpl-schema"
 
 const SolidObjects = new Mongo.Collection("solidObjects")
@@ -17,7 +18,7 @@ SolidObjects.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
       if (!this.isSet) {
-        return Meteor.uuid()
+        return Random.id()
       }
     },
     optional: true,

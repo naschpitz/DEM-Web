@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
+import { Random } from "meteor/random"
 import SimpleSchema from "simpl-schema"
 
 import Dimensions from "../../sharedSchemas/dimensions.js"
@@ -19,7 +20,7 @@ NonSolidObjects.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
       if (!this.isSet) {
-        return Meteor.uuid()
+        return Random.id()
       }
     },
     optional: true,
