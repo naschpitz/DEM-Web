@@ -15,6 +15,12 @@ Simulations.schema = new SimpleSchema({
       if (this.isUpdate) this.unset()
     },
   },
+  primary: {
+    type: Boolean,
+    label: "Primary",
+    defaultValue: true,
+    optional: true,
+  },
   name: {
     type: String,
     label: "Name",

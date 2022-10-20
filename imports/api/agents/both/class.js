@@ -9,8 +9,9 @@ export default class Agents extends AgentsDAO {
   static create(calibrationId, index) {
     const calibration = Calibrations.findOne(calibrationId)
 
-    // Clones the original simulation (thus, scenery and materials)
-    const simulationId = Simulations.clone(calibration.owner)
+    // Clones the original simulation (thus, scenery and materials). The cloned simulation is not primary, as it is
+    // intended to be used by the agents only.
+    const simulationId = Simulations.clone(calibration.owner, false)
     Simulations.updateObj({ _id: simulationId, server: calibration.server })
 
     // Updates the materials for the cloned simulation's scenery

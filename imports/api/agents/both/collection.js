@@ -56,6 +56,6 @@ Agents.schema.messageBox.messages({
 Agents.attachSchema(Agents.schema)
 
 Meteor.isServer && Agents.rawCollection().createIndex({ owner: 1 }, { background: true })
-Meteor.isServer && Agents.rawCollection().createIndex({ owner: 1, number: 1 }, { unique: true, background: true })
+Meteor.isServer && Agents.rawCollection().createIndex({ owner: 1, index: 1 }, { unique: true, background: true })
 
 export default Agents

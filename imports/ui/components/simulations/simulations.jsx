@@ -28,7 +28,7 @@ export default Simulations = props => {
   }, [])
 
   const simulations = useTracker(() => {
-    return SimulationsClass.find({}, { sort: { createdAt: -1 } }).fetch()
+    return SimulationsClass.find({ primary: true }, { sort: { createdAt: -1 } }).fetch()
   })
 
   const simulationsLogs = useTracker(() => {

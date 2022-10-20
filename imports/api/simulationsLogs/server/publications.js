@@ -23,7 +23,7 @@ if (Meteor.isServer) {
 
     return {
       find() {
-        return Simulations.find({ owner: this.userId }, { sort: { createdAt: -1 } })
+        return Simulations.find({ owner: this.userId, primary: true }, { sort: { createdAt: -1 } })
       },
       children: [
         {

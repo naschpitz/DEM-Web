@@ -2,6 +2,7 @@ import { Random } from "meteor/random"
 
 import Materials from "../imports/api/materials/both/collection"
 import NonSolidObjects from "../imports/api/nonSolidObjects/both/collection"
+import Simulations from "../imports/api/simulations/both/collection"
 import SolidObjects from "../imports/api/solidObjects/both/collection"
 
 Migrations.add({
@@ -28,5 +29,20 @@ Migrations.add({
     Materials.update({}, update, { validate: false })
     SolidObjects.update({}, update, { validate: false })
     NonSolidObjects.update({}, update, { validate: false })
+  },
+})
+
+Migrations.add({
+  version: 2,
+  name: "Add 'primary' property to Simulations",
+  up: () => {
+    const update = { $set: { primary: true } }
+
+    Simulations.update({}, update, { validate: false })
+  },
+  down: () => {
+    const update = { $unset: { primary: "" } }
+
+    Simulations.update({}, update, { validate: false })
   },
 })

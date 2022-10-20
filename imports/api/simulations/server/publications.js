@@ -8,11 +8,13 @@ if (Meteor.isServer) {
     return Simulations.find(
       {
         owner: this.userId,
+        primary: true,
       },
       {
         fields: {
           _id: 1,
           owner: 1,
+          primary: 1,
           name: 1,
           state: 1,
           frameTime: 1,
@@ -30,11 +32,5 @@ if (Meteor.isServer) {
     if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
 
     return Simulations.find({ _id: simulationId, owner: this.userId })
-  })
-
-  Meteor.publish("simulations.byParent", function (simulationId) {
-    if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
-
-    return Simulations.find({ owner: this.userId, parent: simulationId })
   })
 }

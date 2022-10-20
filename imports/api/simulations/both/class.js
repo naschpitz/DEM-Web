@@ -5,19 +5,23 @@ import Sceneries from "../../sceneries/both/class.js"
 import SimulationsDAO from "./dao.js"
 
 export default class Simulations extends SimulationsDAO {
-  static clone(simulationId) {
+  static clone(simulationId, primary) {
     const oldSimulation = SimulationsDAO.findOne(simulationId)
 
     const newSimulation = _.cloneDeep(oldSimulation)
     delete newSimulation._id
 
+    newSimulation.primary = primary
     newSimulation.name = oldSimulation.name + " (clone)"
     newSimulation.state = "new"
 
     const newSimulationId = SimulationsDAO.insert(newSimulation)
 
     Sceneries.clone(simulationId, newSimulationId)
-    Calibrations.clone(simulationId, newSimulationId)
+
+    if (primary) {
+      Calibrations.clone(simulationId, newSimulationId)
+    }
 
     return newSimulationId
   }
