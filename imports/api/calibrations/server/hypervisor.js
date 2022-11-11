@@ -10,10 +10,10 @@ export default class Hypervisor {
 
   initialize() {
     const calibration = Calibrations.findOne(this.calibrationId)
-    this.calibrationObserver = Calibrations.observe(this.calibrationId, this.calibrationHandler)
+    this.calibrationObserver = Calibrations.observe(this.calibrationId, this.calibrationHandler.bind(this))
 
-    const agents = _.times(calibration.agentsNumber, index => Agents.create(this.calibrationId, index))
-    this.agentsObservers = agents.map(agent => Agents.observe(agent._id, this.agentHandler))
+    const agentsIds = _.times(calibration.agentsNumber, index => Agents.create(this.calibrationId, index))
+    this.agentsObservers = agentsIds.map(agentId => Agents.observe(agentId, this.agentHandler))
   }
 
   stopObservers() {

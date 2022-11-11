@@ -5,7 +5,12 @@ import Hypervisor from "./hypervisor"
 export default class Calibrations extends CalibrationsBoth {
   static start(calibrationId) {
     const hypervisor = new Hypervisor(calibrationId)
-    hypervisor.initialize()
+
+    try {
+      hypervisor.initialize()
+    } catch (error) {
+      console.log(error)
+    }
 
     CalibrationsBoth.updateObj({ _id: calibrationId, state: "running" })
   }
@@ -38,14 +43,14 @@ export default class Calibrations extends CalibrationsBoth {
   }
 
   static getNumRunningAgents(calibrationId) {
-    const agents = Agents.find({ owner: calibrationId })
+    const agents = Agents.find({ owner: calibrationId }).fetch()
 
     return agents.reduce((acc, agent) => (Agents.getState(agent._id) === "running" ? acc + 1 : acc), 0)
   }
 
   static observe(calibrationId, callback) {
     return CalibrationsBoth.find({ _id: calibrationId }).observe({
-      changed: result => callback("calibration", result),
+      changed: result => callback(result),
     })
   }
 }
