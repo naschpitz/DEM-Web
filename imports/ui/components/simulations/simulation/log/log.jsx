@@ -8,58 +8,69 @@ import Alert from "react-s-alert"
 import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"
 
-import SimulationsClass from "../../../../../api/simulations/both/class.js"
-import SimulationsLogsClass from "../../../../../api/simulationsLogs/both/class.js"
+import CalibrationsClass from "../../../../../api/calibrations/both/class"
+import LogsClass from "../../../../../api/logs/both/class"
+import SimulationsClass from "../../../../../api/simulations/both/class"
 
 import "./log.css"
 
 export default Log = props => {
-  const [isSimulationReady, setIsSimulationReady] = useState(false)
-  const [isSimulationLogsReady, setIsSimulationLogsReady] = useState(false)
+  const [isObjectReady, setIsObjectReady] = useState(false)
+  const [isLogsReady, setIsLogsReady] = useState(false)
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
-    Meteor.subscribe("simulations.simulation", props.simulationId, {
-      onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-      onReady: () => setIsSimulationReady(true),
-    })
-  }, [props.simulationId])
+    const getPublicationName = () => {
+      switch (props.type) {
+        case "simulation":
+          return "simulations.simulation"
+        case "calibration":
+          return "calibrations.calibration"
+      }
+    }
+
+    if (props.type === "simulation") {
+      Meteor.subscribe(getPublicationName(), props.id, {
+        onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
+        onReady: () => setIsObjectReady(true),
+      })
+    }
+  }, [props.id])
 
   useTracker(() => {
-    Meteor.subscribe("simulationsLogs", props.simulationId, {
+    Meteor.subscribe("logs", props.id, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-      onReady: () => setIsSimulationLogsReady(true),
+      onReady: () => setIsLogsReady(true),
     })
-  }, [props.simulationId])
+  }, [props.id])
 
   useEffect(() => {
-    setIsReady(isSimulationReady && isSimulationLogsReady)
-  }, [isSimulationReady, isSimulationLogsReady])
+    setIsReady(isObjectReady && isLogsReady)
+  }, [isObjectReady, isLogsReady])
 
-  const simulation = useTracker(() => {
-    return SimulationsClass.findOne(props.simulationId)
+  const object = useTracker(() => {
+    switch (props.type) {
+      case "simulation":
+        return SimulationsClass.findOne(props.id)
+      case "calibration":
+        return CalibrationsClass.findOne(props.id)
+    }
   })
 
-  const simulationLogs = useTracker(() => {
-    return SimulationsLogsClass.find(
-      {
-        owner: props.simulationId,
-        progress: { $exists: true },
-      },
-      { sort: { createdAt: -1 } }
-    ).fetch()
+  const logs = useTracker(() => {
+    return LogsClass.find({ owner: props.id, progress: { $exists: true } }, { sort: { createdAt: -1 } }).fetch()
   })
 
-  const simulationLogsReverse = useTracker(() => {
-    return SimulationsLogsClass.find({ owner: props.simulationId }, { sort: { createdAt: 1 } }).fetch()
+  const logsReverse = useTracker(() => {
+    return LogsClass.find({ owner: props.id }, { sort: { createdAt: 1 } }).fetch()
   })
 
   function getPercentage() {
-    const simulationLog = _.head(simulationLogs)
+    const log = _.head(logs)
 
-    if (!simulationLog) return { value: 0, text: "N/A" }
+    if (!log) return { value: 0, text: "N/A" }
 
-    const percentage = (simulationLog.progress.step / simulationLog.progress.totalSteps) * 100
+    const percentage = (log.progress.step / log.progress.totalSteps) * 100
 
     return { value: percentage, text: percentage.toFixed(3) + "%" }
   }
@@ -96,27 +107,27 @@ export default Log = props => {
   }
 
   function getEt() {
-    const simulationLog = _.head(simulationLogs)
+    const log = _.head(logs)
 
-    if (!simulationLog) return "N/A"
+    if (!log) return "N/A"
 
-    const duration = moment.duration(simulationLog.progress.et * 1000)
+    const duration = moment.duration(log.progress.et * 1000)
 
     return getDuration(duration)
   }
 
   function getEta() {
-    const simulationLog = _.head(simulationLogs)
+    const log = _.head(logs)
 
-    if (!simulationLog || simulationLog.state !== "running") return "N/A"
+    if (!log || log.state !== "running") return "N/A"
 
-    const duration = moment.duration(simulationLog.progress.eta * 1000)
+    const duration = moment.duration(log.progress.eta * 1000)
 
     return getDuration(duration)
   }
 
   function getState() {
-    const state = _.get(simulation, "state")
+    const state = _.get(object, "state")
 
     switch (state) {
       case "new":
@@ -135,9 +146,9 @@ export default Log = props => {
   function getLogMessages() {
     let logMessages = ""
 
-    simulationLogsReverse.forEach(simulationLog => {
-      const date = simulationLog.createdAt
-      const message = simulationLog.message
+    logsReverse.forEach(log => {
+      const date = log.createdAt
+      const message = log.message
 
       if (message) {
         logMessages += moment(date).format("L HH:mm:ss") + " - " + message + "\n"

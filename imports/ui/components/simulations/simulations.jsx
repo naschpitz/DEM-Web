@@ -12,7 +12,7 @@ import FormInput from "@naschpitz/form-input"
 import ReactTable from "react-table-v6"
 
 import SimulationsClass from "../../../api/simulations/both/class.js"
-import SimulationsLogsClass from "../../../api/simulationsLogs/both/class.js"
+import LogsClass from "../../../api/logs/both/class.js"
 
 import "./simulations.css"
 
@@ -21,7 +21,7 @@ export default Simulations = props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
-    Meteor.subscribe("simulationsLogs.last", {
+    Meteor.subscribe("logs.last", "simulation", {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsReady(true),
     })
@@ -31,8 +31,8 @@ export default Simulations = props => {
     return SimulationsClass.find({ primary: true }, { sort: { createdAt: -1 } }).fetch()
   })
 
-  const simulationsLogs = useTracker(() => {
-    return SimulationsLogsClass.find({ progress: { $exists: true } }, { sort: { createdAt: -1 } }).fetch()
+  const logs = useTracker(() => {
+    return LogsClass.find({ progress: { $exists: true } }, { sort: { createdAt: -1 } }).fetch()
   })
 
   function getColumns() {
@@ -77,7 +77,7 @@ export default Simulations = props => {
         id: "progress",
         className: "text-center",
         accessor: data => {
-          const simulationLog = simulationsLogs.find(simulationLog => data._id === simulationLog.owner)
+          const simulationLog = logs.find(simulationLog => data._id === simulationLog.owner)
 
           return getPercentage(data, simulationLog)
         },
@@ -101,7 +101,7 @@ export default Simulations = props => {
         id: "et",
         className: "text-center",
         accessor: data => {
-          const simulationLog = simulationsLogs.find(simulationLog => data._id === simulationLog.owner)
+          const simulationLog = logs.find(simulationLog => data._id === simulationLog.owner)
 
           return getEt(simulationLog)
         },
@@ -111,7 +111,7 @@ export default Simulations = props => {
         id: "eta",
         className: "text-center",
         accessor: data => {
-          const simulationLog = simulationsLogs.find(simulationLog => data._id === simulationLog.owner)
+          const simulationLog = logs.find(simulationLog => data._id === simulationLog.owner)
 
           return getEta(simulationLog)
         },

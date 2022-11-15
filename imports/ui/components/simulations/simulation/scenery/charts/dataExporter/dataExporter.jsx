@@ -1,6 +1,5 @@
-import React, { useState } from "react"
+import React from "react"
 import { Meteor } from "meteor/meteor"
-import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import fileDownload from "js-file-download"
 

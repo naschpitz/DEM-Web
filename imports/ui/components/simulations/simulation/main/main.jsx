@@ -1,6 +1,6 @@
 import React from "react"
 
-import Log from "./../log/log.jsx"
+import Log from "../log/log.jsx"
 import Scenery from "../scenery/scenery.jsx"
 import SimulationControl from "../../simulationControl/simulationControl.jsx"
 
@@ -27,7 +27,7 @@ export default Main = props => {
         </div>
 
         <div className="card-body">
-          <Log simulationId={simulationId} />
+          <Log type="simulation" id={simulationId} />
         </div>
       </div>
 
