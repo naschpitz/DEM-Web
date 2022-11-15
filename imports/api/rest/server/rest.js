@@ -6,7 +6,7 @@ import connectRoute from "connect-route"
 
 import Frames from "../../frames/server/class.js"
 import Simulations from "../../simulations/server/class.js"
-import SimulationsLogs from "../../simulationsLogs/both/class.js"
+import Logs from "../../logs/both/class.js"
 
 WebApp.connectHandlers.use(
   connectRoute(function (router) {
@@ -40,7 +40,7 @@ WebApp.connectHandlers.use(
 
 WebApp.connectHandlers.use(
   connectRoute(function (router) {
-    router.post("/api/simulationsLogs", function (req, res, next) {
+    router.post("/api/logs", function (req, res, next) {
       let body = []
 
       req.on("data", chunk => body.push(chunk))
@@ -53,7 +53,7 @@ WebApp.connectHandlers.use(
             const simulationLog = EJSON.parse(data.toString())
 
             Simulations.setState(simulationLog.owner, simulationLog.state)
-            SimulationsLogs.insert(simulationLog)
+            Logs.insert(simulationLog)
           })
 
           zlib.inflate(compressedData, inflateCallback)

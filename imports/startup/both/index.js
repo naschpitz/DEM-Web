@@ -13,7 +13,7 @@ import "../../api/objectsProperties/both/methods.js"
 import "../../api/sceneries/both/methods.js"
 import "../../api/servers/both/methods.js"
 import "../../api/simulations/both/methods.js"
-import "../../api/simulationsLogs/both/methods.js"
+import "../../api/logs/both/methods.js"
 import "../../api/solidObjects/both/methods.js"
 import "../../api/videos/both/methods.js"
 

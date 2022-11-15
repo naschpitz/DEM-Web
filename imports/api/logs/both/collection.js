@@ -4,12 +4,12 @@ import SimpleSchema from "simpl-schema"
 
 import Progress from "./schemas/progress.js"
 
-const SimulationsLogs = new Mongo.Collection("simulationsLogs")
+const Logs = new Mongo.Collection("logs")
 
-SimulationsLogs.schema = new SimpleSchema({
+Logs.schema = new SimpleSchema({
   owner: {
     type: String,
-    label: "Simulation owner",
+    label: "Simulation / Calibration owner",
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
   },
@@ -49,8 +49,8 @@ SimulationsLogs.schema = new SimpleSchema({
   },
 })
 
-SimulationsLogs.attachSchema(SimulationsLogs.schema)
+Logs.attachSchema(Logs.schema)
 
-Meteor.isServer && SimulationsLogs.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && Logs.rawCollection().createIndex({ owner: 1 }, { background: true })
 
-export default SimulationsLogs
+export default Logs

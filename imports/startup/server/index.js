@@ -28,7 +28,7 @@ import "../../api/servers/server/publications.js"
 import "../../api/simulations/server/methods.js"
 import "../../api/simulations/server/publications.js"
 
-import "../../api/simulationsLogs/server/publications.js"
+import "../../api/logs/server/publications.js"
 
 import "../../api/solidObjects/server/publications.js"
 

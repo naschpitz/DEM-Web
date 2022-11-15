@@ -1,5 +1,6 @@
 import { Random } from "meteor/random"
 
+import Logs from "../imports/api/logs/both/collection"
 import Materials from "../imports/api/materials/both/collection"
 import NonSolidObjects from "../imports/api/nonSolidObjects/both/collection"
 import Simulations from "../imports/api/simulations/both/collection"
@@ -44,5 +45,16 @@ Migrations.add({
     const update = { $unset: { primary: "" } }
 
     Simulations.update({}, update, { validate: false })
+  },
+})
+
+Migrations.add({
+  version: 3,
+  name: "Rename 'simulationsLogs' collection to 'log'",
+  up: () => {
+    Logs.rawCollection().rename("logs")
+  },
+  down: () => {
+    Logs.rawCollection().rename("simulationsLogs")
   },
 })

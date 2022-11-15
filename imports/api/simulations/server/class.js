@@ -7,7 +7,7 @@ import NonSolidObjects from "../../nonSolidObjects/both/class.js"
 import Sceneries from "../../sceneries/server/class.js"
 import Servers from "../../servers/both/class.js"
 import SimulationsBoth from "../both/class.js"
-import SimulationsLogs from "../../simulationsLogs/both/class.js"
+import Logs from "../../logs/both/class.js"
 import SolidObjects from "../../solidObjects/both/class.js"
 
 export default class Simulations extends SimulationsBoth {
@@ -62,7 +62,7 @@ export default class Simulations extends SimulationsBoth {
     if (state === "running" || state === "paused") throw { message: "Running or paused simulations cannot be reset" }
 
     Sceneries.resetByOwner(simulationId)
-    SimulationsLogs.removeByOwner(simulationId)
+    Logs.removeByOwner(simulationId)
     SimulationsBoth.setState(simulationId, "new")
   }
 
@@ -78,7 +78,7 @@ export default class Simulations extends SimulationsBoth {
 
     Calibrations.removeByOwner(simulationId)
     Sceneries.removeByOwner(simulationId)
-    SimulationsLogs.removeByOwner(simulationId)
+    Logs.removeByOwner(simulationId)
   }
 
   static post(simulationId, postOptions) {
@@ -101,7 +101,7 @@ export default class Simulations extends SimulationsBoth {
         exception.message = error.message
       }
 
-      SimulationsLogs.insert(simulationLog)
+      Logs.insert(simulationLog)
       throw exception
     }
   }

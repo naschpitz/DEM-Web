@@ -1,19 +1,19 @@
 import { Meteor } from "meteor/meteor"
 
-import SimulationsLogs from "./class.js"
+import Logs from "./class.js"
 
 Meteor.methods({
-  "simulationsLogs.insert"(simulationLog) {
+  "logs.insert"(log) {
     try {
-      return SimulationsLogs.insert(simulationLog)
+      return Logs.insert(log)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "simulationsLogs.removeByOwner"(simulationId) {
+  "logs.removeByOwner"(ownerId) {
     try {
-      SimulationsLogs.removeByOwner(simulationId)
+      Logs.removeByOwner(ownerId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
