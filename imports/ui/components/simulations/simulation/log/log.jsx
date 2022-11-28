@@ -29,12 +29,10 @@ export default Log = props => {
       }
     }
 
-    if (props.type === "simulation") {
-      Meteor.subscribe(getPublicationName(), props.id, {
-        onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-        onReady: () => setIsObjectReady(true),
-      })
-    }
+    Meteor.subscribe(getPublicationName(), props.id, {
+      onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
+      onReady: () => setIsObjectReady(true),
+    })
   }, [props.id])
 
   useTracker(() => {

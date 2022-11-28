@@ -7,6 +7,7 @@ import ClipLoader from "react-spinners/ClipLoader"
 
 import CalibrationControl from "../../calibrationControl/calibrationControl.jsx"
 import DataSets from "./dataSets/dataSets.jsx"
+import Log from "../log/log"
 
 import CalibrationClass from "../../../../../api/calibrations/both/class.js"
 
@@ -39,6 +40,16 @@ export default Calibration = props => {
 
             <div className="card-body">
               <CalibrationControl calibrationId={calibration._id} showFields={true} />
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header">
+              <div className="panel-title">Log</div>
+            </div>
+
+            <div className="card-body">
+              <Log type="calibration" id={calibration._id} />
             </div>
           </div>
 
