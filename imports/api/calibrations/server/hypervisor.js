@@ -2,6 +2,7 @@ import _ from "lodash"
 
 import Agents from "../../agents/server/class"
 import Calibrations from "./class"
+import Logs from "../../logs/both/class"
 
 export default class Hypervisor {
   constructor(calibrationId) {
@@ -9,16 +10,37 @@ export default class Hypervisor {
   }
 
   initialize() {
-    const calibration = Calibrations.findOne(this.calibrationId)
-    this.calibrationObserver = Calibrations.observe(this.calibrationId, this.calibrationHandler.bind(this))
+    this.log("Hypervisor initialization began.")
 
+    const calibration = Calibrations.findOne(this.calibrationId)
+
+    this.log("Initializing calibration observer.")
+    this.calibrationObserver = Calibrations.observe(this.calibrationId, this.calibrationHandler.bind(this))
+    this.log("Calibration observer initialized.")
+
+    this.log("Creating agents.")
     const agentsIds = _.times(calibration.agentsNumber, index => Agents.create(this.calibrationId, index))
+    this.log("Agents created.")
+
+    this.log("Initializing agents observers.")
     this.agentsObservers = agentsIds.map(agentId => Agents.observe(agentId, this.agentHandler))
+    this.log("Agents observers initialized.")
+
+    this.log("Hypervisor initialization ended.")
   }
 
   stopObservers() {
+    this.log("Stopping observers.")
+
+    this.log("Stopping calibration observer.")
     this.calibrationObserver.stop()
+    this.log("Calibration observer stopped.")
+
+    this.log("Stopping agents observers.")
     this.agentsObservers.forEach(observer => observer.stop())
+    this.log("Agents observers stopped.")
+
+    this.log("Observers stopped.")
   }
 
   calibrationHandler(calibration) {
@@ -49,5 +71,9 @@ export default class Hypervisor {
   agentHandler(type, object) {
     console.log("Hypervisor agentHandler() called.")
     console.log(type, object)
+  }
+
+  log(message) {
+    Logs.insert({ owner: this.calibrationId, message: message })
   }
 }
