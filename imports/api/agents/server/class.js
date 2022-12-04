@@ -28,6 +28,19 @@ export default class Agents extends AgentsBoth {
     Simulations.reset(agent.simulation)
   }
 
+  static removeByOwner(owner) {
+    const agents = AgentsBoth.find({ owner: owner }).fetch()
+
+    agents.forEach(agent => {
+      const simulation = Simulations.findOne(agent.simulation)
+
+      Simulations.remove(simulation._id)
+    })
+
+    const agentIds = agents.map(agent => agent._id)
+    AgentsBoth.remove({ _id: { $in: agentIds } })
+  }
+
   static observe(agentId, callback) {
     const agent = AgentsBoth.findOne(agentId)
 
