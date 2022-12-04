@@ -34,8 +34,7 @@ export default class Calibrations extends CalibrationsBoth {
     CalibrationsBoth.updateObj({ _id: calibrationId, state: "new", currentIteration: 0 })
     Logs.removeByOwner(calibrationId)
 
-    const agents = Agents.find({ owner: calibrationId })
-    agents.forEach(agent => Agents.reset(agent._id))
+    Agents.removeByOwner(calibrationId)
   }
 
   static nextIteration(calibrationId) {
