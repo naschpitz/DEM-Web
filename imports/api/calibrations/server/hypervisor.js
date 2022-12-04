@@ -56,10 +56,11 @@ export default class Hypervisor {
 
     const eligibleAgents = Agents.find({
       owner: this.calibrationId,
-      iteration: { lt: calibration.currentIteration },
+      iteration: { $lt: calibration.currentIteration },
     }).fetch()
 
     if (eligibleAgents.length === 0) {
+      this.log("No eligible agents found, advancing to the next calibration iteration.")
       Calibrations.nextIteration(this.calibrationId)
       return
     }
