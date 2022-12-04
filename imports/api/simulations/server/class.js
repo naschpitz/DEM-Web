@@ -38,8 +38,11 @@ export default class Simulations extends SimulationsBoth {
 
   static pause(simulationId) {
     const simulation = Simulations.findOne(simulationId)
-    const serverId = simulation.server
+    const state = simulation.state
 
+    if (state !== "running") throw { message: "Only running simulations can be paused" }
+
+    const serverId = simulation.server
     const postOptions = Servers.getPostOptions(serverId, "/simulations/pause", simulation)
 
     this.post(simulationId, postOptions)
@@ -47,8 +50,12 @@ export default class Simulations extends SimulationsBoth {
 
   static stop(simulationId) {
     const simulation = Simulations.findOne(simulationId)
-    const serverId = simulation.server
+    const state = simulation.state
 
+    if (state !== "paused" && state !== "running")
+      throw { message: "Only paused or running simulations can be stopped" }
+
+    const serverId = simulation.server
     const postOptions = Servers.getPostOptions(serverId, "/simulations/stop", simulation)
 
     this.post(simulationId, postOptions)
@@ -56,7 +63,6 @@ export default class Simulations extends SimulationsBoth {
 
   static reset(simulationId) {
     const simulation = Simulations.findOne(simulationId)
-
     const state = simulation.state
 
     if (state === "running" || state === "paused") throw { message: "Running or paused simulations cannot be reset" }
@@ -68,7 +74,6 @@ export default class Simulations extends SimulationsBoth {
 
   static remove(simulationId) {
     const simulation = Simulations.findOne(simulationId)
-
     const state = simulation.state
 
     if (state !== "new" && state !== "stopped" && state !== "done")
@@ -76,9 +81,10 @@ export default class Simulations extends SimulationsBoth {
 
     SimulationsBoth.remove(simulationId)
 
-    Calibrations.removeByOwner(simulationId)
     Sceneries.removeByOwner(simulationId)
     Logs.removeByOwner(simulationId)
+
+    if (simulation.primary) Calibrations.removeByOwner(simulationId)
   }
 
   static post(simulationId, postOptions) {

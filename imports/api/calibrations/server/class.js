@@ -17,24 +17,48 @@ export default class Calibrations extends CalibrationsBoth {
   }
 
   static pause(calibrationId) {
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "paused" })
+    const calibration = CalibrationsBoth.findOne(calibrationId)
+    const state = calibration.state
+
+    if (state !== "running") throw { message: "Only running calibrations can be paused" }
 
     const agents = Agents.find({ owner: calibrationId })
-    agents.forEach(agent => Agents.pause(agent._id))
+    agents.forEach(agent => {
+      const state = Agents.getState(agent._id)
+
+      if (state === "running") Agents.pause(agent._id)
+    })
+
+    CalibrationsBoth.updateObj({ _id: calibrationId, state: "paused" })
   }
 
   static stop(calibrationId) {
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "stopped" })
+    const calibration = CalibrationsBoth.findOne(calibrationId)
+    const state = calibration.state
+
+    if (state !== "paused" && state !== "running")
+      throw { message: "Only paused or running calibrations can be stopped" }
 
     const agents = Agents.find({ owner: calibrationId })
-    agents.forEach(agent => Agents.stop(agent._id))
+    agents.forEach(agent => {
+      const state = Agents.getState(agent._id)
+
+      if (state === "running" || state === "paused") Agents.stop(agent._id)
+    })
+
+    CalibrationsBoth.updateObj({ _id: calibrationId, state: "stopped" })
   }
 
   static reset(calibrationId) {
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "new", currentIteration: 0 })
-    Logs.removeByOwner(calibrationId)
+    const calibration = CalibrationsBoth.findOne(calibrationId)
+    const state = calibration.state
 
+    if (state === "running" || state === "paused") throw { message: "Running or paused calibration cannot be reset" }
+
+    Logs.removeByOwner(calibrationId)
     Agents.removeByOwner(calibrationId)
+
+    CalibrationsBoth.updateObj({ _id: calibrationId, state: "new", currentIteration: 0 })
   }
 
   static nextIteration(calibrationId) {
