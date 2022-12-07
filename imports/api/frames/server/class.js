@@ -40,6 +40,9 @@ export default class Frames extends FramesBoth {
 
     nonSolidObjects.forEach(nonSolidObject => {
       const particles = nonSolidObject.particles
+
+      if (!particles) return
+
       const data = EJSON.stringify(particles)
       const compressedData = zlib.deflateSync(data.toString(), { level: 9 })
 
@@ -50,6 +53,9 @@ export default class Frames extends FramesBoth {
 
     solidObjects.forEach(solidObject => {
       const faces = solidObject.faces
+
+      if (!faces) return
+
       const data = EJSON.stringify(faces)
       const compressedData = zlib.deflateSync(data.toString(), { level: 9 })
 
