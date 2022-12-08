@@ -21,7 +21,7 @@ export default Simulation = props => {
 
   useEffect(() => {
     checkUrl()
-  }, [])
+  })
 
   useTracker(() => {
     Meteor.subscribe("simulations.simulation", simulationId, {
