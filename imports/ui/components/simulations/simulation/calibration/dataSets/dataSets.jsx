@@ -48,7 +48,7 @@ export default DataSets = props => {
         <div className="card">
           <div className="card-header">
             <div className="panel-title d-flex">
-              <div className="align-self-center">Data Sets &nbsp;</div>
+              <div className="align-self-center">Data Sets</div>
               <div className="ml-auto align-self-center">
                 <ButtonEnhanced
                   buttonOptions={{

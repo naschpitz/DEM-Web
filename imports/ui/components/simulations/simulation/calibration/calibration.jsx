@@ -5,6 +5,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import Alert from "react-s-alert"
 import ClipLoader from "react-spinners/ClipLoader"
 
+import Agents from "./agents/agents.jsx"
 import CalibrationControl from "../../calibrationControl/calibrationControl.jsx"
 import DataSets from "./dataSets/dataSets.jsx"
 import Log from "../log/log"
@@ -33,7 +34,7 @@ export default Calibration = props => {
     if (calibration) {
       return (
         <div id="calibration">
-          <div className="card">
+          <div className="card addMargin">
             <div className="card-header">
               <div className="panel-title">Control</div>
             </div>
@@ -43,7 +44,7 @@ export default Calibration = props => {
             </div>
           </div>
 
-          <div className="card">
+          <div className="card addMargin">
             <div className="card-header">
               <div className="panel-title">Log</div>
             </div>
@@ -53,7 +54,13 @@ export default Calibration = props => {
             </div>
           </div>
 
-          <DataSets calibrationId={calibration._id} />
+          <div className="addMargin">
+            <DataSets calibrationId={calibration._id} />
+          </div>
+
+          <div className="addMargin">
+            <Agents calibrationId={calibration._id} />
+          </div>
         </div>
       )
     } else {

@@ -1,5 +1,7 @@
 import "./accounts.js"
 
+import "../../api/agents/server/publications.js"
+
 import "../../api/calibrations/server/methods.js"
 import "../../api/calibrations/server/publications.js"
 

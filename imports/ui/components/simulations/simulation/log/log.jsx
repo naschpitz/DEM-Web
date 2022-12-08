@@ -163,11 +163,13 @@ export default Log = props => {
   const eta = getEta()
   const logMessages = getLogMessages()
 
+  const { showLogMessages = true } = props
+
   if (isReady) {
     return (
       <div id="log">
         <div className="row">
-          <div className="col-sm-4 col-md-3 col-lg-2">
+          <div className="col-sm-4 col-md-3 col-lg-3">
             <FormInput
               label="State"
               name="state"
@@ -175,12 +177,12 @@ export default Log = props => {
               type="field"
               subtype="string"
               size="small"
-              labelSizes={{ sm: 5, md: 4, lg: 3 }}
-              inputSizes={{ sm: 7, md: 8, lg: 9 }}
+              labelSizes={{ sm: 6, md: 5, lg: 4 }}
+              inputSizes={{ sm: 6, md: 7, lg: 8 }}
             />
           </div>
 
-          <div className="col-sm-4 col-md-3 col-lg-2">
+          <div className="col-sm-4 col-md-3 col-lg-3">
             <div className="progress text-center">
               <div
                 className={progressBarClassName}
@@ -195,7 +197,7 @@ export default Log = props => {
             </div>
           </div>
 
-          <div className="col-sm-4 col-md-3 col-lg-2">
+          <div className="col-sm-4 col-md-3 col-lg-3">
             <FormInput
               label="ET"
               name="et"
@@ -203,12 +205,12 @@ export default Log = props => {
               type="field"
               subtype="string"
               size="small"
-              labelSizes={{ sm: 4, md: 3, lg: 2 }}
-              inputSizes={{ sm: 8, md: 9, lg: 10 }}
+              labelSizes={{ sm: 4, md: 4, lg: 3 }}
+              inputSizes={{ sm: 8, md: 8, lg: 9 }}
             />
           </div>
 
-          <div className="col-sm-4 col-md-3 col-lg-2">
+          <div className="col-sm-4 col-md-3 col-lg-3">
             <FormInput
               label="ETA"
               name="eta"
@@ -222,11 +224,13 @@ export default Log = props => {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-sm-12">
-            <textarea rows={10} style={{ width: "100%" }} value={logMessages} readOnly={true} />
+        {showLogMessages ? (
+          <div className="row">
+            <div className="col-sm-12">
+              <textarea rows={10} style={{ width: "100%" }} value={logMessages} readOnly={true} />
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     )
   } else {
