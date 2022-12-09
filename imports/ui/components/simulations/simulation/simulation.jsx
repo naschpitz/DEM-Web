@@ -81,15 +81,32 @@ export default Simulation = props => {
     }
   }
 
-  function renderTab() {
-    const tab = props.match.params.tab
+  function renderPrimary() {
+    return (
+      <React.Fragment>
+        <ul className="nav nav-tabs nav-justified" role="tablist">
+          <MenuLink tab="main" label="Main" />
+          <MenuLink tab="calibration" label="Calibration" />
+        </ul>
 
-    switch (tab) {
-      case "main":
-        return <Main name="main" simulationId={simulationId} />
-      case "calibration":
-        return <Calibration name="calibration" simulationId={simulationId} />
+        <div className="tab-content">{renderTab()}</div>
+      </React.Fragment>
+    )
+
+    function renderTab() {
+      const tab = props.match.params.tab
+
+      switch (tab) {
+        case "main":
+          return <Main name="main" simulationId={simulationId} />
+        case "calibration":
+          return <Calibration name="calibration" simulationId={simulationId} />
+      }
     }
+  }
+
+  function renderNonPrimary() {
+    return <Main name="main" simulationId={simulationId} />
   }
 
   const name = _.get(simulation, "name")
@@ -100,14 +117,7 @@ export default Simulation = props => {
         <div>
           <h2 className="text-center">{name}</h2>
 
-          <React.Fragment>
-            <ul className="nav nav-tabs nav-justified" role="tablist">
-              <MenuLink tab="main" label="Main" />
-              <MenuLink tab="calibration" label="Calibration" />
-            </ul>
-
-            <div className="tab-content">{renderTab()}</div>
-          </React.Fragment>
+          {simulation.primary ? renderPrimary() : renderNonPrimary()}
         </div>
       </div>
     )
