@@ -10,6 +10,7 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
     const newNonSolidObjectsIds = oldNonSolidObjects.map(oldNonSolidObject => {
       const newNonSolidObject = _.cloneDeep(oldNonSolidObject)
       delete newNonSolidObject._id
+
       newNonSolidObject.owner = newSceneryId
       newNonSolidObject.material = materialsMap.get(oldNonSolidObject.material)
 

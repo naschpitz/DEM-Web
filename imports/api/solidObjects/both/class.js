@@ -10,6 +10,7 @@ export default class SolidObjects extends SolidObjectsDAO {
     const newSolidObjectIds = oldSolidObjects.map(oldSolidObject => {
       const newSolidObject = _.cloneDeep(oldSolidObject)
       delete newSolidObject._id
+
       newSolidObject.owner = newSceneryId
       newSolidObject.material = materialsMap.get(oldSolidObject.material)
 
