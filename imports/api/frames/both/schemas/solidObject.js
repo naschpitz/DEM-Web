@@ -1,4 +1,5 @@
 import SimpleSchema from "simpl-schema"
+import { Random } from "meteor/random"
 
 export default SolidObject = new SimpleSchema({
   _id: {
@@ -6,11 +7,6 @@ export default SolidObject = new SimpleSchema({
     label: "Solid Object id",
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
-  },
-  name: {
-    type: String,
-    label: "Name",
-    optional: true,
   },
   mass: {
     type: Number,

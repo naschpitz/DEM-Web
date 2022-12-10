@@ -7,11 +7,6 @@ export default NonSolidObject = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
   },
-  name: {
-    type: String,
-    label: "Name",
-    optional: true,
-  },
   force: {
     type: Array,
     minCount: 1,
