@@ -15,7 +15,7 @@ DataSets.schema = new SimpleSchema({
   },
   object: {
     type: String,
-    label: "Object CallSign",
+    label: "Object",
     regEx: SimpleSchema.RegEx.Id,
     optional: true,
     custom: function () {

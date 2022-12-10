@@ -13,6 +13,8 @@ import DataSet from "./dataSet/dataSet.jsx"
 import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
 
 import "./dataSets.css"
+import _ from "lodash"
+import Agent from "../agents/agent/agent"
 
 export default DataSets = props => {
   const [isDataSetsReady, setIsDataSetsReady] = useState(false)
@@ -72,9 +74,13 @@ export default DataSets = props => {
           </div>
 
           <div className="card-body">
-            {dataSets.map(dataSet => (
-              <DataSet key={dataSet._id} dataSet={dataSet} />
-            ))}
+            {_.isEmpty(dataSets) ? (
+              <div className="alert alert-info" role="alert">
+                There are no data sets to be displayed.
+              </div>
+            ) : (
+              dataSets.map(dataSet => <DataSet key={dataSet._id} dataSet={dataSet} />)
+            )}
           </div>
         </div>
       </div>

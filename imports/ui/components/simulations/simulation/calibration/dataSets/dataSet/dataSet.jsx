@@ -51,13 +51,15 @@ export default DataSet = props => {
   }, [calibration])
 
   function onData(dataSet) {
-    const dataSetId = props.dataSet?._id
+    const dataSetId = props.dataSet._id
+
+    console.log(dataSet)
 
     const newDataSet = {
       _id: dataSetId,
-      object: dataSet.object,
+      object: dataSet.objectId,
       dataName: dataSet.dataName,
-      data: dataSet?.data.map(data => ({ time: data[0], value: data[1] })),
+      data: dataSet.data?.map(data => ({ time: data[0], value: data[1] })),
     }
 
     Meteor.call("dataSets.update", newDataSet, error => {
@@ -86,9 +88,9 @@ export default DataSet = props => {
   const sceneryId = scenery?._id
   const dataSetId = props.dataSet?._id
 
-  const object = props.dataSet?.object
+  const objectId = props.dataSet?.object
   const dataName = props.dataSet?.dataName
-  const data = props.dataSet?.data.map(data => [data.time, data.value])
+  const data = props.dataSet?.data?.map(data => [data.time, data.value])
 
   return (
     <div id="dataSet">
@@ -120,7 +122,7 @@ export default DataSet = props => {
         </div>
 
         <div className="card-body">
-          <DataSelector sceneryId={sceneryId} object={object} dataName={dataName} onData={onData} />
+          <DataSelector sceneryId={sceneryId} objectId={objectId} dataName={dataName} onData={onData} />
 
           <div className="row">
             <div className="col">

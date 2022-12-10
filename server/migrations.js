@@ -72,25 +72,14 @@ Migrations.add({
         value: data[1],
       }))
 
-      const object = NonSolidObjects.findOne(dataSet.object)?.callSign || SolidObjects.findOne(dataSet.object)?.callSign
-
-      DataSets.update(dataSet._id, { $set: { object: object, data: newData } })
+      DataSets.update(dataSet._id, { $set: { data: newData } })
     })
   },
   down: () => {
     DataSets.find({}).forEach(dataSet => {
       const newData = dataSet.data.map(data => [data.time, data.value])
 
-      const calibration = Calibrations.findOne(dataSet.owner)
-      const simulation = Simulations.findOne(calibration.owner)
-      const scenery = Sceneries.findOne({ owner: simulation._id })
-
-      const nonSolidObjectId = NonSolidObjects.findOne({ owner: scenery._id, callSign: dataSet.object })?._id
-      const solidObjectId = SolidObjects.findOne({ owner: scenery._id, callSign: dataSet.object })?._id
-
-      const object = nonSolidObjectId || solidObjectId
-
-      DataSets.update(dataSet._id, { $set: { object: object, data: newData } })
+      DataSets.update(dataSet._id, { $set: { data: newData } })
     })
   },
 })

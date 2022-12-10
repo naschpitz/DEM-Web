@@ -1,3 +1,11 @@
 #dataSets #dataSet:not(:first-child) {
     margin-top: 20px;
 }
+
+#dataSets #dataSet:last-child {
+    margin-bottom: 20px;
+}
+
+#dataSets .card-body {
+    padding-bottom: 0px;
+}

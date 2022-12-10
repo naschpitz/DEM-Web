@@ -39,10 +39,10 @@ export default DataSelector = props => {
   const objects = _.concat(nonSolidObjects, solidObjects)
 
   function onEvent(event, name, value) {
-    if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "object")))) return
+    if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId")))) return
 
     const newData = {
-      object: name === "object" ? value : props.object,
+      objectId: name === "objectId" ? value : props.objectId,
       dataName: name === "dataName" ? value : props.dataName,
     }
 
@@ -84,7 +84,7 @@ export default DataSelector = props => {
 
   function renderObjectsList() {
     const options = objects.map(object => {
-      return { value: object.callSign, text: object.name }
+      return { value: object._id, text: object.name }
     })
 
     options.unshift({ value: "", text: "-- Select an Object --" })
@@ -92,8 +92,8 @@ export default DataSelector = props => {
     return (
       <FormInput
         label="Object"
-        name="object"
-        value={props.object}
+        name="objectId"
+        value={props.objectId}
         type="dropdown"
         subtype="string"
         size="small"
