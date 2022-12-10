@@ -1,8 +1,11 @@
 import { Random } from "meteor/random"
 
+import Calibrations from "/imports/api/calibrations/both/collection"
+import DataSets from "../imports/api/dataSets/both/collection"
 import Logs from "../imports/api/logs/both/collection"
 import Materials from "../imports/api/materials/both/collection"
 import NonSolidObjects from "../imports/api/nonSolidObjects/both/collection"
+import Sceneries from "../imports/api/sceneries/both/collection"
 import Simulations from "../imports/api/simulations/both/collection"
 import SolidObjects from "../imports/api/solidObjects/both/collection"
 
@@ -56,5 +59,38 @@ Migrations.add({
   },
   down: () => {
     Logs.rawCollection().rename("simulationsLogs")
+  },
+})
+
+Migrations.add({
+  version: 5,
+  name: "Change DataSet to the new schema format",
+  up: () => {
+    DataSets.find({}).forEach(dataSet => {
+      const newData = dataSet.data.map(data => ({
+        time: data[0],
+        value: data[1],
+      }))
+
+      const object = NonSolidObjects.findOne(dataSet.object)?.callSign || SolidObjects.findOne(dataSet.object)?.callSign
+
+      DataSets.update(dataSet._id, { $set: { object: object, data: newData } })
+    })
+  },
+  down: () => {
+    DataSets.find({}).forEach(dataSet => {
+      const newData = dataSet.data.map(data => [data.time, data.value])
+
+      const calibration = Calibrations.findOne(dataSet.owner)
+      const simulation = Simulations.findOne(calibration.owner)
+      const scenery = Sceneries.findOne({ owner: simulation._id })
+
+      const nonSolidObjectId = NonSolidObjects.findOne({ owner: scenery._id, callSign: dataSet.object })?._id
+      const solidObjectId = SolidObjects.findOne({ owner: scenery._id, callSign: dataSet.object })?._id
+
+      const object = nonSolidObjectId || solidObjectId
+
+      DataSets.update(dataSet._id, { $set: { object: object, data: newData } })
+    })
   },
 })
