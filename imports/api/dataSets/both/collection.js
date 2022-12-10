@@ -2,6 +2,8 @@ import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
 
+import Data from "./schemas/data.js"
+
 const DataSets = new Mongo.Collection("dataSets")
 
 DataSets.schema = new SimpleSchema({
@@ -13,7 +15,7 @@ DataSets.schema = new SimpleSchema({
   },
   object: {
     type: String,
-    label: "Object",
+    label: "Object CallSign",
     regEx: SimpleSchema.RegEx.Id,
     optional: true,
     custom: function () {
@@ -25,6 +27,20 @@ DataSets.schema = new SimpleSchema({
   dataName: {
     type: String,
     label: "Data name",
+    allowedValues: [
+      "position[0]",
+      "position[1]",
+      "position[2]",
+      "velocity[0]",
+      "velocity[1]",
+      "velocity[2]",
+      "force[0]",
+      "force[1]",
+      "force[2]",
+      "kineticEnergyTotal",
+      "kineticEnergyExternal",
+      "kineticEnergyInternal",
+    ],
     optional: true,
     custom: function () {
       if ((this.isUpdate || this.isUpsert) && !this.isSet) {
@@ -43,12 +59,9 @@ DataSets.schema = new SimpleSchema({
     },
   },
   "data.$": {
-    type: Array,
-    minCount: 2,
-    maxCount: 2,
-  },
-  "data.$.$": {
-    type: Number,
+    type: Data,
+    label: "Data",
+    optional: true,
   },
   createdAt: {
     type: Date,
