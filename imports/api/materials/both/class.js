@@ -68,7 +68,7 @@ export default class Materials extends MaterialsDAO {
     }
 
     function getMaxMin(array) {
-      return array.map(value => {
+      return array?.map(value => {
         return {
           max: value * (1 + variation),
           min: value * (1 - variation),

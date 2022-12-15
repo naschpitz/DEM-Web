@@ -56,11 +56,11 @@ export default class Agents extends AgentsDAO {
           materialBoundary => materialBoundary.callSign === material.callSign
         )
 
-        const newCoefficients = materialBoundary.coefficients.map(materialBoundary =>
+        const newCoefficients = materialBoundary.coefficients?.map(materialBoundary =>
           calculateCoefficient(materialBoundary, agentsNumber, index)
         )
 
-        const newDragCoefficients = materialBoundary.dragCoefficients.map(materialBoundary =>
+        const newDragCoefficients = materialBoundary.dragCoefficients?.map(materialBoundary =>
           calculateCoefficient(materialBoundary, agentsNumber, index)
         )
 
@@ -174,14 +174,14 @@ export default class Agents extends AgentsDAO {
         const bestMaterial = bestMaterials.find(bestMaterial => bestMaterial.callSign === material.callSign)
         const bestGMaterial = bestGMaterials.find(bestGMaterial => bestGMaterial.callSign === material.callSign)
 
-        const newCoefficients = material.coefficients.map((coefficient, index) => {
+        const newCoefficients = material.coefficients?.map((coefficient, index) => {
           const bestCoefficient = bestMaterial.coefficients[index]
           const bestGCoefficient = bestGMaterial.coefficients[index]
 
           return calculateCoefficient(coefficient, bestCoefficient, bestGCoefficient)
         })
 
-        const newDragCoefficients = material.dragCoefficients.map((dragCoefficient, index) => {
+        const newDragCoefficients = material.dragCoefficients?.map((dragCoefficient, index) => {
           const bestDragCoefficient = bestMaterial.dragCoefficients[index]
           const bestGDragCoefficient = bestGMaterial.dragCoefficients[index]
 
