@@ -310,7 +310,7 @@ export default SimulationControl = props => {
           <hr />
 
           <div className="row">
-            <div className="col-sm-4 col-md-3 col-lg-2 offset-lg-1">
+            <div className="col-sm-6 col-md-4 col-lg-3">
               <FormInput
                 label="Server"
                 name="server"
@@ -319,13 +319,13 @@ export default SimulationControl = props => {
                 subtype="string"
                 size="small"
                 options={serversOptions}
-                labelSizes={{ sm: 5, md: 4, lg: 3 }}
-                inputSizes={{ sm: 7, md: 8, lg: 9 }}
+                labelSizes={{ sm: 5, md: 4, lg: 4 }}
+                inputSizes={{ sm: 7, md: 8, lg: 8 }}
                 onEvent={onEvent}
               />
             </div>
 
-            <div className="col-sm-4 col-md-3 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
                 label="Total Time"
                 name="totalTime"
@@ -333,13 +333,13 @@ export default SimulationControl = props => {
                 type="field"
                 subtype="number"
                 size="small"
-                labelSizes={{ sm: 5, md: 5, lg: 4 }}
-                inputSizes={{ sm: 7, md: 7, lg: 8 }}
+                labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                inputSizes={{ sm: 7, md: 7, lg: 6 }}
                 onEvent={onEvent}
               />
             </div>
 
-            <div className="col-sm-4 col-md-3 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
                 label="Time Step"
                 name="timeStep"
@@ -347,13 +347,13 @@ export default SimulationControl = props => {
                 type="field"
                 subtype="number"
                 size="small"
-                labelSizes={{ sm: 5, md: 5, lg: 4 }}
-                inputSizes={{ sm: 7, md: 7, lg: 8 }}
+                labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                inputSizes={{ sm: 7, md: 7, lg: 6 }}
                 onEvent={onEvent}
               />
             </div>
 
-            <div className="col-sm-4 col-md-3 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
                 label="Frame Time"
                 name="frameTime"
@@ -361,13 +361,13 @@ export default SimulationControl = props => {
                 type="field"
                 subtype="number"
                 size="small"
-                labelSizes={{ sm: 6, md: 6, lg: 5 }}
-                inputSizes={{ sm: 6, md: 6, lg: 7 }}
+                labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                inputSizes={{ sm: 7, md: 7, lg: 6 }}
                 onEvent={onEvent}
               />
             </div>
 
-            <div className="col-sm-4 col-md-3 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
                 label="Log Time"
                 name="logTime"
@@ -375,8 +375,8 @@ export default SimulationControl = props => {
                 type="field"
                 subtype="number"
                 size="small"
-                labelSizes={{ sm: 7, md: 7, lg: 4 }}
-                inputSizes={{ sm: 5, md: 5, lg: 8 }}
+                labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                inputSizes={{ sm: 7, md: 7, lg: 6 }}
                 onEvent={onEvent}
               />
             </div>

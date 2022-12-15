@@ -139,8 +139,8 @@ export default class Agents extends AgentsDAO {
   static nextIteration(agentId, bestGAgentId) {
     const agent = Agents.findOne(agentId)
 
-    // If the current agent's simulation is better than the best agent's simulation, then the best agent's simulation is
-    // updated with the current agent's simulation
+    // If the current agent's simulation is better than the best agent's simulation, then the best agent's simulation
+    // object is updated with the current agent's object
     if (agent.current.score < agent.best.score) {
       // Clones the current simulation (thus, scenery and materials).
       const newBestSimulationId = Simulations.clone(agent.current.simulation, false)

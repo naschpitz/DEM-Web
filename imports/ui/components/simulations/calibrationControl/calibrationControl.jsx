@@ -232,7 +232,7 @@ export default CalibrationControl = props => {
           <hr />
 
           <div className="row">
-            <div className="col-sm-6 col-md-5 col-lg-3">
+            <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
                 label="Server"
                 name="server"
@@ -242,8 +242,8 @@ export default CalibrationControl = props => {
                 size="small"
                 options={serversOptions}
                 search={false}
-                labelSizes={{ sm: 5, md: 4, lg: 3 }}
-                inputSizes={{ sm: 7, md: 8, lg: 9 }}
+                labelSizes={{ sm: 5, md: 4, lg: 4 }}
+                inputSizes={{ sm: 7, md: 8, lg: 8 }}
                 onEvent={onEvent}
               />
             </div>
@@ -288,8 +288,8 @@ export default CalibrationControl = props => {
                 subtype="number"
                 allowNegative={false}
                 size="small"
-                labelSizes={{ sm: 5, md: 7, lg: 7 }}
-                inputSizes={{ sm: 7, md: 5, lg: 5 }}
+                labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                inputSizes={{ sm: 7, md: 6, lg: 5 }}
                 onEvent={onEvent}
               />
             </div>
@@ -303,8 +303,23 @@ export default CalibrationControl = props => {
                 subtype="number"
                 allowNegative={false}
                 size="small"
-                labelSizes={{ sm: 5, md: 7, lg: 7 }}
-                inputSizes={{ sm: 7, md: 5, lg: 5 }}
+                labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                onEvent={onEvent}
+              />
+            </div>
+
+            <div className="col-sm-6 col-md-4 col-lg-2">
+              <FormInput
+                label="Max Energy"
+                name="maxEnergy"
+                value={_.get(calibration, "maxEnergy")}
+                type="field"
+                subtype="number"
+                allowNegative={false}
+                size="small"
+                labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                inputSizes={{ sm: 7, md: 6, lg: 5 }}
                 onEvent={onEvent}
               />
             </div>
