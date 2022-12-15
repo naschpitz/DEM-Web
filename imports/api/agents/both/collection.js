@@ -5,6 +5,8 @@ import SimpleSchema from "simpl-schema"
 import CalibrationsDAO from "./dao"
 import SimulationsDAO from "../../simulations/both/dao"
 
+import SimulationScore from "./schemas/simulationScore"
+
 const Agents = new Mongo.Collection("agents")
 
 Agents.schema = new SimpleSchema({
@@ -14,11 +16,15 @@ Agents.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
   },
-  simulation: {
-    type: String,
-    label: "Simulation Id",
-    regEx: SimpleSchema.RegEx.Id,
+  current: {
+    type: SimulationScore,
+    label: "Current",
     optional: false,
+  },
+  best: {
+    type: SimulationScore,
+    label: "Best",
+    optional: true,
   },
   index: {
     type: Number,

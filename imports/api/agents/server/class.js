@@ -1,4 +1,6 @@
 import AgentsBoth from "../both/class"
+import Frames from "../../frames/server/class"
+import Sceneries from "../../sceneries/server/class"
 import Simulations from "../../simulations/server/class"
 
 export default class Agents extends AgentsBoth {
@@ -6,35 +8,33 @@ export default class Agents extends AgentsBoth {
     const agent = Agents.findOne(agentId)
 
     AgentsBoth.updateObj({ _id: agentId, iteration: agent.iteration + 1 })
-    Simulations.start(agent.simulation)
+    Simulations.start(agent.current.simulation)
   }
 
   static pause(agentId) {
     const agent = AgentsBoth.findOne(agentId)
 
-    Simulations.pause(agent.simulation)
+    Simulations.pause(agent.current.simulation)
   }
 
   static stop(agentId) {
     const agent = AgentsBoth.findOne(agentId)
 
-    Simulations.stop(agent.simulation)
+    Simulations.stop(agent.current.simulation)
   }
 
   static reset(agentId) {
     const agent = AgentsBoth.findOne(agentId)
 
     AgentsBoth.updateObj({ _id: agentId, iteration: 0 })
-    Simulations.reset(agent.simulation)
+    Simulations.reset(agent.current.simulation)
   }
 
   static removeByOwner(owner) {
     const agents = AgentsBoth.find({ owner: owner }).fetch()
 
     agents.forEach(agent => {
-      const simulation = Simulations.findOne(agent.simulation)
-
-      Simulations.remove(simulation._id)
+      Simulations.remove({ _id: { $in: [agent.current.simulation, agent.best.simulation] } })
     })
 
     const agentIds = agents.map(agent => agent._id)
@@ -45,17 +45,27 @@ export default class Agents extends AgentsBoth {
     const agent = AgentsBoth.findOne(agentId)
 
     const agentObserve = AgentsBoth.find({ _id: agentId }).observe({
-      changed: result => callback("agent", result),
+      changed: newDocument => callback("agent", agentId, newDocument),
     })
-    const simulationObserve = Simulations.find({ _id: agent.simulation }).observe({
-      changed: result => callback("simulation", result),
+
+    const simulationObserve = Simulations.find({ _id: agent.current.simulation }).observe({
+      changed: newDocument => callback("simulation", agentId, newDocument),
+    })
+
+    const simulation = Simulations.findOne(agent.current.simulation)
+    const scenery = Sceneries.findOne({ owner: simulation._id })
+
+    const frameObserve = Frames.find({ owner: scenery._id }).observe({
+      added: newDocument => callback("frame", agentId, newDocument),
     })
 
     return {
       agentObserve: agentObserve,
+      frameObserve: frameObserve,
       simulationObserve: simulationObserve,
       stop() {
         agentObserve.stop()
+        frameObserve.stop()
         simulationObserve.stop()
       },
     }

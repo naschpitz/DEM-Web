@@ -37,9 +37,7 @@ export default class DataSets extends DataSetsDAO {
   }
 
   static create(calibrationId) {
-    const dataSetId = DataSetsDAO.insert({ owner: calibrationId })
-
-    return dataSetId
+    return DataSetsDAO.insert({ owner: calibrationId })
   }
 
   static removeByOwner(calibrationId) {

@@ -7,7 +7,6 @@ export default class Frames extends FramesDAO {
     const filter = []
 
     if (minInterval) filter.push({ time: { $gte: minInterval } })
-
     if (maxInterval) filter.push({ time: { $lte: maxInterval } })
 
     const selector = {
@@ -40,5 +39,16 @@ export default class Frames extends FramesDAO {
     })
 
     return data
+  }
+
+  static getHighestEnergy(frame) {
+    const nonSolidObjects = _.get(frame, "scenery.objects.nonSolidObjects", [])
+    const solidObjects = _.get(frame, "scenery.objects.solidObjects", [])
+
+    const objects = nonSolidObjects.concat(solidObjects)
+
+    const energies = objects.map(object => object.kineticEnergyTotal)
+
+    return Math.max(...energies)
   }
 }

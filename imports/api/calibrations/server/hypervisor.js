@@ -2,6 +2,7 @@ import _ from "lodash"
 
 import Agents from "../../agents/server/class"
 import Calibrations from "./class"
+import Frames from "../../frames/both/class"
 import Logs from "../../logs/both/class"
 
 export default class Hypervisor {
@@ -43,13 +44,13 @@ export default class Hypervisor {
     this.log("Observers stopped.")
   }
 
-  calibrationHandler(calibration) {
-    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
-      this.stopObservers()
-      return
-    }
+  dispatchAgents(calibration) {
+    // Do not dispatch agents if the calibration is not running or if there are no more iterations to run.
+    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) return
 
-    let numRunningAgents = Calibrations.getNumRunningAgents(this.calibrationId)
+    this.log("Dispatching agents.")
+
+    let numRunningAgents = Calibrations.getNumRunningAgents(calibration._id)
     const numMissingAgents = calibration.instancesNumber - numRunningAgents
 
     if (numMissingAgents === 0) return
@@ -69,9 +70,38 @@ export default class Hypervisor {
     agentsToStart.forEach(agent => Agents.start(agent._id))
   }
 
-  agentHandler(type, object) {
-    console.log("Hypervisor agentHandler() called.")
-    console.log(type, object)
+  calibrationHandler(calibration) {
+    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
+      this.stopObservers()
+      return
+    }
+
+    this.dispatchAgents()
+  }
+
+  agentHandler(type, agentId, object) {
+    const agent = Agents.findOne(agentId)
+    const calibration = Calibrations.findOne(agent.owner)
+
+    if (type === "frame") {
+      const frame = object
+
+      if (Frames.getHighestEnergy(frame) > calibration.maxEnergy) {
+        this.log(
+          `Agent #${agent.index} total kinetic energy has exceeded the maximum value set by the calibration, stopping it.`
+        )
+        Agents.stop(agentId)
+      }
+    }
+
+    if (type === "simulation") {
+      const simulation = object
+
+      if (simulation.state === "stopped") {
+        this.log(`Agent #${agent.index} simulation has stopped.`)
+        this.dispatchAgents(calibration)
+      }
+    }
   }
 
   log(message) {

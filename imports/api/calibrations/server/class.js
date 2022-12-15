@@ -64,6 +64,14 @@ export default class Calibrations extends CalibrationsBoth {
   static nextIteration(calibrationId) {
     const calibration = CalibrationsBoth.findOne(calibrationId)
 
+    const agents = Agents.find({ owner: calibrationId })
+    const scores = agents.forEach(agent => ({ agentId: agent._id, score: Agents.updateCurrentScore(agent._id) }))
+
+    // Gets the agentId with the lowest score
+    const bestAgentId = scores.reduce((acc, score) => (score.score < acc.score ? score : acc), scores[0]).agentId
+
+    agents.forEach(agent => Agents.nextIteration(agent._id, bestAgentId))
+
     CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
   }
 

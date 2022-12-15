@@ -13,7 +13,7 @@ export default Agent = props => {
   const history = useHistory()
 
   function onDetailsClick() {
-    history.push("/simulations/" + props.agent.simulation)
+    history.push("/simulations/" + props.agent.current.simulation)
   }
 
   return (
@@ -35,7 +35,7 @@ export default Agent = props => {
         </div>
 
         <div className="col-sm-6 col-md-7 col-lg-8">
-          <Log type="simulation" id={props.agent.simulation} showLogMessages={false} />
+          <Log type="simulation" id={props.agent.current.simulation} showLogMessages={false} />
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-1">
