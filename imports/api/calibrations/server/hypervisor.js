@@ -45,10 +45,13 @@ export default class Hypervisor {
   }
 
   dispatchAgents(calibration) {
-    // Do not dispatch agents if the calibration is not running or if there are no more iterations to run.
-    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) return
-
     this.log("Dispatching agents.")
+
+    // Do not dispatch agents if the calibration is not running or if there are no more iterations to run.
+    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
+      this.log("Calibration not running or no more iterations to run.")
+      return
+    }
 
     let numRunningAgents = Calibrations.getNumRunningAgents(calibration._id)
     const numMissingAgents = calibration.instancesNumber - numRunningAgents
@@ -56,7 +59,7 @@ export default class Hypervisor {
     if (numMissingAgents === 0) return
 
     const eligibleAgents = Agents.find({
-      owner: this.calibrationId,
+      owner: calibration._id,
       iteration: { $lt: calibration.currentIteration },
     }).fetch()
 
@@ -72,11 +75,12 @@ export default class Hypervisor {
 
   calibrationHandler(calibration) {
     if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
+      this.log("Calibration not running or no more iterations to run.")
       this.stopObservers()
       return
     }
 
-    this.dispatchAgents()
+    this.dispatchAgents(calibration)
   }
 
   agentHandler(type, agentId, object) {

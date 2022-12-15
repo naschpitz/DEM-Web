@@ -19,6 +19,8 @@ NonSolidObjects.schema = new SimpleSchema({
     label: "Call sign",
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
+      if (this.isUpdate) return
+
       if (!this.isSet) {
         return Random.id()
       }
