@@ -4,6 +4,7 @@ export default Best = new SimpleSchema({
   score: {
     type: Number,
     label: "Score Value",
+    defaultValue: 0,
     optional: true,
   },
   simulation: {

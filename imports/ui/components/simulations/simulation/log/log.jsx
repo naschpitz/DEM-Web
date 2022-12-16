@@ -130,10 +130,16 @@ export default Log = props => {
     switch (state) {
       case "new":
         return "New"
+      case "setToRun":
+        return "Set To Run"
       case "running":
         return "Running"
+      case "setToPause":
+        return "Set To Pause"
       case "paused":
         return "Paused"
+      case "setToStop":
+        return "Set To Stop"
       case "stopped":
         return "Stopped"
       case "done":

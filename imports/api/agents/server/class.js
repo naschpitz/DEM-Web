@@ -78,7 +78,7 @@ export default class Agents extends AgentsBoth {
 
     // If the current agent's simulation is better than the best agent's simulation, then the best agent's simulation
     // object is updated with the current agent's object
-    if (agent.current.score < agent.best.score || agent.best.score == null) {
+    if (agent.current.score < agent.best.score) {
       // Clones the current simulation (thus, scenery and materials).
       const newBestSimulationId = Simulations.clone(agent.current.simulation, false)
 
@@ -88,6 +88,8 @@ export default class Agents extends AgentsBoth {
       // Updates the best object with the new best simulation id and its score.
       Agents.updateObj({ _id: agentId, best: { score: agent.current.score, simulation: newBestSimulationId } })
     }
+
+    Simulations.reset(agent.current.simulation)
 
     const scenery = Sceneries.findOne({ owner: agent.current.simulation })
     const materials = Materials.find({ owner: scenery._id }).fetch()

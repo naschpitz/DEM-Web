@@ -57,7 +57,7 @@ Simulations.schema = new SimpleSchema({
   state: {
     type: String,
     label: "State",
-    allowedValues: ["new", "running", "paused", "stopped", "done"],
+    allowedValues: ["new", "setToRun", "running", "setToPause", "paused", "setToStop", "stopped", "done"],
     defaultValue: "new",
     optional: true,
   },

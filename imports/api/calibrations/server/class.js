@@ -83,7 +83,10 @@ export default class Calibrations extends CalibrationsBoth {
   static getNumRunningAgents(calibrationId) {
     const agents = Agents.find({ owner: calibrationId }).fetch()
 
-    return agents.reduce((acc, agent) => (Agents.getState(agent._id) === "running" ? acc + 1 : acc), 0)
+    return agents.reduce((acc, agent) => {
+      const state = Agents.getState(agent._id)
+      return state === "setToRun" || state === "running" ? acc + 1 : acc
+    }, 0)
   }
 
   static observe(calibrationId, callback) {

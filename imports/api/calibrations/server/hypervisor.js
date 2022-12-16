@@ -24,7 +24,7 @@ export default class Hypervisor {
     this.log("Agents created.")
 
     this.log("Initializing agents observers.")
-    this.agentsObservers = agentsIds.map(agentId => Agents.observe(agentId, this.agentHandler))
+    this.agentsObservers = agentsIds.map(agentId => Agents.observe(agentId, this.agentHandler.bind(this)))
     this.log("Agents observers initialized.")
 
     this.log("Hypervisor initialization ended.")
@@ -58,10 +58,16 @@ export default class Hypervisor {
 
     if (numMissingAgents === 0) return
 
-    const eligibleAgents = Agents.find({
-      owner: calibration._id,
-      iteration: { $lt: calibration.currentIteration },
-    }).fetch()
+    const eligibleAgents = Agents.find({ owner: calibration._id })
+      .fetch()
+      .filter(agent => {
+        const state = Agents.getState(agent._id)
+
+        if (state === "new" && agent.iteration === calibration.currentIteration) return true
+        if (state === "paused" && agent.iteration === calibration.currentIteration + 1) return true
+
+        return false
+      })
 
     if (eligibleAgents.length === 0) {
       this.log("No eligible agents found, advancing to the next calibration iteration.")
@@ -74,9 +80,10 @@ export default class Hypervisor {
   }
 
   calibrationHandler(calibration) {
+    if (calibration.state === "new") return
+
     if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
       this.log("Calibration not running or no more iterations to run.")
-      this.stopObservers()
       return
     }
 

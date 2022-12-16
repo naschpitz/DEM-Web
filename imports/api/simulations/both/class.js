@@ -43,7 +43,10 @@ export default class Simulations extends SimulationsDAO {
   }
 
   static usesServer(serverId) {
-    const simulationFound = Simulations.findOne({ server: serverId, state: { $in: ["paused", "running"] } })
+    const simulationFound = Simulations.findOne({
+      server: serverId,
+      state: { $in: ["setToRun", "running", "setToPause", "paused", "setToStop"] },
+    })
 
     return !!simulationFound
   }
@@ -52,7 +55,7 @@ export default class Simulations extends SimulationsDAO {
     Simulations.update(
       {
         server: serverId,
-        state: { $nin: ["paused", "running"] },
+        state: { $nin: ["setToRun", "running", "setToPause", "paused", "setToStop"] },
       },
       {
         $unset: {

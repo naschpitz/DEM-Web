@@ -33,6 +33,7 @@ export default class Simulations extends SimulationsBoth {
 
     const postOptions = Servers.getPostOptions(serverId, "/simulations/start", simulation)
 
+    SimulationsBoth.setState(simulationId, "setToRun")
     this.post(simulationId, postOptions)
   }
 
@@ -45,6 +46,7 @@ export default class Simulations extends SimulationsBoth {
     const serverId = simulation.server
     const postOptions = Servers.getPostOptions(serverId, "/simulations/pause", simulation)
 
+    SimulationsBoth.setState(simulationId, "setToPause")
     this.post(simulationId, postOptions)
   }
 
@@ -58,6 +60,7 @@ export default class Simulations extends SimulationsBoth {
     const serverId = simulation.server
     const postOptions = Servers.getPostOptions(serverId, "/simulations/stop", simulation)
 
+    SimulationsBoth.setState(simulationId, "setToStop")
     this.post(simulationId, postOptions)
   }
 
@@ -65,7 +68,9 @@ export default class Simulations extends SimulationsBoth {
     const simulation = Simulations.findOne(simulationId)
     const state = simulation.state
 
-    if (state === "running" || state === "paused") throw { message: "Running or paused simulations cannot be reset" }
+    if (["setToRun", "running", "setToPause", "paused", "setToStop"].includes(state)) {
+      throw { message: "Running or paused simulations cannot be reset" }
+    }
 
     Sceneries.resetByOwner(simulationId)
     Logs.removeByOwner(simulationId)
