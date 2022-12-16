@@ -52,11 +52,6 @@ Calibrations.schema = new SimpleSchema({
     defaultValue: 2,
     optional: true,
   },
-  stopDiff: {
-    type: Number,
-    label: "StopDiff",
-    optional: true,
-  },
   maxEnergy: {
     type: Number,
     label: "Maximum Energy",

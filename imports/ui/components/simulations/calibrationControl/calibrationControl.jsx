@@ -296,9 +296,9 @@ export default CalibrationControl = props => {
 
             <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
-                label="Stop Diff"
-                name="stopDiff"
-                value={_.get(calibration, "stopDiff")}
+                label="Max. Iterations"
+                name="maxIterations"
+                value={_.get(calibration, "maxIterations")}
                 type="field"
                 subtype="number"
                 allowNegative={false}
@@ -311,7 +311,7 @@ export default CalibrationControl = props => {
 
             <div className="col-sm-6 col-md-4 col-lg-2">
               <FormInput
-                label="Max Energy"
+                label="Max. Energy"
                 name="maxEnergy"
                 value={_.get(calibration, "maxEnergy")}
                 type="field"
