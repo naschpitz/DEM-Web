@@ -34,12 +34,19 @@ export default class Simulations extends SimulationsDAO {
   }
 
   static setState(simulationId, state) {
-    const simulation = {
+    const simulation = Simulations.findOne(simulationId)
+
+    // If the simulation is being set as running, check if it is ordered to pause or stop. If so, do not set it as running.
+    if ((simulation.state === "setToPause" || simulation.state === "setToStop") && state === "running") {
+      return
+    }
+
+    const newSimulation = {
       _id: simulationId,
       state: state,
     }
 
-    SimulationsDAO.updateObj(simulation)
+    SimulationsDAO.updateObj(newSimulation)
   }
 
   static usesServer(serverId) {
