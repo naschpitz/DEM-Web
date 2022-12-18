@@ -4,16 +4,20 @@ import moment from "moment"
 
 import Simulations from "../both/class"
 
-// "Find stalled Simulations and set its state to 'fail'",
+// Find stalled Simulations and set its state to 'fail'
 const bound = Meteor.bindEnvironment(() => {
-  console.log("Checking for stalled Simulations...")
-
   const tenSecondsAgo = moment().subtract(10, "seconds").toDate()
 
   const stalledSimulations = Simulations.find({
     state: { $in: ["setToRun", "setToPause", "setToStop"] },
     updatedAt: { $lte: tenSecondsAgo },
   })
+
+  // Will not continue with the job if there are no stalled simulations.
+  // Avoids console.log pollution.
+  if (stalledSimulations.count() === 0) {
+    return
+  }
 
   console.log("Found " + stalledSimulations.count() + " stalled Simulations.")
 
