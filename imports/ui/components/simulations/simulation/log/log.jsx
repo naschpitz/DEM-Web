@@ -144,6 +144,8 @@ export default Log = props => {
         return "Stopped"
       case "done":
         return "Done"
+      case "failed":
+        return "Failed"
     }
   }
 

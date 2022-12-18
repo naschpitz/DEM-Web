@@ -27,6 +27,7 @@ import "../../api/sceneries/server/publications.js"
 
 import "../../api/servers/server/publications.js"
 
+import "../../api/simulations/server/jobs.js"
 import "../../api/simulations/server/methods.js"
 import "../../api/simulations/server/publications.js"
 

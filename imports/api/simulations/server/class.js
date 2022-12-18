@@ -81,8 +81,8 @@ export default class Simulations extends SimulationsBoth {
     const simulation = Simulations.findOne(simulationId)
     const state = simulation.state
 
-    if (state !== "new" && state !== "stopped" && state !== "done")
-      throw { message: "Only new, stopped or done simulations can be removed" }
+    if (!["new", "stopped", "done", "failed"].includes(state))
+      throw { message: "Only new, stopped, done or failed simulations can be removed" }
 
     SimulationsBoth.remove(simulationId)
 
