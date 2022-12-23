@@ -94,11 +94,7 @@ export default class Agents extends AgentsBoth {
     const scenery = Sceneries.findOne({ owner: agent.current.simulation })
     const materials = Materials.find({ owner: scenery._id }).fetch()
 
-    if (agent.current.score < agent.best.score) {
-      Agents.updateObj({ _id: agentId, best: agent.current })
-    }
-
-    // Read the agent again from the database, because it may have been updated.
+    // Read the agent again from the database, because it might have been updated.
     agent = Agents.findOne(agentId)
 
     const bestScenery = Sceneries.findOne({ owner: agent.best.simulation })

@@ -15,19 +15,30 @@ export default class Hypervisor {
 
     const calibration = Calibrations.findOne(this.calibrationId)
 
+    const numAgents = Agents.find({ owner: this.calibrationId }).count()
+    const diffAgents = calibration.agentsNumber - numAgents
+
+    this.log(`Creating ${diffAgents} agents.`)
+    _.times(diffAgents, index => Agents.create(this.calibrationId, index))
+    this.log("Agents created.")
+
+    this.startObservers()
+
+    if (calibration.state === "running") this.dispatchAgents(calibration)
+
+    this.log("Hypervisor initialization ended.")
+  }
+
+  startObservers() {
     this.log("Initializing calibration observer.")
     this.calibrationObserver = Calibrations.observe(this.calibrationId, this.calibrationHandler.bind(this))
     this.log("Calibration observer initialized.")
 
-    this.log("Creating agents.")
-    const agentsIds = _.times(calibration.agentsNumber, index => Agents.create(this.calibrationId, index))
-    this.log("Agents created.")
+    const agents = Agents.find({ owner: this.calibrationId })
 
     this.log("Initializing agents observers.")
-    this.agentsObservers = agentsIds.map(agentId => Agents.observe(agentId, this.agentHandler.bind(this)))
+    this.agentsObservers = agents.map(agent => Agents.observe(agent._id, this.agentHandler.bind(this)))
     this.log("Agents observers initialized.")
-
-    this.log("Hypervisor initialization ended.")
   }
 
   stopObservers() {
@@ -108,7 +119,7 @@ export default class Hypervisor {
     if (type === "simulation") {
       const simulation = object
 
-      if (simulation.state === "stopped") {
+      if (simulation.state === "stopped" || simulation.state === "done") {
         this.log(`Agent #${agent.index} simulation has stopped.`)
         this.dispatchAgents(calibration)
       }

@@ -107,7 +107,7 @@ Materials.schema = new SimpleSchema({
 Materials.schema.addValidator(function () {
   const userId = this.userId
 
-  if (!userId) return "notAuthorized"
+  if (!userId && this.connection) return "notAuthorized"
 })
 
 Materials.schema.messageBox.messages({

@@ -1,3 +1,6 @@
+import _ from "lodash"
+import Spline from "cubic-spline"
+
 import AgentsDAO from "./dao"
 
 import Calibrations from "../../calibrations/both/class"
@@ -8,8 +11,6 @@ import NonSolidObjects from "../../nonSolidObjects/both/class"
 import Sceneries from "../../sceneries/both/class"
 import Simulations from "../../simulations/both/class"
 import SolidObjects from "../../solidObjects/both/class"
-
-import Spline from "cubic-spline"
 
 export default class Agents extends AgentsDAO {
   static create(calibrationId, index) {
@@ -116,16 +117,20 @@ export default class Agents extends AgentsDAO {
         const object = nonSolidObject || solidObject
 
         // Find in the frame object's list the one that matches the id of the object found above
-        const frameNonSolidObject = _.find(frame.object.nonSolidObjects, { _id: object._id })
-        const frameSolidObject = _.find(frame.object.solidObjects, { _id: object._id })
+        const frameNonSolidObject = _.find(frame.scenery.objects.nonSolidObjects, { _id: object._id })
+        const frameSolidObject = _.find(frame.scenery.objects.solidObjects, { _id: object._id })
 
         const frameObject = frameNonSolidObject || frameSolidObject
 
         // Get the value of the dataName in the frame object
-        const value = frameObject[dataName]
+        const value = _.get(frameObject, dataName)
 
         // Calculate the difference between the value and the expected value
-        const error = Math.abs(value - spline.at(frame.time))
+        const evaluatedValue = spline.at(frame.time)
+
+        // If evaluatedValue is NaN, it means that the frame time is out of the DataSet's time range. In this case, the
+        // error is 0.
+        const error = isNaN(evaluatedValue) ? 0 : Math.abs(value - evaluatedValue)
 
         return score + error
       }, 0)
