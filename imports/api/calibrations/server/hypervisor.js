@@ -58,12 +58,6 @@ export default class Hypervisor {
   dispatchAgents(calibration) {
     this.log("Dispatching agents.")
 
-    // Do not dispatch agents if the calibration is not running or if there are no more iterations to run.
-    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
-      this.log("Calibration not running or no more iterations to run.")
-      return
-    }
-
     let numRunningAgents = Calibrations.getNumRunningAgents(calibration._id)
     const numMissingAgents = calibration.instancesNumber - numRunningAgents
 
@@ -74,14 +68,13 @@ export default class Hypervisor {
       .filter(agent => {
         const state = Agents.getState(agent._id)
 
-        if (state === "new" && agent.iteration === calibration.currentIteration) return true
-        if (state === "paused" && agent.iteration === calibration.currentIteration + 1) return true
+        if (["new", "paused"].includes(state) && agent.iteration === calibration.currentIteration) return true
 
         return false
       })
 
-    if (eligibleAgents.length === 0) {
-      this.log("No eligible agents found, advancing to the next calibration iteration.")
+    if (numRunningAgents === 0 && eligibleAgents.length === 0) {
+      this.log("No running or eligible agents found, advancing to the next calibration iteration.")
       Calibrations.nextIteration(this.calibrationId)
       return
     }
@@ -91,10 +84,7 @@ export default class Hypervisor {
   }
 
   calibrationHandler(calibration) {
-    if (calibration.state === "new") return
-
-    if (calibration.state !== "running" || calibration.currentIteration >= calibration.maxIterations) {
-      this.log("Calibration not running or no more iterations to run.")
+    if (calibration.state !== "running") {
       return
     }
 
@@ -122,6 +112,11 @@ export default class Hypervisor {
       if (simulation.state === "stopped" || simulation.state === "done") {
         this.log(`Agent #${agent.index} simulation has stopped.`)
         this.dispatchAgents(calibration)
+      }
+
+      if (simulation.state === "failed") {
+        this.log(`Agent #${agent.index} simulation has failed.`)
+        Agents.retry(agentId)
       }
     }
   }

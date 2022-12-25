@@ -8,7 +8,6 @@ export default class Agents extends AgentsBoth {
   static start(agentId) {
     const agent = Agents.findOne(agentId)
 
-    AgentsBoth.updateObj({ _id: agentId, iteration: agent.iteration + 1 })
     Simulations.start(agent.current.simulation)
   }
 
@@ -28,6 +27,12 @@ export default class Agents extends AgentsBoth {
     const agent = AgentsBoth.findOne(agentId)
 
     AgentsBoth.updateObj({ _id: agentId, iteration: 0 })
+    Simulations.reset(agent.current.simulation)
+  }
+
+  static retry(agentId) {
+    const agent = AgentsBoth.findOne(agentId)
+
     Simulations.reset(agent.current.simulation)
   }
 

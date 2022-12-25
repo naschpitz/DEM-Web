@@ -75,9 +75,13 @@ export default class Calibrations extends CalibrationsBoth {
       bestGScores[0]
     ).agentId
 
-    agents.forEach(agent => Agents.nextIteration(agent._id, bestGAgentId))
+    if (calibration.currentIteration < calibration.maxIterations - 1) {
+      agents.forEach(agent => Agents.nextIteration(agent._id, bestGAgentId))
 
-    CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
+      CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
+    } else {
+      Calibrations.setState(calibrationId, "done")
+    }
   }
 
   static getNumRunningAgents(calibrationId) {
