@@ -21,19 +21,13 @@ export default class Frames extends FramesDAO {
     let data = ""
 
     frames.forEach(frame => {
-      let object = null
-
       const nonSolidObjects = _.get(frame, "scenery.objects.nonSolidObjects", null)
-
-      if (nonSolidObjects) {
-        object = nonSolidObjects.find(nonSolidObject => nonSolidObject._id === objectId)
-      }
+      const nonSolidObject = nonSolidObjects.find(nonSolidObject => nonSolidObject._id === objectId)
 
       const solidObjects = _.get(frame, "scenery.objects.solidObjects", null)
+      const solidObject = solidObjects.find(solidObject => solidObject._id === objectId)
 
-      if (solidObjects && !object) {
-        object = solidObjects.find(solidObject => solidObject._id === objectId)
-      }
+      const object = nonSolidObject || solidObject
 
       data += frame.time + "\t" + _.get(object, dataName) + "\n"
     })
@@ -50,5 +44,20 @@ export default class Frames extends FramesDAO {
     const energies = objects.map(object => object.kineticEnergyTotal)
 
     return Math.max(...energies)
+  }
+
+  static hasInvalidData(frame) {
+    const nonSolidObjects = _.get(frame, "scenery.objects.nonSolidObjects", [])
+    const solidObjects = _.get(frame, "scenery.objects.solidObjects", [])
+
+    const objects = nonSolidObjects.concat(solidObjects)
+
+    return objects.some(object => {
+      const invalidPosition = object.position.some(position => position == null || isNaN(position))
+      const invalidVelocity = object.velocity.some(velocity => velocity == null || isNaN(velocity))
+      const invalidForce = object.force.some(force => force == null || isNaN(force))
+
+      return invalidPosition || invalidVelocity || invalidForce
+    })
   }
 }

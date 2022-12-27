@@ -104,6 +104,11 @@ export default class Hypervisor {
         )
         Agents.stop(agentId)
       }
+
+      if (Frames.hasInvalidData(frame)) {
+        this.log(`Agent #${agent.index} has invalid data, stopping it.`)
+        Agents.stop(agentId)
+      }
     }
 
     if (type === "simulation") {

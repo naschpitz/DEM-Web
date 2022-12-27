@@ -16,6 +16,11 @@ export default class FramesImages {
 
     if (!frame) return
 
+    // Check if the frame has invalid data
+    if (Frames.hasInvalidData(frame)) {
+      throw { message: "The frame has invalid data, it won't be rendered" }
+    }
+
     const scenery = frame.scenery
 
     const camera = Cameras.findOne({ owner: frame.owner })
