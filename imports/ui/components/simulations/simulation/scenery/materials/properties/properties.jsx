@@ -98,6 +98,23 @@ export default Properties = props => {
         break
       }
 
+      case "morse": {
+        coefficients.push(
+          {
+            label: "De",
+            name: "coefficients[0]",
+            value: _.get(material, "coefficients[0]"),
+          },
+          {
+            label: "Ke",
+            name: "coefficients[1]",
+            value: _.get(material, "coefficients[1]"),
+          }
+        )
+
+        break
+      }
+
       case "lennard_jones": {
         coefficients.push(
           {
@@ -217,6 +234,7 @@ export default Properties = props => {
     { value: "inverse_linear", text: "Inverse Linear" },
     { value: "inverse_quadratic", text: "Inverse Quadratic" },
     { value: "inverse_cubic", text: "Inverse Cubic" },
+    { value: "morse", text: "Morse" },
     { value: "lennard_jones", text: "Lennard-Jones" },
     { value: "realistic_material", text: "Realistic Material" },
   ]

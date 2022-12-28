@@ -59,6 +59,7 @@ Materials.schema = new SimpleSchema({
       "inverse_linear",
       "inverse_quadratic",
       "inverse_cubic",
+      "morse",
       "lennard_jones",
       "realistic_material",
     ],
