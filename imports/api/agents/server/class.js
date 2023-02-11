@@ -49,6 +49,12 @@ export default class Agents extends AgentsBoth {
   }
 
   static setBestGlobal(agentId) {
+    // Get this agent based on the 'agentId'
+    const agent = AgentsBoth.findOne(agentId)
+
+    // Get the other agents with the same 'agent.owner' and set their 'bestGlobal' to false
+    AgentsBoth.update({ owner: agent.owner }, { $set: { "best.bestGlobal": false } }, { multi: true })
+
     AgentsBoth.updateObj({ _id: agentId, "best.bestGlobal": true })
   }
 
