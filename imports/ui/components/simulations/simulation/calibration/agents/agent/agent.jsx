@@ -21,7 +21,9 @@ export default Agent = props => {
       <div className="row">
         <div className="col-sm-1 col-md-1 col-lg-1">#{props.agent.index}</div>
 
-        <div className="col-sm-4 col-md-3 col-lg-2">
+        <div className="col-sm-1 col-md-1 col-lg-1">Best: {props.agent.best.bestGlobal ? "Yes" : "No"}</div>
+
+        <div className="col-sm-4 col-md-2 col-lg-2">
           <FormInput
             label="Iteration"
             name="iteration"
@@ -34,7 +36,7 @@ export default Agent = props => {
           />
         </div>
 
-        <div className="col-sm-6 col-md-7 col-lg-8">
+        <div className="col-sm-6 col-md-6 col-lg-7">
           <Log type="simulation" id={props.agent.current.simulation} showLogMessages={false} />
         </div>
 

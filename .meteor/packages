@@ -24,14 +24,14 @@ accounts-password@2.3.1
 jquery
 fourseven:scss
 session@1.2.0
+ostrio:files@1.14.2
 aldeed:collection2
 okgrow:analytics
 meteorhacks:cluster
 peerlibrary:reactive-publish
-http
-webapp@1.13.1
 reywood:publish-composite
-ostrio:files
 aldeed:schema-index
 nathantreid:css-modules
 percolate:migrations
+http
+webapp

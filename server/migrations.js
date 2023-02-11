@@ -1,11 +1,9 @@
 import { Random } from "meteor/random"
 
-import Calibrations from "/imports/api/calibrations/both/collection"
 import DataSets from "../imports/api/dataSets/both/collection"
 import Logs from "../imports/api/logs/both/collection"
 import Materials from "../imports/api/materials/both/collection"
 import NonSolidObjects from "../imports/api/nonSolidObjects/both/collection"
-import Sceneries from "../imports/api/sceneries/both/collection"
 import Simulations from "../imports/api/simulations/both/collection"
 import SolidObjects from "../imports/api/solidObjects/both/collection"
 
@@ -63,7 +61,7 @@ Migrations.add({
 })
 
 Migrations.add({
-  version: 5,
+  version: 4,
   name: "Change DataSet to the new schema format",
   up: () => {
     DataSets.find({}).forEach(dataSet => {

@@ -75,6 +75,8 @@ export default class Calibrations extends CalibrationsBoth {
       bestGScores[0]
     ).agentId
 
+    Agents.setBestGlobal(bestGAgentId)
+
     if (calibration.currentIteration < calibration.maxIterations - 1) {
       agents.forEach(agent => Agents.nextIteration(agent._id, bestGAgentId))
 

@@ -84,6 +84,8 @@ export default class Hypervisor {
   }
 
   calibrationHandler(calibration) {
+    calibration = Calibrations.findOne(calibration._id)
+
     if (calibration.state !== "running") {
       return
     }
@@ -116,7 +118,10 @@ export default class Hypervisor {
 
       if (simulation.state === "stopped" || simulation.state === "done") {
         this.log(`Agent #${agent.index} simulation has stopped.`)
-        this.dispatchAgents(calibration)
+
+        if (calibration.state === "running") {
+          this.dispatchAgents(calibration)
+        }
       }
 
       if (simulation.state === "failed") {

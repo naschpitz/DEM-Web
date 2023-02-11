@@ -62,8 +62,8 @@ nathantreid:css-modules@4.1.0
 npm-mongo@4.3.1
 okgrow:analytics@0.2.3
 ordered-dict@1.1.0
-ostrio:cookies@2.7.2
-ostrio:files@2.1.1
+ostrio:cookies@2.6.1
+ostrio:files@1.14.2
 peerlibrary:assert@0.3.0
 peerlibrary:extend-publish@0.6.0
 peerlibrary:fiber-utils@0.10.0

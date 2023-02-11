@@ -48,6 +48,10 @@ export default class Agents extends AgentsBoth {
     AgentsBoth.remove({ _id: { $in: agentIds } })
   }
 
+  static setBestGlobal(agentId) {
+    AgentsBoth.updateObj({ _id: agentId, "best.bestGlobal": true })
+  }
+
   static observe(agentId, callback) {
     const agent = AgentsBoth.findOne(agentId)
 
