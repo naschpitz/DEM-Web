@@ -70,7 +70,12 @@ export default class Calibrations extends CalibrationsBoth {
     Agents.find({ owner: calibrationId }).forEach(agent => {
       const state = Agents.getState(agent._id)
 
-      if (state === "done") agents.push(agent)
+      if (state === "done") {
+        Agents.updateCurrentScore(agent._id)
+
+        const updatedAgent = Agents.findOne(agent._id)
+        agents.push(updatedAgent)
+      }
     })
 
     const bestGScores = agents.map(agent => ({ agentId: agent._id, score: agent.best.score }))
