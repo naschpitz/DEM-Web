@@ -10,6 +10,8 @@ export default Chart = props => {
   useEffect(() => {
     if (!props.data) return
 
+    console.log(props.data)
+
     const data = props.data.map(data => ({ x: data[0], y: data[1] }))
     setData(data)
   }, [props.data])
@@ -24,8 +26,8 @@ export default Chart = props => {
               <stop offset="95%" stopColor="#21426E" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} />
-          <YAxis dataKey="y" tickFormatter={value => value.toExponential()} />
+          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} scale="linear" />
+          <YAxis dataKey="y" tickFormatter={value => value.toExponential()} scale="linear" />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Area
