@@ -9,6 +9,9 @@ import "./main.css"
 export default Main = props => {
   const simulationId = props.simulationId
 
+  // If the simulation is primary, show the viewer
+  const showViewer = props.primary
+
   return (
     <div id="main">
       <div className="card">
@@ -37,7 +40,7 @@ export default Main = props => {
         </div>
 
         <div className="card-body">
-          <Scenery simulationId={simulationId} />
+          <Scenery simulationId={simulationId} showViewer={showViewer} />
         </div>
       </div>
     </div>

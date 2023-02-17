@@ -235,13 +235,15 @@ export default Scenery = props => {
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header">Viewer</div>
+        {props.showViewer ? (
+          <div className="card">
+            <div className="card-header">Viewer</div>
 
-          <div className="card-body">
-            <Viewer sceneryId={sceneryId} />
+            <div className="card-body">
+              <Viewer sceneryId={sceneryId} />
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <div className="card">
           <div className="card-header">Charts</div>

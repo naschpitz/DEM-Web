@@ -98,7 +98,7 @@ export default Simulation = props => {
 
       switch (tab) {
         case "main":
-          return <Main name="main" simulationId={simulationId} />
+          return <Main name="main" simulationId={simulationId} primary={true} />
         case "calibration":
           return <Calibration name="calibration" simulationId={simulationId} />
       }
@@ -106,7 +106,7 @@ export default Simulation = props => {
   }
 
   function renderNonPrimary() {
-    return <Main name="main" simulationId={simulationId} />
+    return <Main name="main" simulationId={simulationId} primary={false} />
   }
 
   const name = _.get(simulation, "name")
