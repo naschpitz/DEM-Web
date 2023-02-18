@@ -34,7 +34,7 @@ const bound = Meteor.bindEnvironment(() => {
     return
   }
 
-  console.log("Found " + stalledSimulations.count() + " stalled Simulations.")
+  console.log("Found " + stalledSimulations.length + " stalled Simulations.")
 
   stalledSimulations.forEach(simulation => {
     Simulations.setState(simulation._id, "failed")
