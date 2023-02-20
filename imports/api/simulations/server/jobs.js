@@ -14,8 +14,8 @@ const bound = Meteor.bindEnvironment(() => {
     updatedAt: { $lte: tenSecondsAgo },
   }).fetch()
 
-  // For every simulation in the state "running" or "paused", check if the latest log message is older than 10 times the
-  // logTime. If it is, add the simulation to the list of stalled simulations.
+  // For every simulation in the "running" state, check if the latest log message is older than 10 times the logTime.
+  // If it is, add the simulation to the list of stalled simulations.
   Simulations.find({ state: { $in: ["running"] } }).forEach(simulation => {
     const latestLog = Logs.findOne({ owner: simulation._id }, { sort: { createdAt: -1 } })
 

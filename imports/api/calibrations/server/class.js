@@ -62,38 +62,48 @@ export default class Calibrations extends CalibrationsBoth {
   }
 
   static nextIteration(calibrationId) {
-    const calibration = CalibrationsBoth.findOne(calibrationId)
+    updateScores()
+    checkNextIteration()
 
-    // Find the agents for this calibration whose getState() is "done"
-    const agents = []
+    function updateScores() {
+      // Find the agents for this calibration whose getState() is "done"
+      const agents = []
 
-    Agents.find({ owner: calibrationId }).forEach(agent => {
-      const state = Agents.getState(agent._id)
+      Agents.find({ owner: calibrationId }).forEach(agent => {
+        const state = Agents.getState(agent._id)
 
-      if (state === "done") {
-        Agents.updateCurrentScore(agent._id)
+        if (state === "done") {
+          Agents.updateCurrentScore(agent._id)
 
-        const updatedAgent = Agents.findOne(agent._id)
-        agents.push(updatedAgent)
+          const updatedAgent = Agents.findOne(agent._id)
+          agents.push(updatedAgent)
+        }
+      })
+
+      const bestGScores = agents.map(agent => ({ agentId: agent._id, score: agent.best.score }))
+
+      // Gets the agentId with the lowest score
+      const bestGAgentId = bestGScores.reduce(
+        (acc, score) => (score.score < acc.score ? score : acc),
+        bestGScores[0]
+      ).agentId
+
+      Agents.setBestGlobal(bestGAgentId)
+    }
+
+    function checkNextIteration() {
+      const calibration = CalibrationsBoth.findOne(calibrationId)
+      const agents = Agents.find({ owner: calibrationId })
+
+      const bestGAgent = Agents.getBestGlobal(calibrationId)
+
+      if (calibration.currentIteration < calibration.maxIterations - 1) {
+        agents.forEach(agent => Agents.nextIteration(agent._id, bestGAgent._id))
+
+        CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
+      } else {
+        Calibrations.setState(calibrationId, "done")
       }
-    })
-
-    const bestGScores = agents.map(agent => ({ agentId: agent._id, score: agent.best.score }))
-
-    // Gets the agentId with the lowest score
-    const bestGAgentId = bestGScores.reduce(
-      (acc, score) => (score.score < acc.score ? score : acc),
-      bestGScores[0]
-    ).agentId
-
-    Agents.setBestGlobal(bestGAgentId)
-
-    if (calibration.currentIteration < calibration.maxIterations - 1) {
-      agents.forEach(agent => Agents.nextIteration(agent._id, bestGAgentId))
-
-      CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
-    } else {
-      Calibrations.setState(calibrationId, "done")
     }
   }
 

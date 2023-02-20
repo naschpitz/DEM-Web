@@ -68,8 +68,7 @@ export default class Hypervisor {
       .filter(agent => {
         const state = Agents.getState(agent._id)
 
-        if (["new", "paused", "stopped"].includes(state) && agent.iteration === calibration.currentIteration)
-          return true
+        if (["new", "paused"].includes(state) && agent.iteration === calibration.currentIteration) return true
 
         return false
       })
