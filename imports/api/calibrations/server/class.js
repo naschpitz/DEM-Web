@@ -22,14 +22,14 @@ export default class Calibrations extends CalibrationsBoth {
 
     if (state !== "running") throw { message: "Only running calibrations can be paused" }
 
+    CalibrationsBoth.updateObj({ _id: calibrationId, state: "paused" })
+
     const agents = Agents.find({ owner: calibrationId })
     agents.forEach(agent => {
       const state = Agents.getState(agent._id)
 
       if (state === "running") Agents.pause(agent._id)
     })
-
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "paused" })
   }
 
   static stop(calibrationId) {
@@ -39,14 +39,14 @@ export default class Calibrations extends CalibrationsBoth {
     if (state !== "paused" && state !== "running")
       throw { message: "Only paused or running calibrations can be stopped" }
 
+    CalibrationsBoth.updateObj({ _id: calibrationId, state: "stopped" })
+
     const agents = Agents.find({ owner: calibrationId })
     agents.forEach(agent => {
       const state = Agents.getState(agent._id)
 
       if (state === "running" || state === "paused") Agents.stop(agent._id)
     })
-
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "stopped" })
   }
 
   static reset(calibrationId) {

@@ -35,6 +35,10 @@ export default class Simulations extends SimulationsDAO {
 
   static setState(simulationId, state) {
     const simulation = Simulations.findOne(simulationId)
+    if (!simulation) {
+      throw { message: "Simulations.setState(): simulation not found" }
+      return
+    }
 
     // If the simulation is being set as running, check if it is ordered to pause or stop. If so, do not set it as running.
     if ((simulation.state === "setToPause" || simulation.state === "setToStop") && state === "running") {

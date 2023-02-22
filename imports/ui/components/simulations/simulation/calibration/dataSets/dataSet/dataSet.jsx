@@ -53,8 +53,6 @@ export default DataSet = props => {
   function onData(dataSet) {
     const dataSetId = props.dataSet._id
 
-    console.log(dataSet)
-
     const newDataSet = {
       _id: dataSetId,
       object: dataSet.objectId,

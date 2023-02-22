@@ -10,8 +10,6 @@ export default Chart = props => {
   useEffect(() => {
     if (!props.data) return
 
-    console.log(props.data)
-
     const data = props.data.map(data => ({ x: data[0], y: data[1] }))
     setData(data)
   }, [props.data])

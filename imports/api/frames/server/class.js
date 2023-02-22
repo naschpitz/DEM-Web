@@ -22,7 +22,17 @@ export default class Frames extends FramesBoth {
 
   static insert(frame) {
     const scenery = Sceneries.findOne(frame.owner)
+    if (!scenery) {
+      throw { message: "Frames.insert(): scenery not found" }
+      return
+    }
+
     const simulation = Simulations.findOne(scenery.owner)
+    if (!simulation) {
+      throw { message: "Frames.insert(): simulation not found" }
+      return
+    }
+
     const state = simulation.state
 
     // Refuses the frame if the simulation has been stopped or is new.

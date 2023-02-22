@@ -23,8 +23,7 @@ export default class Hypervisor {
     this.log("Agents created.")
 
     this.startObservers()
-
-    if (calibration.state === "running") this.dispatchAgents(calibration)
+    this.dispatchAgents(calibration)
 
     this.log("Hypervisor initialization ended.")
   }
@@ -56,12 +55,14 @@ export default class Hypervisor {
   }
 
   dispatchAgents(calibration) {
-    this.log("Dispatching agents.")
+    if (calibration.state !== "running") return
 
     let numRunningAgents = Calibrations.getNumRunningAgents(calibration._id)
     const numMissingAgents = calibration.instancesNumber - numRunningAgents
 
     if (numMissingAgents === 0) return
+
+    this.log("Dispatching agents.")
 
     const eligibleAgents = Agents.find({ owner: calibration._id })
       .fetch()
@@ -76,6 +77,7 @@ export default class Hypervisor {
     if (numRunningAgents === 0 && eligibleAgents.length === 0) {
       this.log("No running or eligible agents found, advancing to the next calibration iteration.")
       Calibrations.nextIteration(this.calibrationId)
+
       return
     }
 
@@ -85,10 +87,6 @@ export default class Hypervisor {
 
   calibrationHandler(calibration) {
     calibration = Calibrations.findOne(calibration._id)
-
-    if (calibration.state !== "running") {
-      return
-    }
 
     this.dispatchAgents(calibration)
   }
@@ -118,16 +116,14 @@ export default class Hypervisor {
 
       if (simulation.state === "stopped" || simulation.state === "done") {
         this.log(`Agent #${agent.index} simulation has stopped.`)
-
-        if (calibration.state === "running") {
-          this.dispatchAgents(calibration)
-        }
       }
 
       if (simulation.state === "failed") {
         this.log(`Agent #${agent.index} simulation has failed.`)
         Agents.retry(agentId)
       }
+
+      this.dispatchAgents(calibration)
     }
   }
 
