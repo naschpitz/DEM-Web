@@ -66,18 +66,18 @@ export default class Agents extends AgentsBoth {
     const agent = AgentsBoth.findOne(agentId)
 
     const agentObserve = AgentsBoth.find({ _id: agentId }).observe({
-      changed: newDocument => callback("agent", agentId, newDocument),
+      changed: agent => callback("agent", agentId, agent),
     })
 
     const simulationObserve = Simulations.find({ _id: agent.current.simulation }).observe({
-      changed: newDocument => callback("simulation", agentId, newDocument),
+      changed: simulation => callback("simulation", agentId, simulation),
     })
 
     const simulation = Simulations.findOne(agent.current.simulation)
     const scenery = Sceneries.findOne({ owner: simulation._id })
 
     const frameObserve = Frames.find({ owner: scenery._id }).observe({
-      added: newDocument => callback("frame", agentId, newDocument),
+      added: frame => callback("frame", agentId, frame),
     })
 
     return {

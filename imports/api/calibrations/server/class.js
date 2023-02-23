@@ -118,7 +118,7 @@ export default class Calibrations extends CalibrationsBoth {
 
   static observe(calibrationId, callback) {
     return CalibrationsBoth.find({ _id: calibrationId }).observe({
-      changed: result => callback(result),
+      changed: calibration => callback(calibration),
     })
   }
 }

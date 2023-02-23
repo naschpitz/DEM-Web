@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import _ from "lodash"
 
 import Agents from "../../agents/server/class"
@@ -8,6 +9,8 @@ import Logs from "../../logs/both/class"
 export default class Hypervisor {
   constructor(calibrationId) {
     this.calibrationId = calibrationId
+    this.runCheck = true
+    this.timer = null
   }
 
   initialize() {
@@ -23,9 +26,11 @@ export default class Hypervisor {
     this.log("Agents created.")
 
     this.startObservers()
-    this.dispatchAgents(calibration)
 
     this.log("Hypervisor initialization ended.")
+
+    const boundCheck = Meteor.bindEnvironment(this.check, null, this)
+    this.timer = setInterval(boundCheck, 5000)
   }
 
   startObservers() {
@@ -54,15 +59,22 @@ export default class Hypervisor {
     this.log("Observers stopped.")
   }
 
-  dispatchAgents(calibration) {
+  check() {
+    if (!this.runCheck) return
+    this.runCheck = false
+
+    this.dispatchAgents()
+  }
+
+  dispatchAgents() {
+    const calibration = Calibrations.findOne(this.calibrationId)
+
     if (calibration.state !== "running") return
 
     let numRunningAgents = Calibrations.getNumRunningAgents(calibration._id)
     const numMissingAgents = calibration.instancesNumber - numRunningAgents
 
     if (numMissingAgents === 0) return
-
-    this.log("Dispatching agents.")
 
     const eligibleAgents = Agents.find({ owner: calibration._id })
       .fetch()
@@ -77,18 +89,26 @@ export default class Hypervisor {
     if (numRunningAgents === 0 && eligibleAgents.length === 0) {
       this.log("No running or eligible agents found, advancing to the next calibration iteration.")
       Calibrations.nextIteration(this.calibrationId)
+      return
+    }
+
+    if (eligibleAgents.length !== 0) {
+      this.log("Dispatching agents.")
+      const agentsToStart = _.take(eligibleAgents, numMissingAgents)
+      agentsToStart.forEach(agent => Agents.start(agent._id))
+    }
+  }
+
+  calibrationHandler(calibration) {
+    if (calibration.state === "stopped") {
+      this.log("Calibration has stopped, stopping hypervisor.")
+      this.stopObservers()
+      clearInterval(this.timer)
 
       return
     }
 
-    const agentsToStart = _.take(eligibleAgents, numMissingAgents)
-    agentsToStart.forEach(agent => Agents.start(agent._id))
-  }
-
-  calibrationHandler(calibration) {
-    calibration = Calibrations.findOne(calibration._id)
-
-    this.dispatchAgents(calibration)
+    this.dispatchAgents()
   }
 
   agentHandler(type, agentId, object) {
@@ -109,6 +129,8 @@ export default class Hypervisor {
         this.log(`Agent #${agent.index} has invalid data, stopping it.`)
         Agents.stop(agentId)
       }
+
+      this.runCheck = true
     }
 
     if (type === "simulation") {
@@ -123,7 +145,7 @@ export default class Hypervisor {
         Agents.retry(agentId)
       }
 
-      this.dispatchAgents(calibration)
+      this.runCheck = true
     }
   }
 
