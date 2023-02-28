@@ -1,11 +1,12 @@
 import _ from "lodash"
 
 import Calibrations from "../../calibrations/both/class.js"
+import Logs from "../../logs/both/class.js"
 import Sceneries from "../../sceneries/both/class.js"
 import SimulationsDAO from "./dao.js"
 
 export default class Simulations extends SimulationsDAO {
-  static clone(simulationId, primary = true) {
+  static clone(simulationId, primary = true, logs = false) {
     const oldSimulation = SimulationsDAO.findOne(simulationId)
 
     const newSimulation = _.cloneDeep(oldSimulation)
@@ -21,6 +22,10 @@ export default class Simulations extends SimulationsDAO {
 
     if (primary) {
       Calibrations.clone(simulationId, newSimulationId)
+    }
+
+    if (logs) {
+      Logs.clone(simulationId, newSimulationId)
     }
 
     return newSimulationId

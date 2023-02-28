@@ -5,6 +5,7 @@ import SimpleSchema from "simpl-schema"
 import CalibrationsDAO from "./dao"
 import SimulationsDAO from "../../simulations/both/dao"
 
+import History from "./schemas/history"
 import SimulationScore from "./schemas/simulationScore"
 
 const Agents = new Mongo.Collection("agents")
@@ -36,6 +37,14 @@ Agents.schema = new SimpleSchema({
     label: "Iteration",
     defaultValue: 0,
     optional: true,
+  },
+  history: {
+    type: Array,
+    label: "History",
+    optional: true,
+  },
+  "history.$": {
+    type: History,
   },
 })
 

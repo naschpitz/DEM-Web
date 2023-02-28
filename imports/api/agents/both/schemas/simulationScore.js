@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema"
 
-export default Best = new SimpleSchema({
+export default SimulationScore = new SimpleSchema({
   score: {
     type: Number,
     label: "Score Value",

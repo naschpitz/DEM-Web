@@ -62,6 +62,24 @@ export default class Agents extends AgentsBoth {
     return AgentsBoth.findOne({ owner: calibrationId, "best.bestGlobal": true })
   }
 
+  static saveHistory(agentId) {
+    const agent = AgentsBoth.findOne(agentId)
+
+    const best = { ...agent.best }
+    best.simulation = Simulations.clone(agent.best.simulation, false, true)
+
+    const current = { ...agent.current }
+    current.simulation = Simulations.clone(agent.current.simulation, false, true)
+
+    const history = {
+      iteration: agent.iteration,
+      best: best,
+      current: current,
+    }
+
+    AgentsBoth.update(agentId, { $push: { history: history } })
+  }
+
   static observe(agentId, callback) {
     const agent = AgentsBoth.findOne(agentId)
 
@@ -93,6 +111,8 @@ export default class Agents extends AgentsBoth {
   }
 
   static nextIteration(agentId, bestGAgentId) {
+    Agents.saveHistory(agentId)
+
     let agent = Agents.findOne(agentId)
     const state = Agents.getState(agentId)
 
