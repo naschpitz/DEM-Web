@@ -79,7 +79,7 @@ export default Simulations = props => {
         accessor: data => {
           const simulationLog = logs.find(simulationLog => data._id === simulationLog.owner)
 
-          return getPercentage(simulationLog)
+          return LogsClass.getPercentage(simulationLog)
         },
         Cell: cellInfo => (
           <div className="progress text-center">
@@ -97,13 +97,13 @@ export default Simulations = props => {
         ),
       },
       {
-        Header: "Elapsed Time",
+        Header: "ET",
         id: "et",
         className: "text-center",
         accessor: data => {
           const simulationLog = logs.find(simulationLog => data._id === simulationLog.owner)
 
-          return getEt(simulationLog)
+          return LogsClass.getEt(simulationLog)
         },
       },
       {
@@ -113,7 +113,7 @@ export default Simulations = props => {
         accessor: data => {
           const simulationLog = logs.find(simulationLog => data._id === simulationLog.owner)
 
-          return getEta(simulationLog)
+          return LogsClass.getEta(simulationLog)
         },
       },
       {
@@ -146,42 +146,6 @@ export default Simulations = props => {
     const name = cellInfo.column.id
 
     return _.get(cellInfo.original, name)
-  }
-
-  function getDuration(duration) {
-    let ret = ""
-    ret += duration.years() + "y "
-    ret += duration.months() + "m "
-    ret += duration.days() + "d "
-    ret += " " + duration.hours().toString().padStart(2, "0")
-    ret += ":" + duration.minutes().toString().padStart(2, "0")
-    ret += ":" + duration.seconds().toString().padStart(2, "0")
-
-    return ret
-  }
-
-  function getEt(simulationLog) {
-    if (!simulationLog) return "N/A"
-
-    const duration = moment.duration(simulationLog.progress.et * 1000)
-
-    return getDuration(duration)
-  }
-
-  function getEta(simulationLog) {
-    if (!simulationLog || simulationLog.state !== "running") return "N/A"
-
-    const duration = moment.duration(simulationLog.progress.eta * 1000)
-
-    return getDuration(duration)
-  }
-
-  function getPercentage(simulationLog) {
-    if (!simulationLog) return { value: 0, text: "N/A" }
-
-    const percentage = (simulationLog.progress.step / simulationLog.progress.totalSteps) * 100
-
-    return { value: percentage, text: percentage.toFixed(3) + "%" }
   }
 
   function getProgressBarClassName(state, percentage) {
