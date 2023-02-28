@@ -58,4 +58,19 @@ export default class Calibrations extends CalibrationsDAO {
       }
     )
   }
+
+  static getState(calibration) {
+    switch (calibration.state) {
+      case "new":
+        return "New"
+      case "running":
+        return "Running"
+      case "paused":
+        return "Paused"
+      case "stopped":
+        return "Stopped"
+      case "done":
+        return "Done"
+    }
+  }
 }

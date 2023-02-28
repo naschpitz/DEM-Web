@@ -47,12 +47,7 @@ export default Log = props => {
   }, [isObjectReady, isLogsReady])
 
   const object = useTracker(() => {
-    switch (props.type) {
-      case "simulation":
-        return SimulationsClass.findOne(props.id)
-      case "calibration":
-        return CalibrationsClass.findOne(props.id)
-    }
+    return getObjectClass().findOne(props.id)
   })
 
   const logs = useTracker(() => {
@@ -63,19 +58,18 @@ export default Log = props => {
     return LogsClass.find({ owner: props.id }, { sort: { createdAt: 1 } }).fetch()
   })
 
-  function getPercentage() {
-    const log = _.head(logs)
-
-    if (!log) return { value: 0, text: "N/A" }
-
-    const percentage = (log.progress.step / log.progress.totalSteps) * 100
-
-    return { value: percentage, text: percentage.toFixed(3) + "%" }
+  function getObjectClass() {
+    switch (props.type) {
+      case "simulation":
+        return SimulationsClass
+      case "calibration":
+        return CalibrationsClass
+    }
   }
 
-  function getProgressBarClassName() {
-    const state = getState()
-    const percentage = getPercentage()
+  function getProgressBarClassName(log) {
+    const state = object.state
+    const percentage = LogsClass.getPercentage(log)
 
     let className = "progress-bar massive-font "
 
@@ -90,63 +84,6 @@ export default Log = props => {
     if (state === "running") className += "progress-bar-striped active"
 
     return className
-  }
-
-  function getDuration(duration) {
-    let ret = ""
-    ret += duration.years() + "y "
-    ret += duration.months() + "m "
-    ret += duration.days() + "d "
-    ret += " " + duration.hours().toString().padStart(2, "0")
-    ret += ":" + duration.minutes().toString().padStart(2, "0")
-    ret += ":" + duration.seconds().toString().padStart(2, "0")
-
-    return ret
-  }
-
-  function getEt() {
-    const log = _.head(logs)
-
-    if (!log) return "N/A"
-
-    const duration = moment.duration(log.progress.et * 1000)
-
-    return getDuration(duration)
-  }
-
-  function getEta() {
-    const log = _.head(logs)
-
-    if (!log || log.state !== "running") return "N/A"
-
-    const duration = moment.duration(log.progress.eta * 1000)
-
-    return getDuration(duration)
-  }
-
-  function getState() {
-    const state = _.get(object, "state")
-
-    switch (state) {
-      case "new":
-        return "New"
-      case "setToRun":
-        return "Set To Run"
-      case "running":
-        return "Running"
-      case "setToPause":
-        return "Set To Pause"
-      case "paused":
-        return "Paused"
-      case "setToStop":
-        return "Set To Stop"
-      case "stopped":
-        return "Stopped"
-      case "done":
-        return "Done"
-      case "failed":
-        return "Failed"
-    }
   }
 
   function getLogMessages() {
@@ -164,11 +101,13 @@ export default Log = props => {
     return logMessages
   }
 
-  const state = getState()
-  const percentage = getPercentage()
-  const progressBarClassName = getProgressBarClassName()
-  const et = getEt()
-  const eta = getEta()
+  const log = _.head(logs)
+
+  const state = getObjectClass().getState(object)
+  const percentage = LogsClass.getPercentage(log)
+  const progressBarClassName = getProgressBarClassName(log)
+  const et = LogsClass.getEt(log)
+  const eta = LogsClass.getEta(log)
   const logMessages = getLogMessages()
 
   const { showLogMessages = true } = props

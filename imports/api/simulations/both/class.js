@@ -80,4 +80,27 @@ export default class Simulations extends SimulationsDAO {
       }
     )
   }
+
+  static getState(simulation) {
+    switch (simulation.state) {
+      case "new":
+        return "New"
+      case "setToRun":
+        return "Set To Run"
+      case "running":
+        return "Running"
+      case "setToPause":
+        return "Set To Pause"
+      case "paused":
+        return "Paused"
+      case "setToStop":
+        return "Set To Stop"
+      case "stopped":
+        return "Stopped"
+      case "done":
+        return "Done"
+      case "failed":
+        return "Failed"
+    }
+  }
 }
