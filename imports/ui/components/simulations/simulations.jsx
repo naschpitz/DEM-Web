@@ -79,7 +79,7 @@ export default Simulations = props => {
         accessor: data => {
           const simulationLog = logs.find(simulationLog => data._id === simulationLog.owner)
 
-          return getPercentage(data, simulationLog)
+          return getPercentage(simulationLog)
         },
         Cell: cellInfo => (
           <div className="progress text-center">
@@ -176,7 +176,7 @@ export default Simulations = props => {
     return getDuration(duration)
   }
 
-  function getPercentage(simulation, simulationLog) {
+  function getPercentage(simulationLog) {
     if (!simulationLog) return { value: 0, text: "N/A" }
 
     const percentage = (simulationLog.progress.step / simulationLog.progress.totalSteps) * 100
