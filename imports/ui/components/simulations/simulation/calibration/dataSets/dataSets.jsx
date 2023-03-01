@@ -1,20 +1,18 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
+import _ from "lodash"
+
+import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
 
 import Alert from "react-s-alert"
 import ClipLoader from "react-spinners/ClipLoader"
-
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaPlus } from "react-icons/fa"
 
 import DataSet from "./dataSet/dataSet.jsx"
 
-import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
-
 import "./dataSets.css"
-import _ from "lodash"
-import Agent from "../agents/agent/agent"
 
 export default DataSets = props => {
   const [isDataSetsReady, setIsDataSetsReady] = useState(false)

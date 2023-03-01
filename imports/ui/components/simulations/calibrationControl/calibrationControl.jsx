@@ -3,14 +3,13 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
+import CalibrationClass from "../../../../api/calibrations/both/class.js"
+import ServersClass from "../../../../api/servers/both/class.js"
+
 import Alert from "react-s-alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaPause, FaPlay, FaStop, FaSync } from "react-icons/fa"
-
 import FormInput from "@naschpitz/form-input"
-
-import CalibrationClass from "../../../../api/calibrations/both/class.js"
-import ServersClass from "../../../../api/servers/both/class.js"
 
 import "./calibrationControl.css"
 

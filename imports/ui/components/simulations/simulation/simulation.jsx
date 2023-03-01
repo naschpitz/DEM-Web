@@ -7,8 +7,9 @@ import _ from "lodash"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
 import Alert from "react-s-alert"
-import Calibration from "./calibration/calibration.jsx"
 import ClipLoader from "react-spinners/ClipLoader"
+
+import Calibration from "./calibration/calibration.jsx"
 import Main from "./main/main.jsx"
 
 import "./simulation.css"

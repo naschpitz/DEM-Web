@@ -4,13 +4,13 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
+import ServersClass from "../../../api/servers/both/class.js"
+
 import { FaPlus } from "react-icons/fa"
 import Alert from "react-s-alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import ReactTable from "react-table-v6"
-
-import ServersClass from "../../../api/servers/both/class.js"
 
 import "./servers.css"
 

@@ -4,15 +4,16 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
+import SimulationsClass from "../../../api/simulations/both/class.js"
+import LogsClass from "../../../api/logs/both/class.js"
+
 import { FaPlus } from "react-icons/fa"
 import Alert from "react-s-alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
-import SimulationControl from "./simulationControl/simulationControl.jsx"
 import FormInput from "@naschpitz/form-input"
 import ReactTable from "react-table-v6"
 
-import SimulationsClass from "../../../api/simulations/both/class.js"
-import LogsClass from "../../../api/logs/both/class.js"
+import SimulationControl from "./simulationControl/simulationControl.jsx"
 
 import "./simulations.css"
 

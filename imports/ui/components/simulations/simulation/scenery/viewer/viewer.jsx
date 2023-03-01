@@ -5,9 +5,10 @@ import PropTypes from "prop-types"
 import _ from "lodash"
 
 import Alert from "react-s-alert"
+import ERD from "element-resize-detector"
+
 import Canvas from "./canvas/canvas.jsx"
 import CameraControl from "./cameraControl/cameraControl.jsx"
-import ERD from "element-resize-detector"
 import FrameControl from "./frameControl/frameControl.jsx"
 import ObjectsProperties from "./objectsProperties/objectsProperties.jsx"
 import Video from "./video/video.jsx"

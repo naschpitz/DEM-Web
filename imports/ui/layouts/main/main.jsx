@@ -4,7 +4,6 @@ import { Route, Switch } from "react-router"
 import Alert from "react-s-alert"
 import ClipLoader from "react-spinners/ClipLoader"
 import Loadable from "react-loadable"
-
 import { UniqueModal } from "@naschpitz/unique-modal"
 
 import "./main.css"
@@ -147,6 +146,14 @@ const routes = [
   },
   {
     path: "/simulations/:simulationId/:tab?",
+    exact: true,
+    strict: false,
+    header: props => <Navbar {...props} />,
+    content: props => <Simulation {...props} />,
+    footer: () => <Footer />,
+  },
+  {
+    path: "/simulations/:simulationId/calibration/agents/:agentId",
     exact: true,
     strict: false,
     header: props => <Navbar {...props} />,

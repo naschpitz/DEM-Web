@@ -5,12 +5,13 @@ import { useTracker } from "meteor/react-meteor-data"
 import Users from "../../../api/users/both/class.js"
 
 import Alert from "react-s-alert"
-import ChangePassword from "../user/changePassword/changePassword.jsx"
 import { Link } from "react-router-dom"
+import { UniqueModalController } from "@naschpitz/unique-modal"
+
+import ChangePassword from "../user/changePassword/changePassword.jsx"
 import Login from "../user/login/login.jsx"
 import Register from "../user/register/register.jsx"
 import ResetPassword from "../user/resetPassword/resetPassword.jsx"
-import { UniqueModalController } from "@naschpitz/unique-modal"
 
 import { FaSignInAlt, FaPlus, FaSignOutAlt, FaSyncAlt, FaKey, FaDesktop, FaServer } from "react-icons/fa"
 

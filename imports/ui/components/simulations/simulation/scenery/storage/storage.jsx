@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
-import ClipLoader from "react-spinners/ClipLoader"
 
 import Alert from "react-s-alert"
+import ClipLoader from "react-spinners/ClipLoader"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./storage.css"

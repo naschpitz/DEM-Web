@@ -3,13 +3,13 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
+import ServersClass from "../../../../api/servers/both/class.js"
+import SimulationsClass from "../../../../api/simulations/both/class.js"
+
 import { FaClone, FaPause, FaPlay, FaStop, FaSync, FaTrashAlt } from "react-icons/fa"
 import Alert from "react-s-alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
-
-import ServersClass from "../../../../api/servers/both/class.js"
-import SimulationsClass from "../../../../api/simulations/both/class.js"
 
 import "./simulationControl.css"
 

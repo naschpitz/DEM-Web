@@ -2,15 +2,15 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import CalibrationClass from "../../../../../api/calibrations/both/class.js"
+
 import Alert from "react-s-alert"
 import ClipLoader from "react-spinners/ClipLoader"
 
-import Agents from "./agents/agents.jsx"
+import AgentsTable from "./agentsTable/agentsTable.jsx"
 import CalibrationControl from "../../calibrationControl/calibrationControl.jsx"
 import DataSets from "./dataSets/dataSets.jsx"
-import Log from "../log/log"
-
-import CalibrationClass from "../../../../../api/calibrations/both/class.js"
+import Log from "../log/log.jsx"
 
 import "./calibration.css"
 
@@ -58,8 +58,14 @@ export default Calibration = props => {
             <DataSets calibrationId={calibration._id} />
           </div>
 
-          <div className="addMargin">
-            <Agents calibrationId={calibration._id} />
+          <div className="card addMargin">
+            <div className="card-header">
+              <div className="panel-title">Agents</div>
+            </div>
+
+            <div className="card-body">
+              <AgentsTable calibrationId={calibration._id} />
+            </div>
           </div>
         </div>
       )
