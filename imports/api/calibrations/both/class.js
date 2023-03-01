@@ -60,7 +60,7 @@ export default class Calibrations extends CalibrationsDAO {
   }
 
   static getState(calibration) {
-    switch (calibration.state) {
+    switch (calibration?.state) {
       case "new":
         return "New"
       case "running":
@@ -71,6 +71,8 @@ export default class Calibrations extends CalibrationsDAO {
         return "Stopped"
       case "done":
         return "Done"
+      default:
+        return "N/A"
     }
   }
 }

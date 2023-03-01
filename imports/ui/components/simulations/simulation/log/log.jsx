@@ -68,7 +68,7 @@ export default Log = props => {
   }
 
   function getProgressBarClassName(log) {
-    const state = object.state
+    const state = object?.state
     const percentage = LogsClass.getPercentage(log)
 
     let className = "progress-bar massive-font "

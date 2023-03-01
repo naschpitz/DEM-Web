@@ -82,7 +82,7 @@ export default class Simulations extends SimulationsDAO {
   }
 
   static getState(simulation) {
-    switch (simulation.state) {
+    switch (simulation?.state) {
       case "new":
         return "New"
       case "setToRun":
@@ -101,6 +101,8 @@ export default class Simulations extends SimulationsDAO {
         return "Done"
       case "failed":
         return "Failed"
+      default:
+        return "N/A"
     }
   }
 }
