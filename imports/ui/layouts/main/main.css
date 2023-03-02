@@ -6,3 +6,7 @@ html, body {
 #box {
     min-height: 100vh;
 }
+
+#formInput {
+    margin: 0;
+}

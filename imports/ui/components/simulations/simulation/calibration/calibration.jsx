@@ -58,7 +58,7 @@ export default Calibration = props => {
             <DataSets calibrationId={calibration._id} />
           </div>
 
-          <div className="card addMargin">
+          <div id="agentsCard" className="card addMargin">
             <div className="card-header">
               <div className="panel-title">Agents</div>
             </div>

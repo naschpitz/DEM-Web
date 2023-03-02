@@ -8,6 +8,17 @@ import { UniqueModal } from "@naschpitz/unique-modal"
 
 import "./main.css"
 
+const Agent = Loadable({
+  loader: () => {
+    return import("../../components/simulations/simulation/calibration/agent/agent.jsx")
+  },
+  render(loaded, props) {
+    let Component = loaded.default
+    return <Component {...props} />
+  },
+  loading: () => null,
+})
+
 const Disclaimer = Loadable({
   loader: () => {
     return import("../../components/disclaimer/disclaimer.jsx")
@@ -145,15 +156,15 @@ const routes = [
     footer: () => <Footer />,
   },
   {
-    path: "/simulations/:simulationId/:tab?",
+    path: "/simulations/:simulationId/calibration/agents/:agentId",
     exact: true,
     strict: false,
     header: props => <Navbar {...props} />,
-    content: props => <Simulation {...props} />,
+    content: props => <Agent {...props} />,
     footer: () => <Footer />,
   },
   {
-    path: "/simulations/:simulationId/calibration/agents/:agentId",
+    path: "/simulations/:simulationId/:tab?",
     exact: true,
     strict: false,
     header: props => <Navbar {...props} />,

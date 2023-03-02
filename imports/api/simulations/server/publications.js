@@ -33,4 +33,13 @@ if (Meteor.isServer) {
 
     return Simulations.find({ _id: simulationId, owner: this.userId })
   })
+
+  Meteor.publish("simulations.byIds", function (simulationsIds) {
+    if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
+
+    // If simulationsIds is a string, convert it to an array
+    if (typeof simulationsIds === "string") simulationsIds = [simulationsIds]
+
+    return Simulations.find({ _id: { $in: simulationsIds }, owner: this.userId })
+  })
 }

@@ -1,5 +1,6 @@
-import LogsDAO from "./dao.js"
 import moment from "moment"
+
+import LogsDAO from "./dao.js"
 
 export default class Logs extends LogsDAO {
   static removeByOwner(ownerId) {
@@ -53,5 +54,22 @@ export default class Logs extends LogsDAO {
     const percentage = (log.progress.step / log.progress.totalSteps) * 100
 
     return { value: percentage, text: percentage.toFixed(3) + "%" }
+  }
+
+  static getState(log) {
+    switch (log?.state) {
+      case "new":
+        return "New"
+      case "running":
+        return "Running"
+      case "paused":
+        return "Paused"
+      case "stopped":
+        return "Stopped"
+      case "done":
+        return "Done"
+      default:
+        return "N/A"
+    }
   }
 }

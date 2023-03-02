@@ -1,15 +1,19 @@
-#log .progress {
+#agentsTable .alert {
+    margin-bottom: 0px;
+}
+
+#agentsTable .progress {
     margin: 0px;
     height: 31px;
     text-align: center;
 }
 
-#log .progress-bar {
+#agentsTable .progress-bar {
     padding-top: 6px;
     padding-bottom: 6px;
 }
 
-#log .massive-font {
+#agentsTable .massive-font {
     font-size: 15px;
     text-align: center;
 }

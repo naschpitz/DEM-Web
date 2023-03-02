@@ -22,7 +22,7 @@ export default Simulations = props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
-    Meteor.subscribe("logs.last", "simulation", {
+    Meteor.subscribe("logs.last", {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsReady(true),
     })
