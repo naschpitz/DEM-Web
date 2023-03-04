@@ -9,6 +9,7 @@ import SimulationsClass from "../../../../../../api/simulations/both/class"
 import Alert from "react-s-alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import ReactTable from "react-table-v6"
+import { useHistory } from "react-router-dom"
 
 import "./agentsTable.css"
 
@@ -16,6 +17,8 @@ export default AgentsTable = props => {
   const [isAgentsReady, setIsAgentsReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
+
+  const history = useHistory()
 
   useTracker(() => {
     Meteor.subscribe("agents.list", props.calibrationId, {
@@ -75,6 +78,13 @@ export default AgentsTable = props => {
         className: "text-center",
         width: 75,
         accessor: data => "#" + data.agent.index,
+      },
+      {
+        Header: "Iteration",
+        id: "iteration",
+        className: "text-center",
+        width: 75,
+        accessor: data => data.agent.iteration,
       },
       {
         Header: "State",
@@ -152,12 +162,13 @@ export default AgentsTable = props => {
   }
 
   function onDetailsClick(data) {
-    props.history.push("/simulations/" + data.original._id)
+    const simulationId = data.original.simulation._id
+    const agentId = data.original.agent._id
+
+    history.push("/simulations/" + simulationId + "/calibration/agents/" + agentId)
   }
 
   const isReady = isAgentsReady && isLogsReady && isSimulationsReady
-
-  //return <></>
 
   return (
     <div id="agentsTable">

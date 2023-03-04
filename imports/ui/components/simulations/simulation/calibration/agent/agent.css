@@ -1,0 +1,12 @@
+#agent {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#agent .addMargin:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+#agent #historyCard .card-body {
+    padding: 0;
+}
