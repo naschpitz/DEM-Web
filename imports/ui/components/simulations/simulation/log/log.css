@@ -13,3 +13,7 @@
     font-size: 15px;
     text-align: center;
 }
+
+#log #data {
+    margin-bottom: 20px;
+}

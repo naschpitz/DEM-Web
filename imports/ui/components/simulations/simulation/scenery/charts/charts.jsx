@@ -21,8 +21,6 @@ export default Charts = props => {
   const minInterval = _.get(selectedData, "minInterval")
   const maxInterval = _.get(selectedData, "maxInterval")
 
-  const disabled = !objectId || !dataName
-
   return (
     <div id="charts">
       <div id="selector" className="card">

@@ -123,11 +123,11 @@ export default DataSet = props => {
           <DataSelector sceneryId={sceneryId} objectId={objectId} dataName={dataName} onData={onData} />
 
           <div className="row">
-            <div className="col">
+            <div className="col-sm-12 col-md-5 col-lg-3">
               <DataImporter data={data} onData={data => onData({ data })} />
             </div>
 
-            <div className="col">
+            <div className="col-sm-12 col-md-7 col-lg-9">
               <Chart data={data} />
             </div>
           </div>

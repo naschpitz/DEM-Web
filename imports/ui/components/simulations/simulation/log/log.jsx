@@ -115,7 +115,7 @@ export default Log = props => {
   if (isReady) {
     return (
       <div id="log">
-        <div className="row">
+        <div id="data" className="row">
           <div className="col-sm-4 col-md-3 col-lg-3">
             <FormInput
               label="State"
@@ -172,7 +172,7 @@ export default Log = props => {
         </div>
 
         {showLogMessages ? (
-          <div className="row">
+          <div id="messages" className="row">
             <div className="col-sm-12">
               <textarea rows={10} style={{ width: "100%" }} value={logMessages} readOnly={true} />
             </div>

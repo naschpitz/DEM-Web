@@ -80,8 +80,8 @@ export default DataSelector = props => {
         subtype="string"
         options={options}
         size="small"
-        labelSizes={{ sm: 2, md: 2, lg: 2 }}
-        inputSizes={{ sm: 10, md: 10, lg: 10 }}
+        labelSizes={{ sm: 4, md: 4, lg: 3 }}
+        inputSizes={{ sm: 8, md: 8, lg: 9 }}
         onEvent={onEvent}
       />
     )
@@ -103,8 +103,8 @@ export default DataSelector = props => {
         subtype="string"
         size="small"
         options={options}
-        labelSizes={{ sm: 2, md: 2, lg: 2 }}
-        inputSizes={{ sm: 10, md: 10, lg: 10 }}
+        labelSizes={{ sm: 4, md: 4, lg: 3 }}
+        inputSizes={{ sm: 8, md: 8, lg: 9 }}
         onEvent={onEvent}
       />
     )
@@ -140,13 +140,13 @@ export default DataSelector = props => {
   return (
     <div id="selector">
       <div className="row">
-        <div className="col-sm-12 col-md-6 col-lg-4">{renderObjectsList()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderObjectsList()}</div>
 
-        <div className="col-sm-12 col-md-6 col-lg-4">{renderDataList()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderDataList()}</div>
 
-        <div className="col-sm-6 col-md-6 col-lg-2">{renderTimeInput("Min Time", "minInterval")}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderTimeInput("Min Time", "minInterval")}</div>
 
-        <div className="col-sm-6 col-md-6 col-lg-2">{renderTimeInput("Max Time", "maxInterval")}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderTimeInput("Max Time", "maxInterval")}</div>
       </div>
     </div>
   )
