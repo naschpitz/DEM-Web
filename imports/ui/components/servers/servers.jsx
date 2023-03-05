@@ -7,7 +7,7 @@ import _ from "lodash"
 import ServersClass from "../../../api/servers/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import ReactTable from "react-table-v6"

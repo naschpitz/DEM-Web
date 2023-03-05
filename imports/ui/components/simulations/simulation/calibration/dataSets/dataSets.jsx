@@ -5,7 +5,7 @@ import _ from "lodash"
 
 import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaPlus } from "react-icons/fa"

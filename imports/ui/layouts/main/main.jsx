@@ -1,221 +1,120 @@
-import React, { Component } from "react"
-import { Route, Switch } from "react-router"
+import React from "react"
+import { Routes, Route } from "react-router-dom"
 
-import Alert from "react-s-alert"
-import ClipLoader from "react-spinners/ClipLoader"
-import Loadable from "react-loadable"
+import Alert from "react-s-alert-v3"
 import { UniqueModal } from "@naschpitz/unique-modal"
 
 import "./main.css"
 
-const Agent = Loadable({
-  loader: () => {
-    return import("../../components/simulations/simulation/calibration/agent/agent.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
+const applyReactSuspense = component => {
+  return <React.Suspense fallback={<>...</>}>{component}</React.Suspense>
+}
 
-const Disclaimer = Loadable({
-  loader: () => {
-    return import("../../components/disclaimer/disclaimer.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
-
-const Footer = Loadable({
-  loader: () => {
-    return import("../../components/footer/footer.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
-
-const Home = Loadable({
-  loader: () => {
-    return import("../../components/home/home.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => (
-    <div className="text-center">
-      <ClipLoader size={50} color={"#DDD"} loading={true} />
-    </div>
-  ),
-})
-
-const Navbar = Loadable({
-  loader: () => {
-    return import("../../components/navbar/navbar.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
-
-const Privacy = Loadable({
-  loader: () => {
-    return import("../../components/privacy/privacy.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
-
-const Servers = Loadable({
-  loader: () => {
-    return import("../../components/servers/servers.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
-
-const Simulation = Loadable({
-  loader: () => {
-    return import("../../components/simulations/simulation/simulation.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
-
-const Simulations = Loadable({
-  loader: () => {
-    return import("../../components/simulations/simulations.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
-
-const Terms = Loadable({
-  loader: () => {
-    return import("../../components/terms/terms.jsx")
-  },
-  render(loaded, props) {
-    let Component = loaded.default
-    return <Component {...props} />
-  },
-  loading: () => null,
-})
+const Agent = React.lazy(() => import("../../components/simulations/simulation/calibration/agent/agent.jsx"))
+const Disclaimer = React.lazy(() => import("../../components/disclaimer/disclaimer.jsx"))
+const Footer = React.lazy(() => import("../../components/footer/footer.jsx"))
+const Home = React.lazy(() => import("../../components/home/home.jsx"))
+const Navbar = React.lazy(() => import("../../components/navbar/navbar.jsx"))
+const Privacy = React.lazy(() => import("../../components/privacy/privacy.jsx"))
+const Servers = React.lazy(() => import("../../components/servers/servers.jsx"))
+const Simulation = React.lazy(() => import("../../components/simulations/simulation/simulation.jsx"))
+const Simulations = React.lazy(() => import("../../components/simulations/simulations.jsx"))
+const Terms = React.lazy(() => import("../../components/terms/terms.jsx"))
 
 const routes = [
   {
     path: "/",
     exact: true,
     strict: true,
-    header: props => <Navbar {...props} />,
-    content: props => <Home {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Home />),
+    footer: applyReactSuspense(<Footer />),
   },
   {
     path: "/disclaimer",
     exact: true,
     strict: false,
-    header: props => <Navbar {...props} />,
-    content: props => <Disclaimer {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Disclaimer />),
+    footer: applyReactSuspense(<Footer />),
   },
   {
     path: "/privacy",
     exact: true,
     strict: false,
-    header: props => <Navbar {...props} />,
-    content: props => <Privacy {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Privacy />),
+    footer: applyReactSuspense(<Footer />),
   },
   {
     path: "/servers",
     exact: true,
     strict: false,
-    header: props => <Navbar {...props} />,
-    content: props => <Servers {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Servers />),
+    footer: applyReactSuspense(<Footer />),
   },
   {
     path: "/simulations/:simulationId/calibration/agents/:agentId",
     exact: true,
     strict: false,
-    header: props => <Navbar {...props} />,
-    content: props => <Agent {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Agent />),
+    footer: applyReactSuspense(<Footer />),
   },
   {
     path: "/simulations/:simulationId/:tab?",
     exact: true,
     strict: false,
-    header: props => <Navbar {...props} />,
-    content: props => <Simulation {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Simulation />),
+    footer: applyReactSuspense(<Footer />),
   },
   {
     path: "/simulations",
     exact: true,
     strict: false,
-    header: props => <Navbar {...props} />,
-    content: props => <Simulations {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Simulations />),
+    footer: applyReactSuspense(<Footer />),
   },
   {
     path: "/terms",
     exact: true,
     strict: false,
-    header: props => <Navbar {...props} />,
-    content: props => <Terms {...props} />,
-    footer: () => <Footer />,
+    header: applyReactSuspense(<Navbar />),
+    content: applyReactSuspense(<Terms />),
+    footer: applyReactSuspense(<Footer />),
   },
 ]
 
-export default MainLayout = () => {
+export default function App() {
   return (
     <div id="box" className="d-flex flex-column">
       <UniqueModal />
 
       <header id="mainLayoutHeader" className="sticky-top">
-        <Switch>
+        <Routes>
           {routes.map((route, index) => (
-            <Route key={index} path={route.path} exact={route.exact} strict={route.strict} component={route.header} />
+            <Route key={index} path={route.path} element={route.header} />
           ))}
-        </Switch>
+        </Routes>
       </header>
 
-      <div id="mainLayoutContent">
-        <Switch>
+      <header id="mainLayoutContent">
+        <Routes>
           {routes.map((route, index) => (
-            <Route key={index} path={route.path} exact={route.exact} strict={route.strict} component={route.content} />
+            <Route key={index} path={route.path} element={route.content} />
           ))}
-        </Switch>
-      </div>
+        </Routes>
+      </header>
 
       <footer id="mainLayoutFooter" className="mt-auto">
-        <Switch>
+        <Routes>
           {routes.map((route, index) => (
-            <Route key={index} path={route.path} exact={route.exact} strict={route.strict} component={route.footer} />
+            <Route key={index} path={route.path} element={route.footer} />
           ))}
-        </Switch>
+        </Routes>
       </footer>
 
       <Alert stack={{ limit: 5 }} position="bottom-right" timeout={7500} html={true} />

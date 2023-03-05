@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
@@ -8,7 +9,7 @@ import SimulationsClass from "../../../api/simulations/both/class.js"
 import LogsClass from "../../../api/logs/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import ReactTable from "react-table-v6"
@@ -20,6 +21,8 @@ import "./simulations.css"
 export default Simulations = props => {
   const [isCreating, setIsCreating] = useState(false)
   const [isReady, setIsReady] = useState(false)
+
+  const navigate = useNavigate()
 
   useTracker(() => {
     Meteor.subscribe("logs.last", {
@@ -179,7 +182,7 @@ export default Simulations = props => {
   }
 
   function onDetailsClick(data) {
-    props.history.push("/simulations/" + data.original._id)
+    navigate("/simulations/" + data.original._id)
   }
 
   function onEvent(event, data, name, value) {

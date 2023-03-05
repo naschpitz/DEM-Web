@@ -7,7 +7,7 @@ import _ from "lodash"
 import FramesClass from "../../../../../../../api/frames/both/class.js"
 
 import { ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 
 import "./chart.css"
 

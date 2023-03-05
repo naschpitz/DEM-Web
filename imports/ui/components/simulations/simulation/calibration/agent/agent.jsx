@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
+import { useParams } from "react-router-dom"
 
 import Agents from "../../../../../../api/agents/both/class"
 import Simulations from "../../../../../../api/simulations/both/class"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
 
 import HistoryTable from "./historyTable/historyTable.jsx"
@@ -16,8 +17,10 @@ export default Agent = props => {
   const [isSimulationReady, setIsSimulationReady] = useState(false)
   const [isAgentReady, setIsAgentReady] = useState(false)
 
-  const simulationId = props.match.params.simulationId
-  const agentId = props.match.params.agentId
+  const params = useParams()
+
+  const simulationId = params.simulationId
+  const agentId = params.agentId
 
   useTracker(() => {
     if (!simulationId) return

@@ -8,7 +8,7 @@ import CalibrationsClass from "../../../../../api/calibrations/both/class"
 import LogsClass from "../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../api/simulations/both/class"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"
 

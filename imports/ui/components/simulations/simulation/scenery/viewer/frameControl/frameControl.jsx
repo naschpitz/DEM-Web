@@ -6,7 +6,7 @@ import PropTypes from "prop-types"
 import FramesClass from "../../../../../../../api/frames/both/class.js"
 
 import { FaFastBackward, FaStepBackward, FaStepForward, FaFastForward } from "react-icons/fa"
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 

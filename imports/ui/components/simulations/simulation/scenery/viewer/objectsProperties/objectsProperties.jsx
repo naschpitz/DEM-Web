@@ -8,7 +8,7 @@ import NonSolidObjectsClass from "../../../../../../../api/nonSolidObjects/both/
 import ObjectsPropertiesClass from "../../../../../../../api/objectsProperties/both/class.js"
 import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.js"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
 import Properties from "./properties/properties.jsx"
 import ReactTable from "react-table-v6"

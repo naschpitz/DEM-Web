@@ -15,19 +15,3 @@ attachTooltip = function () {
 detachTooltip = function () {
   $('[data-toggle="tooltip"]').tooltip("dispose")
 }
-
-// https://stackoverflow.com/questions/47945095/react-router-how-to-replace-dynamically-parameters-in-a-string
-placeParams = function (pathRegex, params) {
-  let segments = pathRegex.split("/")
-
-  return segments
-    .map(segment => {
-      let offset = segment.indexOf(":") + 1
-      if (!offset) return segment
-
-      let key = segment.slice(offset)
-      key = key.split("?").join("")
-      return params[key]
-    })
-    .join("/")
-}

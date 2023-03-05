@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 
 Accounts.onEmailVerificationLink(function (token) {
   Accounts.verifyEmail(token, verifyCallback)

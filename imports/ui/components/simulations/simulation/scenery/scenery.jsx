@@ -6,7 +6,7 @@ import _ from "lodash"
 import SceneriesClass from "../../../../../api/sceneries/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"

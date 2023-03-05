@@ -5,7 +5,7 @@ import _ from "lodash"
 
 import MaterialsClass from "../../../../../../../api/materials/both/class.js"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import FormInput from "@naschpitz/form-input"
 
 import "./properties.css"

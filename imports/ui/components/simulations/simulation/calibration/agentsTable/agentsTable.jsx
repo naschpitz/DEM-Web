@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
@@ -6,10 +7,9 @@ import AgentsClass from "../../../../../../api/agents/both/class"
 import LogsClass from "../../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../../api/simulations/both/class"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import ReactTable from "react-table-v6"
-import { useHistory } from "react-router-dom"
 
 import "./agentsTable.css"
 
@@ -18,7 +18,7 @@ export default AgentsTable = props => {
   const [isLogsReady, setIsLogsReady] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
 
-  const history = useHistory()
+  const navigate = useNavigate()
 
   useTracker(() => {
     Meteor.subscribe("agents.list", props.calibrationId, {
@@ -165,7 +165,7 @@ export default AgentsTable = props => {
     const simulationId = data.original.simulation._id
     const agentId = data.original.agent._id
 
-    history.push("/simulations/" + simulationId + "/calibration/agents/" + agentId)
+    navigate("/simulations/" + simulationId + "/calibration/agents/" + agentId)
   }
 
   const isReady = isAgentsReady && isLogsReady && isSimulationsReady

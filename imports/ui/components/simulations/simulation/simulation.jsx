@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import _ from "lodash"
 
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
 
 import Calibration from "./calibration/calibration.jsx"
@@ -16,13 +16,16 @@ import "./simulation.css"
 
 export default Simulation = props => {
   const [isReady, setIsReady] = useState(false)
-  const [currentTab, setCurrentTab] = useState("")
 
-  const simulationId = props.match.params.simulationId
+  const navigate = useNavigate()
+  const params = useParams()
+
+  const simulationId = params.simulationId
+  const tab = params.tab
 
   useEffect(() => {
-    checkUrl()
-  })
+    if (!tab) navigate("/simulations/" + simulationId + "/main", { replace: true })
+  }, [params])
 
   useTracker(() => {
     Meteor.subscribe("simulations.simulation", simulationId, {
@@ -36,16 +39,13 @@ export default Simulation = props => {
   })
 
   useEffect(() => {
-    if (isReady && !simulation) props.history.push("/simulations")
+    if (isReady && !simulation) navigate("/simulations")
   }, [isReady, simulation])
 
   const MenuLink = ({ tab, label }) => {
-    const active = props.match.params.tab === tab
+    const active = tab === params.tab
 
-    const params = _.cloneDeep(props.match.params)
-    params.tab = tab
-
-    const to = placeParams(props.match.path, params)
+    const to = "/simulations/" + simulationId + "/" + tab
 
     return (
       <li className="nav-item">
@@ -54,32 +54,6 @@ export default Simulation = props => {
         </Link>
       </li>
     )
-  }
-
-  function checkUrl() {
-    const tab = props.match.params.tab ? props.match.params.tab : "main"
-
-    setCurrentTab(tab)
-
-    changeUrl({ tab: tab })
-  }
-
-  function changeUrl(object) {
-    const params = _.cloneDeep(props.match.params)
-
-    params.tab = object.tab ? object.tab : currentTab
-
-    if (object.tab && object.tab !== currentTab) {
-      setCurrentTab(object.tab)
-    }
-
-    const isEqual = params.tab === props.match.params.tab
-
-    if (!isEqual && params.tab) {
-      const url = placeParams(props.match.path, params)
-
-      props.history.replace(url)
-    }
   }
 
   function renderPrimary() {
@@ -95,7 +69,7 @@ export default Simulation = props => {
     )
 
     function renderTab() {
-      const tab = props.match.params.tab
+      const tab = params.tab
 
       switch (tab) {
         case "main":

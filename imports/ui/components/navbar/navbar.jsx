@@ -4,7 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 
 import Users from "../../../api/users/both/class.js"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { Link } from "react-router-dom"
 import { UniqueModalController } from "@naschpitz/unique-modal"
 

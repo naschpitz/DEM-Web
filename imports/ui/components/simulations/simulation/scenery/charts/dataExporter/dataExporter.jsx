@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import fileDownload from "js-file-download"
 
 import { FaFileExport } from "react-icons/fa"
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./dataExporter.css"

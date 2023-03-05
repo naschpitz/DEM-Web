@@ -6,7 +6,7 @@ import _ from "lodash"
 
 import NonSolidObjectsClass from "../../../../../../api/nonSolidObjects/both/class.js"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"

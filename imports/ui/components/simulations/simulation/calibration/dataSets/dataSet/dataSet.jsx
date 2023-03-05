@@ -5,7 +5,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import CalibrationsClass from "../../../../../../../api/calibrations/both/class.js"
 import SceneriesClass from "../../../../../../../api/sceneries/both/class.js"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaTrashAlt } from "react-icons/fa"
 

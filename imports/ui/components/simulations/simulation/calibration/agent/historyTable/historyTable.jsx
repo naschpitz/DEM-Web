@@ -7,7 +7,7 @@ import _ from "lodash"
 import AgentsClass from "/imports/api/agents/both/class"
 import LogsClass from "../../../../../../../api/logs/both/class"
 
-import Alert from "react-s-alert"
+import Alert from "react-s-alert-v3"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import ReactTable from "react-table-v6"
 
