@@ -13,8 +13,11 @@ export default class Simulations extends SimulationsDAO {
     delete newSimulation._id
 
     newSimulation.primary = primary
-    newSimulation.name = oldSimulation.name + " (clone)"
     newSimulation.state = "new"
+
+    if (primary) {
+      newSimulation.name = oldSimulation.name + " (clone)"
+    }
 
     const newSimulationId = SimulationsDAO.insert(newSimulation)
 

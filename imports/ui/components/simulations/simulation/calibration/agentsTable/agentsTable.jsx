@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
@@ -19,6 +19,9 @@ export default AgentsTable = props => {
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
 
   const navigate = useNavigate()
+  const params = useParams()
+
+  const simulationId = params.simulationId
 
   useTracker(() => {
     Meteor.subscribe("agents.list", props.calibrationId, {
@@ -162,7 +165,6 @@ export default AgentsTable = props => {
   }
 
   function onDetailsClick(data) {
-    const simulationId = data.original.simulation._id
     const agentId = data.original.agent._id
 
     navigate("/simulations/" + simulationId + "/calibration/agents/" + agentId)

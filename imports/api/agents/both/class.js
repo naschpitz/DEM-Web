@@ -22,7 +22,6 @@ export default class Agents extends AgentsDAO {
     const currentSimulationId = Simulations.clone(calibration.owner, false)
     Simulations.updateObj({
       _id: currentSimulationId,
-      name: `${simulation.name} - Agent #${index}`,
       server: calibration.server,
     })
 
