@@ -10,6 +10,7 @@ import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
 
 import HistoryTable from "./historyTable/historyTable.jsx"
+import Main from "../../main/main.jsx"
 
 import "./agent.css"
 
@@ -57,6 +58,16 @@ export default Agent = props => {
           <h2 className="text-center">
             {simulation.name} - #{agent.index}
           </h2>
+
+          <div id="currentSimulationCard" className="card addMargin">
+            <div className="card-header">
+              <div className="panel-title">Current Simulation</div>
+            </div>
+
+            <div className="card-body">
+              <Main name="main" simulationId={agent.current.simulation} primary={false} />
+            </div>
+          </div>
 
           <div id="historyCard" className="card addMargin">
             <div className="card-header">
