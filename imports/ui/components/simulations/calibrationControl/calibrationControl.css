@@ -1,7 +1,12 @@
-#calibrationControl .row [class*="col-"]:not(:last-child) .btn {
+#calibrationControl .row .btn {
     margin-bottom: 10px;
 }
 
-#calibrationControl .row [class*="col-"]:not(:last-child) #formInput {
+#calibrationControl hr {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#calibrationControl .row #formInput {
     margin-bottom: 10px;
 }
