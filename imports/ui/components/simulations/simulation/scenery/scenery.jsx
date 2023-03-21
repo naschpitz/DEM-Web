@@ -101,7 +101,7 @@ export default Scenery = props => {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card" id="gravity">
               <div className="card-header">Gravity</div>
 
               <div className="card-body">

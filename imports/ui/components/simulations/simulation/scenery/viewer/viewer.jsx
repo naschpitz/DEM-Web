@@ -114,7 +114,7 @@ export default Viewer = ({ sceneryId }) => {
       </div>
 
       <div className="col-sm-12 col-md-4">
-        <div className="card">
+        <div className="card" id="cameraControl">
           <div className="card-header">Camera Control</div>
 
           <div className="card-body">

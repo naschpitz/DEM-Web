@@ -1,0 +1,7 @@
+#calibrationControl .row [class*="col-"]:not(:last-child) .btn {
+    margin-bottom: 10px;
+}
+
+#calibrationControl .row [class*="col-"]:not(:last-child) #formInput {
+    margin-bottom: 10px;
+}

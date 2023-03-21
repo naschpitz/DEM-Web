@@ -2,6 +2,11 @@
     margin: 0px;
 }
 
+#materials hr {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
 #materials #materialProperties {
     padding: 10px;
 }

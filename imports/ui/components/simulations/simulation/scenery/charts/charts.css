@@ -1,0 +1,3 @@
+#charts .row [class*="col-"]:not(:last-child) #formInput {
+    margin-bottom: 10px;
+}

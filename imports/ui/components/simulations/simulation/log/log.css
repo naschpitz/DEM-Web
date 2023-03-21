@@ -1,5 +1,9 @@
+#log .row [class*="col-"]:not(:last-child) #formInput {
+    margin-bottom: 10px;
+}
+
 #log .progress {
-    margin: 0px;
+    margin: 0px 0px 10px;
     height: 31px;
     text-align: center;
 }
@@ -15,5 +19,5 @@
 }
 
 #log #data {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }

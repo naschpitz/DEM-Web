@@ -1,3 +1,7 @@
+#scenery #gravity #formInput:not(:last-child) {
+    margin-bottom: 10px;
+}
+
 #scenery #nonSolidObjects .card-body {
     padding: 0px;
 }
