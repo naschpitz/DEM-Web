@@ -43,7 +43,7 @@ export default AgentsTable = props => {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsLogsReady(true),
     })
-  }, [agents])
+  }, [agents, isAgentsReady])
 
   useTracker(() => {
     if (!isAgentsReady) return
@@ -54,7 +54,7 @@ export default AgentsTable = props => {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsSimulationsReady(true),
     })
-  }, [agents])
+  }, [agents, isAgentsReady])
 
   const tableData = useTracker(() => {
     if (!isLogsReady || !isSimulationsReady) return []
@@ -104,7 +104,7 @@ export default AgentsTable = props => {
         Cell: cellInfo => (
           <div className="progress text-center">
             <div
-              className={getProgressBarClassName(cellInfo.original.simulation.state, cellInfo.value.value)}
+              className={getProgressBarClassName(cellInfo.original.simulation?.state, cellInfo.value.value)}
               role="progressbar"
               aria-valuenow={cellInfo.value.value}
               aria-valuemin="0"
@@ -180,8 +180,7 @@ export default AgentsTable = props => {
         loadingText="Loading agents list..."
         columns={getColumns()}
         collapseOnDataChange={false}
-        showPagination={false}
-        pageSize={tableData.length}
+        defaultPageSize={10}
         className="-striped -highlight"
         getTdProps={() => ({ style: { display: "flex", flexDirection: "column", justifyContent: "center" } })}
       />
