@@ -25,6 +25,9 @@ export default class Agents extends AgentsDAO {
       server: calibration.server,
     })
 
+    // Updates the objects for the cloned simulation's scenery
+    initializeObjects(currentSimulationId, calibrationId, index)
+
     // Updates the materials for the cloned simulation's scenery
     initializeMaterials(currentSimulationId, calibrationId, index)
 
@@ -39,12 +42,36 @@ export default class Agents extends AgentsDAO {
       index: index,
     })
 
+    // Updates the objects coefficients with the boundaries
+    function initializeObjects(simulationId, calibrationId, index) {
+      const calibration = Calibrations.findOne(calibrationId)
+
+      const variation = calibration.variation
+
+      const scenery = Sceneries.findOne({ owner: simulationId })
+      const solidObjects = SolidObjects.find({ owner: scenery._id, fixed: false })
+      const nonSolidObjects = NonSolidObjects.find({ owner: scenery._id, fixed: false })
+
+      solidObjects.forEach(solidObject => {
+        const width = solidObject.mass * (1 + variation) - solidObject.mass * (1 - variation)
+        const mass = solidObject.mass + width * Math.random()
+
+        SolidObjects.updateObj({ _id: solidObject._id, mass: mass })
+      })
+
+      nonSolidObjects.forEach(nonSolidObject => {
+        const width = nonSolidObject.density * (1 + variation) - nonSolidObject.density * (1 - variation)
+        const density = nonSolidObject.density + width * Math.random()
+
+        NonSolidObjects.updateObj({ _id: nonSolidObject._id, density: density })
+      })
+    }
+
     // Updates the materials coefficients with the boundaries
     function initializeMaterials(simulationId, calibrationId, index) {
       const calibration = Calibrations.findOne(calibrationId)
 
       const variation = calibration.variation
-      const agentsNumber = calibration.agentsNumber
 
       const scenery = Sceneries.findOne({ owner: simulationId })
       const materials = Materials.find({ owner: scenery._id })
@@ -57,18 +84,17 @@ export default class Agents extends AgentsDAO {
         )
 
         const newCoefficients = materialBoundary.coefficients?.map(materialBoundary =>
-          calculateCoefficient(materialBoundary, agentsNumber, index)
+          calculateCoefficient(materialBoundary)
         )
 
         const newDragCoefficients = materialBoundary.dragCoefficients?.map(materialBoundary =>
-          calculateCoefficient(materialBoundary, agentsNumber, index)
+          calculateCoefficient(materialBoundary)
         )
 
-        function calculateCoefficient(materialBoundary, elementsNumber, index) {
+        function calculateCoefficient(materialBoundary) {
           const width = materialBoundary.max - materialBoundary.min
-          const step = width / elementsNumber
 
-          return materialBoundary.min + step * index
+          return materialBoundary.min + width * Math.random()
         }
 
         Materials.updateObj({

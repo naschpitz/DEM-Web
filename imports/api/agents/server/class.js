@@ -1,8 +1,10 @@
 import AgentsBoth from "../both/class"
 import Frames from "../../frames/server/class"
 import Materials from "../../materials/both/class"
+import NonSolidObjects from "../../nonSolidObjects/both/class"
 import Sceneries from "../../sceneries/server/class"
 import Simulations from "../../simulations/server/class"
+import SolidObjects from "../../solidObjects/both/class"
 
 export default class Agents extends AgentsBoth {
   static start(agentId) {
@@ -137,20 +139,61 @@ export default class Agents extends AgentsBoth {
     Simulations.reset(agent.current.simulation)
 
     const scenery = Sceneries.findOne({ owner: agent.current.simulation })
+    const solidObjects = SolidObjects.find({ owner: scenery._id, fixed: true }).fetch()
+    const nonSolidObjects = NonSolidObjects.find({ owner: scenery._id, fixed: true }).fetch()
     const materials = Materials.find({ owner: scenery._id }).fetch()
 
     // Read the agent again from the database, because it might have been updated.
     agent = Agents.findOne(agentId)
 
     const bestScenery = Sceneries.findOne({ owner: agent.best.simulation })
+    const bestSolidObjects = SolidObjects.find({ owner: bestScenery._id, fixed: true }).fetch()
+    const bestNonSolidObjects = NonSolidObjects.find({ owner: bestScenery._id, fixed: true }).fetch()
     const bestMaterials = Materials.find({ owner: bestScenery._id }).fetch()
 
     const bestGAgent = Agents.findOne(bestGAgentId)
     const bestGScenery = Sceneries.findOne({ owner: bestGAgent.best.simulation })
+    const bestGSolidObjects = SolidObjects.find({ owner: bestGScenery._id, fixed: true }).fetch()
+    const bestGNonSolidObjects = NonSolidObjects.find({ owner: bestGScenery._id, fixed: true }).fetch()
     const bestGMaterials = Materials.find({ owner: bestGScenery._id }).fetch()
 
+    updateSolidObjects(solidObjects, bestSolidObjects, bestGSolidObjects)
+    updateNonSolidObjects(nonSolidObjects, bestNonSolidObjects, bestGNonSolidObjects)
     updateMaterials(materials, bestMaterials, bestGMaterials)
+
     Agents.updateObj({ _id: agentId, iteration: agent.iteration + 1 })
+
+    function updateSolidObjects(solidObjects, bestSolidObjects, bestGSolidObjects) {
+      solidObjects.forEach(solidObject => {
+        const bestSolidObject = bestSolidObjects.find(
+          bestSolidObject => bestSolidObject.callSign === solidObject.callSign
+        )
+
+        const bestGSolidObject = bestGSolidObjects.find(
+          bestGSolidObject => bestGSolidObject.callSign === solidObject.callSign
+        )
+
+        const newMass = calculateCoefficient(solidObject.mass, bestSolidObject.mass, bestGSolidObject.mass)
+
+        SolidObjects.updateObj({ _id: solidObject._id, mass: newMass })
+      })
+    }
+
+    function updateNonSolidObjects(nonSolidObjects, bestNonSolidObjects, bestGNonSolidObjects) {
+      nonSolidObjects.forEach(nonSolidObject => {
+        const bestNonSolidObject = bestNonSolidObjects.find(
+          bestNonSolidObject => bestNonSolidObject.callSign === nonSolidObject.callSign
+        )
+
+        const bestGNonSolidObject = bestGNonSolidObjects.find(
+          bestGNonSolidObject => bestGNonSolidObject.callSign === nonSolidObject.callSign
+        )
+
+        const newMass = calculateCoefficient(nonSolidObject.mass, bestNonSolidObject.mass, bestGNonSolidObject.mass)
+
+        NonSolidObjects.updateObj({ _id: nonSolidObject._id, mass: newMass })
+      })
+    }
 
     function updateMaterials(materials, bestMaterials, bestGMaterials) {
       materials.forEach(material => {
@@ -171,29 +214,25 @@ export default class Agents extends AgentsBoth {
           return calculateCoefficient(dragCoefficient, bestDragCoefficient, bestGDragCoefficient)
         })
 
-        function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient) {
-          const random1 = Math.random()
-          const random2 = Math.random()
-
-          const c1 = 0.2
-          const c2 = 0.8
-
-          let velocity = bestCoefficient - coefficient
-          if (velocity === 0) {
-            velocity = 0.5 * coefficient
-          }
-
-          const globalVelocity = bestGlobalCoefficient - coefficient
-
-          return coefficient + c1 * random1 * velocity + c2 * random2 * globalVelocity
-        }
-
         Materials.updateObj({
           _id: material._id,
           coefficients: newCoefficients,
           dragCoefficients: newDragCoefficients,
         })
       })
+    }
+
+    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient) {
+      const random1 = Math.random()
+      const random2 = Math.random()
+
+      const c1 = 0.2
+      const c2 = 0.8
+
+      let velocity = bestCoefficient - coefficient
+      const globalVelocity = bestGlobalCoefficient - coefficient
+
+      return coefficient + c1 * random1 * velocity + c2 * random2 * globalVelocity
     }
   }
 }
