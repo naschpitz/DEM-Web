@@ -189,9 +189,13 @@ export default class Agents extends AgentsBoth {
           bestGNonSolidObject => bestGNonSolidObject.callSign === nonSolidObject.callSign
         )
 
-        const newMass = calculateCoefficient(nonSolidObject.mass, bestNonSolidObject.mass, bestGNonSolidObject.mass)
+        const newDensity = calculateCoefficient(
+          nonSolidObject.density,
+          bestNonSolidObject.density,
+          bestGNonSolidObject.density
+        )
 
-        NonSolidObjects.updateObj({ _id: nonSolidObject._id, mass: newMass })
+        NonSolidObjects.updateObj({ _id: nonSolidObject._id, density: newDensity })
       })
     }
 
