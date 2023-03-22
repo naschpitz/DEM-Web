@@ -15,7 +15,6 @@ import SolidObjects from "../../solidObjects/both/class"
 export default class Agents extends AgentsDAO {
   static create(calibrationId, index) {
     const calibration = Calibrations.findOne(calibrationId)
-    const simulation = Simulations.findOne(calibration.owner)
 
     // Clones the original simulation (thus, scenery and materials). The cloned simulation is not primary, as it is
     // intended to be used by the agents only.
@@ -26,10 +25,10 @@ export default class Agents extends AgentsDAO {
     })
 
     // Updates the objects for the cloned simulation's scenery
-    initializeObjects(currentSimulationId, calibrationId, index)
+    initializeObjects(currentSimulationId, calibrationId)
 
     // Updates the materials for the cloned simulation's scenery
-    initializeMaterials(currentSimulationId, calibrationId, index)
+    initializeMaterials(currentSimulationId, calibrationId)
 
     // The best simulation will be a clone of the original simulation, because it has to kept while the current
     // simulation is being constantly altered by the agent.
@@ -43,7 +42,7 @@ export default class Agents extends AgentsDAO {
     })
 
     // Updates the objects coefficients with the boundaries
-    function initializeObjects(simulationId, calibrationId, index) {
+    function initializeObjects(simulationId, calibrationId) {
       const calibration = Calibrations.findOne(calibrationId)
 
       const variation = calibration.variation
@@ -53,22 +52,25 @@ export default class Agents extends AgentsDAO {
       const nonSolidObjects = NonSolidObjects.find({ owner: scenery._id, fixed: false })
 
       solidObjects.forEach(solidObject => {
-        const width = solidObject.mass * (1 + variation) - solidObject.mass * (1 - variation)
-        const mass = solidObject.mass + width * Math.random()
+        const minMass = solidObject.mass * (1 + variation)
+        const maxMass = solidObject.mass * (1 - variation)
+        const mass = minMass + (maxMass - minMass) * Math.random()
 
         SolidObjects.updateObj({ _id: solidObject._id, mass: mass })
       })
 
       nonSolidObjects.forEach(nonSolidObject => {
-        const width = nonSolidObject.density * (1 + variation) - nonSolidObject.density * (1 - variation)
-        const density = nonSolidObject.density + width * Math.random()
+        const minDensity = nonSolidObject.density * (1 - variation)
+        const maxDensity = nonSolidObject.density * (1 + variation)
+
+        const density = minDensity + (maxDensity - minDensity) * Math.random()
 
         NonSolidObjects.updateObj({ _id: nonSolidObject._id, density: density })
       })
     }
 
     // Updates the materials coefficients with the boundaries
-    function initializeMaterials(simulationId, calibrationId, index) {
+    function initializeMaterials(simulationId, calibrationId) {
       const calibration = Calibrations.findOne(calibrationId)
 
       const variation = calibration.variation

@@ -42,6 +42,7 @@ NonSolidObjects.schema = new SimpleSchema({
   fixed: {
     type: Boolean,
     label: "Fixed",
+    defaultValue: false,
     optional: true,
   },
   density: {

@@ -41,6 +41,7 @@ Agents.schema = new SimpleSchema({
   history: {
     type: Array,
     label: "History",
+    defaultValue: [],
     optional: true,
   },
   "history.$": {
