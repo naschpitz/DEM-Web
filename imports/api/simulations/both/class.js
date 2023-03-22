@@ -17,6 +17,8 @@ export default class Simulations extends SimulationsDAO {
 
     if (primary) {
       newSimulation.name = oldSimulation.name + " (clone)"
+    } else {
+      delete newSimulation.name
     }
 
     const newSimulationId = SimulationsDAO.insert(newSimulation)

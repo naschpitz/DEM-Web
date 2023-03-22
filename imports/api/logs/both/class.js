@@ -10,14 +10,12 @@ export default class Logs extends LogsDAO {
   static clone(ownerId, newOwnerId) {
     const logs = LogsDAO.find({ owner: ownerId })
 
-    const newLogs = logs.map(log => {
+    logs.forEach(log => {
       delete log._id
       log.owner = newOwnerId
 
-      return log
+      LogsDAO.insert(log)
     })
-
-    LogsDAO.insert(newLogs)
   }
 
   static getDuration(duration) {

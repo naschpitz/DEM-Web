@@ -94,7 +94,7 @@ SolidObjects.schema = new SimpleSchema({
 SolidObjects.schema.addValidator(function () {
   const userId = this.userId
 
-  if (!userId) return "notAuthorized"
+  if (!userId && this.connection) return "notAuthorized"
 })
 
 SolidObjects.schema.messageBox.messages({

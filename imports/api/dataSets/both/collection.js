@@ -85,7 +85,7 @@ DataSets.schema = new SimpleSchema({
 DataSets.schema.addValidator(function () {
   const userId = this.userId
 
-  if (!userId) return "notAuthorized"
+  if (!userId && this.connection) return "notAuthorized"
 })
 
 DataSets.schema.messageBox.messages({

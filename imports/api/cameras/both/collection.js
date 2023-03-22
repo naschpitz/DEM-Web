@@ -55,7 +55,7 @@ Cameras.schema = new SimpleSchema({
 Cameras.schema.addValidator(function () {
   const userId = this.userId
 
-  if (!userId) return "notAuthorized"
+  if (!userId && this.connection) return "notAuthorized"
 })
 
 Cameras.schema.messageBox.messages({

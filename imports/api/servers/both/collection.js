@@ -10,7 +10,7 @@ Servers.schema = new SimpleSchema({
     label: "User Owner",
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
-      if (this.isInsert) return this.userId
+      if (this.isInsert && this.connection) return this.userId
 
       if (this.isUpdate) this.unset()
     },
@@ -55,7 +55,7 @@ Servers.schema = new SimpleSchema({
 Servers.schema.addValidator(function () {
   const userId = this.userId
 
-  if (!userId) return "notAuthorized"
+  if (!userId && this.connection) return "notAuthorized"
 })
 
 Servers.schema.messageBox.messages({

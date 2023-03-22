@@ -42,6 +42,11 @@ export default class Agents extends AgentsBoth {
     agents.forEach(agent => {
       Simulations.remove(agent.current.simulation)
       Simulations.remove(agent.best.simulation)
+
+      agent.history.forEach(history => {
+        Simulations.remove(history.current.simulation)
+        Simulations.remove(history.best.simulation)
+      })
     })
 
     const agentIds = agents.map(agent => agent._id)
@@ -173,7 +178,11 @@ export default class Agents extends AgentsBoth {
           const c1 = 0.2
           const c2 = 0.8
 
-          const velocity = bestCoefficient - coefficient
+          let velocity = bestCoefficient - coefficient
+          if (velocity === 0) {
+            velocity = 0.5 * coefficient
+          }
+
           const globalVelocity = bestGlobalCoefficient - coefficient
 
           return coefficient + c1 * random1 * velocity + c2 * random2 * globalVelocity

@@ -47,7 +47,7 @@ Sceneries.schema = new SimpleSchema({
 Sceneries.schema.addValidator(function () {
   const userId = this.userId
 
-  if (!userId) return "notAuthorized"
+  if (!userId && this.connection) return "notAuthorized"
 })
 
 Sceneries.schema.messageBox.messages({

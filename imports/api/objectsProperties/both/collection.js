@@ -46,7 +46,7 @@ ObjectsProperties.schema = new SimpleSchema({
 ObjectsProperties.schema.addValidator(function () {
   const userId = this.userId
 
-  if (!userId) return "notAuthorized"
+  if (!userId && this.connection) return "notAuthorized"
 })
 
 ObjectsProperties.schema.messageBox.messages({
