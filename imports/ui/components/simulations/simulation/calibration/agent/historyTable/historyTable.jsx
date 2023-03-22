@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
-import moment from "moment"
-import _ from "lodash"
+import { useNavigate } from "react-router-dom"
 
 import AgentsClass from "/imports/api/agents/both/class"
 import LogsClass from "../../../../../../../api/logs/both/class"
@@ -16,6 +15,8 @@ import "./historyTable.css"
 export default HistoryTable = props => {
   const [isAgentReady, setIsAgentReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
+
+  const navigate = useNavigate()
 
   useTracker(() => {
     if (!props.agentId) return
@@ -47,7 +48,7 @@ export default HistoryTable = props => {
     const simulationsIds = history.map(history => history.current.simulation)
 
     return LogsClass.find({ owner: { $in: simulationsIds } }).fetch()
-  }, [history])
+  }, [history, isAgentReady])
 
   function getColumns() {
     return [
@@ -131,7 +132,7 @@ export default HistoryTable = props => {
   }
 
   function onDetailsClick(data) {
-    props.history.push("/simulations/" + data.original._id)
+    navigate("/simulations/" + data.original.current.simulation)
   }
 
   const isReady = isAgentReady && isLogsReady
