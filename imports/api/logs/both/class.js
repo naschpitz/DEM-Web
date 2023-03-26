@@ -14,7 +14,7 @@ export default class Logs extends LogsDAO {
       delete log._id
       log.owner = newOwnerId
 
-      LogsDAO.insert(log)
+      LogsDAO.insert(log, { getAutoValues: false })
     })
   }
 

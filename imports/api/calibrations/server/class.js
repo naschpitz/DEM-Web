@@ -80,6 +80,12 @@ export default class Calibrations extends CalibrationsBoth {
         }
       })
 
+      // If there are no 'agents' with state 'done', then there is nothing to do here.
+      if (agents.length === 0) {
+        Logs.insert({ owner: calibrationId, message: "No agents in the 'done' state." })
+        return
+      }
+
       const bestGScores = agents.map(agent => ({ agentId: agent._id, score: agent.best.score }))
 
       // Gets the agentId with the lowest score

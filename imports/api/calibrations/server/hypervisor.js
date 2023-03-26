@@ -10,6 +10,7 @@ export default class Hypervisor {
   constructor(calibrationId) {
     this.calibrationId = calibrationId
     this.runCheck = true
+    this.runningCheck = false
     this.timer = null
   }
 
@@ -60,10 +61,12 @@ export default class Hypervisor {
   }
 
   check() {
-    if (!this.runCheck) return
+    if (!this.runCheck || this.runningCheck) return
     this.runCheck = false
 
+    this.runningCheck = true
     this.dispatchAgents()
+    this.runningCheck = false
   }
 
   dispatchAgents() {
@@ -95,7 +98,13 @@ export default class Hypervisor {
     if (eligibleAgents.length !== 0) {
       this.log("Dispatching agents.")
       const agentsToStart = _.take(eligibleAgents, numMissingAgents)
-      agentsToStart.forEach(agent => Agents.start(agent._id))
+      agentsToStart.forEach(agent => {
+        try {
+          Agents.start(agent._id)
+        } catch (error) {
+          this.log(`Agent #${agent.index} simulation has failed to start.`)
+        }
+      })
     }
   }
 
@@ -107,8 +116,6 @@ export default class Hypervisor {
 
       return
     }
-
-    this.dispatchAgents()
   }
 
   agentHandler(type, agentId, object) {
@@ -122,12 +129,22 @@ export default class Hypervisor {
         this.log(
           `Agent #${agent.index} total kinetic energy has exceeded the maximum value set by the calibration, stopping it.`
         )
-        Agents.stop(agentId)
+
+        try {
+          Agents.stop(agentId)
+        } catch (error) {
+          this.log(`Agent #${agent.index} simulation has failed to stop.`)
+        }
       }
 
       if (Frames.hasInvalidData(frame)) {
         this.log(`Agent #${agent.index} has invalid data, stopping it.`)
-        Agents.stop(agentId)
+
+        try {
+          Agents.stop(agentId)
+        } catch (error) {
+          this.log(`Agent #${agent.index} simulation has failed to stop.`)
+        }
       }
 
       this.runCheck = true
