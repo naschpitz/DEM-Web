@@ -90,6 +90,20 @@ export default AgentsTable = props => {
         accessor: data => data.agent.iteration,
       },
       {
+        Header: "Current Score",
+        id: "currentScore",
+        className: "text-center",
+        width: 100,
+        accessor: data => data.agent.current.score,
+      },
+      {
+        Header: "Is the Best?",
+        id: "isBest",
+        className: "text-center",
+        width: 100,
+        accessor: data => (data.agent.best.bestGlobal ? "Yes" : "No"),
+      },
+      {
         Header: "State",
         id: "state",
         className: "text-center",

@@ -125,7 +125,7 @@ export default class Agents extends AgentsBoth {
 
     // If the current agent's simulation is better than the best agent's simulation, and it was not "stopped",
     // then the best agent's simulation object is updated with the current agent's object
-    if (agent.current.score < agent.best.score && state !== "stopped") {
+    if ((agent.current.score < agent.best.score && state !== "stopped") || agent.iteration === 0) {
       // Clones the current simulation (thus, scenery and materials).
       const newBestSimulationId = Simulations.clone(agent.current.simulation, false)
 

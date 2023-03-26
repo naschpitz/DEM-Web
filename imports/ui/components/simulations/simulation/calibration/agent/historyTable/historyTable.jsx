@@ -60,6 +60,27 @@ export default HistoryTable = props => {
         accessor: data => data.iteration,
       },
       {
+        Header: "Current Score",
+        id: "currentScore",
+        className: "text-center",
+        width: 100,
+        accessor: data => data.current.score,
+      },
+      {
+        Header: "Best Score",
+        id: "bestScore",
+        className: "text-center",
+        width: 100,
+        accessor: data => data.best.score,
+      },
+      {
+        Header: "Was Best Global?",
+        id: "wasBestGlobal",
+        className: "text-center",
+        width: 100,
+        accessor: data => (data.best.bestGlobal ? "Yes" : "No"),
+      },
+      {
         Header: "State",
         id: "state",
         className: "text-center",

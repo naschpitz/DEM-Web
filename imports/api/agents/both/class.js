@@ -30,7 +30,7 @@ export default class Agents extends AgentsDAO {
     // Updates the materials for the cloned simulation's scenery
     initializeMaterials(currentSimulationId, calibrationId)
 
-    // The best simulation will be a clone of the original simulation, because it has to kept while the current
+    // The best simulation will be a clone of the original simulation, because it has to be kept while the current
     // simulation is being constantly altered by the agent.
     const bestSimulationId = Simulations.clone(currentSimulationId, false)
 
