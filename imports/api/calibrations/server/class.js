@@ -73,7 +73,7 @@ export default class Calibrations extends CalibrationsBoth {
         const state = Agents.getState(agent._id)
 
         if (state === "done") {
-          Agents.updateCurrentScore(agent._id)
+          Agents.updateScore(agent._id)
 
           const updatedAgent = Agents.findOne(agent._id)
           agents.push(updatedAgent)

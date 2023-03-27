@@ -7,7 +7,9 @@ export default class SolidObjects extends SolidObjectsDAO {
   static clone(oldSceneryId, newSceneryId, materialsMap) {
     const oldSolidObjects = SolidObjectsDAO.find({ owner: oldSceneryId })
 
-    const newSolidObjectIds = oldSolidObjects.map(oldSolidObject => {
+    const solidObjectsMap = {}
+
+    oldSolidObjects.forEach(oldSolidObject => {
       const newSolidObject = _.cloneDeep(oldSolidObject)
       delete newSolidObject._id
 
@@ -19,10 +21,10 @@ export default class SolidObjects extends SolidObjectsDAO {
 
       ObjectsProperties.clone(oldSolidObjectId, newSolidObjectId)
 
-      return newSolidObjectId
+      solidObjectsMap[oldSolidObjectId] = newSolidObjectId
     })
 
-    return newSolidObjectIds
+    return solidObjectsMap
   }
 
   static create(sceneryId) {

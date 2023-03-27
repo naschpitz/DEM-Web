@@ -115,8 +115,8 @@ export default class Agents extends AgentsDAO {
     return simulation.state
   }
 
-  static updateCurrentScore(agentId) {
-    const agent = Agents.findOne(agentId)
+  static updateScore(agentId) {
+    let agent = Agents.findOne(agentId)
     const simulation = Simulations.findOne(agent.current.simulation)
     const scenery = Sceneries.findOne({ owner: simulation._id })
 
@@ -165,6 +165,20 @@ export default class Agents extends AgentsDAO {
 
     Agents.updateObj({ _id: agentId, current: { score: currentScore } })
 
-    return currentScore
+    agent = Agents.findOne(agentId)
+    const state = Agents.getState(agentId)
+
+    // If the current agent's simulation is better than the best agent's simulation, and it was not "stopped",
+    // then the best agent's simulation object is updated with the current agent's object
+    if ((agent.current.score < agent.best.score || agent.iteration === 0) && state !== "stopped") {
+      // Clones the current simulation (thus, scenery and materials).
+      const newBestSimulationId = Simulations.clone(agent.current.simulation, false)
+
+      // Removes the old best simulation
+      Simulations.remove(agent.best.simulation)
+
+      // Updates the best object with the new best simulation id and its score.
+      Agents.updateObj({ _id: agentId, best: { score: agent.current.score, simulation: newBestSimulationId } })
+    }
   }
 }

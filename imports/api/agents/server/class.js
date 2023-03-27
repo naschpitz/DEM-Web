@@ -73,10 +73,10 @@ export default class Agents extends AgentsBoth {
     const agent = AgentsBoth.findOne(agentId)
 
     const best = { ...agent.best }
-    best.simulation = Simulations.clone(agent.best.simulation, false, true)
+    best.simulation = Simulations.clone(agent.best.simulation, false, true, true)
 
     const current = { ...agent.current }
-    current.simulation = Simulations.clone(agent.current.simulation, false, true)
+    current.simulation = Simulations.clone(agent.current.simulation, false, true, true)
 
     const history = {
       iteration: agent.iteration,
@@ -121,20 +121,6 @@ export default class Agents extends AgentsBoth {
     Agents.saveHistory(agentId)
 
     let agent = Agents.findOne(agentId)
-    const state = Agents.getState(agentId)
-
-    // If the current agent's simulation is better than the best agent's simulation, and it was not "stopped",
-    // then the best agent's simulation object is updated with the current agent's object
-    if ((agent.current.score < agent.best.score && state !== "stopped") || agent.iteration === 0) {
-      // Clones the current simulation (thus, scenery and materials).
-      const newBestSimulationId = Simulations.clone(agent.current.simulation, false)
-
-      // Removes the old best simulation
-      Simulations.remove(agent.best.simulation)
-
-      // Updates the best object with the new best simulation id and its score.
-      Agents.updateObj({ _id: agentId, best: { score: agent.current.score, simulation: newBestSimulationId } })
-    }
 
     Simulations.reset(agent.current.simulation)
 

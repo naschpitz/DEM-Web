@@ -1,13 +1,14 @@
 import _ from "lodash"
 
 import Cameras from "../../cameras/both/class.js"
+import Frames from "../../frames/both/class"
 import Materials from "../../materials/both/class.js"
 import NonSolidObjects from "../../nonSolidObjects/both/class.js"
 import SceneriesDAO from "./dao.js"
 import SolidObjects from "../../solidObjects/both/class.js"
 
 export default class Sceneries extends SceneriesDAO {
-  static clone(oldSimulationId, newSimulationId) {
+  static clone(oldSimulationId, newSimulationId, frames = false) {
     const oldScenery = SceneriesDAO.findOne({ owner: oldSimulationId })
 
     const newScenery = _.cloneDeep(oldScenery)
@@ -20,8 +21,12 @@ export default class Sceneries extends SceneriesDAO {
     Cameras.clone(oldSceneryId, newSceneryId)
 
     const materialsMap = Materials.clone(oldSceneryId, newSceneryId)
-    NonSolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
-    SolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
+    const nonSolidObjectsMap = NonSolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
+    const solidObjectsMap = SolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
+
+    if (frames) {
+      Frames.clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap)
+    }
 
     return newSceneryId
   }
