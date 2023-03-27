@@ -10,11 +10,11 @@ export default class Frames extends FramesDAO {
       delete frame._id
       frame.owner = newOwnerId
 
-      frame.nonSolidObjects.forEach(nonSolidObject => {
+      frame.scenery.objects.nonSolidObjects.forEach(nonSolidObject => {
         nonSolidObject._id = nonSolidObjectsMap[nonSolidObject._id]
       })
 
-      frame.solidObjects.forEach(solidObject => {
+      frame.scenery.objects.solidObjects.forEach(solidObject => {
         solidObject._id = solidObjectsMap[solidObject._id]
       })
 
