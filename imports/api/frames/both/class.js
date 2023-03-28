@@ -3,12 +3,12 @@ import _ from "lodash"
 import FramesDAO from "./dao.js"
 
 export default class Frames extends FramesDAO {
-  static clone(ownerId, newOwnerId, nonSolidObjectsMap, solidObjectsMap) {
-    const frames = FramesDAO.find({ owner: ownerId })
+  static clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap) {
+    const frames = FramesDAO.find({ owner: oldSceneryId })
 
     frames.forEach(frame => {
       delete frame._id
-      frame.owner = newOwnerId
+      frame.owner = newSceneryId
 
       frame.scenery.objects.nonSolidObjects.forEach(nonSolidObject => {
         nonSolidObject._id = nonSolidObjectsMap[nonSolidObject._id]

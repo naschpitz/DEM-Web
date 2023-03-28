@@ -62,40 +62,13 @@ export default class Calibrations extends CalibrationsBoth {
   }
 
   static nextIteration(calibrationId) {
-    updateScores()
+    // Update Agents' scores
+    Agents.find({ owner: calibrationId }).forEach(agent => Agents.updateScore(agent._id))
+
+    // Update Agents' best global score
+    Agents.updateBestGlobal(calibrationId)
+
     checkNextIteration()
-
-    function updateScores() {
-      // Find the agents for this calibration whose getState() is "done"
-      const agents = []
-
-      Agents.find({ owner: calibrationId }).forEach(agent => {
-        const state = Agents.getState(agent._id)
-
-        if (state === "done") {
-          Agents.updateScore(agent._id)
-
-          const updatedAgent = Agents.findOne(agent._id)
-          agents.push(updatedAgent)
-        }
-      })
-
-      // If there are no 'agents' with state 'done', then there is nothing to do here.
-      if (agents.length === 0) {
-        Logs.insert({ owner: calibrationId, message: "No agents in the 'done' state." })
-        return
-      }
-
-      const bestGScores = agents.map(agent => ({ agentId: agent._id, score: agent.best.score }))
-
-      // Gets the agentId with the lowest score
-      const bestGAgentId = bestGScores.reduce(
-        (acc, score) => (score.score < acc.score ? score : acc),
-        bestGScores[0]
-      ).agentId
-
-      Agents.setBestGlobal(bestGAgentId)
-    }
 
     function checkNextIteration() {
       const calibration = CalibrationsBoth.findOne(calibrationId)

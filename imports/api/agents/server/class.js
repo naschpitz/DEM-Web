@@ -122,6 +122,13 @@ export default class Agents extends AgentsBoth {
   }
 
   static updateScore(agentId) {
+    const state = Agents.getState(agentId)
+
+    if (state !== "done") {
+      Agents.updateObj({ _id: agentId, current: { valid: false } })
+      return
+    }
+
     let agent = Agents.findOne(agentId)
     const simulation = Simulations.findOne(agent.current.simulation)
     const scenery = Sceneries.findOne({ owner: simulation._id })
@@ -169,14 +176,13 @@ export default class Agents extends AgentsBoth {
       }, 0)
     })
 
-    Agents.updateObj({ _id: agentId, current: { score: currentScore } })
+    Agents.updateObj({ _id: agentId, current: { score: currentScore, valid: true } })
 
     agent = Agents.findOne(agentId)
-    const state = Agents.getState(agentId)
 
-    // If the current agent's simulation is better than the best agent's simulation, and it was not "stopped",
+    // If the current agent's simulation is better than the best agent's simulation or if it is the first iteration,
     // then the best agent's simulation object is updated with the current agent's object
-    if ((agent.current.score < agent.best.score || agent.iteration === 0) && state !== "stopped") {
+    if (agent.current.score < agent.best.score || agent.iteration === 0) {
       // Clones the current simulation (thus, scenery and materials).
       const newBestSimulationId = Simulations.clone(agent.current.simulation, false)
 
@@ -184,8 +190,26 @@ export default class Agents extends AgentsBoth {
       Simulations.remove(agent.best.simulation)
 
       // Updates the best object with the new best simulation id and its score.
-      Agents.updateObj({ _id: agentId, best: { score: agent.current.score, simulation: newBestSimulationId } })
+      Agents.updateObj({
+        _id: agentId,
+        best: { score: agent.current.score, simulation: newBestSimulationId, valid: true },
+      })
     }
+  }
+
+  static updateBestGlobal(calibrationId) {
+    const bestGScores = Agents.find({ owner: calibrationId, "best.valid": true }).map(agent => ({
+      agentId: agent._id,
+      score: agent.best.score,
+    }))
+
+    // Gets the agentId with the lowest score
+    const bestGAgentId = bestGScores.reduce(
+      (acc, score) => (score.score < acc.score ? score : acc),
+      bestGScores[0]
+    ).agentId
+
+    Agents.setBestGlobal(bestGAgentId)
   }
 
   static nextIteration(agentId, bestGAgentId) {

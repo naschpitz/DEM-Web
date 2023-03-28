@@ -13,6 +13,12 @@ export default SimulationScore = new SimpleSchema({
     defaultValue: false,
     optional: true,
   },
+  valid: {
+    type: Boolean,
+    label: "Valid",
+    defaultValue: false,
+    optional: true,
+  },
   simulation: {
     type: String,
     label: "Simulation Id",
