@@ -1,10 +1,14 @@
 import AgentsBoth from "../both/class"
+import DataSets from "../../dataSets/both/class"
 import Frames from "../../frames/server/class"
 import Materials from "../../materials/both/class"
 import NonSolidObjects from "../../nonSolidObjects/both/class"
 import Sceneries from "../../sceneries/server/class"
 import Simulations from "../../simulations/server/class"
 import SolidObjects from "../../solidObjects/both/class"
+
+import Spline from "cubic-spline"
+import _ from "lodash"
 
 export default class Agents extends AgentsBoth {
   static start(agentId) {
@@ -114,6 +118,73 @@ export default class Agents extends AgentsBoth {
         frameObserve.stop()
         simulationObserve.stop()
       },
+    }
+  }
+
+  static updateScore(agentId) {
+    let agent = Agents.findOne(agentId)
+    const simulation = Simulations.findOne(agent.current.simulation)
+    const scenery = Sceneries.findOne({ owner: simulation._id })
+
+    const frames = Frames.find({ owner: scenery._id }, { sort: { time: 1 } }).fetch()
+
+    let currentScore = 0
+
+    DataSets.find({ owner: agent.owner }).forEach(dataSet => {
+      const objectId = dataSet.object
+      const object = NonSolidObjects.findOne(objectId) || SolidObjects.findOne(objectId)
+
+      const objectCallSign = object.callSign
+      const dataName = dataSet.dataName
+
+      const spline = new Spline(
+        dataSet.data.map(data => data.time),
+        dataSet.data.map(data => data.value)
+      )
+
+      currentScore += frames.reduce((score, frame) => {
+        // Get the non-solid or solid object that belongs to the Frame's Scenery and has the same callSign as the DataSet's
+        const nonSolidObject = NonSolidObjects.findOne({ owner: frame.owner, callSign: objectCallSign })
+        const solidObject = SolidObjects.findOne({ owner: frame.owner, callSign: objectCallSign })
+
+        const object = nonSolidObject || solidObject
+
+        // Find in the frame object's list the one that matches the id of the object found above
+        const frameNonSolidObject = _.find(frame.scenery.objects.nonSolidObjects, { _id: object._id })
+        const frameSolidObject = _.find(frame.scenery.objects.solidObjects, { _id: object._id })
+
+        const frameObject = frameNonSolidObject || frameSolidObject
+
+        // Get the value of the dataName in the frame object
+        const value = _.get(frameObject, dataName)
+
+        // Calculate the difference between the value and the expected value
+        const evaluatedValue = spline.at(frame.time)
+
+        // If evaluatedValue is NaN, it means that the frame time is out of the DataSet's time range. In this case, the
+        // error is 0.
+        const error = isNaN(evaluatedValue) ? 0 : Math.abs(value - evaluatedValue)
+
+        return score + error
+      }, 0)
+    })
+
+    Agents.updateObj({ _id: agentId, current: { score: currentScore } })
+
+    agent = Agents.findOne(agentId)
+    const state = Agents.getState(agentId)
+
+    // If the current agent's simulation is better than the best agent's simulation, and it was not "stopped",
+    // then the best agent's simulation object is updated with the current agent's object
+    if ((agent.current.score < agent.best.score || agent.iteration === 0) && state !== "stopped") {
+      // Clones the current simulation (thus, scenery and materials).
+      const newBestSimulationId = Simulations.clone(agent.current.simulation, false)
+
+      // Removes the old best simulation
+      Simulations.remove(agent.best.simulation)
+
+      // Updates the best object with the new best simulation id and its score.
+      Agents.updateObj({ _id: agentId, best: { score: agent.current.score, simulation: newBestSimulationId } })
     }
   }
 

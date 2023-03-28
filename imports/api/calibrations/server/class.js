@@ -1,5 +1,5 @@
 import Agents from "../../agents/server/class"
-import CalibrationsBoth from "../both/class.js"
+import CalibrationsBoth from "../both/class"
 import Hypervisor from "./hypervisor"
 import Logs from "../../logs/both/class"
 
