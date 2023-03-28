@@ -63,10 +63,7 @@ export default class Calibrations extends CalibrationsBoth {
 
   static nextIteration(calibrationId) {
     // Update Agents' scores
-    Agents.find({ owner: calibrationId }).forEach(agent => Agents.updateScore(agent._id))
-
-    // Update Agents' best global score
-    Agents.updateBestGlobal(calibrationId)
+    Agents.updateScores(calibrationId)
 
     checkNextIteration()
 
