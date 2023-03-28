@@ -64,14 +64,14 @@ export default HistoryTable = props => {
         id: "currentScore",
         className: "text-center",
         width: 100,
-        accessor: data => data.current.score,
+        accessor: data => (data.current.valid ? data.current.score : "Invalid"),
       },
       {
         Header: "Best Score",
         id: "bestScore",
         className: "text-center",
         width: 100,
-        accessor: data => data.best.score,
+        accessor: data => (data.best.valid ? data.best.score : "Invalid"),
       },
       {
         Header: "Was Best Global?",
