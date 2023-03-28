@@ -1,7 +1,6 @@
 import React from "react"
 import { Meteor } from "meteor/meteor"
 import { createRoot } from "react-dom/client"
-import Modal from "react-modal"
 
 import { BrowserRouter } from "react-router-dom"
 
@@ -31,7 +30,4 @@ Meteor.startup(() => {
       <App />
     </BrowserRouter>
   )
-
-  // https://github.com/reactjs/react-modal/issues/576
-  Modal.setAppElement("#render-target")
 })

@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.3",
-    "@naschpitz/button-enhanced": "1.0.20",
-    "@naschpitz/form-input": "^1.0.47",
+    "@naschpitz/button-enhanced": "latest",
+    "@naschpitz/form-input": "latest",
     "@naschpitz/unique-modal": "latest",
     "bcrypt": "^4.0.1",
     "bootstrap": "^4.5.0",
@@ -44,7 +44,6 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.0.0",
     "react-icons": "^3.10.0",
-    "react-modal": "^3.16.1",
     "react-player": "^2.6.2",
     "react-router": "^6.8.2",
     "react-router-dom": "^6.8.2",
