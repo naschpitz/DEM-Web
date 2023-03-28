@@ -98,10 +98,10 @@ export default AgentsTable = props => {
       },
       {
         Header: "Best Score",
-        id: "currentScore",
+        id: "bestScore",
         className: "text-center",
         width: 100,
-        accessor: data => (data.agent.best.valid ? data.agent.current.best : "Invalid"),
+        accessor: data => (data.agent.best.valid ? data.agent.best.score : "Invalid"),
       },
       {
         Header: "Is the Best Global?",
