@@ -328,12 +328,13 @@ export default class Agents extends AgentsBoth {
 
       const c1 = 0.2
       const c2 = 0.8
+      const perturbation = 0.01
 
       let velocity = bestCoefficient - coefficient
-      if (velocity < 0.1 * coefficient) velocity = 0.1 * bestCoefficient
+      if (velocity < perturbation * coefficient) velocity = perturbation * bestCoefficient
 
       let globalVelocity = bestGlobalCoefficient - coefficient
-      if (globalVelocity < 0.1 * coefficient) globalVelocity = 0.1 * bestGlobalCoefficient
+      if (globalVelocity < perturbation * coefficient) globalVelocity = perturbation * bestGlobalCoefficient
 
       return coefficient + c1 * random1 * velocity + c2 * random2 * globalVelocity
     }
