@@ -330,6 +330,19 @@ export default Properties = props => {
 
           {getDragForceCoefficientsInputs()}
         </div>
+
+        <div className="col-sm-12 col-md-4">
+          <FormInput
+            label="Calibrate?"
+            name="calibrate"
+            value={material.calibrate}
+            type="checkbox"
+            size="small"
+            labelSizes={{ sm: 6, md: 4, lg: 4 }}
+            inputSizes={{ sm: 6, md: 6, lg: 6 }}
+            onEvent={onEvent}
+          />
+        </div>
       </div>
     </div>
   )
