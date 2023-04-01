@@ -17,7 +17,6 @@ const Videos = new FilesCollection({
 
     const userId = this.params.query.xmtok;
 
-    return true
     return userId === simulation.owner;
   },
   disableUpload: true

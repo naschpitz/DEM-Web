@@ -57,7 +57,7 @@ export default SimulationControl = props => {
 
     _.set(newSimulation, name, value)
 
-    if (event === "onBlur" || (event === "onChange" && name === "server")) {
+    if (event === "onBlur" || (event === "onChange" && (name === "server" || name === "multiGPU"))) {
       Meteor.call("simulations.update", newSimulation, error => {
         if (error) Alert.error("Error updating server: " + getErrorMessage(error))
       })
@@ -310,75 +310,108 @@ export default SimulationControl = props => {
           <hr />
 
           <div className="row">
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <FormInput
-                label="Server"
-                name="server"
-                value={_.get(simulation, "server")}
-                type="dropdown"
-                subtype="string"
-                size="small"
-                options={serversOptions}
-                labelSizes={{ sm: 5, md: 4, lg: 4 }}
-                inputSizes={{ sm: 7, md: 8, lg: 8 }}
-                onEvent={onEvent}
-              />
+            <div className="col-sm-12 col-md-6 col-lg-4">
+              <div className="card" id="serverSettings">
+                <div className="card-header">Server Settings</div>
+
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <FormInput
+                        label="Server"
+                        name="server"
+                        value={_.get(simulation, "server")}
+                        type="dropdown"
+                        subtype="string"
+                        size="small"
+                        options={serversOptions}
+                        labelSizes={{ sm: 5, md: 4, lg: 4 }}
+                        inputSizes={{ sm: 7, md: 8, lg: 8 }}
+                        onEvent={onEvent}
+                      />
+                    </div>
+
+                    <div className="col-sm-12">
+                      <FormInput
+                        label="Use Multiple GPUs?"
+                        name="multiGPU"
+                        value={_.get(simulation, "multiGPU")}
+                        type="checkbox"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 4, lg: 4 }}
+                        inputSizes={{ sm: 7, md: 8, lg: 8 }}
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="Total Time"
-                name="totalTime"
-                value={_.get(simulation, "totalTime")}
-                type="field"
-                subtype="number"
-                size="small"
-                labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                inputSizes={{ sm: 7, md: 7, lg: 6 }}
-                onEvent={onEvent}
-              />
-            </div>
+            <div className="col-sm-12 col-md-8">
+              <div className="card" id="timeSetting">
+                <div className="card-header">Time Settings</div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="Time Step"
-                name="timeStep"
-                value={_.get(simulation, "timeStep")}
-                type="field"
-                subtype="number"
-                size="small"
-                labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                inputSizes={{ sm: 7, md: 7, lg: 6 }}
-                onEvent={onEvent}
-              />
-            </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6">
+                      <FormInput
+                        label="Total Time"
+                        name="totalTime"
+                        value={_.get(simulation, "totalTime")}
+                        type="field"
+                        subtype="number"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        onEvent={onEvent}
+                      />
+                    </div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="Frame Time"
-                name="frameTime"
-                value={_.get(simulation, "frameTime")}
-                type="field"
-                subtype="number"
-                size="small"
-                labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                inputSizes={{ sm: 7, md: 7, lg: 6 }}
-                onEvent={onEvent}
-              />
-            </div>
+                    <div className="col-sm-12 col-md-6">
+                      <FormInput
+                        label="Time Step"
+                        name="timeStep"
+                        value={_.get(simulation, "timeStep")}
+                        type="field"
+                        subtype="number"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        onEvent={onEvent}
+                      />
+                    </div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="Log Time"
-                name="logTime"
-                value={_.get(simulation, "logTime")}
-                type="field"
-                subtype="number"
-                size="small"
-                labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                inputSizes={{ sm: 7, md: 7, lg: 6 }}
-                onEvent={onEvent}
-              />
+                    <div className="col-sm-12 col-md-6">
+                      <FormInput
+                        label="Frame Time"
+                        name="frameTime"
+                        value={_.get(simulation, "frameTime")}
+                        type="field"
+                        subtype="number"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        onEvent={onEvent}
+                      />
+                    </div>
+
+                    <div className="col-sm-12 col-md-6">
+                      <FormInput
+                        label="Log Time"
+                        name="logTime"
+                        value={_.get(simulation, "logTime")}
+                        type="field"
+                        subtype="number"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

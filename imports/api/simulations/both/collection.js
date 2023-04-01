@@ -44,6 +44,12 @@ Simulations.schema = new SimpleSchema({
     defaultValue: 5,
     optional: true,
   },
+  multiGPU: {
+    type: Boolean,
+    label: "Multi GPU",
+    defaultValue: false,
+    optional: true,
+  },
   totalTime: {
     type: Number,
     label: "Total time",

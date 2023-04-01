@@ -63,7 +63,7 @@ npm-mongo@4.12.1
 okgrow:analytics@0.2.3
 ordered-dict@1.1.0
 ostrio:cookies@2.7.2
-ostrio:files@1.14.3
+ostrio:files@1.14.2
 peerlibrary:assert@0.3.0
 peerlibrary:extend-publish@0.6.0
 peerlibrary:fiber-utils@0.10.0
