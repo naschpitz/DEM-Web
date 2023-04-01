@@ -19,6 +19,7 @@ export default class Simulations extends SimulationsDAO {
       newSimulation.name = oldSimulation.name + " (clone)"
     } else {
       delete newSimulation.name
+      newSimulation.multiGPU = false
     }
 
     const newSimulationId = SimulationsDAO.insert(newSimulation)
