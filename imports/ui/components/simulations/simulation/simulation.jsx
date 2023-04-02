@@ -28,6 +28,8 @@ export default Simulation = props => {
   }, [params])
 
   useTracker(() => {
+    setIsReady(false)
+
     Meteor.subscribe("simulations.simulation", simulationId, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsReady(true),
@@ -35,8 +37,12 @@ export default Simulation = props => {
   }, [simulationId])
 
   const simulation = useTracker(() => {
-    return SimulationsClass.findOne(simulationId)
-  })
+    const simulation = SimulationsClass.findOne(simulationId)
+
+    if (isReady && !simulation) navigate("/simulations")
+
+    return simulation
+  }, [simulationId, isReady])
 
   useEffect(() => {
     if (isReady && !simulation) navigate("/simulations")

@@ -10,8 +10,7 @@ Simulations.schema = new SimpleSchema({
     label: "User Owner",
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
-      if (this.isInsert && this.connection) return this.userId
-
+      if (this.isInsert) return this.userId
       if (this.isUpdate) this.unset()
     },
   },
