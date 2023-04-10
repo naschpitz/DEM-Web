@@ -9,6 +9,13 @@ import MaterialsClass from "../../../../../../../api/materials/both/class.js"
 import Alert from "react-s-alert-v3"
 import FormInput from "@naschpitz/form-input"
 
+import {
+  getForcesOptions,
+  getForcesCoefficientsOptions,
+  getDragForcesOptions,
+  getDragForcesCoefficientsOptions,
+} from "../../../../../../common/materials"
+
 import "./properties.css"
 
 export default Properties = props => {
@@ -37,172 +44,33 @@ export default Properties = props => {
     })
   }
 
-  function getForceCoefficientsInputs() {
-    const forceType = material.forceType
+  function getCoefficientsInputs(type, material) {
+    const coefficientsOptions = getCoefficientsOptions(type)
 
-    const coefficients = []
-
-    switch (forceType) {
-      case "adiabatic_compression": {
-        coefficients.push({
-          label: "P0",
-          name: "coefficients[0]",
-          value: _.get(material, "coefficients[0]"),
-        })
-
-        coefficients.push({
-          label: "Gamma",
-          name: "coefficients[1]",
-          value: _.get(material, "coefficients[1]"),
-        })
-
-        break
-      }
-
-      case "hooks_law": {
-        coefficients.push({
-          label: "K",
-          name: "coefficients[0]",
-          value: _.get(material, "coefficients[0]"),
-        })
-
-        break
-      }
-
-      case "inverse_linear": {
-        coefficients.push({
-          label: "K",
-          name: "coefficients[0]",
-          value: _.get(material, "coefficients[0]"),
-        })
-
-        break
-      }
-
-      case "inverse_quadratic": {
-        coefficients.push({
-          label: "K",
-          name: "coefficients[0]",
-          value: _.get(material, "coefficients[0]"),
-        })
-
-        break
-      }
-
-      case "inverse_cubic": {
-        coefficients.push({
-          label: "K",
-          name: "coefficients[0]",
-          value: _.get(material, "coefficients[0]"),
-        })
-        break
-      }
-
-      case "morse": {
-        coefficients.push(
-          {
-            label: "De",
-            name: "coefficients[0]",
-            value: _.get(material, "coefficients[0]"),
-          },
-          {
-            label: "Ke",
-            name: "coefficients[1]",
-            value: _.get(material, "coefficients[1]"),
-          }
-        )
-
-        break
-      }
-
-      case "lennard_jones": {
-        coefficients.push(
-          {
-            label: "Epsilon",
-            name: "coefficients[0]",
-            value: _.get(material, "coefficients[0]"),
-          },
-          {
-            label: "N",
-            name: "coefficients[1]",
-            value: _.get(material, "coefficients[1]"),
-          }
-        )
-
-        break
-      }
-
-      case "realistic_material": {
-        coefficients.push({
-          label: "Young's module",
-          name: "coefficients[0]",
-          value: _.get(material, "coefficients[0]"),
-        })
-
-        coefficients.push({
-          label: "Elastic limit",
-          name: "coefficients[1]",
-          value: _.get(material, "coefficients[1]"),
-        })
-
-        coefficients.push({
-          label: "Plastic maximum",
-          name: "coefficients[2]",
-          value: _.get(material, "coefficients[2]"),
-        })
-
-        coefficients.push({
-          label: "Rupture",
-          name: "coefficients[3]",
-          value: _.get(material, "coefficients[3]"),
-        })
-
-        break
+    function getCoefficientsOptions(type) {
+      switch (type) {
+        case "force": {
+          return getForcesCoefficientsOptions(material.forceType)
+        }
+        case "dragForce": {
+          return getDragForcesCoefficientsOptions(material.dragForceType)
+        }
       }
     }
 
-    return getCoefficientsInputs(coefficients)
-  }
+    const coefficients = coefficientsOptions.map(forceCoefficientOption => {
+      return {
+        label: forceCoefficientOption.text,
+        name: forceCoefficientOption.value,
+        value: _.get(material, forceCoefficientOption.value),
+      }
+    })
 
-  function getDragForceCoefficientsInputs() {
-    const dragForceType = props.material.dragForceType
-
-    const dragCoefficients = []
-
-    switch (dragForceType) {
-      case "linear":
-        dragCoefficients.push({
-          label: "C0",
-          name: "dragCoefficients[0]",
-          value: _.get(props.material, "dragCoefficients[0]"),
-        })
-        break
-
-      case "quadratic":
-        dragCoefficients.push({
-          label: "C0",
-          name: "dragCoefficients[0]",
-          value: _.get(props.material, "dragCoefficients[0]"),
-        })
-        break
-
-      case "cubic":
-        dragCoefficients.push({
-          label: "C0",
-          name: "dragCoefficients[0]",
-          value: _.get(material, "dragCoefficients[0]"),
-        })
-        break
-    }
-
-    return getCoefficientsInputs(dragCoefficients)
-  }
-
-  function getCoefficientsInputs(coefficients) {
     return (
       <div>
         {coefficients.map(coefficient => (
           <FormInput
+            key={coefficient.label}
             label={coefficient.label}
             name={coefficient.name}
             value={coefficient.value}
@@ -227,24 +95,11 @@ export default Properties = props => {
   materialsOptions = _.compact(materialsOptions)
   materialsOptions.unshift({ value: "", text: "-- Select Material --" })
 
-  const forcesOptions = [
-    { value: "", text: "-- Select Force --" },
-    { value: "adiabatic_compression", text: "Adiabatic Compression" },
-    { value: "hooks_law", text: "Hook's Law" },
-    { value: "inverse_linear", text: "Inverse Linear" },
-    { value: "inverse_quadratic", text: "Inverse Quadratic" },
-    { value: "inverse_cubic", text: "Inverse Cubic" },
-    { value: "morse", text: "Morse" },
-    { value: "lennard_jones", text: "Lennard-Jones" },
-    { value: "realistic_material", text: "Realistic Material" },
-  ]
+  const forcesOptions = getForcesOptions()
+  forcesOptions.unshift({ value: "", text: "-- Select Force --" })
 
-  const dragForcesOptions = [
-    { value: "", text: "-- Select Drag Force --" },
-    { value: "linear", text: "Linear" },
-    { value: "quadratic", text: "Quadratic" },
-    { value: "cubic", text: "Cubic" },
-  ]
+  const dragForcesOptions = getDragForcesOptions()
+  dragForcesOptions.unshift({ value: "", text: "-- Select Drag Force --" })
 
   return (
     <div id="materialProperties">
@@ -311,7 +166,7 @@ export default Properties = props => {
             onEvent={onEvent}
           />
 
-          {getForceCoefficientsInputs()}
+          {getCoefficientsInputs("force", material)}
         </div>
 
         <div className="col-sm-12 col-md-4">
@@ -328,20 +183,7 @@ export default Properties = props => {
             onEvent={onEvent}
           />
 
-          {getDragForceCoefficientsInputs()}
-        </div>
-
-        <div className="col-sm-12 col-md-4">
-          <FormInput
-            label="Calibrate?"
-            name="calibrate"
-            value={material.calibrate}
-            type="checkbox"
-            size="small"
-            labelSizes={{ sm: 6, md: 4, lg: 4 }}
-            inputSizes={{ sm: 6, md: 6, lg: 6 }}
-            onEvent={onEvent}
-          />
+          {getCoefficientsInputs("dragForce", material)}
         </div>
       </div>
     </div>
