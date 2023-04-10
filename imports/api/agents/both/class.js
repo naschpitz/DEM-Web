@@ -1,8 +1,11 @@
+import _ from "lodash"
+
 import AgentsDAO from "./dao"
 
 import Calibrations from "../../calibrations/both/class"
 import Materials from "../../materials/both/class"
 import NonSolidObjects from "../../nonSolidObjects/both/class"
+import Parameters from "../../parameters/both/class"
 import Sceneries from "../../sceneries/both/class"
 import Simulations from "../../simulations/both/class"
 import SolidObjects from "../../solidObjects/both/class"
@@ -19,11 +22,8 @@ export default class Agents extends AgentsDAO {
       server: calibration.server,
     })
 
-    // Updates the objects for the cloned simulation's scenery
-    initializeObjects(currentSimulationId, calibrationId)
-
-    // Updates the materials for the cloned simulation's scenery
-    initializeMaterials(currentSimulationId, calibrationId)
+    // Updates the materials and objects for the cloned simulation's scenery
+    initializeCoefficients(calibrationId, currentSimulationId)
 
     // The best simulation will be a clone of the original simulation, because it has to be kept while the current
     // simulation is being constantly altered by the agent.
@@ -37,69 +37,63 @@ export default class Agents extends AgentsDAO {
     })
 
     // Updates the objects coefficients with the boundaries
-    function initializeObjects(simulationId, calibrationId) {
-      const calibration = Calibrations.findOne(calibrationId)
+    function initializeCoefficients(calibrationId, simulationId) {
+      Parameters.find({ owner: calibrationId }).forEach(parameter => {
+        const parameterId = parameter._id
 
-      const variation = calibration.variation
-
-      const scenery = Sceneries.findOne({ owner: simulationId })
-      const solidObjects = SolidObjects.find({ owner: scenery._id, fixed: false })
-      const nonSolidObjects = NonSolidObjects.find({ owner: scenery._id, fixed: false })
-
-      solidObjects.forEach(solidObject => {
-        const minMass = solidObject.mass * (1 + variation)
-        const maxMass = solidObject.mass * (1 - variation)
-        const mass = minMass + (maxMass - minMass) * Math.random()
-
-        SolidObjects.updateObj({ _id: solidObject._id, mass: mass })
-      })
-
-      nonSolidObjects.forEach(nonSolidObject => {
-        const minDensity = nonSolidObject.density * (1 - variation)
-        const maxDensity = nonSolidObject.density * (1 + variation)
-
-        const density = minDensity + (maxDensity - minDensity) * Math.random()
-
-        NonSolidObjects.updateObj({ _id: nonSolidObject._id, density: density })
+        Agents.updateMaterialObject(parameterId, simulationId)
       })
     }
+  }
 
-    // Updates the materials coefficients with the boundaries
-    function initializeMaterials(simulationId, calibrationId) {
-      const calibration = Calibrations.findOne(calibrationId)
+  static updateMaterialObject(parameterId, simulationId) {
+    const parameter = Parameters.findOne(parameterId)
+    const simulation = Simulations.findOne(simulationId)
+    const scenery = Sceneries.findOne({ owner: simulation._id })
 
-      const variation = calibration.variation
+    switch (parameter.type) {
+      case "material": {
+        const originalMaterial = Materials.findOne(parameter.materialObject)
+        const material = Materials.findOne({ owner: scenery._id, callSign: originalMaterial.callSign })
 
-      const scenery = Sceneries.findOne({ owner: simulationId })
-      const materials = Materials.find({ owner: scenery._id })
+        const value = getValue(material, parameter)
+        _.set(material, parameter.coefficient, value)
 
-      const materialsBoundaries = Sceneries.getMaterialsBoundaries(scenery._id, variation)
+        Materials.updateObj(material)
 
-      materials.forEach(material => {
-        const materialBoundary = materialsBoundaries.find(
-          materialBoundary => materialBoundary.callSign === material.callSign
-        )
-
-        const newCoefficients = materialBoundary.coefficients?.map(materialBoundary =>
-          calculateCoefficient(materialBoundary)
-        )
-
-        const newDragCoefficients = materialBoundary.dragCoefficients?.map(materialBoundary =>
-          calculateCoefficient(materialBoundary)
-        )
-
-        function calculateCoefficient(materialBoundary) {
-          const width = materialBoundary.max - materialBoundary.min
-
-          return materialBoundary.min + width * Math.random()
-        }
-
-        Materials.updateObj({
-          _id: material._id,
-          coefficients: newCoefficients,
-          dragCoefficients: newDragCoefficients,
+        break
+      }
+      case "nonSolidObject": {
+        const originalNonSolidObject = NonSolidObjects.findOne(parameter.materialObject)
+        const nonSolidObject = NonSolidObjects.findOne({
+          owner: scenery._id,
+          callSign: originalNonSolidObject.callSign,
         })
-      })
+
+        const value = getValue(nonSolidObject, parameter)
+        _.set(nonSolidObject, parameter.coefficient, value)
+
+        NonSolidObjects.updateObj(nonSolidObject)
+
+        break
+      }
+      case "solidObject": {
+        const originalSolidObject = SolidObjects.findOne(parameter.materialObject)
+        const solidObject = SolidObjects.findOne({ owner: scenery._id, callSign: originalSolidObject.callSign })
+
+        const value = getValue(solidObject, parameter)
+        _.set(solidObject, parameter.coefficient, value)
+
+        SolidObjects.updateObj(solidObject)
+
+        break
+      }
+    }
+
+    function getValue(materialObject, parameter) {
+      const minValue = _.get(materialObject, parameter.coefficient) * (1 + parameter.variation)
+      const maxValue = _.get(materialObject, parameter.coefficient) * (1 - parameter.variation)
+      return minValue + (maxValue - minValue) * Math.random()
     }
   }
 

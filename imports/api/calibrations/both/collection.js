@@ -40,12 +40,6 @@ Calibrations.schema = new SimpleSchema({
     defaultValue: 20,
     optional: true,
   },
-  variation: {
-    type: Number,
-    label: "Domain variation",
-    defaultValue: 0.2,
-    optional: true,
-  },
   instancesNumber: {
     type: Number,
     label: "Instances",

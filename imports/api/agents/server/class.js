@@ -1,14 +1,15 @@
+import Spline from "cubic-spline"
+import _ from "lodash"
+
 import AgentsBoth from "../both/class"
 import DataSets from "../../dataSets/both/class"
 import Frames from "../../frames/server/class"
 import Materials from "../../materials/both/class"
 import NonSolidObjects from "../../nonSolidObjects/both/class"
+import Parameters from "../../parameters/both/class"
 import Sceneries from "../../sceneries/server/class"
 import Simulations from "../../simulations/server/class"
 import SolidObjects from "../../solidObjects/both/class"
-
-import Spline from "cubic-spline"
-import _ from "lodash"
 
 export default class Agents extends AgentsBoth {
   static start(agentId) {
@@ -230,96 +231,83 @@ export default class Agents extends AgentsBoth {
   static nextIteration(agentId, bestGAgentId) {
     Agents.saveHistory(agentId)
 
-    let agent = Agents.findOne(agentId)
+    const agent = Agents.findOne(agentId)
+    const bestGAgent = Agents.findOne(bestGAgentId)
 
     Simulations.reset(agent.current.simulation)
 
-    const scenery = Sceneries.findOne({ owner: agent.current.simulation })
-    const solidObjects = SolidObjects.find({ owner: scenery._id, fixed: false }).fetch()
-    const nonSolidObjects = NonSolidObjects.find({ owner: scenery._id, fixed: false }).fetch()
-    const materials = Materials.find({ owner: scenery._id }).fetch()
-
-    // Read the agent again from the database, because it might have been updated.
-    agent = Agents.findOne(agentId)
-
-    const bestScenery = Sceneries.findOne({ owner: agent.best.simulation })
-    const bestSolidObjects = SolidObjects.find({ owner: bestScenery._id, fixed: true }).fetch()
-    const bestNonSolidObjects = NonSolidObjects.find({ owner: bestScenery._id, fixed: true }).fetch()
-    const bestMaterials = Materials.find({ owner: bestScenery._id }).fetch()
-
-    const bestGAgent = Agents.findOne(bestGAgentId)
-    const bestGScenery = Sceneries.findOne({ owner: bestGAgent.best.simulation })
-    const bestGSolidObjects = SolidObjects.find({ owner: bestGScenery._id, fixed: true }).fetch()
-    const bestGNonSolidObjects = NonSolidObjects.find({ owner: bestGScenery._id, fixed: true }).fetch()
-    const bestGMaterials = Materials.find({ owner: bestGScenery._id }).fetch()
-
-    updateSolidObjects(solidObjects, bestSolidObjects, bestGSolidObjects)
-    updateNonSolidObjects(nonSolidObjects, bestNonSolidObjects, bestGNonSolidObjects)
-    updateMaterials(materials, bestMaterials, bestGMaterials)
+    updateCoefficients(agent, bestGAgent)
 
     Agents.updateObj({ _id: agentId, iteration: agent.iteration + 1 })
 
-    function updateSolidObjects(solidObjects, bestSolidObjects, bestGSolidObjects) {
-      solidObjects.forEach(solidObject => {
-        const bestSolidObject = bestSolidObjects.find(
-          bestSolidObject => bestSolidObject.callSign === solidObject.callSign
-        )
+    function updateCoefficients(agent, bestGAgent) {
+      const calibrationId = agent.owner
 
-        const bestGSolidObject = bestGSolidObjects.find(
-          bestGSolidObject => bestGSolidObject.callSign === solidObject.callSign
-        )
-
-        const newMass = calculateCoefficient(solidObject.mass, bestSolidObject.mass, bestGSolidObject.mass)
-
-        SolidObjects.updateObj({ _id: solidObject._id, mass: newMass })
-      })
+      Parameters.find({ owner: calibrationId }).forEach(parameter => updateCoefficient(parameter, agent, bestGAgent))
     }
 
-    function updateNonSolidObjects(nonSolidObjects, bestNonSolidObjects, bestGNonSolidObjects) {
-      nonSolidObjects.forEach(nonSolidObject => {
-        const bestNonSolidObject = bestNonSolidObjects.find(
-          bestNonSolidObject => bestNonSolidObject.callSign === nonSolidObject.callSign
-        )
+    function updateCoefficient(parameter, agent, bestGAgent) {
+      const scenery = Sceneries.findOne({ owner: agent.current.simulation })
+      const bestScenery = Sceneries.findOne({ owner: agent.best.simulation })
+      const bestGScenery = Sceneries.findOne({ owner: bestGAgent.best.simulation })
 
-        const bestGNonSolidObject = bestGNonSolidObjects.find(
-          bestGNonSolidObject => bestGNonSolidObject.callSign === nonSolidObject.callSign
-        )
+      switch (parameter.type) {
+        case "material": {
+          const referenceMaterial = Materials.findOne(parameter.materialObject)
+          const currentMaterial = Materials.findOne({ owner: scenery._id, callSign: referenceMaterial.callSign })
+          const bestMaterial = Materials.findOne({ owner: bestScenery._id, callSign: referenceMaterial.callSign })
+          const bestGMaterial = Materials.findOne({ owner: bestGScenery._id, callSign: referenceMaterial.callSign })
 
-        const newDensity = calculateCoefficient(
-          nonSolidObject.density,
-          bestNonSolidObject.density,
-          bestGNonSolidObject.density
-        )
+          const coefficient = parameter.coefficient
 
-        NonSolidObjects.updateObj({ _id: nonSolidObject._id, density: newDensity })
-      })
-    }
+          const value = calculateCoefficient(
+            _.get(currentMaterial, coefficient),
+            _.get(bestMaterial, coefficient),
+            _.get(bestGMaterial, coefficient)
+          )
 
-    function updateMaterials(materials, bestMaterials, bestGMaterials) {
-      materials.forEach(material => {
-        const bestMaterial = bestMaterials.find(bestMaterial => bestMaterial.callSign === material.callSign)
-        const bestGMaterial = bestGMaterials.find(bestGMaterial => bestGMaterial.callSign === material.callSign)
+          _.set(currentMaterial, coefficient, value)
+          Materials.updateObj(currentMaterial)
 
-        const newCoefficients = material.coefficients?.map((coefficient, index) => {
-          const bestCoefficient = bestMaterial.coefficients[index]
-          const bestGCoefficient = bestGMaterial.coefficients[index]
+          break
+        }
+        case "nonSolidObject": {
+          const referenceNSO = NonSolidObjects.findOne(parameter.materialObject)
+          const currentNSO = NonSolidObjects.findOne({ owner: scenery._id, callSign: referenceNSO.callSign })
+          const bestNSO = NonSolidObjects.findOne({ owner: bestScenery._id, callSign: referenceNSO.callSign })
+          const bestGNSO = NonSolidObjects.findOne({ owner: bestGScenery._id, callSign: referenceNSO.callSign })
 
-          return calculateCoefficient(coefficient, bestCoefficient, bestGCoefficient)
-        })
+          const coefficient = parameter.coefficient
+          const value = calculateCoefficient(
+            _.get(currentNSO, coefficient),
+            _.get(bestNSO, coefficient),
+            _.get(bestGNSO, coefficient)
+          )
 
-        const newDragCoefficients = material.dragCoefficients?.map((dragCoefficient, index) => {
-          const bestDragCoefficient = bestMaterial.dragCoefficients[index]
-          const bestGDragCoefficient = bestGMaterial.dragCoefficients[index]
+          _.set(currentNSO, coefficient, value)
+          NonSolidObjects.updateObj(currentNSO)
 
-          return calculateCoefficient(dragCoefficient, bestDragCoefficient, bestGDragCoefficient)
-        })
+          break
+        }
+        case "solidObject": {
+          const referenceSO = SolidObjects.findOne(parameter.materialObject)
+          const currentSO = SolidObjects.findOne({ owner: scenery._id, callSign: referenceSO.callSign })
+          const bestSO = SolidObjects.findOne({ owner: bestScenery._id, callSign: referenceSO.callSign })
+          const bestGSO = SolidObjects.findOne({ owner: bestGScenery._id, callSign: referenceSO.callSign })
 
-        Materials.updateObj({
-          _id: material._id,
-          coefficients: newCoefficients,
-          dragCoefficients: newDragCoefficients,
-        })
-      })
+          const coefficient = parameter.coefficient
+          const value = calculateCoefficient(
+            _.get(currentSO, coefficient),
+            _.get(bestSO, coefficient),
+            _.get(bestGSO, coefficient)
+          )
+
+          _.set(currentSO, coefficient, value)
+          SolidObjects.updateObj(currentSO)
+
+          break
+        }
+      }
     }
 
     function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient) {

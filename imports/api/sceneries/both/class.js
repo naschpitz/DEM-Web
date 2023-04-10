@@ -1,12 +1,12 @@
 import _ from "lodash"
 
+import Calibrations from "../../calibrations/both/class"
 import Cameras from "../../cameras/both/class.js"
 import Frames from "../../frames/both/class"
 import Materials from "../../materials/both/class.js"
 import NonSolidObjects from "../../nonSolidObjects/both/class.js"
 import SceneriesDAO from "./dao.js"
 import SolidObjects from "../../solidObjects/both/class.js"
-import Calibrations from "../../calibrations/both/class"
 
 export default class Sceneries extends SceneriesDAO {
   static clone(oldSimulationId, newSimulationId, frames = false) {
@@ -37,12 +37,6 @@ export default class Sceneries extends SceneriesDAO {
     Cameras.create(sceneryId)
 
     return sceneryId
-  }
-
-  static getMaterialsBoundaries(sceneryId, variation) {
-    const materialsIds = Materials.find({ owner: sceneryId }, { fields: { _id: 1 } })
-
-    return materialsIds.map(materialId => Materials.getBoundaries(materialId, variation))
   }
 
   static findByCalibration(calibrationId) {

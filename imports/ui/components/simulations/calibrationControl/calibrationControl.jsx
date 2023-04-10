@@ -231,7 +231,7 @@ export default CalibrationControl = props => {
           <hr />
 
           <div className="row">
-            <div className="col-sm-6 col-md-4 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-3">
               <FormInput
                 label="Server"
                 name="server"
@@ -254,22 +254,6 @@ export default CalibrationControl = props => {
                 value={_.get(calibration, "agentsNumber")}
                 type="field"
                 subtype="number"
-                allowNegative={false}
-                size="small"
-                labelSizes={{ sm: 5, md: 6, lg: 6 }}
-                inputSizes={{ sm: 7, md: 6, lg: 6 }}
-                onEvent={onEvent}
-              />
-            </div>
-
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="Variation"
-                name="variation"
-                value={_.get(calibration, "variation")}
-                type="field"
-                subtype="percent"
-                append="%"
                 allowNegative={false}
                 size="small"
                 labelSizes={{ sm: 5, md: 6, lg: 6 }}
@@ -308,7 +292,7 @@ export default CalibrationControl = props => {
               />
             </div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-3">
               <FormInput
                 label="Max. Energy"
                 name="maxEnergy"
