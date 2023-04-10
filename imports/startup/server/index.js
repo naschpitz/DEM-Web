@@ -3,6 +3,7 @@ import "./accounts.js"
 import "../../api/agents/server/publications.js"
 
 import "../../api/calibrations/server/jobs.js"
+
 import "../../api/calibrations/server/methods.js"
 import "../../api/calibrations/server/publications.js"
 
@@ -15,11 +16,15 @@ import "../../api/frames/server/publications.js"
 
 import "../../api/framesImages/server/methods.js"
 
+import "../../api/logs/server/publications.js"
+
 import "../../api/materials/server/publications.js"
 
 import "../../api/nonSolidObjects/server/publications.js"
 
 import "../../api/objectsProperties/server/publications.js"
+
+import "../../api/parameters/server/publications.js"
 
 import "../../api/rest/server/rest.js"
 
@@ -31,8 +36,6 @@ import "../../api/servers/server/publications.js"
 import "../../api/simulations/server/jobs.js"
 import "../../api/simulations/server/methods.js"
 import "../../api/simulations/server/publications.js"
-
-import "../../api/logs/server/publications.js"
 
 import "../../api/solidObjects/server/publications.js"
 

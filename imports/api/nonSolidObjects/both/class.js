@@ -2,6 +2,7 @@ import _ from "lodash"
 
 import NonSolidObjectsDAO from "./dao.js"
 import ObjectsProperties from "../../objectsProperties/both/class.js"
+import Sceneries from "../../sceneries/both/class"
 
 export default class NonSolidObjects extends NonSolidObjectsDAO {
   static clone(oldSceneryId, newSceneryId, materialsMap) {
@@ -53,5 +54,13 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
     const materialFound = NonSolidObjects.findOne({ material: materialId })
 
     return !!materialFound
+  }
+
+  static getByCalibration(calibrationId) {
+    const scenery = Sceneries.findByCalibration(calibrationId)
+    if (!scenery) throw { code: "404", message: "Scenery not found" }
+
+    const sceneryId = scenery._id
+    return NonSolidObjects.find({ owner: sceneryId }).fetch()
   }
 }

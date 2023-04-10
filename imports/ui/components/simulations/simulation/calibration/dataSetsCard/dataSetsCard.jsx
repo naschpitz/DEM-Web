@@ -12,9 +12,9 @@ import { FaPlus } from "react-icons/fa"
 
 import DataSet from "./dataSet/dataSet.jsx"
 
-import "./dataSets.css"
+import "./dataSetsCard.css"
 
-export default DataSets = props => {
+export default DataSetsCard = props => {
   const [isDataSetsReady, setIsDataSetsReady] = useState(false)
   const [isCreatingDataSet, setIsCreatingDataSet] = useState(false)
 
@@ -44,42 +44,40 @@ export default DataSets = props => {
 
   if (isDataSetsReady) {
     return (
-      <div id="dataSets">
-        <div className="card">
-          <div className="card-header">
-            <div className="panel-title d-flex">
-              <div className="align-self-center">Data Sets</div>
-              <div className="ml-auto align-self-center">
-                <ButtonEnhanced
-                  buttonOptions={{
-                    regularText: <FaPlus className="align-middle" />,
-                    className: "btn btn-sm btn-success",
-                    isAction: isCreatingDataSet,
-                    actionText: "Creating...",
-                    type: "button",
-                  }}
-                  confirmationOptions={{
-                    title: "Confirm data set creation",
-                    text: <span>Do you really want to create a new data set?</span>,
-                    confirmButtonText: "Create",
-                    confirmButtonAction: "Creating...",
-                    cancelButtonText: "Cancel",
-                    onDone: onCreateDataSetDone,
-                  }}
-                />
-              </div>
+      <div id="dataSetsCard" className="card">
+        <div className="card-header">
+          <div className="panel-title d-flex">
+            <div className="align-self-center">Data Sets</div>
+            <div className="ml-auto align-self-center">
+              <ButtonEnhanced
+                buttonOptions={{
+                  regularText: <FaPlus className="align-middle" />,
+                  className: "btn btn-sm btn-success",
+                  isAction: isCreatingDataSet,
+                  actionText: "Creating...",
+                  type: "button",
+                }}
+                confirmationOptions={{
+                  title: "Confirm data set creation",
+                  text: <span>Do you really want to create a new data set?</span>,
+                  confirmButtonText: "Create",
+                  confirmButtonAction: "Creating...",
+                  cancelButtonText: "Cancel",
+                  onDone: onCreateDataSetDone,
+                }}
+              />
             </div>
           </div>
+        </div>
 
-          <div className="card-body">
-            {_.isEmpty(dataSets) ? (
-              <div className="alert alert-info" role="alert">
-                There are no data sets to be displayed.
-              </div>
-            ) : (
-              dataSets.map(dataSet => <DataSet key={dataSet._id} dataSet={dataSet} />)
-            )}
-          </div>
+        <div className="card-body">
+          {_.isEmpty(dataSets) ? (
+            <div className="alert alert-info" role="alert">
+              There are no data sets to be displayed.
+            </div>
+          ) : (
+            dataSets.map(dataSet => <DataSet key={dataSet._id} dataSet={dataSet} />)
+          )}
         </div>
       </div>
     )

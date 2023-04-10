@@ -42,4 +42,20 @@ Meteor.methods({
       throw new Meteor.Error("500", error.message)
     }
   },
+
+  "nonSolidObjects.getByCalibration"(calibrationId) {
+    try {
+      return NonSolidObjects.getByCalibration(calibrationId)
+    } catch (error) {
+      throw new Meteor.Error(error.code, error.message)
+    }
+  },
+
+  "nonSolidObjects.getById"(nonSolidObjectId) {
+    try {
+      return NonSolidObjects.findOne(nonSolidObjectId)
+    } catch (error) {
+      throw new Meteor.Error("500", error.message)
+    }
+  },
 })

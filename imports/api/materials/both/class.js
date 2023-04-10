@@ -1,8 +1,10 @@
 import { Random } from "meteor/random"
 import _ from "lodash"
 
+import Calibrations from "../../calibrations/both/class"
 import MaterialsDAO from "./dao.js"
 import NonSolidObjects from "../../nonSolidObjects/both/class.js"
+import Sceneries from "../../sceneries/both/class"
 import SolidObjects from "../../solidObjects/both/class.js"
 
 export default class Materials extends MaterialsDAO {
@@ -75,5 +77,13 @@ export default class Materials extends MaterialsDAO {
         }
       })
     }
+  }
+
+  static getByCalibration(calibrationId) {
+    const scenery = Sceneries.findByCalibration(calibrationId)
+    if (!scenery) throw { code: "404", message: "Scenery not found" }
+
+    const sceneryId = scenery._id
+    return Materials.find({ owner: sceneryId }).fetch()
   }
 }

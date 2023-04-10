@@ -40,4 +40,20 @@ Meteor.methods({
       if (error) throw new Meteor.Error("500", error.message)
     })
   },
+
+  "materials.getByCalibration"(calibrationId) {
+    try {
+      return Materials.getByCalibration(calibrationId)
+    } catch (error) {
+      throw new Meteor.Error(error.code, error.message)
+    }
+  },
+
+  "materials.getById"(materialId) {
+    try {
+      return Materials.findOne(materialId)
+    } catch (error) {
+      throw new Meteor.Error("500", error.message)
+    }
+  },
 })

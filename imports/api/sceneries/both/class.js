@@ -6,6 +6,7 @@ import Materials from "../../materials/both/class.js"
 import NonSolidObjects from "../../nonSolidObjects/both/class.js"
 import SceneriesDAO from "./dao.js"
 import SolidObjects from "../../solidObjects/both/class.js"
+import Calibrations from "../../calibrations/both/class"
 
 export default class Sceneries extends SceneriesDAO {
   static clone(oldSimulationId, newSimulationId, frames = false) {
@@ -42,5 +43,14 @@ export default class Sceneries extends SceneriesDAO {
     const materialsIds = Materials.find({ owner: sceneryId }, { fields: { _id: 1 } })
 
     return materialsIds.map(materialId => Materials.getBoundaries(materialId, variation))
+  }
+
+  static findByCalibration(calibrationId) {
+    const calibration = Calibrations.findOne(calibrationId)
+    if (!calibration) throw { code: "404", message: "Calibration not found" }
+
+    const simulationId = calibration.owner
+
+    return SceneriesDAO.findOne({ owner: simulationId })
   }
 }

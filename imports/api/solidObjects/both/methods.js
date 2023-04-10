@@ -42,4 +42,20 @@ Meteor.methods({
       throw new Meteor.Error("500", error.message)
     }
   },
+
+  "solidObjects.getByCalibration"(calibrationId) {
+    try {
+      return SolidObjects.getByCalibration(calibrationId)
+    } catch (error) {
+      throw new Meteor.Error(error.code, error.message)
+    }
+  },
+
+  "solidObjects.getById"(solidObjectId) {
+    try {
+      return SolidObjects.findOne(solidObjectId)
+    } catch (error) {
+      throw new Meteor.Error("500", error.message)
+    }
+  },
 })

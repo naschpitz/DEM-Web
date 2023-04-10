@@ -1,0 +1,11 @@
+#dataSetsCard #dataSet:not(:first-child) {
+    margin-top: 20px;
+}
+
+#dataSetsCard #dataSet:last-child {
+    margin-bottom: 20px;
+}
+
+#dataSetsCard .card-body {
+    padding-bottom: 0px;
+}

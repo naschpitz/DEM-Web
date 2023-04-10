@@ -2,6 +2,7 @@ import _ from "lodash"
 
 import ObjectsProperties from "../../objectsProperties/both/class.js"
 import SolidObjectsDAO from "./dao.js"
+import Sceneries from "../../sceneries/both/class"
 
 export default class SolidObjects extends SolidObjectsDAO {
   static clone(oldSceneryId, newSceneryId, materialsMap) {
@@ -53,5 +54,13 @@ export default class SolidObjects extends SolidObjectsDAO {
     const materialFound = SolidObjects.findOne({ material: materialId })
 
     return !!materialFound
+  }
+
+  static getByCalibration(calibrationId) {
+    const scenery = Sceneries.findByCalibration(calibrationId)
+    if (!scenery) throw { code: "404", message: "Scenery not found" }
+
+    const sceneryId = scenery._id
+    return SolidObjects.find({ owner: sceneryId }).fetch()
   }
 }

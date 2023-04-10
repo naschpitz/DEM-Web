@@ -9,8 +9,9 @@ import ClipLoader from "react-spinners/ClipLoader"
 
 import AgentsTable from "./agentsTable/agentsTable.jsx"
 import CalibrationControl from "../../calibrationControl/calibrationControl.jsx"
-import DataSets from "./dataSets/dataSets.jsx"
+import DataSetsCard from "./dataSetsCard/dataSetsCard.jsx"
 import Log from "../log/log.jsx"
+import ParametersCard from "./parametersCard/parametersCard.jsx"
 
 import "./calibration.css"
 
@@ -55,7 +56,11 @@ export default Calibration = props => {
           </div>
 
           <div className="addMargin">
-            <DataSets calibrationId={calibration._id} />
+            <ParametersCard calibrationId={calibration._id} />
+          </div>
+
+          <div className="addMargin">
+            <DataSetsCard calibrationId={calibration._id} />
           </div>
 
           <div id="agentsCard" className="card addMargin">

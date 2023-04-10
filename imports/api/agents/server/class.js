@@ -237,7 +237,7 @@ export default class Agents extends AgentsBoth {
     const scenery = Sceneries.findOne({ owner: agent.current.simulation })
     const solidObjects = SolidObjects.find({ owner: scenery._id, fixed: false }).fetch()
     const nonSolidObjects = NonSolidObjects.find({ owner: scenery._id, fixed: false }).fetch()
-    const materials = Materials.find({ owner: scenery._id, calibrate: true }).fetch()
+    const materials = Materials.find({ owner: scenery._id }).fetch()
 
     // Read the agent again from the database, because it might have been updated.
     agent = Agents.findOne(agentId)

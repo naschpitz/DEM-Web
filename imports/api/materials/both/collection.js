@@ -86,12 +86,6 @@ Materials.schema = new SimpleSchema({
   "dragCoefficients.$": {
     type: Number,
   },
-  calibrate: {
-    type: Boolean,
-    label: "Calibrate",
-    defaultValue: true,
-    optional: true,
-  },
   createdAt: {
     type: Date,
     label: "Created at",
