@@ -19,6 +19,12 @@ export default class Parameters extends ParametersDAO {
     ParametersDAO.insert({ owner: calibrationId })
   }
 
+  static usesMaterialObject(materialObjectId) {
+    const parameter = ParametersDAO.findOne({ materialObject: materialObjectId })
+
+    return !!parameter
+  }
+
   static removeByOwner(calibrationId) {
     ParametersDAO.remove({ owner: calibrationId })
   }

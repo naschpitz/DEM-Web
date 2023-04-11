@@ -1,7 +1,8 @@
 import _ from "lodash"
 
-import NonSolidObjectsDAO from "./dao.js"
-import ObjectsProperties from "../../objectsProperties/both/class.js"
+import NonSolidObjectsDAO from "./dao"
+import ObjectsProperties from "../../objectsProperties/both/class"
+import Parameters from "../../parameters/both/class"
 import Sceneries from "../../sceneries/both/class"
 
 export default class NonSolidObjects extends NonSolidObjectsDAO {
@@ -36,6 +37,9 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
   }
 
   static remove(nonSolidObjectId) {
+    const parameterResult = Parameters.usesMaterialObject(nonSolidObjectId)
+    if (parameterResult) throw { message: "Cannot remove non-solid object, a Parameter makes reference to it." }
+
     NonSolidObjectsDAO.remove(nonSolidObjectId)
     ObjectsProperties.removeByOwner(nonSolidObjectId)
   }

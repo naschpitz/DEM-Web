@@ -1,10 +1,11 @@
 import { Random } from "meteor/random"
 import _ from "lodash"
 
-import MaterialsDAO from "./dao.js"
-import NonSolidObjects from "../../nonSolidObjects/both/class.js"
+import MaterialsDAO from "./dao"
+import NonSolidObjects from "../../nonSolidObjects/both/class"
+import Parameters from "../../parameters/both/class"
 import Sceneries from "../../sceneries/both/class"
-import SolidObjects from "../../solidObjects/both/class.js"
+import SolidObjects from "../../solidObjects/both/class"
 
 export default class Materials extends MaterialsDAO {
   static clone(oldSceneryId, newSceneryId) {
@@ -48,6 +49,9 @@ export default class Materials extends MaterialsDAO {
 
     const soResult = SolidObjects.usesMaterial(materialId)
     if (soResult) throw { message: "Cannot remove material, a Solid Object makes reference to it." }
+
+    const parameterResult = Parameters.usesMaterialObject(materialId)
+    if (parameterResult) throw { message: "Cannot remove material, a Parameter makes reference to it." }
 
     const materialResult = this.usesMaterial(materialId)
     if (materialResult) throw { message: "Cannot remove material, another Material makes reference to it." }

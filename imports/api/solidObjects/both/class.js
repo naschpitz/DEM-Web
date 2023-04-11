@@ -3,6 +3,7 @@ import _ from "lodash"
 import ObjectsProperties from "../../objectsProperties/both/class.js"
 import SolidObjectsDAO from "./dao.js"
 import Sceneries from "../../sceneries/both/class"
+import Parameters from "../../parameters/both/class"
 
 export default class SolidObjects extends SolidObjectsDAO {
   static clone(oldSceneryId, newSceneryId, materialsMap) {
@@ -36,6 +37,9 @@ export default class SolidObjects extends SolidObjectsDAO {
   }
 
   static remove(solidObjectId) {
+    const parameterResult = Parameters.usesMaterialObject(solidObjectId)
+    if (parameterResult) throw { message: "Cannot remove solid object, a Parameter makes reference to it." }
+
     SolidObjectsDAO.remove(solidObjectId)
     ObjectsProperties.removeByOwner(solidObjectId)
   }
