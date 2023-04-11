@@ -17,15 +17,15 @@ export default class Materials extends MaterialsDAO {
       const oldMaterialId = oldMaterial._id
       const newMaterialId = Random.id()
 
-      materialsMap.set(oldMaterialId, newMaterialId)
+      materialsMap[oldMaterialId] = newMaterialId
     })
 
     oldMaterials.forEach(oldMaterial => {
       const newMaterial = _.clone(oldMaterial)
-      newMaterial._id = materialsMap.get(oldMaterial._id)
+      newMaterial._id = materialsMap[oldMaterial._id]
       newMaterial.owner = newSceneryId
-      newMaterial.material1 = materialsMap.get(oldMaterial.material1)
-      newMaterial.material2 = materialsMap.get(oldMaterial.material2)
+      newMaterial.material1 = materialsMap[oldMaterial.material1]
+      newMaterial.material2 = materialsMap[oldMaterial.material2]
 
       MaterialsDAO.insert(newMaterial)
     })

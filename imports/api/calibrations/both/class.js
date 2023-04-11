@@ -2,9 +2,10 @@ import _ from "lodash"
 
 import CalibrationsDAO from "./dao.js"
 import DataSets from "../../dataSets/both/class.js"
+import Parameters from "../../parameters/both/class"
 
 export default class Calibrations extends CalibrationsDAO {
-  static clone(oldSimulationId, newSimulationId) {
+  static clone(oldSimulationId, newSimulationId, materialsMap, nonSolidObjectsMap, solidObjectsMap) {
     const oldCalibration = CalibrationsDAO.findOne({ owner: oldSimulationId })
 
     const newCalibration = _.cloneDeep(oldCalibration)
@@ -14,6 +15,7 @@ export default class Calibrations extends CalibrationsDAO {
     const oldCalibrationId = oldCalibration._id
     const newCalibrationId = CalibrationsDAO.insert(newCalibration)
 
+    Parameters.clone(oldCalibrationId, newCalibrationId, materialsMap, nonSolidObjectsMap, solidObjectsMap)
     DataSets.clone(oldCalibrationId, newCalibrationId)
 
     return newCalibrationId
@@ -42,6 +44,8 @@ export default class Calibrations extends CalibrationsDAO {
     const calibration = CalibrationsDAO.findOne({ owner: simulationId })
 
     DataSets.removeByOwner(calibration._id)
+    Parameters.removeByOwner(calibration._id)
+
     CalibrationsDAO.remove(calibration._id)
   }
 

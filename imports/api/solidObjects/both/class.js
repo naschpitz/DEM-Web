@@ -16,7 +16,7 @@ export default class SolidObjects extends SolidObjectsDAO {
       delete newSolidObject._id
 
       newSolidObject.owner = newSceneryId
-      newSolidObject.material = materialsMap.get(oldSolidObject.material)
+      newSolidObject.material = materialsMap[oldSolidObject.material]
 
       const oldSolidObjectId = oldSolidObject._id
       const newSolidObjectId = SolidObjectsDAO.insert(newSolidObject)

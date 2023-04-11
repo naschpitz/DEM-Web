@@ -3,16 +3,35 @@ import _ from "lodash"
 import ParametersDAO from "./dao.js"
 
 export default class Parameters extends ParametersDAO {
-  static clone(oldCalibrationId, newCalibrationId) {
-    const oldParameter = ParametersDAO.findOne({ owner: oldCalibrationId })
+  static clone(oldCalibrationId, newCalibrationId, materialsMap, nonSolidObjectsMap, solidObjectsMap) {
+    const oldParameters = ParametersDAO.find({ owner: oldCalibrationId })
 
-    const newParameter = _.clone(oldParameter)
-    delete newParameter._id
-    newParameter.owner = newCalibrationId
+    const parametersMap = {}
 
-    const newParameterId = ParametersDAO.insert(newParameter)
+    oldParameters.forEach(oldParameter => {
+      const newParameter = _.cloneDeep(oldParameter)
+      delete newParameter._id
 
-    return newParameterId
+      newParameter.owner = newCalibrationId
+
+      switch (newParameter.type) {
+        case "material":
+          newParameter.materialObject = materialsMap[newParameter.materialObject]
+          break
+        case "nonSolidObject":
+          newParameter.materialObject = nonSolidObjectsMap[newParameter.materialObject]
+          break
+        case "solidObject":
+          newParameter.materialObject = solidObjectsMap[newParameter.materialObject]
+          break
+      }
+
+      const newParameterId = ParametersDAO.insert(newParameter)
+
+      parametersMap[oldParameter._id] = newParameterId
+    })
+
+    return parametersMap
   }
 
   static create(calibrationId) {

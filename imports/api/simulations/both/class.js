@@ -24,10 +24,16 @@ export default class Simulations extends SimulationsDAO {
 
     const newSimulationId = SimulationsDAO.insert(newSimulation)
 
-    Sceneries.clone(simulationId, newSimulationId, frames)
+    const maps = Sceneries.clone(simulationId, newSimulationId, frames)
 
     if (primary) {
-      Calibrations.clone(simulationId, newSimulationId)
+      Calibrations.clone(
+        simulationId,
+        newSimulationId,
+        maps.materialsMap,
+        maps.nonSolidObjectsMap,
+        maps.solidObjectsMap
+      )
     }
 
     if (logs) {

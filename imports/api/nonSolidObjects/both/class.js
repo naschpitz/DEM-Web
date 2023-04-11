@@ -16,7 +16,7 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
       delete newNonSolidObject._id
 
       newNonSolidObject.owner = newSceneryId
-      newNonSolidObject.material = materialsMap.get(oldNonSolidObject.material)
+      newNonSolidObject.material = materialsMap[oldNonSolidObject.material]
 
       const oldNonSolidObjectId = oldNonSolidObject._id
       const newNonSolidObjectId = NonSolidObjectsDAO.insert(newNonSolidObject)
