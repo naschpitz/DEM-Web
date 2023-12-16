@@ -51,6 +51,7 @@ export default Video = ({ sceneryId }) => {
             size="small"
             labelSizes={{ sm: 6, md: 6, lg: 6 }}
             inputSizes={{ sm: 6, md: 6, lg: 6 }}
+            alignment="no-gap"
             onEvent={onEvent}
           />
         </div>
@@ -65,6 +66,7 @@ export default Video = ({ sceneryId }) => {
             size="small"
             labelSizes={{ sm: 6, md: 6, lg: 6 }}
             inputSizes={{ sm: 6, md: 6, lg: 6 }}
+            alignment="no-gap"
             onEvent={onEvent}
           />
         </div>
@@ -79,6 +81,7 @@ export default Video = ({ sceneryId }) => {
             size="small"
             labelSizes={{ sm: 6, md: 6, lg: 6 }}
             inputSizes={{ sm: 6, md: 6, lg: 6 }}
+            alignment="no-gap"
             onEvent={onEvent}
           />
         </div>
@@ -112,6 +115,7 @@ export default Video = ({ sceneryId }) => {
             size="small"
             labelSizes={{ sm: 6, md: 6, lg: 6 }}
             inputSizes={{ sm: 6, md: 6, lg: 6 }}
+            alignment="no-gap"
             onEvent={onEvent}
           />
         </div>
@@ -126,6 +130,7 @@ export default Video = ({ sceneryId }) => {
             size="small"
             labelSizes={{ sm: 6, md: 6, lg: 6 }}
             inputSizes={{ sm: 6, md: 6, lg: 6 }}
+            alignment="no-gap"
             onEvent={onEvent}
           />
         </div>

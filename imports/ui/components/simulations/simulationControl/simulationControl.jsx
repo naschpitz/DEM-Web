@@ -327,6 +327,7 @@ export default SimulationControl = props => {
                         options={serversOptions}
                         labelSizes={{ sm: 5, md: 4, lg: 4 }}
                         inputSizes={{ sm: 7, md: 8, lg: 8 }}
+                        alignment="no-gap"
                         onEvent={onEvent}
                       />
                     </div>
@@ -340,6 +341,7 @@ export default SimulationControl = props => {
                         size="small"
                         labelSizes={{ sm: 5, md: 4, lg: 4 }}
                         inputSizes={{ sm: 7, md: 8, lg: 8 }}
+                        alignment="no-gap"
                         onEvent={onEvent}
                       />
                     </div>
@@ -362,8 +364,9 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        alignment="no-gap"
                         onEvent={onEvent}
                       />
                     </div>
@@ -376,8 +379,9 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        alignment="no-gap"
                         onEvent={onEvent}
                       />
                     </div>
@@ -390,8 +394,9 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        alignment="no-gap"
                         onEvent={onEvent}
                       />
                     </div>
@@ -404,8 +409,9 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        alignment="no-gap"
                         onEvent={onEvent}
                       />
                     </div>

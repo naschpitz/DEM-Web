@@ -124,8 +124,9 @@ export default Log = props => {
               type="field"
               subtype="string"
               size="small"
-              labelSizes={{ sm: 6, md: 5, lg: 4 }}
+              labelSizes={{ sm: 6, md: 5, lg: 3 }}
               inputSizes={{ sm: 6, md: 7, lg: 8 }}
+              alignment="no-gap"
             />
           </div>
 
@@ -154,6 +155,7 @@ export default Log = props => {
               size="small"
               labelSizes={{ sm: 4, md: 4, lg: 3 }}
               inputSizes={{ sm: 8, md: 8, lg: 9 }}
+              alignment="no-gap"
             />
           </div>
 
@@ -167,6 +169,7 @@ export default Log = props => {
               size="small"
               labelSizes={{ sm: 4, md: 4, lg: 3 }}
               inputSizes={{ sm: 8, md: 8, lg: 9 }}
+              alignment="no-gap"
             />
           </div>
         </div>

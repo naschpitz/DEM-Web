@@ -243,6 +243,7 @@ export default CalibrationControl = props => {
                 search={false}
                 labelSizes={{ sm: 5, md: 4, lg: 4 }}
                 inputSizes={{ sm: 7, md: 8, lg: 8 }}
+                alignment="no-gap"
                 onEvent={onEvent}
               />
             </div>
@@ -257,7 +258,8 @@ export default CalibrationControl = props => {
                 allowNegative={false}
                 size="small"
                 labelSizes={{ sm: 5, md: 6, lg: 6 }}
-                inputSizes={{ sm: 7, md: 6, lg: 6 }}
+                inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                alignment="no-gap"
                 onEvent={onEvent}
               />
             </div>
@@ -273,6 +275,7 @@ export default CalibrationControl = props => {
                 size="small"
                 labelSizes={{ sm: 5, md: 6, lg: 7 }}
                 inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                alignment="no-gap"
                 onEvent={onEvent}
               />
             </div>
@@ -288,6 +291,7 @@ export default CalibrationControl = props => {
                 size="small"
                 labelSizes={{ sm: 5, md: 6, lg: 7 }}
                 inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                alignment="no-gap"
                 onEvent={onEvent}
               />
             </div>
@@ -301,8 +305,9 @@ export default CalibrationControl = props => {
                 subtype="number"
                 allowNegative={false}
                 size="small"
-                labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                labelSizes={{ sm: 5, md: 6, lg: 5 }}
                 inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                alignment="no-gap"
                 onEvent={onEvent}
               />
             </div>
