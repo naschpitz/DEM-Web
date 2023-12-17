@@ -57,7 +57,7 @@ export default SimulationControl = props => {
 
     _.set(newSimulation, name, value)
 
-    if (event === "onBlur" || (event === "onChange" && (name === "server" || name === "multiGPU"))) {
+    if (event === "onBlur" || (event === "onChange" && (name === "server" || name === "multiGPU" || name === "calcNeigh"))) {
       Meteor.call("simulations.update", newSimulation, error => {
         if (error) Alert.error("Error updating server: " + getErrorMessage(error))
       })
@@ -310,7 +310,7 @@ export default SimulationControl = props => {
           <hr />
 
           <div className="row">
-            <div className="col-sm-12 col-md-6 col-lg-4">
+            <div className="col-sm-12 col-md-6 col-lg-3">
               <div className="card" id="serverSettings">
                 <div className="card-header">Server Settings</div>
 
@@ -327,21 +327,7 @@ export default SimulationControl = props => {
                         options={serversOptions}
                         labelSizes={{ sm: 5, md: 4, lg: 4 }}
                         inputSizes={{ sm: 7, md: 8, lg: 8 }}
-                        alignment="no-gap"
-                        onEvent={onEvent}
-                      />
-                    </div>
-
-                    <div className="col-sm-12">
-                      <FormInput
-                        label="Use Multiple GPUs?"
-                        name="multiGPU"
-                        value={_.get(simulation, "multiGPU")}
-                        type="checkbox"
-                        size="small"
-                        labelSizes={{ sm: 5, md: 4, lg: 4 }}
-                        inputSizes={{ sm: 7, md: 8, lg: 8 }}
-                        alignment="no-gap"
+                        alignment="center"
                         onEvent={onEvent}
                       />
                     </div>
@@ -350,8 +336,8 @@ export default SimulationControl = props => {
               </div>
             </div>
 
-            <div className="col-sm-12 col-md-8">
-              <div className="card" id="timeSetting">
+            <div className="col-sm-12 col-md-5">
+              <div className="card" id="timeSettings">
                 <div className="card-header">Time Settings</div>
 
                 <div className="card-body">
@@ -364,8 +350,8 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
                         alignment="no-gap"
                         onEvent={onEvent}
                       />
@@ -379,8 +365,8 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
                         alignment="no-gap"
                         onEvent={onEvent}
                       />
@@ -394,8 +380,8 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
                         alignment="no-gap"
                         onEvent={onEvent}
                       />
@@ -409,9 +395,48 @@ export default SimulationControl = props => {
                         type="field"
                         subtype="number"
                         size="small"
-                        labelSizes={{ sm: 5, md: 5, lg: 5 }}
-                        inputSizes={{ sm: 7, md: 7, lg: 4 }}
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
                         alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-sm-12 col-md-4">
+              <div className="card" id="calculationSettings">
+                <div className="card-header">Calculation Settings</div>
+
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-12">
+                      <FormInput
+                        label="Calc. Neighborhood Time Interval"
+                        name="calcNeighTimeInt"
+                        value={_.get(simulation, "calcNeighTimeInt")}
+                        type="field"
+                        subtype="number"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        alignment="left"
+                        onEvent={onEvent}
+                      />
+                    </div>
+
+                    <div className="col-sm-12 col-md-12">
+                      <FormInput
+                        label="Use Multiple GPUs?"
+                        name="multiGPU"
+                        value={_.get(simulation, "multiGPU")}
+                        type="checkbox"
+                        size="small"
+                        labelSizes={{ sm: 9, md: 10, lg: 10 }}
+                        inputSizes={{ sm: 3, md: 2, lg: 2 }}
+                        alignment="left"
                         onEvent={onEvent}
                       />
                     </div>

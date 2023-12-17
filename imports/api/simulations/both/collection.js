@@ -49,6 +49,12 @@ Simulations.schema = new SimpleSchema({
     defaultValue: false,
     optional: true,
   },
+  calcNeighTimeInt: {
+    type: Number,
+    label: "Calculate neighborhood time interval",
+    defaultValue: false,
+    optional: true,
+  },
   totalTime: {
     type: Number,
     label: "Total time",
