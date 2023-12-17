@@ -33,8 +33,6 @@ export default class Simulations extends SimulationsBoth {
 
     const postOptions = Servers.getPostOptions(serverId, "/simulations/start", simulation)
 
-    console.log(simulation)
-
     SimulationsBoth.setState(simulationId, "setToRun")
     this.post(simulationId, postOptions)
   }
