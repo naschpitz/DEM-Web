@@ -1,0 +1,8 @@
+Mongo Dump:
+------------------------------------------------------------------------------------------------------------------------
+Make sure you’re in your app’s root folder and type:
+mongodump --port 8001 --db=meteor --out=/your/destination/folder
+
+Mongo Restore:
+------------------------------------------------------------------------------------------------------------------------
+mongorestore --host=dbAddress --port=27017 --db=dem --username=root --authenticationDatabase=admin /your/destination/folder/meteor

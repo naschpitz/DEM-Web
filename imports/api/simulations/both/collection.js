@@ -10,7 +10,10 @@ Simulations.schema = new SimpleSchema({
     label: "User Owner",
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
-      if (this.isInsert) return this.userId
+      if (this.isInsert) {
+        if (!this.isFromTrustedCode) return this.userId
+        else return this.value
+      }
       if (this.isUpdate) this.unset()
     },
   },
@@ -43,15 +46,21 @@ Simulations.schema = new SimpleSchema({
     defaultValue: 5,
     optional: true,
   },
-  multiGPU: {
-    type: Boolean,
-    label: "Multi GPU",
-    defaultValue: false,
-    optional: true,
-  },
   calcNeighTimeInt: {
     type: Number,
     label: "Calculate neighborhood time interval",
+    defaultValue: false,
+    optional: true,
+  },
+  neighDistThresMult: {
+    type: Number,
+    label: "Neighborhood distance threshold multiplier",
+    defaultValue: 2,
+    optional: true,
+  },
+  multiGPU: {
+    type: Boolean,
+    label: "Multi GPU",
     defaultValue: false,
     optional: true,
   },

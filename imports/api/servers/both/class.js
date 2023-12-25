@@ -18,7 +18,7 @@ export default class Servers extends ServersDAO {
     const server = ServersDAO.findOne(serverId)
 
     return {
-      url: "http://" + server.url + ":" + server.port + path,
+      url: "https://" + server.url + ":" + server.port + path,
       data: data,
       headers: {
         "Content-Type": "application/json; charset=UTF-8",

@@ -12,6 +12,7 @@ Meteor.methods({
     }
   },
 
+  // Currently not used
   "framesImages.renderAll"(sceneryId, dimensions) {
     try {
       this.unblock()

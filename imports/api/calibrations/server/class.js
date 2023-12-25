@@ -78,6 +78,8 @@ export default class Calibrations extends CalibrationsBoth {
 
         CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
       } else {
+        agents.forEach(agent => Agents.saveHistory(agent._id))
+
         Calibrations.setState(calibrationId, "done")
       }
     }

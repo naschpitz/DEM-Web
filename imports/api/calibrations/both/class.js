@@ -10,7 +10,9 @@ export default class Calibrations extends CalibrationsDAO {
 
     const newCalibration = _.cloneDeep(oldCalibration)
     delete newCalibration._id
+
     newCalibration.owner = newSimulationId
+    newCalibration.currentIteration = 0
 
     const oldCalibrationId = oldCalibration._id
     const newCalibrationId = CalibrationsDAO.insert(newCalibration)

@@ -429,6 +429,21 @@ export default SimulationControl = props => {
 
                     <div className="col-sm-12 col-md-12">
                       <FormInput
+                        label="Distance Threshold Multiplier"
+                        name="neighDistThresMult"
+                        value={_.get(simulation, "neighDistThresMult")}
+                        type="field"
+                        subtype="number"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        alignment="left"
+                        onEvent={onEvent}
+                      />
+                    </div>
+
+                    <div className="col-sm-12 col-md-12">
+                      <FormInput
                         label="Use Multiple GPUs?"
                         name="multiGPU"
                         value={_.get(simulation, "multiGPU")}
