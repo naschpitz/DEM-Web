@@ -263,7 +263,8 @@ export default class Agents extends AgentsBoth {
           const value = calculateCoefficient(
             _.get(currentMaterial, coefficient),
             _.get(bestMaterial, coefficient),
-            _.get(bestGMaterial, coefficient)
+            _.get(bestGMaterial, coefficient),
+            parameter.perturbation
           )
 
           _.set(currentMaterial, coefficient, value)
@@ -281,7 +282,8 @@ export default class Agents extends AgentsBoth {
           const value = calculateCoefficient(
             _.get(currentNSO, coefficient),
             _.get(bestNSO, coefficient),
-            _.get(bestGNSO, coefficient)
+            _.get(bestGNSO, coefficient),
+            parameter.perturbation
           )
 
           _.set(currentNSO, coefficient, value)
@@ -299,7 +301,8 @@ export default class Agents extends AgentsBoth {
           const value = calculateCoefficient(
             _.get(currentSO, coefficient),
             _.get(bestSO, coefficient),
-            _.get(bestGSO, coefficient)
+            _.get(bestGSO, coefficient),
+            parameter.perturbation
           )
 
           _.set(currentSO, coefficient, value)
@@ -310,13 +313,12 @@ export default class Agents extends AgentsBoth {
       }
     }
 
-    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient) {
+    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, perturbation) {
       const random1 = Math.random()
       const random2 = Math.random()
 
       const c1 = 0.2
       const c2 = 0.8
-      const perturbation = 0.01
 
       let velocity = bestCoefficient - coefficient
       if (velocity < perturbation * coefficient) velocity = perturbation * bestCoefficient
