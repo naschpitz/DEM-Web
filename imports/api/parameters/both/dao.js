@@ -29,6 +29,8 @@ export default class DataSetsDAO {
   }
 
   static updateObj(dataSet) {
+    console.log(dataSet)
+
     dot.keepArray = true
     const dottedDataSet = dot.dot(dataSet)
 

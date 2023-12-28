@@ -264,7 +264,8 @@ export default class Agents extends AgentsBoth {
             _.get(currentMaterial, coefficient),
             _.get(bestMaterial, coefficient),
             _.get(bestGMaterial, coefficient),
-            parameter.perturbation
+            parameter.c1,
+            parameter.c2
           )
 
           _.set(currentMaterial, coefficient, value)
@@ -283,7 +284,8 @@ export default class Agents extends AgentsBoth {
             _.get(currentNSO, coefficient),
             _.get(bestNSO, coefficient),
             _.get(bestGNSO, coefficient),
-            parameter.perturbation
+            parameter.c1,
+            parameter.c2
           )
 
           _.set(currentNSO, coefficient, value)
@@ -302,7 +304,8 @@ export default class Agents extends AgentsBoth {
             _.get(currentSO, coefficient),
             _.get(bestSO, coefficient),
             _.get(bestGSO, coefficient),
-            parameter.perturbation
+            parameter.c1,
+            parameter.c2
           )
 
           _.set(currentSO, coefficient, value)
@@ -313,20 +316,14 @@ export default class Agents extends AgentsBoth {
       }
     }
 
-    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, perturbation) {
+    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, c1, c2) {
       const random1 = Math.random()
       const random2 = Math.random()
 
-      const c1 = 0.2
-      const c2 = 0.8
+      const bestVelocity = bestCoefficient - coefficient
+      const bestGlobalVelocity = bestGlobalCoefficient - coefficient
 
-      let velocity = bestCoefficient - coefficient
-      if (velocity < perturbation * coefficient) velocity = perturbation * bestCoefficient
-
-      let globalVelocity = bestGlobalCoefficient - coefficient
-      if (globalVelocity < perturbation * coefficient) globalVelocity = perturbation * bestGlobalCoefficient
-
-      return coefficient + c1 * random1 * velocity + c2 * random2 * globalVelocity
+      return coefficient + c1 * random1 * bestVelocity + c2 * random2 * bestGlobalVelocity
     }
   }
 }

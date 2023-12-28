@@ -34,11 +34,17 @@ Parameters.schema = new SimpleSchema({
     optional: true,
     defaultValue: 0.05
   },
-  perturbation: {
+  c1: {
     type: Number,
-    label: "Perturbation",
+    label: "C1",
     optional: true,
-    defaultValue: 0.005
+    defaultValue: 1.5
+  },
+  c2: {
+    type: Number,
+    label: "C2",
+    optional: true,
+    defaultValue: 2.0
   },
   createdAt: {
     type: Date,

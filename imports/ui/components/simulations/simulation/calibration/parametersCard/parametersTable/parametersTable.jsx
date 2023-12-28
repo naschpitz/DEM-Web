@@ -112,16 +112,31 @@ export default ParametersTable = props => {
         ),
       },
       {
-        Header: "Perturbation",
-        accessor: "perturbation",
+        Header: "C1",
+        accessor: "c1",
         Cell: cellInfo => (
           <FormInput
             name={cellInfo.column.id}
-            value={cellInfo.original.perturbation}
+            value={cellInfo.original.c1}
             type="field"
-            subtype="percent"
-            append="%"
-            autoComplete={false}
+            subtype="number"
+            allowNegative={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
+          />
+        ),
+      },
+      {
+        Header: "C2",
+        accessor: "c2",
+        Cell: cellInfo => (
+          <FormInput
+            name={cellInfo.column.id}
+            value={cellInfo.original.c2}
+            type="field"
+            subtype="number"
+            allowNegative={false}
             size="small"
             inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
             onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
