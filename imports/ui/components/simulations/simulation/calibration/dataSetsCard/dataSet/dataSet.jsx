@@ -102,7 +102,9 @@ export default DataSet = props => {
   const dataName = props.dataSet?.dataName
   const startCondition = props.dataSet?.startCondition
   const startThreshold = props.dataSet?.startThreshold
-  const data = props.dataSet?.data?.map(data => [data.time, data.value])
+
+  const importerData = props.dataSet?.data?.map(data => [data.time, data.value])
+  const chartData = props.dataSet?.data
 
   return (
     <div id="dataSet">
@@ -145,11 +147,11 @@ export default DataSet = props => {
 
           <div className="row">
             <div className="col-sm-12 col-md-5 col-lg-3">
-              <DataImporter data={data} onData={data => onDataImporter({ data })} />
+              <DataImporter data={importerData} onData={data => onDataImporter({ data })} />
             </div>
 
             <div className="col-sm-12 col-md-7 col-lg-9">
-              <Chart data={data} />
+              <Chart data={chartData} />
             </div>
           </div>
         </div>

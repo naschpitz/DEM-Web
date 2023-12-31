@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import { ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
+import Spline from "cubic-spline";
 
 import styles from "./chart.module.css"
 
@@ -10,22 +11,23 @@ export default Chart = props => {
   useEffect(() => {
     if (!props.data) return
 
-    const data = props.data.map(data => ({ x: data[0], y: data[1] }))
+    const data = props.data.map(data => ({ x: data.time, y: data.value }))
+
     setData(data)
   }, [props.data])
 
   return (
     <div id={styles.chart}>
       <ResponsiveContainer minHeight={100}>
-        <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }} W>
+        <AreaChart data={data} margin={{ top: 10, right: 0, left: 10, bottom: 0 }} W>
           <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="colorData" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#21426E" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#21426E" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="x" tickFormatter={value => value.toExponential()} scale="time" type="number" />
-          <YAxis dataKey="y" tickFormatter={value => value.toExponential()} scale="linear" />
+          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} scale="time" type="number" />
+          <YAxis dataKey="y" tickFormatter={value => value.toExponential(3)} scale="linear" />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Area
@@ -34,7 +36,7 @@ export default Chart = props => {
             stroke="#112349"
             dot={{ stroke: "#112349", strokeWidth: 3 }}
             fillOpacity={1}
-            fill="url(#colorUv)"
+            fill="url(#colorData)"
           />
         </AreaChart>
       </ResponsiveContainer>
