@@ -39,12 +39,9 @@ export default DataSelector = props => {
   const objects = _.concat(nonSolidObjects, solidObjects)
 
   function onEvent(event, name, value) {
-    if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId")))) return
+    if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId" || name === "startCondition")))) return
 
-    const newData = {
-      objectId: name === "objectId" ? value : props.objectId,
-      dataName: name === "dataName" ? value : props.dataName,
-    }
+    const newData = { [name]: value }
 
     if (props.onData) props.onData(newData)
   }
@@ -105,11 +102,51 @@ export default DataSelector = props => {
     )
   }
 
+  function renderStartConditionOptions() {
+    const options = [
+      { value: "", text: "-- Select a Start Condition --" },
+      { value: "lt", text: "Less Than" },
+      { value: "lte", text: "Less Than or Equal" },
+      { value: "eq", text: "Equal" },
+      { value: "gt", text: "Greater Than" },
+      { value: "gte", text: "Greater Than or Equal" },
+    ]
+
+    return (
+      <FormInput
+        label="Start Cond."
+        name="startCondition"
+        value={props.startCondition}
+        type="dropdown"
+        subtype="string"
+        size="small"
+        options={options}
+        labelSizes={{ sm: 2, md: 2, lg: 4 }}
+        inputSizes={{ sm: 10, md: 10, lg: 8 }}
+        onEvent={onEvent}
+      />
+    )
+  }
+
   return (
     <div id="dataSelector">
       <div className="row">
-        <div className="col-sm-12 col-md-6 col-lg-6">{renderObjectsList()}</div>
-        <div className="col-sm-12 col-md-6 col-lg-6">{renderDataList()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderObjectsList()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderDataList()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderStartConditionOptions()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">
+          <FormInput
+            label="Start Thres."
+            name="startThreshold"
+            value={props.startThreshold}
+            type="field"
+            subtype="number"
+            size="small"
+            labelSizes={{ sm: 2, md: 2, lg: 4 }}
+            inputSizes={{ sm: 10, md: 10, lg: 8 }}
+            onEvent={onEvent}
+          />
+        </div>
       </div>
     </div>
   )

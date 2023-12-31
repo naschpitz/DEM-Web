@@ -51,7 +51,7 @@
     "react-share": "^4.1.0",
     "react-spinners": "^0.13.8",
     "react-table-v6": "^6.8.6",
-    "recharts": "^2.4.3",
+    "recharts": "^2.10.3",
     "simpl-schema": "^1.7.3",
     "tsparticles": "^1.14.3",
     "use-deep-compare-effect": "^1.4.0",

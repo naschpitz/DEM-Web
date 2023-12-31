@@ -160,6 +160,10 @@ export default class Agents extends AgentsBoth {
           dataSet.data.map(data => data.value)
         )
 
+        const hasCondition = dataSet.startCondition && dataSet.startThreshold
+        let conditionMet = false
+        let startedAt = 0
+
         currentScore += frames.reduce((score, frame) => {
           // Get the non-solid or solid object that belongs to the Frame's Scenery and has the same callSign as the DataSet's
           const nonSolidObject = NonSolidObjects.findOne({ owner: frame.owner, callSign: objectCallSign })
@@ -176,8 +180,21 @@ export default class Agents extends AgentsBoth {
           // Get the value of the dataName in the frame object
           const value = _.get(frameObject, dataName)
 
-          // Calculate the difference between the value and the expected value
-          const evaluatedValue = spline.at(frame.time)
+          if (hasCondition) {
+            const startConditionMet = assessStarCondition(dataSet.startCondition, dataSet.startThreshold, value)
+
+            // If the start condition is met and the condition is not met, then the startAt is set to the current frame time.
+            if (startConditionMet && !conditionMet) {
+              startedAt = frame.time
+              conditionMet = true
+            }
+          }
+
+          // If the start condition is not met, then the score is 0, thus it won't be penalized.
+          if (hasCondition && !conditionMet) return 0;
+
+          // Evaluate the spline at the frame time, displacing it by the startAt time.
+          const evaluatedValue = spline.at(frame.time - startedAt)
 
           // If evaluatedValue is NaN, it means that the frame time is out of the DataSet's time range. In this case, the
           // error is 0.
@@ -209,6 +226,23 @@ export default class Agents extends AgentsBoth {
           _id: agentId,
           best: { score: agent.current.score, simulation: newBestSimulationId, valid: true },
         })
+      }
+    }
+
+    function assessStarCondition(startCondition, startThreshold, value) {
+      switch (startCondition) {
+        case "lt":
+          return value < startThreshold
+        case "lte":
+          return value <= startThreshold
+        case "eq":
+          return value === startThreshold
+        case "gte":
+          return value >= startThreshold
+        case "gt":
+          return value > startThreshold
+        default:
+          return false
       }
     }
   }

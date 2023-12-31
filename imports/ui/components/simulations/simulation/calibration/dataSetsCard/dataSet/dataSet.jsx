@@ -50,13 +50,25 @@ export default DataSet = props => {
     return SceneriesClass.findOne({ owner: calibration.owner })
   }, [calibration])
 
-  function onData(dataSet) {
-    const dataSetId = props.dataSet._id
+  function onDataSelector(dataSelector) {
+    dataSelector.object = dataSelector.objectId
+    delete dataSelector.objectId
 
+    const dataSet = {
+      _id: props.dataSet._id,
+      ...dataSelector,
+    }
+
+    Meteor.call("dataSets.update", dataSet, error => {
+      if (error) {
+        Alert.error("Error: " + getErrorMessage(error))
+      }
+    })
+  }
+
+  function onDataImporter(dataSet) {
     const newDataSet = {
-      _id: dataSetId,
-      object: dataSet.objectId,
-      dataName: dataSet.dataName,
+      _id: props.dataSet._id,
       data: dataSet.data?.map(data => ({ time: data[0], value: data[1] })),
     }
 
@@ -88,6 +100,8 @@ export default DataSet = props => {
 
   const objectId = props.dataSet?.object
   const dataName = props.dataSet?.dataName
+  const startCondition = props.dataSet?.startCondition
+  const startThreshold = props.dataSet?.startThreshold
   const data = props.dataSet?.data?.map(data => [data.time, data.value])
 
   return (
@@ -120,11 +134,18 @@ export default DataSet = props => {
         </div>
 
         <div className="card-body">
-          <DataSelector sceneryId={sceneryId} objectId={objectId} dataName={dataName} onData={onData} />
+          <DataSelector
+            sceneryId={sceneryId}
+            objectId={objectId}
+            dataName={dataName}
+            startCondition={startCondition}
+            startThreshold={startThreshold}
+            onData={onDataSelector}
+          />
 
           <div className="row">
             <div className="col-sm-12 col-md-5 col-lg-3">
-              <DataImporter data={data} onData={data => onData({ data })} />
+              <DataImporter data={data} onData={data => onDataImporter({ data })} />
             </div>
 
             <div className="col-sm-12 col-md-7 col-lg-9">

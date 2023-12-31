@@ -58,6 +58,19 @@ DataSets.schema = new SimpleSchema({
       }
     },
   },
+  startCondition: {
+    type: String,
+    label: "Start condition",
+    allowedValues: ["lt", "lte", "eq", "gte", "gt"],
+    optional: true,
+    defaultValue: "gt",
+  },
+  startThreshold: {
+    type: Number,
+    label: "Start threshold",
+    optional: true,
+    defaultValue: 0.001,
+  },
   "data.$": {
     type: Data,
     label: "Data",

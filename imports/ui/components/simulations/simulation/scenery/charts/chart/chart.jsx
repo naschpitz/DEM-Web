@@ -62,14 +62,14 @@ export default Chart = ({ sceneryId, objectId, dataName, minInterval, maxInterva
   return (
     <div id="chart">
       <ResponsiveContainer minHeight={100} aspect={3}>
-        <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }} W>
+        <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }} W>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#21426E" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#21426E" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} scale="linear" />
+          <XAxis dataKey="x" tickFormatter={value => value.toExponential()} scale="time" type="number" />
           <YAxis dataKey="y" tickFormatter={value => value.toExponential()} scale="linear" />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
