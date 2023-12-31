@@ -2,7 +2,7 @@ import "./accounts.js"
 
 import "../../api/agents/server/publications.js"
 
-import "../../api/calibrations/server/jobs.js"
+import "../../api/calibrations/server/tasks.js"
 
 import "../../api/calibrations/server/methods.js"
 import "../../api/calibrations/server/publications.js"
@@ -15,6 +15,8 @@ import "../../api/frames/server/methods.js"
 import "../../api/frames/server/publications.js"
 
 import "../../api/framesImages/server/methods.js"
+
+import "../../api/josk/server/run.js"
 
 import "../../api/logs/server/publications.js"
 
@@ -33,7 +35,7 @@ import "../../api/sceneries/server/publications.js"
 
 import "../../api/servers/server/publications.js"
 
-import "../../api/simulations/server/jobs.js"
+import "../../api/simulations/server/tasks.js"
 import "../../api/simulations/server/methods.js"
 import "../../api/simulations/server/publications.js"
 

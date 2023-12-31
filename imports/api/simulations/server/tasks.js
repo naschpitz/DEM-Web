@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor"
-import { CronJob } from "cron"
+
 import moment from "moment"
 
 import Logs from "../../logs/both/class"
@@ -43,10 +43,9 @@ const bound = Meteor.bindEnvironment(() => {
   console.log("Done checking for stalled Simulations.")
 })
 
-const job = new CronJob(
-  // Every 10 seconds
-  "*/10 * * * * *",
-  bound
-)
+const task = (ready) => {
+  bound()
+  ready()
+}
 
-job.start()
+export default task

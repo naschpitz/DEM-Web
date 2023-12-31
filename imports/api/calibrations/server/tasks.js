@@ -1,11 +1,10 @@
 import { Meteor } from "meteor/meteor"
-import { CronJob } from "cron"
 
 import Calibrations from "../both/class"
 import Hypervisor from "./hypervisor"
 
 // Find Calibrations in progress and re-initialize them
-const bound = Meteor.bindEnvironment(onComplete => {
+const bound = Meteor.bindEnvironment(() => {
   const calibrationsInProgress = Calibrations.find({
     state: { $in: ["running", "paused"] },
   })
@@ -31,16 +30,9 @@ const bound = Meteor.bindEnvironment(onComplete => {
   console.log("Done checking for Calibrations in progress.")
 })
 
-const job = new CronJob(
-  // Every 5 minutes
-  "* */5 * * * *",
-  bound, // This function is executed when the job runs
-  null, // This function is executed when the job stops
-  null, // Start the job right now
-  null, // Time zone of this job.
-  null, // The context to run jobCallback with
-  true // Run the job in the initialisation
-)
+const task = (ready) => {
+  bound()
+  ready()
+}
 
-job.start()
-job.stop()
+export default task
