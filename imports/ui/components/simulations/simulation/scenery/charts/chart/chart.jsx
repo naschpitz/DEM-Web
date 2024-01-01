@@ -34,11 +34,9 @@ export default Chart = ({ sceneryId, objectId, dataName, minInterval, maxInterva
 
     if (minInterval || maxInterval) selector.$and = filter
 
-    const frames = FramesClass.find(selector).fetch()
+    const frames = FramesClass.find(selector)
 
-    const data = []
-
-    frames.forEach(frame => {
+    return frames.map(frame => {
       let object = null
 
       const nonSolidObjects = _.get(frame, "scenery.objects.nonSolidObjects", null)
@@ -53,24 +51,22 @@ export default Chart = ({ sceneryId, objectId, dataName, minInterval, maxInterva
         object = solidObjects.find(solidObject => solidObject._id === objectId)
       }
 
-      data.push({ x: frame.time, y: _.get(object, dataName) })
+      return { x: frame.time, y: _.get(object, dataName) }
     })
-
-    return data
   })
 
   return (
     <div id="chart">
       <ResponsiveContainer minHeight={100} aspect={3}>
-        <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }} W>
+        <AreaChart data={data} margin={{ top: 10, right: 0, left: 10, bottom: 0 }} W>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#21426E" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#21426E" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="x" tickFormatter={value => value.toExponential()} scale="time" type="number" />
-          <YAxis dataKey="y" tickFormatter={value => value.toExponential()} scale="linear" />
+          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} scale="linear" type="number" />
+          <YAxis dataKey="y" tickFormatter={value => value.toExponential(3)} scale="linear" type="number" />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Area
