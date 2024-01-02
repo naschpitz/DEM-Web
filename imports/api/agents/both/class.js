@@ -91,8 +91,8 @@ export default class Agents extends AgentsDAO {
     }
 
     function getValue(materialObject, parameter) {
-      const minValue = _.get(materialObject, parameter.coefficient) * (1 + parameter.variation)
-      const maxValue = _.get(materialObject, parameter.coefficient) * (1 - parameter.variation)
+      const minValue = _.get(materialObject, parameter.coefficient) * (1 - parameter.variation)
+      const maxValue = _.get(materialObject, parameter.coefficient) * (1 + parameter.variation)
       return minValue + (maxValue - minValue) * Math.random()
     }
   }
