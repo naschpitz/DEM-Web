@@ -81,6 +81,11 @@ Simulations.schema = new SimpleSchema({
     defaultValue: "new",
     optional: true,
   },
+  notes: {
+    type: String,
+    label: "Notes",
+    optional: true,
+  },
   createdAt: {
     type: Date,
     label: "Created at",
