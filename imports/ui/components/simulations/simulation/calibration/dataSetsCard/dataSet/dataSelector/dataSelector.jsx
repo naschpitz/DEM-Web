@@ -39,7 +39,7 @@ export default DataSelector = props => {
   const objects = _.concat(nonSolidObjects, solidObjects)
 
   function onEvent(event, name, value) {
-    if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId" || name === "startCondition")))) return
+    if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId" || name === "startCondition" || name === "enabled")))) return
 
     const newData = { [name]: value }
 
@@ -95,8 +95,8 @@ export default DataSelector = props => {
         subtype="string"
         size="small"
         options={options}
-        labelSizes={{ sm: 2, md: 2, lg: 2 }}
-        inputSizes={{ sm: 10, md: 10, lg: 10 }}
+        labelSizes={{ sm: 6, md: 4, lg: 3 }}
+        inputSizes={{ sm: 6, md: 8, lg: 9 }}
         onEvent={onEvent}
       />
     )
@@ -130,11 +130,11 @@ export default DataSelector = props => {
 
   return (
     <div id="dataSelector">
-      <div className="row">
+      <div className="row vertical-center">
         <div className="col-sm-12 col-md-6 col-lg-3">{renderObjectsList()}</div>
         <div className="col-sm-12 col-md-6 col-lg-3">{renderDataList()}</div>
-        <div className="col-sm-12 col-md-6 col-lg-3">{renderStartConditionOptions()}</div>
-        <div className="col-sm-12 col-md-6 col-lg-3">
+        <div className="col-sm-12 col-md-6 col-lg-2">{renderStartConditionOptions()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-2">
           <FormInput
             label="Start Thres."
             name="startThreshold"
@@ -144,6 +144,18 @@ export default DataSelector = props => {
             size="small"
             labelSizes={{ sm: 2, md: 2, lg: 4 }}
             inputSizes={{ sm: 10, md: 10, lg: 8 }}
+            onEvent={onEvent}
+          />
+        </div>
+        <div className="col-sm-12 col-md-6 col-lg-2">
+          <FormInput
+            label="Enabled"
+            name="enabled"
+            value={props.enabled}
+            type="checkbox"
+            size="small"
+            labelSizes={{ sm: 8, md: 8, lg: 8 }}
+            inputSizes={{ sm: 4, md: 4, lg: 4 }}
             onEvent={onEvent}
           />
         </div>

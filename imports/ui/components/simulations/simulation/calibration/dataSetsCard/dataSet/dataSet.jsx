@@ -102,6 +102,7 @@ export default DataSet = props => {
   const dataName = props.dataSet?.dataName
   const startCondition = props.dataSet?.startCondition
   const startThreshold = props.dataSet?.startThreshold
+  const enabled = props.dataSet?.enabled
 
   const importerData = props.dataSet?.data?.map(data => [data.time, data.value])
   const chartData = props.dataSet?.data
@@ -142,6 +143,7 @@ export default DataSet = props => {
             dataName={dataName}
             startCondition={startCondition}
             startThreshold={startThreshold}
+            enabled={enabled}
             onData={onDataSelector}
           />
 

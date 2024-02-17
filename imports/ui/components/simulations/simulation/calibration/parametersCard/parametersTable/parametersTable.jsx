@@ -144,6 +144,23 @@ export default ParametersTable = props => {
         ),
       },
       {
+        Header: "Perturbation",
+        accessor: "perturbation",
+        Cell: cellInfo => (
+          <FormInput
+            name={cellInfo.column.id}
+            value={cellInfo.original.perturbation}
+            type="field"
+            subtype="percent"
+            append="%"
+            allowNegative={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
+          />
+        ),
+      },
+      {
         Header: "Remove",
         id: "removeButton",
         className: "text-center",

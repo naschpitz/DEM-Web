@@ -148,7 +148,7 @@ export default class Agents extends AgentsBoth {
 
       let currentScore = 0
 
-      DataSets.find({ owner: agent.owner }).forEach(dataSet => {
+      DataSets.find({ owner: agent.owner, enabled: true }).forEach(dataSet => {
         const objectId = dataSet.object
         const object = NonSolidObjects.findOne(objectId) || SolidObjects.findOne(objectId)
 
@@ -194,11 +194,16 @@ export default class Agents extends AgentsBoth {
           if (hasCondition && !conditionMet) return 0;
 
           // Evaluate the spline at the frame time, displacing it by the startAt time.
-          const evaluatedValue = spline.at(frame.time - startedAt)
+          const refValue = spline.at(frame.time - startedAt)
 
-          // If evaluatedValue is NaN, it means that the frame time is out of the DataSet's time range. In this case, the
-          // error is 0.
-          const error = isNaN(evaluatedValue) ? 0 : Math.abs(value - evaluatedValue)
+          // Initialize the error to 0
+          let error = 0
+
+          // If the refValue is not NaN, which means it is inside the spline range, and it is not 0, then the error
+          // is calculated. Otherwise, the error is 0.
+          if (!isNaN(refValue) && refValue !== 0) {
+            error = Math.abs((value - refValue) / refValue)
+          }
 
           return score + error
         }, 0)
@@ -299,7 +304,8 @@ export default class Agents extends AgentsBoth {
             _.get(bestMaterial, coefficient),
             _.get(bestGMaterial, coefficient),
             parameter.c1,
-            parameter.c2
+            parameter.c2,
+            parameter.perturbation
           )
 
           _.set(currentMaterial, coefficient, value)
@@ -319,7 +325,8 @@ export default class Agents extends AgentsBoth {
             _.get(bestNSO, coefficient),
             _.get(bestGNSO, coefficient),
             parameter.c1,
-            parameter.c2
+            parameter.c2,
+            parameter.perturbation
           )
 
           _.set(currentNSO, coefficient, value)
@@ -339,7 +346,8 @@ export default class Agents extends AgentsBoth {
             _.get(bestSO, coefficient),
             _.get(bestGSO, coefficient),
             parameter.c1,
-            parameter.c2
+            parameter.c2,
+            parameter.perturbation
           )
 
           _.set(currentSO, coefficient, value)
@@ -350,12 +358,19 @@ export default class Agents extends AgentsBoth {
       }
     }
 
-    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, c1, c2) {
+    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, c1, c2, perturbation) {
       const random1 = Math.random()
       const random2 = Math.random()
 
-      const bestVelocity = bestCoefficient - coefficient
-      const bestGlobalVelocity = bestGlobalCoefficient - coefficient
+      let bestVelocity = bestCoefficient - coefficient
+
+      if (bestVelocity === 0)
+        bestVelocity = (Math.random() - 0.5) * perturbation * coefficient
+
+      let bestGlobalVelocity = bestGlobalCoefficient - coefficient
+
+      if (bestGlobalVelocity === 0)
+        bestGlobalVelocity = (Math.random() - 0.5) * perturbation * coefficient
 
       return coefficient + c1 * random1 * bestVelocity + c2 * random2 * bestGlobalVelocity
     }
