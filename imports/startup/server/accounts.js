@@ -1,5 +1,5 @@
 Accounts.emailTemplates.siteName = "Naschpitz.com"
-Accounts.emailTemplates.from = "DEM <contact@naschpitz.com>"
+Accounts.emailTemplates.from = "DEM <noreply@naschpitz.com>"
 
 Accounts.emailTemplates.verifyEmail.subject = function () {
   return "Account Verification"
