@@ -92,6 +92,12 @@ export default class Simulations extends SimulationsBoth {
     if (simulation.primary) Calibrations.removeByOwner(simulationId)
   }
 
+  static removeByGroup(groupId) {
+    const simulations = Simulations.find({ group: groupId })
+
+    simulations.forEach(simulation => this.remove(simulation._id))
+  }
+
   static post(simulationId, postOptions) {
     try {
       HTTP.call("POST", postOptions.url, postOptions)

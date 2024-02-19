@@ -1,35 +1,33 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
+import Simulations from "../../simulations/both/collection";
 
-const Servers = new Mongo.Collection("servers")
+const Groups = new Mongo.Collection("groups")
 
-Servers.schema = new SimpleSchema({
+Groups.schema = new SimpleSchema({
   owner: {
     type: String,
     label: "User Owner",
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
-      if (this.isInsert) return this.userId
+      if (this.isInsert) {
+        if (!this.isFromTrustedCode) return this.userId
+        else return this.value
+      }
       if (this.isUpdate) this.unset()
     },
   },
   name: {
     type: String,
     label: "Name",
-    defaultValue: "New Server",
+    defaultValue: "New Group",
     optional: true,
   },
-  url: {
+  description: {
     type: String,
-    label: "URL",
-    defaultValue: "localhost",
-    optional: true,
-  },
-  port: {
-    type: Number,
-    label: "Port",
-    defaultValue: 8080,
+    label: "Description",
+    defaultValue: "",
     optional: true,
   },
   createdAt: {
@@ -51,27 +49,27 @@ Servers.schema = new SimpleSchema({
   },
 })
 
-Servers.schema.addValidator(function () {
+Groups.schema.addValidator(function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const server = Servers.findOne(this.docId)
+    const simulation = Simulations.findOne(this.docId)
 
-    if (server.owner !== userId) return "notOwner"
+    if (simulation.owner !== userId) return "notOwner"
   }
 })
 
-Servers.schema.messageBox.messages({
+Groups.schema.messageBox.messages({
   en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the server's owner",
+    notAuthorized: "You are not authorized to perform this action.",
+    notOwner: "The user is not the group's owner.",
   },
 })
 
-Servers.attachSchema(Servers.schema)
+Groups.attachSchema(Groups.schema)
 
-Meteor.isServer && Servers.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && Groups.rawCollection().createIndex({ owner: 1 }, { background: true })
 
-export default Servers
+export default Groups

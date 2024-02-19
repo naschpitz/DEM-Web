@@ -42,4 +42,10 @@ if (Meteor.isServer) {
 
     return Simulations.find({ _id: { $in: simulationsIds }, owner: this.userId })
   })
+
+  Meteor.publish("simulations.byGroup", function (groupId) {
+    if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
+
+    return Simulations.find({ group: groupId, owner: this.userId })
+  })
 }

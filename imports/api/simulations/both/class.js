@@ -90,7 +90,24 @@ export default class Simulations extends SimulationsDAO {
         $unset: {
           server: "",
         },
-      }
+      },
+      { multi: true }
+    )
+  }
+
+  // If a simulationId is provided, it will remove only the simulations from the group it belongs to.
+  // Otherwise, if a groupId is provided, it will remove all simulations from that group.
+  static unsetGroup(simulationId, groupId) {
+    const selector = simulationId ? { _id: simulationId } : { group: groupId }
+
+    Simulations.update(
+      selector,
+      {
+        $unset: {
+          group: "",
+        },
+      },
+      { multi: true }
     )
   }
 

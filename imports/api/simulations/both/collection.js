@@ -23,6 +23,12 @@ Simulations.schema = new SimpleSchema({
     defaultValue: true,
     optional: true,
   },
+  group: {
+    type: String,
+    label: "Group",
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
   name: {
     type: String,
     label: "Name",

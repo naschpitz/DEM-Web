@@ -50,4 +50,12 @@ Meteor.methods({
       throw new Meteor.Error("500", error.message)
     }
   },
+
+  "simulations.unsetGroup"(simulationId, groupId) {
+    try {
+      Simulations.unsetGroup(simulationId, groupId)
+    } catch (error) {
+      throw new Meteor.Error("500", error.message)
+    }
+  }
 })
