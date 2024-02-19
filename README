@@ -7,7 +7,7 @@ Deploy it: scp ../build/app.tar.gz user@server:~/
 (Optional Backup to instant rollback): sudo cp -R bundle bundle-backup/
 Unpack it on server: tar -zxf app.tar.gz
 cd into bundle directory and run install: (cd programs/server && npm install)
-Run: node main.js (do this inside a screen and dettach ctrl+a d it so it runs in the background with screen and doesn’t close)
+Run: node main.js (do this inside a screen and detach ctrl+a d it so it runs in the background with screen and doesn't close)
 Important: For first time configuration, you just tell nginx to run localhost:your-port as the upstream and export shell variables:
 
   $ export MONGO_URL='mongodb://user:password@host:port/databasename'
