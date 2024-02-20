@@ -56,7 +56,7 @@ export default Notes = props => {
     }
   }
 
-  const notes = simulation.notes
+  const notes = simulation?.notes
 
   return (
     <div className="notes">

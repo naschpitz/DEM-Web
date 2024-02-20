@@ -15,6 +15,7 @@ import "./simulations.css"
 
 export default Simulations = props => {
   const [isCreating, setIsCreating] = useState(false)
+  const [isSimulationsReady, setIsSimulationsReady] = useState(false)
 
   useTracker(() => {
     Meteor.subscribe("simulations.byGroup", {
