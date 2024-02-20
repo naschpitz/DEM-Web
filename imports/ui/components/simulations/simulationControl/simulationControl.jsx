@@ -12,6 +12,7 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 
 import "./simulationControl.css"
+import Groups from "../../../../api/groups/both/class";
 
 export default SimulationControl = props => {
   const [isStarting, setIsStarting] = useState(false)
@@ -21,8 +22,16 @@ export default SimulationControl = props => {
   const [isCloning, setIsCloning] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
+  const [isGroupsReady, setIsGroupsReady] = useState(false)
   const [isServersReady, setIsServersReady] = useState(false)
   const [isReady, setIsReady] = useState(false)
+
+  useTracker(() => {
+    Meteor.subscribe("groups.list", {
+      onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
+      onReady: () => setIsGroupsReady(true),
+    })
+  }, [])
 
   useTracker(() => {
     Meteor.subscribe("simulations.simulation", props.simulationId, {
@@ -46,8 +55,12 @@ export default SimulationControl = props => {
     return SimulationsClass.findOne(props.simulationId)
   })
 
+  const groups = useTracker(() => {
+    return Groups.find({}, { sort: { name: -1 } }).fetch()
+  })
+
   const servers = useTracker(() => {
-    return ServersClass.find({}, { sort: { createdAt: -1 } }).fetch()
+    return ServersClass.find({}, { sort: { name: -1 } }).fetch()
   })
 
   function onEvent(event, name, value) {
@@ -57,7 +70,7 @@ export default SimulationControl = props => {
 
     _.set(newSimulation, name, value)
 
-    if (event === "onBlur" || (event === "onChange" && (name === "server" || name === "multiGPU" || name === "calcNeigh"))) {
+    if (event === "onBlur" || (event === "onChange" && (name === "group" || name === "server" || name === "multiGPU" || name === "calcNeigh"))) {
       Meteor.call("simulations.update", newSimulation, error => {
         if (error) Alert.error("Error updating server: " + getErrorMessage(error))
       })
@@ -143,6 +156,12 @@ export default SimulationControl = props => {
   }
 
   const showFields = props.showFields
+
+  const groupsOptions = groups.map(group => {
+    return { value: group._id, text: group.name }
+  })
+
+  groupsOptions.unshift({ value: "", text: "-- Select Group --" })
 
   const serversOptions = servers.map(server => {
     return { value: server._id, text: server.name }
@@ -312,9 +331,27 @@ export default SimulationControl = props => {
           <div className="row">
             <div className="col-sm-12 col-md-6 col-lg-3">
               <div className="card" id="serverSettings">
-                <div className="card-header">Server Settings</div>
+                <div className="card-header">Group Settings</div>
 
                 <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <FormInput
+                        label="Group"
+                        name="group"
+                        value={_.get(simulation, "server")}
+                        type="dropdown"
+                        subtype="string"
+                        size="small"
+                        options={groupsOptions}
+                        labelSizes={{ sm: 5, md: 4, lg: 4 }}
+                        inputSizes={{ sm: 7, md: 8, lg: 8 }}
+                        alignment="center"
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+
                   <div className="row">
                     <div className="col-sm-12">
                       <FormInput

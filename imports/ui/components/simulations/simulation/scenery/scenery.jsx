@@ -146,9 +146,9 @@ export default Scenery = props => {
 
           <div className="col-sm-12 col-md-12 col-lg-5">
             <div className="card" id="nonSolidObjects">
-              <div className="card-header d-flex">
-                <div className="align-self-center">Non-Solid Objects</div>
-                <div className="ml-auto align-self-center">
+              <div className="card-header d-flex align-items-center">
+                <div>Non-Solid Objects</div>
+                <div className="ml-auto">
                   <ButtonEnhanced
                     buttonOptions={{
                       regularText: <FaPlus className="align-middle" />,
@@ -177,9 +177,9 @@ export default Scenery = props => {
 
           <div className="col-sm-12 col-md-12 col-lg-5">
             <div className="card" id="solidObjects">
-              <div className="card-header d-flex">
-                <div className="align-self-center">Solid Objects</div>
-                <div className="ml-auto align-self-center">
+              <div className="card-header d-flex align-items-center">
+                <div>Solid Objects</div>
+                <div className="ml-auto">
                   <ButtonEnhanced
                     buttonOptions={{
                       regularText: <FaPlus className="align-middle" />,
@@ -208,9 +208,9 @@ export default Scenery = props => {
         </div>
 
         <div className="card" id="materials">
-          <div className="card-header d-flex">
-            <div className="align-self-center">Materials</div>
-            <div className="ml-auto align-self-center">
+          <div className="card-header d-flex align-items-center">
+            <div>Materials</div>
+            <div className="ml-auto">
               <ButtonEnhanced
                 buttonOptions={{
                   regularText: <FaPlus className="align-middle" />,

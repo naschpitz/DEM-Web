@@ -110,9 +110,9 @@ export default DataSet = props => {
   return (
     <div id="dataSet">
       <div className="card">
-        <div className="card-header d-flex">
-          <div className="align-self-center">Data Set</div>
-          <div className="ml-auto align-self-center">
+        <div className="card-header d-flex align-items-center">
+          <div>Data Set</div>
+          <div className="ml-auto">
             <ButtonEnhanced
               buttonOptions={{
                 regularText: <FaTrashAlt className="align-middle" />,

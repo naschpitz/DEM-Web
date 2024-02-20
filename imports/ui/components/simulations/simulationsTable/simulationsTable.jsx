@@ -30,17 +30,9 @@ export default SimulationsTable = props => {
   }, [])
 
   const simulations = useTracker(() => {
-    const simulationsIds = props.simulationsIds
-
-    if (simulationsIds)
-      return SimulationsClass.find(
-        { _id: { $in: simulationsIds }, primary: true },
-        { sort: { createdAt: -1 } }).fetch()
-
-    else
-      return SimulationsClass.find(
-        { primary: true },
-        { sort: { createdAt: -1 } }).fetch()
+    return SimulationsClass.find(
+      { _id: { $in: props.simulationsIds }, primary: true },
+      { sort: { createdAt: -1 } }).fetch()
   }, [props.simulationsIds])
 
   const logs = useTracker(() => {

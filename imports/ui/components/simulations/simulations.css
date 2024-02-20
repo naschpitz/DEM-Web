@@ -12,6 +12,7 @@
     text-align: center;
 }
 
-#simulations #groups {
-    margin-top: 20px;
+#simulations hr {
+    margin-top: 30px;
+    margin-bottom: 20px;
 }

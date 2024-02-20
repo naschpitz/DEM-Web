@@ -1,5 +1,8 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
+import { useTracker } from "meteor/react-meteor-data"
+
+import SimulationsClass from "../../../api/simulations/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
 import Alert from "react-s-alert-v3"
@@ -12,6 +15,19 @@ import "./simulations.css"
 
 export default Simulations = props => {
   const [isCreating, setIsCreating] = useState(false)
+
+  useTracker(() => {
+    Meteor.subscribe("simulations.byGroup", {
+      onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
+      onReady: () => setIsSimulationsReady(true),
+    })
+  }, [])
+
+  const simulationsIds = useTracker(() => {
+    return SimulationsClass
+      .find({ primary: true, group: { $exists: false } }, { sort: { createdAt: -1 } })
+      .map(simulation => simulation._id)
+  })
 
   function onCreateDone(result, data) {
     if (!result) return
@@ -49,9 +65,8 @@ export default Simulations = props => {
         />
       </h2>
 
-      <SimulationsTable />
-      <br/>
-      <hr  />
+      <SimulationsTable simulationsIds={simulationsIds}/>
+      <hr/>
       <Groups />
     </div>
   )

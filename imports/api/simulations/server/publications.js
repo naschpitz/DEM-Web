@@ -2,30 +2,10 @@ import { Meteor } from "meteor/meteor"
 import Simulations from "../both/collection.js"
 
 if (Meteor.isServer) {
-  Meteor.publish("simulations.compactList", function () {
+  Meteor.publish("simulations.list", function () {
     if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
 
-    return Simulations.find(
-      {
-        owner: this.userId,
-        primary: true,
-      },
-      {
-        fields: {
-          _id: 1,
-          owner: 1,
-          primary: 1,
-          name: 1,
-          state: 1,
-          frameTime: 1,
-          totalSteps: 1,
-          timeStep: 1,
-          totalTime: 1,
-          createdAt: 1,
-        },
-        sort: { createdAt: -1 },
-      }
-    )
+    return Simulations.find({ owner: this.userId, primary: true })
   })
 
   Meteor.publish("simulations.simulation", function (simulationId) {
@@ -46,6 +26,10 @@ if (Meteor.isServer) {
   Meteor.publish("simulations.byGroup", function (groupId) {
     if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
 
-    return Simulations.find({ group: groupId, owner: this.userId })
+    if (groupId)
+      return Simulations.find({ owner: this.userId, group: groupId, primary: true })
+
+    // If groupId is not defined, return only the primary simulations not in a group
+    return Simulations.find({ owner: this.userId, group: { $exists: false }, primary: true})
   })
 }

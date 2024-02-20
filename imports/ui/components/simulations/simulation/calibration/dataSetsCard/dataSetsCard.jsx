@@ -45,9 +45,9 @@ export default DataSetsCard = props => {
   if (isDataSetsReady) {
     return (
       <div id="dataSetsCard" className="card">
-        <div className="card-header d-flex">
-          <div className="align-self-center">Data Sets</div>
-          <div className="ml-auto align-self-center">
+        <div className="card-header d-flex align-items-center">
+          <div>Data Sets</div>
+          <div className="ml-auto">
             <ButtonEnhanced
               buttonOptions={{
                 regularText: <FaPlus className="align-middle" />,
