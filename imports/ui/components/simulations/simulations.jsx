@@ -66,7 +66,15 @@ export default Simulations = props => {
         />
       </h2>
 
-      <SimulationsTable simulationsIds={simulationsIds}/>
+      <div id="group" className="card">
+        <div className="card-header d-flex">
+          Ungrouped Simulations
+        </div>
+
+        <div className="card-body">
+          <SimulationsTable simulationsIds={simulationsIds}/>
+        </div>
+      </div>
       <hr/>
       <Groups />
     </div>
