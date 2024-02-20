@@ -27,7 +27,7 @@ export default SimulationsTable = props => {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsReady(true),
     })
-  }, [])
+  }, [props.simulationsIds])
 
   const simulations = useTracker(() => {
     return SimulationsClass.find(
