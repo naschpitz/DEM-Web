@@ -339,7 +339,7 @@ export default SimulationControl = props => {
                       <FormInput
                         label="Group"
                         name="group"
-                        value={_.get(simulation, "server")}
+                        value={_.get(simulation, "group")}
                         type="dropdown"
                         subtype="string"
                         size="small"
