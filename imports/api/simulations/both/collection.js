@@ -55,13 +55,12 @@ Simulations.schema = new SimpleSchema({
   calcNeighTimeInt: {
     type: Number,
     label: "Calculate neighborhood time interval",
-    defaultValue: false,
     optional: true,
   },
   neighDistThresMult: {
     type: Number,
     label: "Neighborhood distance threshold multiplier",
-    defaultValue: 2,
+    defaultValue: 1,
     optional: true,
   },
   multiGPU: {
