@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import SimpleSchema from "simpl-schema"
+
 import Simulations from "../../simulations/both/collection";
 
 const Groups = new Mongo.Collection("groups")
@@ -11,10 +12,7 @@ Groups.schema = new SimpleSchema({
     label: "User Owner",
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
-      if (this.isInsert) {
-        if (!this.isFromTrustedCode) return this.userId
-        else return this.value
-      }
+      if (this.isInsert) return this.userId
       if (this.isUpdate) this.unset()
     },
   },

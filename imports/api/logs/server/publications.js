@@ -18,14 +18,14 @@ if (Meteor.isServer) {
     )
   })
 
-  publishComposite("logs.last", function (primary = true, ids) {
+  publishComposite("logs.last", function (primary = true, simulationsIds) {
     if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
 
     return {
       find() {
-        if (ids) {
+        if (simulationsIds) {
           return Simulations.find(
-            { _id: { $in: ids }, owner: this.userId, primary: primary },
+            { _id: { $in: simulationsIds }, owner: this.userId, primary: primary },
             { sort: { createdAt: -1 } }
           )
         } else {

@@ -37,7 +37,7 @@ export default Calibration = props => {
         <div id="calibration">
           <div className="card addMargin">
             <div className="card-header">
-              <div className="panel-title">Control</div>
+              Control
             </div>
 
             <div className="card-body">
@@ -47,7 +47,7 @@ export default Calibration = props => {
 
           <div className="card addMargin">
             <div className="card-header">
-              <div className="panel-title">Log</div>
+              Log
             </div>
 
             <div className="card-body">
@@ -65,7 +65,7 @@ export default Calibration = props => {
 
           <div id="agentsCard" className="card addMargin">
             <div className="card-header">
-              <div className="panel-title">Agents</div>
+              Agents
             </div>
 
             <div className="card-body">

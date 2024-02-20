@@ -17,7 +17,7 @@ export default Main = props => {
     <div id="main">
       <div className="card">
         <div className="card-header">
-          <div className="panel-title">Control</div>
+          Control
         </div>
 
         <div className="card-body">
@@ -27,7 +27,7 @@ export default Main = props => {
 
       <div className="card">
         <div className="card-header">
-          <div className="panel-title">Log</div>
+          Log
         </div>
 
         <div className="card-body">
@@ -37,7 +37,7 @@ export default Main = props => {
 
       <div className="card">
         <div className="card-header">
-          <div className="panel-title">Notes</div>
+          Notes
         </div>
 
         <div className="card-body">
@@ -47,7 +47,7 @@ export default Main = props => {
 
       <div className="card">
         <div className="card-header">
-          <div className="panel-title">Scenery</div>
+          Scenery
         </div>
 
         <div className="card-body">

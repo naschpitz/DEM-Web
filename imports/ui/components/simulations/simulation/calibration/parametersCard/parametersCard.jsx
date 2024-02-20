@@ -27,28 +27,26 @@ export default ParametersCard = props => {
 
   return (
     <div id="parametersCard" className="card">
-      <div className="card-header">
-        <div className="panel-title d-flex">
-          <div className="align-self-center">Parameters</div>
-          <div className="ml-auto align-self-center">
-            <ButtonEnhanced
-              buttonOptions={{
-                regularText: <FaPlus className="align-middle" />,
-                className: "btn btn-sm btn-success",
-                isAction: isCreatingParameter,
-                actionText: "Creating...",
-                type: "button",
-              }}
-              confirmationOptions={{
-                title: "Confirm data set creation",
-                text: <span>Do you really want to create a new parameter?</span>,
-                confirmButtonText: "Create",
-                confirmButtonAction: "Creating...",
-                cancelButtonText: "Cancel",
-                onDone: onCreateParameterDone,
-              }}
-            />
-          </div>
+      <div className="card-header d-flex">
+        <div className="align-self-center">Parameters</div>
+        <div className="ml-auto align-self-center">
+          <ButtonEnhanced
+            buttonOptions={{
+              regularText: <FaPlus className="align-middle" />,
+              className: "btn btn-sm btn-success",
+              isAction: isCreatingParameter,
+              actionText: "Creating...",
+              type: "button",
+            }}
+            confirmationOptions={{
+              title: "Confirm data set creation",
+              text: <span>Do you really want to create a new parameter?</span>,
+              confirmButtonText: "Create",
+              confirmButtonAction: "Creating...",
+              cancelButtonText: "Cancel",
+              onDone: onCreateParameterDone,
+            }}
+          />
         </div>
       </div>
 

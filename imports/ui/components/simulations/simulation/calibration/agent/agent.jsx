@@ -61,7 +61,7 @@ export default Agent = props => {
 
           <div id="currentSimulationCard" className="card addMargin">
             <div className="card-header">
-              <div className="panel-title">Current Simulation</div>
+              Current Simulation
             </div>
 
             <div className="card-body">
@@ -71,7 +71,7 @@ export default Agent = props => {
 
           <div id="historyCard" className="card addMargin">
             <div className="card-header">
-              <div className="panel-title">History</div>
+              History
             </div>
 
             <div className="card-body">

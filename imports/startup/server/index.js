@@ -16,6 +16,9 @@ import "../../api/frames/server/publications.js"
 
 import "../../api/framesImages/server/methods.js"
 
+import "../../api/groups/server/methods.js"
+import "../../api/groups/server/publications.js"
+
 import "../../api/josk/server/run.js"
 
 import "../../api/logs/server/publications.js"

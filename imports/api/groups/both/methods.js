@@ -13,7 +13,7 @@ Meteor.methods({
 
   "groups.update"(group) {
     try {
-      return Groups.update(group)
+      return Groups.updateObj(group)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
