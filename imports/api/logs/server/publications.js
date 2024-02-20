@@ -21,8 +21,6 @@ if (Meteor.isServer) {
   publishComposite("logs.last", function (primary = true, simulationsIds) {
     if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
 
-    console.log("simulationsIds", simulationsIds)
-
     return {
       find() {
         if (simulationsIds) {
