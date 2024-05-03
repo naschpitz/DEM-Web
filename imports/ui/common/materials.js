@@ -46,9 +46,9 @@ function getForcesCoefficientsOptions(forceType) {
     case "realistic_material": {
       return [
         { value: "coefficients[0]", text: "Young's module" },
-        { value: "coefficients[1]", text: "Elastic limit (%)" },
+        { value: "coefficients[1]", text: "Elastic limit" },
         { value: "coefficients[2]", text: "Plastic maximum" },
-        { value: "coefficients[3]", text: "Rupture (%)" },
+        { value: "coefficients[3]", text: "Rupture" },
       ]
     }
     default:
