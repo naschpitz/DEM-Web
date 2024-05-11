@@ -10,7 +10,9 @@ import "./main.css"
 export default Main = props => {
   const simulationId = props.simulationId
 
-  // If the simulation is primary, show the viewer
+  // If the simulation is primary, show the viewer.
+  // This is because simulations ran during calibrations, which are not primary, do not have data about the position
+  // of each particle or face, so the viewer is not shown.
   const showViewer = props.primary
 
   return (

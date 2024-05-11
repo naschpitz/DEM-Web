@@ -51,6 +51,9 @@ export default class Frames extends FramesBoth {
     nonSolidObjects.forEach(nonSolidObject => {
       const particles = nonSolidObject.particles
 
+      // If there are no particles, there is no need to save the file.
+      // That means this frame belongs to a simulation that was probably ran during a calibration, which will not
+      // contain detailed information about the particles position, velocity, forces, etc.
       if (!particles) return
 
       const data = EJSON.stringify(particles)
@@ -64,6 +67,9 @@ export default class Frames extends FramesBoth {
     solidObjects.forEach(solidObject => {
       const faces = solidObject.faces
 
+      // If there are no faces, there is no need to save the file.
+      // That means this frame belongs to a simulation that was probably ran during a calibration, which will not
+      // contain detailed information about the faces position, velocity, forces, etc.
       if (!faces) return
 
       const data = EJSON.stringify(faces)
