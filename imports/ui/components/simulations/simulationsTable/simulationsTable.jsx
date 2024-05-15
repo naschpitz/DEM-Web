@@ -62,18 +62,7 @@ export default SimulationsTable = props => {
         id: "state",
         className: "text-center",
         accessor: data => {
-          switch (data.state) {
-            case "new":
-              return "New"
-            case "running":
-              return "Running"
-            case "paused":
-              return "Paused"
-            case "stopped":
-              return "Stopped"
-            case "done":
-              return "Done"
-          }
+          return SimulationsClass.getState(data)
         },
       },
       {
