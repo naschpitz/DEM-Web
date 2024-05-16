@@ -11,8 +11,7 @@ Simulations.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     autoValue: function () {
       if (this.isInsert) {
-        if (!this.isFromTrustedCode) return this.userId
-        else return this.value
+        return this.userId || this.value
       }
       if (this.isUpdate) this.unset()
     },
