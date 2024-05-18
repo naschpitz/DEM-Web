@@ -197,7 +197,7 @@ export default class Agents extends AgentsBoth {
           const value = _.get(frameObject, dataName)
 
           if (hasCondition) {
-            const startConditionMet = assessStarCondition(dataSet.startCondition, dataSet.startThreshold, value)
+            const startConditionMet = assessStartCondition(dataSet.startCondition, dataSet.startThreshold, value)
 
             // If the start condition is met and the condition is not met, then the startAt is set to the current frame time.
             if (startConditionMet && !conditionMet) {
@@ -250,7 +250,7 @@ export default class Agents extends AgentsBoth {
       }
     }
 
-    function assessStarCondition(startCondition, startThreshold, value) {
+    function assessStartCondition(startCondition, startThreshold, value) {
       switch (startCondition) {
         case "lt":
           return value < startThreshold
