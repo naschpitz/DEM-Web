@@ -74,6 +74,11 @@ DataSets.schema = new SimpleSchema({
     label: "Start threshold",
     optional: true
   },
+  weight: {
+    type: Number,
+    label: "Weight",
+    defaultValue: 1
+  },
   enabled: {
     type: Boolean,
     label: "Enabled",

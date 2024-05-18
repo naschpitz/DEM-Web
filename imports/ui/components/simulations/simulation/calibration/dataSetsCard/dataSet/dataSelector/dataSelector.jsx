@@ -72,8 +72,8 @@ export default DataSelector = props => {
         subtype="string"
         options={options}
         size="small"
-        labelSizes={{ sm: 2, md: 2, lg: 2 }}
-        inputSizes={{ sm: 10, md: 10, lg: 10 }}
+        labelSizes={{ sm: 6, md: 4, lg: 3 }}
+        inputSizes={{ sm: 6, md: 8, lg: 9 }}
         onEvent={onEvent}
       />
     )
@@ -130,15 +130,30 @@ export default DataSelector = props => {
 
   return (
     <div id="dataSelector">
-      <div className="row vertical-center">
+      <div className="row vertical-center" id="objectDataSelectors">
         <div className="col-sm-12 col-md-6 col-lg-3">{renderObjectsList()}</div>
         <div className="col-sm-12 col-md-6 col-lg-3">{renderDataList()}</div>
-        <div className="col-sm-12 col-md-6 col-lg-2">{renderStartConditionOptions()}</div>
-        <div className="col-sm-12 col-md-6 col-lg-2">
+      </div>
+      <div className="row vertical-center" id="conditionsSelector">
+        <div className="col-sm-12 col-md-6 col-lg-3">{renderStartConditionOptions()}</div>
+        <div className="col-sm-12 col-md-6 col-lg-3">
           <FormInput
             label="Start Thres."
             name="startThreshold"
             value={props.startThreshold}
+            type="field"
+            subtype="number"
+            size="small"
+            labelSizes={{ sm: 2, md: 2, lg: 4 }}
+            inputSizes={{ sm: 10, md: 10, lg: 8 }}
+            onEvent={onEvent}
+          />
+        </div>
+        <div className={"col-sm-12 col-md-6 col-lg-3"}>
+          <FormInput
+            label="Weight"
+            name="weight"
+            value={props.weight}
             type="field"
             subtype="number"
             size="small"

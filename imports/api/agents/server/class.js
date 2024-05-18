@@ -205,7 +205,7 @@ export default class Agents extends AgentsBoth {
             error = Math.abs((value - refValue) / refValue)
           }
 
-          return score + error
+          return score + (error * dataSet.weight)
         }, 0)
       })
 
