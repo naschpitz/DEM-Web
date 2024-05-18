@@ -85,6 +85,15 @@ export default class Calibrations extends CalibrationsBoth {
     }, 0)
   }
 
+  static getNumNewAgents(calibrationId) {
+    const agents = Agents.find({ owner: calibrationId }).fetch()
+
+    return agents.reduce((acc, agent) => {
+      const state = Agents.getState(agent._id)
+      return state === "new" ? acc + 1 : acc
+    }, 0)
+  }
+
   static observe(calibrationId, callback) {
     return CalibrationsBoth.find({ _id: calibrationId }).observe({
       changed: calibration => callback(calibration),

@@ -165,6 +165,46 @@ export default class Hypervisor {
   }
 
   log(message) {
-    Logs.insert({ owner: this.calibrationId, message: message })
+    const calibration = Calibrations.findOne(this.calibrationId)
+
+    const state = calibration.state
+    const progress = this.getProgress()
+
+    Logs.insert({ owner: this.calibrationId, message: message, state: state, progress: progress })
+  }
+
+  // Should this function be moved to the Calibrations class?
+  getProgress() {
+    const calibration = Calibrations.findOne(this.calibrationId)
+    const currentIteration = calibration.currentIteration
+
+    const numAgents = Agents.find({ owner: this.calibrationId }).count()
+    const maxIterations = calibration.maxIterations
+
+    // Get the number of agents to run or running
+    const numNewAgents = Calibrations.getNumNewAgents(this.calibrationId)
+    const numRunningAgents = Calibrations.getNumRunningAgents(this.calibrationId)
+
+    const numAgentsToRun = numNewAgents + numRunningAgents
+
+    // Get the first log message
+    const firstLog = Logs.findOne({ owner: this.calibrationId }, { sort: { createdAt: 1 } })
+
+    if (!firstLog) return undefined
+
+    // Calculate the elapsed time in seconds
+    const et = (new Date() - firstLog.createdAt) / 1000
+
+    const step = currentIteration * numAgents + numAgents - numAgentsToRun
+    const totalSteps = numAgents * maxIterations
+
+    const eta = step !== 0 ? et * (totalSteps - step) / step : undefined
+
+    return {
+      step: step,
+      totalSteps: totalSteps,
+      et: et,
+      eta: eta,
+    }
   }
 }
