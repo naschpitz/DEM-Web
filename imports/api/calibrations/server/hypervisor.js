@@ -60,16 +60,16 @@ export default class Hypervisor {
     this.log("Observers stopped.")
   }
 
-  check() {
+  async check() {
     if (!this.runCheck || this.runningCheck) return
     this.runCheck = false
 
     this.runningCheck = true
-    this.dispatchAgents()
+    await this.dispatchAgents()
     this.runningCheck = false
   }
 
-  dispatchAgents() {
+  async dispatchAgents() {
     const calibration = Calibrations.findOne(this.calibrationId)
 
     if (calibration.state !== "running") return
@@ -91,7 +91,7 @@ export default class Hypervisor {
 
     if (numRunningAgents === 0 && eligibleAgents.length === 0) {
       this.log("No running or eligible agents found, advancing to the next calibration iteration.")
-      Calibrations.nextIteration(this.calibrationId)
+      await Calibrations.nextIteration(this.calibrationId)
       return
     }
 
@@ -113,8 +113,6 @@ export default class Hypervisor {
       this.log("Calibration has stopped, stopping hypervisor.")
       this.stopObservers()
       clearInterval(this.timer)
-
-      return
     }
   }
 

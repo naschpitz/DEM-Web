@@ -61,22 +61,17 @@ export default class Calibrations extends CalibrationsBoth {
     CalibrationsBoth.updateObj({ _id: calibrationId, state: "new", currentIteration: 0 })
   }
 
-  static nextIteration(calibrationId) {
+  static async nextIteration(calibrationId) {
     // Update Agents' scores
-    Agents.updateScores(calibrationId)
+    await Agents.updateAllScores(calibrationId)
 
     const calibration = CalibrationsBoth.findOne(calibrationId)
-    const agents = Agents.find({ owner: calibrationId })
-
-    const bestGAgent = Agents.getBestGlobal(calibrationId)
 
     if (calibration.currentIteration < calibration.maxIterations - 1) {
-      agents.forEach(agent => Agents.nextIteration(agent._id, bestGAgent._id))
-
+      await Agents.nextAllIterations(calibrationId)
       CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
     } else {
-      agents.forEach(agent => Agents.saveHistory(agent._id))
-
+      await Agents.saveAllHistories(calibrationId)
       Calibrations.setState(calibrationId, "done")
     }
   }

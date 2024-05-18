@@ -74,22 +74,32 @@ export default class Agents extends AgentsBoth {
     return AgentsBoth.findOne({ owner: calibrationId, "best.bestGlobal": true })
   }
 
-  static saveHistory(agentId) {
-    const agent = AgentsBoth.findOne(agentId)
+  static async saveAllHistories(calibrationId) {
+    const agents = AgentsBoth.find({ owner: calibrationId })
 
-    const best = { ...agent.best }
-    best.simulation = Simulations.clone(agent.best.simulation, false, true, true)
+    const saveHistoryPromises = agents.map(agent => Agents.saveHistory(agent._id))
+    await Promise.all(saveHistoryPromises)
+  }
 
-    const current = { ...agent.current }
-    current.simulation = Simulations.clone(agent.current.simulation, false, true, true)
+  static async saveHistory(agentId) {
+    return new Promise((resolve) => {
+      const agent = AgentsBoth.findOne(agentId)
 
-    const history = {
-      iteration: agent.iteration,
-      best: best,
-      current: current,
-    }
+      const best = { ...agent.best }
+      best.simulation = Simulations.clone(agent.best.simulation, false, true, true)
 
-    AgentsBoth.update(agentId, { $push: { history: history } })
+      const current = { ...agent.current }
+      current.simulation = Simulations.clone(agent.current.simulation, false, true, true)
+
+      const history = {
+        iteration: agent.iteration,
+        best: best,
+        current: current,
+      }
+
+      AgentsBoth.update(agentId, { $push: { history: history } })
+      resolve()
+    })
   }
 
   static observe(agentId, callback) {
@@ -122,15 +132,21 @@ export default class Agents extends AgentsBoth {
     }
   }
 
-  static updateScores(calibrationId) {
+  static async updateAllScores(calibrationId) {
     const agents = AgentsBoth.find({ owner: calibrationId })
 
-    agents.forEach(agent => {
-      updateCurrentScore(agent._id)
-      updateBestScore(agent._id)
-    })
+    const scoresPromises = agents.map(agent => updateScores(agent._id))
+    await Promise.all(scoresPromises)
 
     Agents.updateBestGlobal(calibrationId)
+
+    async function updateScores(agentId) {
+      return new Promise((resolve) => {
+        updateCurrentScore(agentId)
+        updateBestScore(agentId)
+        resolve()
+      })
+    }
 
     function updateCurrentScore(agentId) {
       const state = Agents.getState(agentId)
@@ -267,17 +283,28 @@ export default class Agents extends AgentsBoth {
     Agents.setBestGlobal(bestGAgentId)
   }
 
-  static nextIteration(agentId, bestGAgentId) {
-    Agents.saveHistory(agentId)
+  static async nextAllIterations(calibrationId) {
+    const agents = Agents.find({ owner: calibrationId })
+    const bestGAgent = Agents.getBestGlobal(calibrationId)
 
-    const agent = Agents.findOne(agentId)
-    const bestGAgent = Agents.findOne(bestGAgentId)
+    const nextIterationsPromises = agents.map(agent => Agents.nextIteration(agent._id, bestGAgent._id))
+    await Promise.all(nextIterationsPromises)
+  }
 
-    Simulations.reset(agent.current.simulation)
+  static async nextIteration(agentId, bestGAgentId) {
+    return new Promise((resolve) => {
+      Agents.saveHistory(agentId)
 
-    updateCoefficients(agent, bestGAgent)
+      const agent = Agents.findOne(agentId)
+      const bestGAgent = Agents.findOne(bestGAgentId)
 
-    Agents.updateObj({ _id: agentId, iteration: agent.iteration + 1 })
+      Simulations.reset(agent.current.simulation)
+
+      updateCoefficients(agent, bestGAgent)
+
+      Agents.updateObj({ _id: agentId, iteration: agent.iteration + 1 })
+      resolve()
+    })
 
     function updateCoefficients(agent, bestGAgent) {
       const calibrationId = agent.owner
