@@ -81,3 +81,14 @@ Migrations.add({
     })
   },
 })
+
+Migrations.add({
+  version: 5,
+  name: "Add 'weight' property to DataSets",
+  up: () => {
+    DataSets.update({}, { $set: { weight: 1 } }, { validate: false })
+  },
+  down: () => {
+    DataSets.update({}, { $unset: { weight: "" } }, { validate: false })
+  },
+})
