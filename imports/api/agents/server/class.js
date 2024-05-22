@@ -292,8 +292,8 @@ export default class Agents extends AgentsBoth {
   }
 
   static async nextIteration(agentId, bestGAgentId) {
-    return new Promise((resolve) => {
-      Agents.saveHistory(agentId)
+    return new Promise(async (resolve) => {
+      await Agents.saveHistory(agentId)
 
       const agent = Agents.findOne(agentId)
       const bestGAgent = Agents.findOne(bestGAgentId)
