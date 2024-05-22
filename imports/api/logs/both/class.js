@@ -40,6 +40,7 @@ export default class Logs extends LogsDAO {
 
   static getEta(log) {
     if (!log || log.state !== "running") return "N/A"
+    if (log?.progress?.eta === undefined) return "N/A"
 
     const duration = moment.duration(log.progress.eta * 1000)
 
