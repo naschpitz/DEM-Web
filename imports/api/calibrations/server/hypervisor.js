@@ -77,7 +77,8 @@ export default class Hypervisor {
     let numRunningAgents = Calibrations.getNumRunningAgents(calibration._id)
     const numMissingAgents = calibration.instancesNumber - numRunningAgents
 
-    if (numMissingAgents === 0) return
+    // In case agents are started manually, numMissingAgents can be negative
+    if (numMissingAgents <= 0) return
 
     const eligibleAgents = Agents.find({ owner: calibration._id })
       .fetch()
