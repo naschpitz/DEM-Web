@@ -162,6 +162,19 @@ export default class Agents extends AgentsBoth {
 
       const frames = Frames.find({ owner: scenery._id }, { sort: { time: 1 } }).fetch()
 
+      // Sanity check: calculate the expected number of frames for the scenery.
+      // The expected number of frames is the total time of the simulation divided by the frame time, rounded to the
+      // nearest integer, plus 1. Plus 1 because the first frame is at time 0.
+      const expectedFrames = Math.round(simulation.totalTime / simulation.frameTime) + 1
+
+      // If the number of frames is different from the expected number of frames, then the current simulation is not
+      // valid. This will prevent the agent from being considered for the best global agent, as its score will be 0,
+      // since there are no frames to evaluate.
+      if (frames.length !== expectedFrames) {
+        Agents.updateObj({ _id: agentId, current: { valid: false } })
+        return
+      }
+
       let currentScore = 0
 
       DataSets.find({ owner: agent.owner, enabled: true }).forEach(dataSet => {
@@ -269,15 +282,18 @@ export default class Agents extends AgentsBoth {
   }
 
   static updateBestGlobal(calibrationId) {
-    const bestGScores = Agents.find({ owner: calibrationId, "best.valid": true }).map(agent => ({
+    const bestScores = Agents.find({ owner: calibrationId, "best.valid": true }).map(agent => ({
       agentId: agent._id,
       score: agent.best.score,
     }))
 
+    // If no valid best scores are found, then the best global agent is not updated.
+    if (bestScores.length === 0) return
+
     // Gets the agentId with the lowest score
-    const bestGAgentId = bestGScores.reduce(
+    const bestGAgentId = bestScores.reduce(
       (acc, score) => (score.score < acc.score ? score : acc),
-      bestGScores[0]
+      bestScores[0]
     ).agentId
 
     Agents.setBestGlobal(bestGAgentId)
@@ -286,6 +302,8 @@ export default class Agents extends AgentsBoth {
   static async nextAllIterations(calibrationId) {
     const agents = Agents.find({ owner: calibrationId })
     const bestGAgent = Agents.getBestGlobal(calibrationId)
+
+    // TODO: What if there is no bestGAgent, because no agent has a valid best score?
 
     const nextIterationsPromises = agents.map(agent => Agents.nextIteration(agent._id, bestGAgent._id))
     await Promise.all(nextIterationsPromises)
