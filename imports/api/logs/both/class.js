@@ -7,17 +7,15 @@ export default class Logs extends LogsDAO {
     LogsDAO.remove({ owner: ownerId })
   }
 
-  static async clone(ownerId, newOwnerId) {
+  static clone(ownerId, newOwnerId) {
     const logs = LogsDAO.find({ owner: ownerId })
 
-    const logsPromises = logs.map(log => {
+    logs.forEach(log => {
       delete log._id
       log.owner = newOwnerId
 
-      return LogsDAO.insertAsync(log)
+      LogsDAO.insert(log, { getAutoValues: false })
     })
-
-    return Promise.all(logsPromises)
   }
 
   static getDuration(duration) {

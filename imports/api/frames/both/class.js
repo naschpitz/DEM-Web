@@ -6,7 +6,7 @@ export default class Frames extends FramesDAO {
   static clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap) {
     const frames = FramesDAO.find({ owner: oldSceneryId })
 
-    const framesPromises = frames.map(frame => {
+    frames.forEach(frame => {
       delete frame._id
       frame.owner = newSceneryId
 
@@ -18,10 +18,8 @@ export default class Frames extends FramesDAO {
         solidObject._id = solidObjectsMap[solidObject._id]
       })
 
-      return FramesDAO.insertAsync(frame)
+      FramesDAO.insert(frame, { getAutoValues: false })
     })
-
-    return Promise.all(framesPromises)
   }
 
   static getData(sceneryId, objectId, dataName, minInterval, maxInterval) {
