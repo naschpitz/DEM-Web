@@ -1,9 +1,7 @@
 import _ from "lodash"
 
 import CalibrationsDAO from "./dao.js"
-import Agents from "../../agents/both/class.js"
 import DataSets from "../../dataSets/both/class.js"
-import Logs from "../../logs/both/class.js"
 import Parameters from "../../parameters/both/class"
 
 export default class Calibrations extends CalibrationsDAO {
@@ -14,6 +12,7 @@ export default class Calibrations extends CalibrationsDAO {
     delete newCalibration._id
 
     newCalibration.owner = newSimulationId
+    newCalibration.state = "new"
     newCalibration.currentIteration = 0
 
     const oldCalibrationId = oldCalibration._id
