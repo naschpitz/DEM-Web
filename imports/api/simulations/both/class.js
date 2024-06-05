@@ -38,6 +38,8 @@ export default class Simulations extends SimulationsDAO {
     }
 
     if (logs) {
+      // Logs.clone() is an async function, but it is not being awaited here.
+      // This is because the clone operation is not critical and can be done in the background.
       Logs.clone(simulationId, newSimulationId)
     }
 

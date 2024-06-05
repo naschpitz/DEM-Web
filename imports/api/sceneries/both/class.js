@@ -26,6 +26,8 @@ export default class Sceneries extends SceneriesDAO {
     const solidObjectsMap = SolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
 
     if (frames) {
+      // Frames.clone() is an async function, but it is not being awaited here.
+      // This is because the clone operation is not critical and can be done in the background.
       Frames.clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap)
     }
 
