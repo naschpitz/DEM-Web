@@ -35,7 +35,7 @@ export default class Frames extends FramesBoth {
 
     const state = simulation.state
 
-    // Refuses the frame if the simulation has been stopped or is new.
+    // Refuses the frame if the simulation has been stopped.
     if (state === "stopped") return
 
     // The frame._id is created before the insertion because the files need it in their filenames.

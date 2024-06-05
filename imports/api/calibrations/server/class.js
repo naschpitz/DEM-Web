@@ -2,6 +2,9 @@ import Agents from "../../agents/server/class"
 import CalibrationsBoth from "../both/class"
 import Hypervisor from "./hypervisor"
 import Logs from "../../logs/both/class"
+import CalibrationsDAO from "../both/dao";
+import DataSets from "../../dataSets/both/class";
+import Parameters from "../../parameters/both/class";
 
 export default class Calibrations extends CalibrationsBoth {
   static start(calibrationId) {
@@ -59,6 +62,31 @@ export default class Calibrations extends CalibrationsBoth {
     Agents.removeByOwner(calibrationId)
 
     CalibrationsBoth.updateObj({ _id: calibrationId, state: "new", currentIteration: 0 })
+  }
+
+  static removeByOwner(simulationId) {
+    const calibration = CalibrationsDAO.findOne({ owner: simulationId })
+
+    DataSets.removeByOwner(calibration._id)
+    Logs.removeByOwner(calibration._id)
+    Parameters.removeByOwner(calibration._id)
+    Agents.removeByOwner(calibration._id)
+
+    CalibrationsDAO.remove(calibration._id)
+  }
+
+  static removeServer(serverId) {
+    CalibrationsDAO.update(
+      {
+        server: serverId,
+        state: { $nin: ["paused", "running"] },
+      },
+      {
+        $unset: {
+          server: "",
+        },
+      }
+    )
   }
 
   static async nextIteration(calibrationId) {

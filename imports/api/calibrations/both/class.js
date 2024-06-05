@@ -1,7 +1,9 @@
 import _ from "lodash"
 
 import CalibrationsDAO from "./dao.js"
+import Agents from "../../agents/both/class.js"
 import DataSets from "../../dataSets/both/class.js"
+import Logs from "../../logs/both/class.js"
 import Parameters from "../../parameters/both/class"
 
 export default class Calibrations extends CalibrationsDAO {
@@ -40,29 +42,6 @@ export default class Calibrations extends CalibrationsDAO {
     const calibrationFound = CalibrationsDAO.findOne({ server: serverId, state: { $in: ["paused", "running"] } })
 
     return !!calibrationFound
-  }
-
-  static removeByOwner(simulationId) {
-    const calibration = CalibrationsDAO.findOne({ owner: simulationId })
-
-    DataSets.removeByOwner(calibration._id)
-    Parameters.removeByOwner(calibration._id)
-
-    CalibrationsDAO.remove(calibration._id)
-  }
-
-  static removeServer(serverId) {
-    CalibrationsDAO.update(
-      {
-        server: serverId,
-        state: { $nin: ["paused", "running"] },
-      },
-      {
-        $unset: {
-          server: "",
-        },
-      }
-    )
   }
 
   static getState(calibration) {
