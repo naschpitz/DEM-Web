@@ -7,11 +7,11 @@ import Simulations from "../both/class"
 
 // Find stalled Simulations and set its state to 'failed'
 const bound = Meteor.bindEnvironment(() => {
-  const tenSecondsAgo = moment().subtract(10, "seconds").toDate()
+  const sixtySecondsAgo = moment().subtract(60, "seconds").toDate()
 
   const stalledSimulations = Simulations.find({
     state: { $in: ["setToRun", "setToPause", "setToStop"] },
-    updatedAt: { $lte: tenSecondsAgo },
+    updatedAt: { $lte: sixtySecondsAgo },
   }).fetch()
 
   // For every simulation in the "running" state, check if the latest log message is older than 10 times the logTime.

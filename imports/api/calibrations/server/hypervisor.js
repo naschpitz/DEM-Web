@@ -85,7 +85,9 @@ export default class Hypervisor {
       .filter(agent => {
         const state = Agents.getState(agent._id)
 
-        if (["new", "paused"].includes(state) && agent.iteration === calibration.currentIteration) return true
+        // "new" and "paused" agents are eligible to be started
+        // "failed" agents are eligible to be restarted
+        if (["new", "paused", "failed"].includes(state) && agent.iteration === calibration.currentIteration) return true
 
         return false
       })
@@ -101,7 +103,10 @@ export default class Hypervisor {
       const agentsToStart = _.take(eligibleAgents, numMissingAgents)
       agentsToStart.forEach(agent => {
         try {
-          Agents.start(agent._id)
+          const state = Agents.getState(agent._id)
+
+          if (state === "new" || state === "paused") Agents.start(agent._id)
+          if (state === "failed") Agents.restart(agent._id)
         } catch (error) {
           this.log(`Agent #${agent.index} simulation has failed to start.`)
         }
@@ -158,7 +163,6 @@ export default class Hypervisor {
 
       if (simulation.state === "failed") {
         this.log(`Agent #${agent.index} simulation has failed.`)
-        Agents.retry(agentId)
       }
 
       this.runCheck = true
