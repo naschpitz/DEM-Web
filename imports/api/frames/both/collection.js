@@ -21,12 +21,6 @@ Frames.schema = new SimpleSchema({
     type: Number,
     label: "Step",
     optional: true,
-    custom: function () {
-      // If there is already a frame with the same step and owner, throw an error
-      if (Frames.findOne({ owner: this.field("owner").value, step: this.value })) {
-        return "notUnique"
-      }
-    },
   },
   scenery: {
     type: Scenery,
@@ -61,5 +55,6 @@ Frames.schema.messageBox.messages({
 Frames.attachSchema(Frames.schema)
 
 Meteor.isServer && Frames.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && Frames.rawCollection().createIndex({ owner: 1, step: 1 }, { unique: true, background: true })
 
 export default Frames
