@@ -22,9 +22,16 @@ WebApp.connectHandlers.use(
           const inflateCallback = Meteor.bindEnvironment((error, data) => {
             const frame = EJSON.parse(data.toString())
 
+            try {
+              Frames.schema.validate(frame)
+            } catch (error) {
+              console.log("Error inserting frame: ", error)
+            }
+
             Frames.insert(frame)
           })
 
+          // This runs asynchronously
           zlib.inflate(compressedData, inflateCallback)
 
           res.end("OK")

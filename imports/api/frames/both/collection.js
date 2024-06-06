@@ -21,6 +21,12 @@ Frames.schema = new SimpleSchema({
     type: Number,
     label: "Step",
     optional: true,
+    custom: function () {
+      // If there is already a frame with the same step and owner, throw an error
+      if (Frames.findOne({ owner: this.field("owner").value, step: this.value })) {
+        return "notUnique"
+      }
+    },
   },
   scenery: {
     type: Scenery,
@@ -43,6 +49,12 @@ Frames.schema = new SimpleSchema({
     autoValue: function () {
       return new Date()
     },
+  },
+})
+
+Frames.schema.messageBox.messages({
+  en: {
+    notUnique: "Owner and Step have to be unique, cannot insert the same frame twice.",
   },
 })
 
