@@ -23,12 +23,10 @@ WebApp.connectHandlers.use(
             const frame = EJSON.parse(data.toString())
 
             try {
-              Frames.schema.validate(frame)
+              Frames.insert(frame)
             } catch (error) {
               console.log("Error inserting frame: ", error)
             }
-
-            Frames.insert(frame)
           })
 
           // This runs asynchronously

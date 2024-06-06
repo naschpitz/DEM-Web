@@ -25,11 +25,10 @@ jquery
 fourseven:scss
 session
 ostrio:files
-aldeed:collection2
+aldeed:collection2@4.0.1
 meteorhacks:cluster
 peerlibrary:reactive-publish
 reywood:publish-composite
-aldeed:schema-index
 nathantreid:css-modules
 percolate:migrations
 http

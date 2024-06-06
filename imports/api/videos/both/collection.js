@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import SimpleSchema from "simpl-schema";
+import 'meteor/aldeed:collection2/static'
+import SimpleSchema from 'meteor/aldeed:simple-schema';
 import _ from "lodash";
 
 import Sceneries from "../../sceneries/both/class.js";

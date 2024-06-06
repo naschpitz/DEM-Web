@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
-import SimpleSchema from "simpl-schema"
+import 'meteor/aldeed:collection2/static'
+import SimpleSchema from 'meteor/aldeed:simple-schema'
 
 import Scenery from "./schemas/scenery.js"
 
@@ -43,12 +44,6 @@ Frames.schema = new SimpleSchema({
     autoValue: function () {
       return new Date()
     },
-  },
-})
-
-Frames.schema.messageBox.messages({
-  en: {
-    notUnique: "Owner and Step have to be unique, cannot insert the same frame twice.",
   },
 })
 

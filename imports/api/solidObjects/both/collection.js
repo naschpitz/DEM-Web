@@ -1,7 +1,8 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import { Random } from "meteor/random"
-import SimpleSchema from "simpl-schema"
+import 'meteor/aldeed:collection2/static'
+import SimpleSchema from 'meteor/aldeed:simple-schema'
 
 const SolidObjects = new Mongo.Collection("solidObjects")
 
