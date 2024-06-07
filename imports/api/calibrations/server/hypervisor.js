@@ -105,8 +105,6 @@ export default class Hypervisor {
         try {
           const state = Agents.getState(agent._id)
 
-          console.log(state)
-
           if (state === "new" || state === "paused") Agents.start(agent._id)
           if (state === "failed") Agents.retry(agent._id)
         } catch (error) {

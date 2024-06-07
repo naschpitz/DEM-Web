@@ -41,6 +41,7 @@ export default class Agents extends AgentsBoth {
     const agent = AgentsBoth.findOne(agentId)
 
     Simulations.reset(agent.current.simulation)
+    Simulations.start(agent.current.simulation)
   }
 
   static removeByOwner(owner) {
