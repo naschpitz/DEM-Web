@@ -86,7 +86,7 @@ export default class Hypervisor {
         const state = Agents.getState(agent._id)
 
         // "new" and "paused" agents are eligible to be started
-        // "failed" agents are eligible to be restarted
+        // "failed" agents are eligible to be retried
         if (["new", "paused", "failed"].includes(state) && agent.iteration === calibration.currentIteration) return true
 
         return false
@@ -105,8 +105,10 @@ export default class Hypervisor {
         try {
           const state = Agents.getState(agent._id)
 
+          console.log(state)
+
           if (state === "new" || state === "paused") Agents.start(agent._id)
-          if (state === "failed") Agents.restart(agent._id)
+          if (state === "failed") Agents.retry(agent._id)
         } catch (error) {
           this.log(`Agent #${agent.index} simulation has failed to start.`)
         }
