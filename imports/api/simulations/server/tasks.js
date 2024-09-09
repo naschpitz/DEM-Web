@@ -19,11 +19,11 @@ const bound = Meteor.bindEnvironment(() => {
   Simulations.find({ state: { $in: ["running"] } }).forEach(simulation => {
     const latestLog = Logs.findOne({ owner: simulation._id }, { sort: { createdAt: -1 } })
 
-    const tenTimesLogTimeAgo = moment()
-      .subtract(10 * simulation.logTime, "seconds")
+    const thirtyTimesLogTimeAgo = moment()
+      .subtract(30 * simulation.logTime, "seconds")
       .toDate()
 
-    if (latestLog.createdAt <= tenTimesLogTimeAgo) {
+    if (latestLog.createdAt <= thirtyTimesLogTimeAgo) {
       stalledSimulations.push(simulation)
     }
   })
