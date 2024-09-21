@@ -34,9 +34,11 @@ export default class Frames extends FramesBoth {
     }
 
     const state = simulation.state
+    const instance = simulation.instance
 
     // Refuses the frame if the simulation has been stopped.
-    if (state === "stopped") return
+    // Or if the instance is different from the one that started the simulation.
+    if (state === "stopped" || frame.instance !== instance) return
 
     // The frame._id is created before the insertion because the files need it in their filenames.
     // I could insert the frame before and use the returned id, but some kind of control would be necessary to

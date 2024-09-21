@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor"
 import { HTTP } from "meteor/http"
+import { Random } from "meteor/random"
 
 import Calibrations from "../../calibrations/server/class.js"
 import Materials from "../../materials/both/class.js"
@@ -12,7 +13,12 @@ import SolidObjects from "../../solidObjects/both/class.js"
 
 export default class Simulations extends SimulationsBoth {
   static start(simulationId) {
+    // Create and set a unique token for the simulation instance
+    const instance = Random.id()
+    SimulationsBoth.setInstance(simulationId, instance)
+
     const simulation = Simulations.findOne(simulationId)
+
     const serverId = simulation.server
 
     simulation.url = Meteor.absoluteUrl()
@@ -74,6 +80,7 @@ export default class Simulations extends SimulationsBoth {
 
     Sceneries.resetByOwner(simulationId)
     Logs.removeByOwner(simulationId)
+    SimulationsBoth.setInstance(simulationId, null)
     SimulationsBoth.setState(simulationId, "new")
   }
 

@@ -135,4 +135,11 @@ export default class Simulations extends SimulationsDAO {
         return "N/A"
     }
   }
+
+  static setInstance(simulationId, instance) {
+    SimulationsDAO.updateObj({
+      _id: simulationId,
+      instance: instance
+    });
+  }
 }
