@@ -122,12 +122,12 @@ export default class Hypervisor {
     }
   }
 
-  agentHandler(type, agentId, object) {
+  agentHandler(type, agentId, objectNew, objectOld) {
     const agent = Agents.findOne(agentId)
     const calibration = Calibrations.findOne(agent.owner)
 
     if (type === "frame") {
-      const frame = object
+      const frame = objectNew
 
       if (Frames.getHighestEnergy(frame) > calibration.maxEnergy) {
         this.log(
@@ -155,13 +155,17 @@ export default class Hypervisor {
     }
 
     if (type === "simulation") {
-      const simulation = object
+      const simulationNew = objectNew
+      const simulationOld = objectOld
 
-      if (simulation.state === "stopped" || simulation.state === "done") {
+      // If the simulation state has not changed, do nothing
+      if (simulationNew.state === simulationOld.state) return;
+
+      if (simulationNew.state === "stopped" || simulationNew.state === "done") {
         this.log(`Agent #${agent.index} simulation has stopped.`)
       }
 
-      if (simulation.state === "failed") {
+      if (simulationNew.state === "failed") {
         this.log(`Agent #${agent.index} simulation has failed.`)
       }
 

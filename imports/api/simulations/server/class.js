@@ -78,9 +78,11 @@ export default class Simulations extends SimulationsBoth {
       throw { message: "Running or paused simulations cannot be reset" }
     }
 
+    // The first thing to do is to remove the simulation instance, so we can prevent new frames from being processed
+    // and set to the simulation as it is being reset.
+    SimulationsBoth.setInstance(simulationId, null)
     Sceneries.resetByOwner(simulationId)
     Logs.removeByOwner(simulationId)
-    SimulationsBoth.setInstance(simulationId, null)
     SimulationsBoth.setState(simulationId, "new")
   }
 

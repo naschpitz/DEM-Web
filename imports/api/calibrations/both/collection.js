@@ -23,12 +23,6 @@ Calibrations.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true,
   },
-  maxIterations: {
-    type: Number,
-    label: "Maximum number of iterations",
-    defaultValue: 20,
-    optional: true,
-  },
   currentIteration: {
     type: Number,
     label: "Current Iteration",
@@ -47,9 +41,27 @@ Calibrations.schema = new SimpleSchema({
     defaultValue: 2,
     optional: true,
   },
+  maxIterations: {
+    type: Number,
+    label: "Maximum number of iterations",
+    defaultValue: 20,
+    optional: true,
+  },
   maxEnergy: {
     type: Number,
     label: "Maximum Energy",
+    optional: true,
+  },
+  numIterations: {
+    type: Number,
+    label: "Number of iterations to check",
+    defaultValue: 3,
+    optional: true,
+  },
+  minPercentage: {
+    type: Number,
+    label: "Minimum Percentage",
+    defaultValue: 0.01,
     optional: true,
   },
   state: {

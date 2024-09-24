@@ -103,4 +103,27 @@ export default class Agents extends AgentsDAO {
 
     return simulation.state
   }
+
+  static getBestScores(calibrationId) {
+    const agents = Agents.find({ owner: calibrationId }).fetch()
+
+    // For each iteration, up until currentIteration, get the best global score of that iteration.
+    const bestScores = []
+
+    const numHistory = agents[0].history.length
+
+    for (let i = 0; i < numHistory; i++) {
+      // Get the SimulationScore of the best global agent of the iteration i
+      agents.forEach(agent => {
+        const history = agent.history[i]
+
+        // Check if the best of the history is the best global.
+        if (history.best.bestGlobal)
+          // Push the best score of the best global agent of the iteration i
+          bestScores.push(history.best.score)
+      })
+    }
+
+    return bestScores
+  }
 }

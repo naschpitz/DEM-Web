@@ -231,85 +231,162 @@ export default CalibrationControl = props => {
           <hr />
 
           <div className="row">
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <FormInput
-                label="Server"
-                name="server"
-                value={_.get(calibration, "server")}
-                type="dropdown"
-                subtype="string"
-                size="small"
-                options={serversOptions}
-                search={false}
-                labelSizes={{ sm: 5, md: 4, lg: 4 }}
-                inputSizes={{ sm: 7, md: 8, lg: 8 }}
-                alignment="no-gap"
-                onEvent={onEvent}
-              />
+            <div className="col-sm-6 col-md-6 col-lg-3">
+              <div className="card" id="generalSettings">
+                <div className="card-header">Server Settings</div>
+
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <FormInput
+                        label="Server"
+                        name="server"
+                        value={_.get(calibration, "server")}
+                        type="dropdown"
+                        subtype="string"
+                        size="small"
+                        options={serversOptions}
+                        search={false}
+                        labelSizes={{ sm: 5, md: 4, lg: 4 }}
+                        inputSizes={{ sm: 7, md: 8, lg: 8 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="# Agents"
-                name="agentsNumber"
-                value={_.get(calibration, "agentsNumber")}
-                type="field"
-                subtype="number"
-                allowNegative={false}
-                size="small"
-                labelSizes={{ sm: 5, md: 6, lg: 6 }}
-                inputSizes={{ sm: 7, md: 6, lg: 5 }}
-                alignment="no-gap"
-                onEvent={onEvent}
-              />
+            <div className="col-sm-6 col-md-6 col-lg-4">
+              <div className="card" id="agentsSettings">
+                <div className="card-header">Agents Settings</div>
+
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6 col-lg-6">
+                      <FormInput
+                        label="# Agents"
+                        name="agentsNumber"
+                        value={_.get(calibration, "agentsNumber")}
+                        type="field"
+                        subtype="number"
+                        allowNegative={false}
+                        size="small"
+                        labelSizes={{ sm: 5, md: 6, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 6, lg: 6 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
+
+                    <div className="col-sm-12 col-md-6 col-lg-6">
+                      <FormInput
+                        label="# Instances"
+                        name="instancesNumber"
+                        value={_.get(calibration, "instancesNumber")}
+                        type="field"
+                        subtype="number"
+                        allowNegative={false}
+                        size="small"
+                        labelSizes={{ sm: 5, md: 6, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 6, lg: 6 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="# Instances"
-                name="instancesNumber"
-                value={_.get(calibration, "instancesNumber")}
-                type="field"
-                subtype="number"
-                allowNegative={false}
-                size="small"
-                labelSizes={{ sm: 5, md: 6, lg: 7 }}
-                inputSizes={{ sm: 7, md: 6, lg: 5 }}
-                alignment="no-gap"
-                onEvent={onEvent}
-              />
-            </div>
+            <div className="col-sm-6 col-md-6 col-lg-5">
+              <div className="card" id="agentsSettings">
+                <div className="card-header">Stop Conditions</div>
 
-            <div className="col-sm-6 col-md-4 col-lg-2">
-              <FormInput
-                label="Max. Iterations"
-                name="maxIterations"
-                value={_.get(calibration, "maxIterations")}
-                type="field"
-                subtype="number"
-                allowNegative={false}
-                size="small"
-                labelSizes={{ sm: 5, md: 6, lg: 7 }}
-                inputSizes={{ sm: 7, md: 6, lg: 5 }}
-                alignment="no-gap"
-                onEvent={onEvent}
-              />
-            </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6 col-lg-6">
+                      <FormInput
+                        label="Max. Iterations"
+                        name="maxIterations"
+                        value={_.get(calibration, "maxIterations")}
+                        type="field"
+                        subtype="number"
+                        allowNegative={false}
+                        size="small"
+                        labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                        inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
 
-            <div className="col-sm-6 col-md-4 col-lg-3">
-              <FormInput
-                label="Max. Energy"
-                name="maxEnergy"
-                value={_.get(calibration, "maxEnergy")}
-                type="field"
-                subtype="number"
-                allowNegative={false}
-                size="small"
-                labelSizes={{ sm: 5, md: 6, lg: 5 }}
-                inputSizes={{ sm: 7, md: 6, lg: 5 }}
-                alignment="no-gap"
-                onEvent={onEvent}
-              />
+                    <div className="col-sm-12 col-md-6 col-lg-6">
+                      <FormInput
+                        label="Max. Energy"
+                        name="maxEnergy"
+                        value={_.get(calibration, "maxEnergy")}
+                        type="field"
+                        subtype="number"
+                        allowNegative={false}
+                        size="small"
+                        labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                        inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+
+                  < hr />
+
+                  {/*<div className="row mb-3">*/}
+                  {/*  <div className="col-sm-12 col-md-12 col-lg-12">*/}
+                  {/*    <div className="text-justify ">*/}
+                  {/*      Number of iterations to be considered when checking for smaller scores in between iterations.*/}
+                  {/*      Each iteration is compared to the previous one, and if the score is smaller by the min. percentage,*/}
+                  {/*      the calibration stops.*/}
+                  {/*    </div>*/}
+                  {/*  </div>*/}
+                  {/*</div>*/}
+
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6 col-lg-6">
+                      <FormInput
+                        label="Num. Iterations"
+                        name="numIterations"
+                        value={_.get(calibration, "numIterations")}
+                        type="field"
+                        subtype="number"
+                        allowNegative={false}
+                        size="small"
+                        labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                        inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
+
+                    <div className="col-sm-12 col-md-6 col-lg-6">
+                      <FormInput
+                        label="Min. Percentage"
+                        name="minPercentage"
+                        value={_.get(calibration, "minPercentage")}
+                        type="field"
+                        subtype="percent"
+                        append="%"
+                        allowNegative={false}
+                        size="small"
+                        labelSizes={{ sm: 5, md: 6, lg: 7 }}
+                        inputSizes={{ sm: 7, md: 6, lg: 5 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

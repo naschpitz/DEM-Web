@@ -107,11 +107,11 @@ export default class Agents extends AgentsBoth {
     const agent = AgentsBoth.findOne(agentId)
 
     const agentObserve = AgentsBoth.find({ _id: agentId }).observe({
-      changed: agent => callback("agent", agentId, agent),
+      changed: (agentNew, agentOld) => callback("agent", agentId, agentNew, agentOld),
     })
 
     const simulationObserve = Simulations.find({ _id: agent.current.simulation }).observe({
-      changed: simulation => callback("simulation", agentId, simulation),
+      changed: (simulationNew, simulationOld) => callback("simulation", agentId, simulationNew, simulationOld),
     })
 
     const simulation = Simulations.findOne(agent.current.simulation)
@@ -177,6 +177,7 @@ export default class Agents extends AgentsBoth {
       }
 
       let currentScore = 0
+      let numFrames = 0
 
       DataSets.find({ owner: agent.owner, enabled: true }).forEach(dataSet => {
         const objectId = dataSet.object
@@ -223,6 +224,9 @@ export default class Agents extends AgentsBoth {
           // If the start condition is not met, then the score is 0, thus it won't be penalized.
           if (hasCondition && !conditionMet) return 0;
 
+          // Increment the number of frames evaluated
+          numFrames++;
+
           // Evaluate the spline at the frame time, displacing it by the startAt time.
           const refValue = spline.at(frame.time - startedAt)
 
@@ -238,6 +242,11 @@ export default class Agents extends AgentsBoth {
           return score + (error * dataSet.weight)
         }, 0)
       })
+
+      // Divide the score by the number of frames evaluated, to get an error number that is not dependent on the number
+      // of frames used to evaluate it.
+      if (numFrames !== 0)
+        currentScore /= numFrames
 
       Agents.updateObj({ _id: agentId, current: { score: currentScore, valid: true } })
     }

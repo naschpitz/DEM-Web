@@ -1,5 +1,6 @@
 import { Random } from "meteor/random"
 
+import Calibrations from "../imports/api/calibrations/both/collection"
 import DataSets from "../imports/api/dataSets/both/collection"
 import Logs from "../imports/api/logs/both/collection"
 import Materials from "../imports/api/materials/both/collection"
@@ -14,23 +15,23 @@ Migrations.add({
     const update = () => ({ $set: { callSign: Random.id() } })
 
     Materials.find().forEach(material => {
-      Materials.update(material._id, update(), { validate: false })
+      Materials.update(material._id, update(), { validate: false, multi: true })
     })
 
     SolidObjects.find().forEach(solidObject => {
-      SolidObjects.update(solidObject._id, update(), { validate: false })
+      SolidObjects.update(solidObject._id, update(), { validate: false, multi: true })
     })
 
     NonSolidObjects.find().forEach(nonSolidObject => {
-      NonSolidObjects.update(nonSolidObject._id, update(), { validate: false })
+      NonSolidObjects.update(nonSolidObject._id, update(), { validate: false, multi: true })
     })
   },
   down: () => {
     const update = { $unset: { callSign: "" } }
 
-    Materials.update({}, update, { validate: false })
-    SolidObjects.update({}, update, { validate: false })
-    NonSolidObjects.update({}, update, { validate: false })
+    Materials.update({}, update, { validate: false, multi: true })
+    SolidObjects.update({}, update, { validate: false, multi: true })
+    NonSolidObjects.update({}, update, { validate: false, multi: true })
   },
 })
 
@@ -40,12 +41,12 @@ Migrations.add({
   up: () => {
     const update = { $set: { primary: true } }
 
-    Simulations.update({}, update, { validate: false })
+    Simulations.update({}, update, { validate: false, multi: true })
   },
   down: () => {
     const update = { $unset: { primary: "" } }
 
-    Simulations.update({}, update, { validate: false })
+    Simulations.update({}, update, { validate: false, multi: true })
   },
 })
 
@@ -86,9 +87,20 @@ Migrations.add({
   version: 5,
   name: "Add 'weight' property to DataSets",
   up: () => {
-    DataSets.update({}, { $set: { weight: 1 } }, { validate: false })
+    DataSets.update({}, { $set: { weight: 1 } }, { validate: false, multi: true })
   },
   down: () => {
-    DataSets.update({}, { $unset: { weight: "" } }, { validate: false })
+    DataSets.update({}, { $unset: { weight: "" } }, { validate: false, multi: true })
+  },
+})
+
+Migrations.add({
+  version: 6,
+  name: "Add 'numIterations' and 'minPercentage' property to Calibration",
+  up: () => {
+    Calibrations.update({}, { $set: { numIterations: 3, minPercentage: 0.01 } }, { validate: false, multi: true })
+  },
+  down: () => {
+    Calibrations.update({}, { $unset: { numIterations: "", minPercentage: "" } }, { validate: false, multi: true })
   },
 })

@@ -330,8 +330,8 @@ export default SimulationControl = props => {
 
           <div className="row">
             <div className="col-sm-12 col-md-6 col-lg-3">
-              <div className="card" id="serverSettings">
-                <div className="card-header">Group Settings</div>
+              <div className="card" id="generalSettings">
+                <div className="card-header">General Settings</div>
 
                 <div className="card-body">
                   <div className="row">

@@ -95,7 +95,13 @@ export default class Calibrations extends CalibrationsBoth {
 
     const calibration = CalibrationsBoth.findOne(calibrationId)
 
-    if (calibration.currentIteration < calibration.maxIterations - 1) {
+    const stopConditionMet = Calibrations.checkStopCondition(calibrationId)
+
+    stopConditionMet ?
+      Calibrations.log(calibrationId, "Stop condition met.") :
+      Calibrations.log(calibrationId, "Stop condition not met.")
+
+    if ((calibration.currentIteration < calibration.maxIterations - 1) && !stopConditionMet) {
       await Agents.nextAllIterations(calibrationId)
       CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
     } else {
@@ -126,5 +132,9 @@ export default class Calibrations extends CalibrationsBoth {
     return CalibrationsBoth.find({ _id: calibrationId }).observe({
       changed: calibration => callback(calibration),
     })
+  }
+
+  static log(calibrationId, message) {
+    Logs.insert({ owner: calibrationId, message: message })
   }
 }

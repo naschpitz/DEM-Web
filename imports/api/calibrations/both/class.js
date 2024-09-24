@@ -1,5 +1,6 @@
 import _ from "lodash"
 
+import Agents from "../../agents/both/class";
 import CalibrationsDAO from "./dao.js"
 import DataSets from "../../dataSets/both/class.js"
 import Parameters from "../../parameters/both/class"
@@ -58,5 +59,28 @@ export default class Calibrations extends CalibrationsDAO {
       default:
         return "N/A"
     }
+  }
+
+  static checkStopCondition(calibrationId) {
+    const calibration = CalibrationsDAO.findOne(calibrationId)
+
+    const bestScores = Agents.getBestScores(calibrationId)
+
+    if (bestScores.length >= calibration.numIterations) {
+      // Get the last numIterations scores
+      const lastScores = bestScores.slice(-calibration.numIterations)
+
+      // Check if each of the lastScores is smaller than the previous one by minPercentage
+      const isImproving = lastScores.every((score, index) => {
+        if (index === 0) return true
+
+        return score < (lastScores[index - 1] * (1 - calibration.minPercentage))
+      })
+
+      // If it is not improving, return true, which means that the calibration has met the stop condition
+      return !isImproving;
+    }
+
+    return false;
   }
 }
