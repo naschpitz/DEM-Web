@@ -354,9 +354,9 @@ export default CalibrationControl = props => {
                   <div className="row">
                     <div className="col-sm-12 col-md-6 col-lg-6">
                       <FormInput
-                        label="Num. Iterations"
-                        name="numIterations"
-                        value={_.get(calibration, "numIterations")}
+                        label="Num. Intervals"
+                        name="numIntervals"
+                        value={_.get(calibration, "numIntervals")}
                         type="field"
                         subtype="number"
                         allowNegative={false}

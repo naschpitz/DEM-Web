@@ -52,9 +52,9 @@ Calibrations.schema = new SimpleSchema({
     label: "Maximum Energy",
     optional: true,
   },
-  numIterations: {
+  numIntervals: {
     type: Number,
-    label: "Number of iterations to check",
+    label: "Number of intervals to check",
     defaultValue: 3,
     optional: true,
   },

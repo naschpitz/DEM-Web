@@ -64,16 +64,21 @@ export default class Calibrations extends CalibrationsDAO {
   static checkStopCondition(calibrationId) {
     const calibration = CalibrationsDAO.findOne(calibrationId)
 
+    const numScores = calibration.numIntervals + 1
     const bestScores = Agents.getBestScores(calibrationId)
 
-    if (bestScores.length >= calibration.numIterations) {
-      // Get the last numIterations scores
-      const lastScores = bestScores.slice(-calibration.numIterations)
+    // Note: smaller scores are better, they mean less error
+    if (bestScores.length >= numScores) {
+      // Get the last numScore scores
+      const lastScores = bestScores.slice(-numScores)
 
       // Check if each of the lastScores is smaller than the previous one by minPercentage
-      const isImproving = lastScores.every((score, index) => {
-        if (index === 0) return true
+      // If at least one score is smaller than the previous one by minPercentage, the calibration is improving
+      const isImproving = lastScores.some((score, index) => {
+        if (index === 0) return false
 
+        // Check if the score is smaller than the previous one by minPercentage
+        // If it is smaller, return true, which means that the calibration is improving
         return score < (lastScores[index - 1] * (1 - calibration.minPercentage))
       })
 

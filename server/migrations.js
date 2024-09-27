@@ -104,3 +104,14 @@ Migrations.add({
     Calibrations.update({}, { $unset: { numIterations: "", minPercentage: "" } }, { validate: false, multi: true })
   },
 })
+
+Migrations.add({
+  version: 7,
+  name: "Change Calibrations property name 'numIterations' to 'numIntervals'",
+  up: () => {
+    Calibrations.rawCollection().updateMany({}, { $rename: { numIterations: "numIntervals" } })
+  },
+  down: () => {
+    Calibrations.rawCollection().updateMany({}, { $rename: { numIntervals: "numIterations" } })
+  },
+})
