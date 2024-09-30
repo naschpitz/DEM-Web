@@ -176,7 +176,7 @@ export default class Agents extends AgentsBoth {
         return
       }
 
-      const currentScore = DataSets.find({ owner: agent.owner, enabled: true }).reduce(dataSet => {
+      const currentScore = DataSets.find({ owner: agent.owner, enabled: true }).reduce((score, dataSet) => {
         const objectId = dataSet.object
         const object = NonSolidObjects.findOne(objectId) || SolidObjects.findOne(objectId)
 
@@ -248,7 +248,7 @@ export default class Agents extends AgentsBoth {
           return (score + (error * dataSet.weight))
         }, 0)
 
-        return dataSetScore / numFrames
+        return (score + (dataSetScore / numFrames))
       }, 0)
 
       Agents.updateObj({ _id: agentId, current: { score: currentScore, valid: true } })
