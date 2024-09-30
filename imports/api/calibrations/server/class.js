@@ -108,7 +108,7 @@ export default class Calibrations extends CalibrationsBoth {
       Calibrations.log(calibrationId, "Stop condition met.") :
       Calibrations.log(calibrationId, "Stop condition not met.")
 
-    Calibrations.log(calibrationId, `Best scores: ${bestScores.map(score => score.toFixed(5)).join(", ")}`)
+    Calibrations.log(calibrationId, `Best scores: ${bestScores.map(score => score.toFixed(8)).join(", ")}`)
 
     if ((calibration.currentIteration < calibration.maxIterations - 1) && !stopConditionMet) {
       Calibrations.log(calibrationId, "Advancing all agents to the next iteration.")
