@@ -176,10 +176,7 @@ export default class Agents extends AgentsBoth {
         return
       }
 
-      let currentScore = 0
-      let numFrames = 0
-
-      DataSets.find({ owner: agent.owner, enabled: true }).forEach(dataSet => {
+      const currentScore = DataSets.find({ owner: agent.owner, enabled: true }).reduce(dataSet => {
         const objectId = dataSet.object
         const object = NonSolidObjects.findOne(objectId) || SolidObjects.findOne(objectId)
 
@@ -191,11 +188,16 @@ export default class Agents extends AgentsBoth {
           dataSet.data.map(data => data.value)
         )
 
+        const minTime = dataSet.data[0].time
+        const maxTime = dataSet.data[dataSet.data.length - 1].time
+
         const hasCondition = dataSet.startCondition && dataSet.startThreshold
         let conditionMet = false
-        let startedAt = 0
 
-        currentScore += frames.reduce((score, frame) => {
+        let startedAt = 0
+        let numFrames = 0
+
+        const dataSetScore = frames.reduce((score, frame) => {
           // Get the non-solid or solid object that belongs to the Frame's Scenery and has the same callSign as the DataSet's
           const nonSolidObject = NonSolidObjects.findOne({ owner: frame.owner, callSign: objectCallSign })
           const solidObject = SolidObjects.findOne({ owner: frame.owner, callSign: objectCallSign })
@@ -222,10 +224,10 @@ export default class Agents extends AgentsBoth {
           }
 
           // If the start condition is not met, then the score is 0, thus it won't be penalized.
-          if (hasCondition && !conditionMet) return 0;
+          if (hasCondition && !conditionMet) return 0
 
-          // Increment the number of frames evaluated
-          numFrames++;
+          // If the time of the frame is not between the minTime and the maxTime of the DataSet, then the score is 0.
+          if (frame.time < minTime || frame.time > maxTime) return 0
 
           // Evaluate the spline at the frame time, displacing it by the startAt time.
           const refValue = spline.at(frame.time - startedAt)
@@ -233,20 +235,21 @@ export default class Agents extends AgentsBoth {
           // Initialize the error to 0
           let error = 0
 
-          // If the refValue is not NaN, which means it is inside the spline range, and it is not 0, then the error
-          // is calculated. Otherwise, the error is 0.
-          if (!isNaN(refValue) && refValue !== 0) {
+          // If the reference value is not 0, then the error is calculated as the absolute value of the difference between
+          if (refValue !== 0) {
             error = Math.abs((value - refValue) / refValue)
           }
 
-          return score + (error * dataSet.weight)
-        }, 0)
-      })
+          // Increment the number of evaluated frames
+          numFrames++
 
-      // Divide the score by the number of frames evaluated, to get an error number that is not dependent on the number
-      // of frames used to evaluate it.
-      if (numFrames !== 0)
-        currentScore /= numFrames
+          // Divide the score by the number of evaluated frames, to get an error number that is not dependent on the
+          // number of frames used to evaluate it.
+          return (score + (error * dataSet.weight))
+        }, 0)
+
+        return dataSetScore / numFrames
+      }, 0)
 
       Agents.updateObj({ _id: agentId, current: { score: currentScore, valid: true } })
     }

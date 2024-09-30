@@ -26,8 +26,8 @@ export default Chart = props => {
               <stop offset="95%" stopColor="#21426E" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} scale="linear" type="number" />
-          <YAxis dataKey="y" tickFormatter={value => value.toExponential(3)} scale="linear" type="number" />
+          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} domain={['auto', 'auto']} scale="linear" type="number" />
+          <YAxis dataKey="y" tickFormatter={value => value.toExponential(3)} domain={['auto', 'auto']} scale="linear" type="number" />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Area
