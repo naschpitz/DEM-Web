@@ -1,7 +1,7 @@
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 
-export default NonSolidObject = new SimpleSchema({
+export default Data = new SimpleSchema({
   time: {
     type: Number,
     label: "Time",
