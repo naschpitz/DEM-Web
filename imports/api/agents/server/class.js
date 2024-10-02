@@ -162,6 +162,7 @@ export default class Agents extends AgentsBoth {
       const scenery = Sceneries.findOne({ owner: simulation._id })
 
       const frames = Frames.find({ owner: scenery._id }, { sort: { time: 1 } }).fetch()
+      const dataSets = DataSets.find({ owner: agent.owner, enabled: true }).fetch()
 
       // Sanity check: calculate the expected number of frames for the scenery.
       // The expected number of frames is the total time of the simulation divided by the frame time, rounded to the
@@ -176,7 +177,7 @@ export default class Agents extends AgentsBoth {
         return
       }
 
-      const currentScore = DataSets.find({ owner: agent.owner, enabled: true }).reduce((score, dataSet) => {
+      const currentScore = dataSets.reduce((score, dataSet) => {
         const objectId = dataSet.object
         const object = NonSolidObjects.findOne(objectId) || SolidObjects.findOne(objectId)
 
@@ -226,11 +227,14 @@ export default class Agents extends AgentsBoth {
           // If the start condition is not met, then the score is 0, thus it won't be penalized.
           if (hasCondition && !conditionMet) return 0
 
-          // If the time of the frame is not between the minTime and the maxTime of the DataSet, then the score is 0.
-          if (frame.time < minTime || frame.time > maxTime) return 0
+          // The current time is the frame time minus the startAt time.
+          const currentTime = frame.time - startedAt
 
-          // Evaluate the spline at the frame time, displacing it by the startAt time.
-          const refValue = spline.at(frame.time - startedAt)
+          // If the time of the frame is not between the minTime and the maxTime of the DataSet, then the score is 0.
+          if (currentTime < minTime || currentTime > maxTime) return 0
+
+          // Evaluate the spline at the current time to get the reference value.
+          const refValue = spline.at(currentTime)
 
           // Initialize the error to 0
           let error = 0
@@ -248,7 +252,11 @@ export default class Agents extends AgentsBoth {
           return (score + (error * dataSet.weight))
         }, 0)
 
-        return (score + (dataSetScore / numFrames))
+        // If the number of frames is 0, then the score is 0, otherwise it is the sum of the errors divided by the number
+        if (numFrames)
+          return (score + (dataSetScore / numFrames))
+
+        return score
       }, 0)
 
       Agents.updateObj({ _id: agentId, current: { score: currentScore, valid: true } })
