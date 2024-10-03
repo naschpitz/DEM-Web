@@ -25,6 +25,11 @@ DataSets.schema = new SimpleSchema({
       }
     },
   },
+  name: {
+    type: String,
+    label: "Name",
+    optional: false,
+  },
   dataName: {
     type: String,
     label: "Data name",

@@ -177,6 +177,8 @@ export default class Agents extends AgentsBoth {
         return
       }
 
+      const dataSetsEvaluations = []
+
       const currentScore = dataSets.reduce((score, dataSet) => {
         const objectId = dataSet.object
         const object = NonSolidObjects.findOne(objectId) || SolidObjects.findOne(objectId)
@@ -197,6 +199,10 @@ export default class Agents extends AgentsBoth {
 
         let startedAt = 0
         let numFrames = 0
+
+        const referenceData = []
+        const simulationData = []
+        const errorData = []
 
         const dataSetScore = frames.reduce((score, frame) => {
           // Get the non-solid or solid object that belongs to the Frame's Scenery and has the same callSign as the DataSet's
@@ -247,19 +253,42 @@ export default class Agents extends AgentsBoth {
           // Increment the number of evaluated frames
           numFrames++
 
+          const weightedError = error * dataSet.weight
+
+          // Add the reference value to referenceData arrays, the value to the simulationData array and the error to the
+          // errorData array.
+          referenceData.push({ time: currentTime, value: refValue })
+          simulationData.push({ time: currentTime, value: value })
+          errorData.push({ time: currentTime, value: weightedError })
+
           // Divide the score by the number of evaluated frames, to get an error number that is not dependent on the
           // number of frames used to evaluate it.
-          return (score + (error * dataSet.weight))
+          return (score + weightedError)
         }, 0)
 
-        // If the number of frames is 0, then the score is 0, otherwise it is the sum of the errors divided by the number
-        if (numFrames)
-          return (score + (dataSetScore / numFrames))
+        // Calculate the score of the dataSet by dividing the dataSetScore by the number of frames
+        const proportionalScore = numFrames ? (dataSetScore / numFrames) : 0
 
-        return score
+        // Add the dataSetEvaluations object to the dataSetsEvaluations array
+        dataSetsEvaluations.push({
+          dataSet: dataSet._id,
+          score: proportionalScore,
+          referenceData: referenceData,
+          simulationData: simulationData,
+          errorData: errorData,
+        })
+
+        return (score + proportionalScore)
       }, 0)
 
-      Agents.updateObj({ _id: agentId, current: { score: currentScore, valid: true } })
+      Agents.updateObj({
+        _id: agentId,
+        current: {
+          score: currentScore,
+          dataSetsEvaluations: dataSetsEvaluations,
+          valid: true
+        }
+      })
     }
 
     function updateBestScore(agentId) {
