@@ -29,6 +29,7 @@ export default class AgentsDAO {
   }
 
   static updateObj(agent) {
+    dot.keepArray = true
     const dottedAgent = dot.dot(agent)
 
     const set = {}

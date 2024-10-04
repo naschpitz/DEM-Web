@@ -6,14 +6,9 @@ import Data from "./data.js"
 export default DataSetEvaluation = new SimpleSchema({
   dataSet: {
     type: String,
-    label: "Object",
+    label: "Data Set Id",
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
-    custom: function () {
-      if ((this.isUpdate || this.isUpsert) && !this.isSet) {
-        return "missingField"
-      }
-    },
   },
   score: {
     type: Number,

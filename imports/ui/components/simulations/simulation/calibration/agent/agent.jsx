@@ -9,8 +9,9 @@ import Simulations from "../../../../../../api/simulations/both/class"
 import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
 
-import HistoryTable from "./historyTable/historyTable.jsx"
-import Main from "../../main/main.jsx"
+import DataSetsEvaluationsCard from "./dataSetsEvaluationsCard/dataSetsEvaluationsCard";
+import HistoryTable from "./historyTable/historyTable"
+import Main from "../../main/main"
 
 import "./agent.css"
 
@@ -77,6 +78,10 @@ export default Agent = props => {
             <div className="card-body">
               <HistoryTable agentId={agentId} />
             </div>
+          </div>
+
+          <div className="addMargin">
+            <DataSetsEvaluationsCard agentId={agentId} />
           </div>
         </div>
       )

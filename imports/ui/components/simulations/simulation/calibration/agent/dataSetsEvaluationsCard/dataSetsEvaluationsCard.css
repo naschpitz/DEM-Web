@@ -1,0 +1,11 @@
+#dataSetsEvaluationsCard #dataSetEvaluation:not(:first-child) {
+    margin-top: 20px;
+}
+
+#dataSetsEvaluationsCard #dataSetEvaluation:last-child {
+    margin-bottom: 20px;
+}
+
+#dataSetsEvaluationsCard .card-body {
+    padding-bottom: 0px;
+}
