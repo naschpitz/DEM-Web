@@ -245,9 +245,11 @@ export default class Agents extends AgentsBoth {
           // Initialize the error to 0
           let error = 0
 
-          // If the reference value is not 0, then the error is calculated as the absolute value of the difference between
+          // If the reference value is not 0, then the error is calculated as the difference between
+          // the value and the reference value divided by the reference value, multiplied by 100, so it is a percentage,
+          // and then squared, to penalize errors larger than 1%.
           if (refValue !== 0) {
-            error = Math.abs((value - refValue) / refValue)
+            error = (((value - refValue) / refValue) * 100) ** 2
           }
 
           // Increment the number of evaluated frames
