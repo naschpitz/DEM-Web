@@ -38,7 +38,7 @@ export default DataSetsEvaluationsCard = props => {
         dataSetsEvaluations: history.current.dataSetsEvaluations,
       }
     })
-  })
+  }, [props.agentId])
 
   useEffect(() => {
     // Find a history that matches the selected iteration

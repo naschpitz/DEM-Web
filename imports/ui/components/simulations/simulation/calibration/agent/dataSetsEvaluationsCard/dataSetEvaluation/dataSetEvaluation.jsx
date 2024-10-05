@@ -35,7 +35,7 @@ export default DataSetEvaluation = props => {
     if (!dataSetId) return null
 
     return DataSetsClass.findOne(dataSetId)
-  })
+  }, [dataSetId])
 
   const objectId = dataSet?.object
   const dataName = dataSet?.dataName
