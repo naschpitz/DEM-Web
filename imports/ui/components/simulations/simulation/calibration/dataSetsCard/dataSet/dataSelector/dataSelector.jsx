@@ -131,6 +131,19 @@ export default DataSelector = props => {
   return (
     <div id="dataSelector">
       <div className="row vertical-center" id="objectDataSelectors">
+        <div className="col-sm-12 col-md-6 col-lg-3">
+          <FormInput
+            label="Name"
+            name="name"
+            value={props.name}
+            type="field"
+            subtype="string"
+            size="small"
+            labelSizes={{ sm: 2, md: 2, lg: 4 }}
+            inputSizes={{ sm: 10, md: 10, lg: 8 }}
+            onEvent={onEvent}
+          />
+        </div>
         <div className="col-sm-12 col-md-6 col-lg-3">{renderObjectsList()}</div>
         <div className="col-sm-12 col-md-6 col-lg-3">{renderDataList()}</div>
       </div>

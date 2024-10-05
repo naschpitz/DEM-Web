@@ -24,7 +24,7 @@ export default DataDisplay = props => {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsSolidObjectsReady(true),
     })
-  }, [props.sceneryId])
+  }, [props.objectId])
 
   const nonSolidObject = useTracker(() => {
     return NonSolidObjectsClass.findOne(props.objectId)
@@ -102,6 +102,19 @@ export default DataDisplay = props => {
 
   return (
     <div id="dataDisplay" className="row vertical-center">
+      <div className="col-sm-12 col-md-4 col-lg-3">
+        <FormInput
+          label="Name"
+          name="name"
+          value={props.name}
+          type="field"
+          subtype="string"
+          size="small"
+          disabled={true}
+          labelSizes={{ sm: 6, md: 4, lg: 3 }}
+          inputSizes={{ sm: 6, md: 8, lg: 9 }}
+        />
+      </div>
       <div className="col-sm-12 col-md-4 col-lg-3">{renderObjectName()}</div>
       <div className="col-sm-12 col-md-4 col-lg-3">{renderDataName()}</div>
       <div className="col-sm-12 col-md-4 col-lg-3">{renderScore()}</div>

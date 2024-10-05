@@ -98,6 +98,7 @@ export default DataSet = props => {
   const sceneryId = scenery?._id
   const dataSetId = props.dataSet?._id
 
+  const name = props.dataSet?.name
   const objectId = props.dataSet?.object
   const dataName = props.dataSet?.dataName
   const startCondition = props.dataSet?.startCondition
@@ -138,6 +139,7 @@ export default DataSet = props => {
         <div className="card-body">
           <DataSelector
             sceneryId={sceneryId}
+            name={name}
             objectId={objectId}
             dataName={dataName}
             startCondition={startCondition}

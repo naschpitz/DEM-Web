@@ -37,6 +37,7 @@ export default DataSetEvaluation = props => {
     return DataSetsClass.findOne(dataSetId)
   }, [dataSetId])
 
+  const name = dataSet?.name
   const objectId = dataSet?.object
   const dataName = dataSet?.dataName
   const score = props.dataSetEvaluation?.score
@@ -57,6 +58,7 @@ export default DataSetEvaluation = props => {
 
         <div className="card-body">
           <DataDisplay
+            name={name}
             objectId={objectId}
             dataName={dataName}
             score={score}
