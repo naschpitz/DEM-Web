@@ -73,7 +73,7 @@ export default DataSetsEvaluationsCard = props => {
           Data Sets Evaluations
         </div>
 
-        <div className="ml-auto">
+        <div id="iterationSelector" className="ml-auto">
           <FormInput
             label="Iteration"
             name="iteration"
@@ -83,7 +83,7 @@ export default DataSetsEvaluationsCard = props => {
             size="small"
             options={options}
             labelSizes={{ sm: 6, md: 8, lg: 6 }}
-            inputSizes={{ sm: 6, md: 4, lg: 8 }}
+            inputSizes={{ sm: 6, md: 4, lg: 6 }}
             onEvent={onEvent}
           />
         </div>

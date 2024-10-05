@@ -9,3 +9,7 @@
 #dataSetsEvaluationsCard .card-body {
     padding-bottom: 0px;
 }
+
+#dataSetsEvaluationsCard #iterationSelector {
+    min-width: 150px;
+}
