@@ -58,7 +58,7 @@ WebApp.connectHandlers.use(
             const simulationLog = EJSON.parse(data.toString())
 
             Simulations.setState(simulationLog.owner, simulationLog.state)
-            Logs.insert(simulationLog)
+            Logs.insert(simulationLog, false)
           })
 
           zlib.inflate(compressedData, inflateCallback)

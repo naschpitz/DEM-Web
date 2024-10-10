@@ -1,6 +1,7 @@
 import moment from "moment"
 
 import LogsDAO from "./dao.js"
+import Simulations from "../../simulations/both/class";
 
 export default class Logs extends LogsDAO {
   static removeByOwner(ownerId) {
@@ -70,5 +71,22 @@ export default class Logs extends LogsDAO {
       default:
         return "N/A"
     }
+  }
+
+  // 'skipCheck' is used to avoid checking if the instance is the same as the simulation's instance.
+  // This is useful when inserting logs for calibrations or logs that don't have an instance on it, like the ones
+  // originated from the server. The ones that come from Math Core and hit the rest service, they have an instance
+  // on it.
+  static insert(log, skipCheck = true) {
+    if (!skipCheck) {
+      const simulation = Simulations.findOne(log.owner)
+
+      // The log.owner could be referring to a Calibration, which does not have an instance, so we need to check if
+      // the simulation exists before checking the instance.
+      if (simulation && simulation.instance !== log.instance)
+        return
+    }
+
+    LogsDAO.insert(log)
   }
 }
