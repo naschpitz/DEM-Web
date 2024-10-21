@@ -2,7 +2,9 @@ import "./accounts.js"
 
 import "../../api/agents/server/publications.js"
 
-import "../../api/calibrations/server/tasks.js"
+import "../../api/agentsHistories/server/publications.js"
+
+import "../../api/calibrations/server/task/restartCalibrations.js"
 
 import "../../api/calibrations/server/methods.js"
 import "../../api/calibrations/server/publications.js"
@@ -38,7 +40,7 @@ import "../../api/sceneries/server/publications.js"
 
 import "../../api/servers/server/publications.js"
 
-import "../../api/simulations/server/tasks.js"
+import "../../api/simulations/server/tasks/checkStalledSimulations.js"
 import "../../api/simulations/server/methods.js"
 import "../../api/simulations/server/publications.js"
 

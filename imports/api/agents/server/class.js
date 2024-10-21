@@ -2,6 +2,7 @@ import Spline from "cubic-spline"
 import _ from "lodash"
 
 import AgentsBoth from "../both/class"
+import AgentsHistories from "../../agentsHistories/both/class"
 import DataSets from "../../dataSets/both/class"
 import Frames from "../../frames/server/class"
 import Materials from "../../materials/both/class"
@@ -51,10 +52,14 @@ export default class Agents extends AgentsBoth {
       Simulations.remove(agent.current.simulation)
       Simulations.remove(agent.best.simulation)
 
-      agent.history.forEach(history => {
-        Simulations.remove(history.current.simulation)
-        Simulations.remove(history.best.simulation)
+      const agentsHistories = AgentsHistories.find({ owner: agent._id })
+
+      agentsHistories.forEach(agentHistory => {
+        Simulations.remove(agentHistory.current.simulation)
+        Simulations.remove(agentHistory.best.simulation)
       })
+
+      AgentsHistories.removeByOwner(agent._id)
     })
 
     const agentIds = agents.map(agent => agent._id)
@@ -75,14 +80,14 @@ export default class Agents extends AgentsBoth {
     return AgentsBoth.findOne({ owner: calibrationId, "best.bestGlobal": true })
   }
 
-  static async saveAllHistories(calibrationId) {
+  static async saveAllAgentsHistories(calibrationId) {
     const agents = AgentsBoth.find({ owner: calibrationId })
 
-    const saveHistoryPromises = agents.map(agent => Agents.saveHistory(agent._id))
-    await Promise.all(saveHistoryPromises)
+    const saveAgentsHistoryPromises = agents.map(agent => Agents.saveAgentHistory(agent._id))
+    await Promise.all(saveAgentsHistoryPromises)
   }
 
-  static async saveHistory(agentId) {
+  static async saveAgentHistory(agentId) {
     return new Promise((resolve) => {
       const agent = AgentsBoth.findOne(agentId)
 
@@ -92,13 +97,14 @@ export default class Agents extends AgentsBoth {
       const current = { ...agent.current }
       current.simulation = Simulations.clone(agent.current.simulation, false, true, true)
 
-      const history = {
+      const agentHistory = {
+        owner: agentId,
         iteration: agent.iteration,
         best: best,
         current: current,
       }
 
-      AgentsBoth.update(agentId, { $push: { history: history } })
+      AgentsHistories.insert(agentHistory)
       resolve()
     })
   }

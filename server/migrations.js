@@ -1,5 +1,7 @@
 import { Random } from "meteor/random"
 
+import Agents from "../imports/api/agents/both/collection"
+import AgentsHistories from "../imports/api/agentsHistories/both/collection"
 import Calibrations from "../imports/api/calibrations/both/collection"
 import DataSets from "../imports/api/dataSets/both/collection"
 import Logs from "../imports/api/logs/both/collection"
@@ -114,4 +116,49 @@ Migrations.add({
   down: () => {
     Calibrations.rawCollection().updateMany({}, { $rename: { numIntervals: "numIterations" } })
   },
+})
+
+Migrations.add({
+  version: 8,
+  name: "Copy Agents' history array to the AgentsHistory collection",
+  up: () => {
+    // For each Agent
+    Agents.find().forEach(agent => {
+      // For each history in the Agent
+      agent.history.forEach(history => {
+        const agentHistory = {
+          owner: agent._id,
+          ...history,
+        }
+
+        // Insert the history in the AgentsHistories collection
+        AgentsHistories.insert(agentHistory)
+      })
+
+      // Remove the history from the Agent
+      Agents.update(agent._id, { $unset: { history: "" } })
+    })
+  },
+  down: () => {
+    // For Each Agent
+    Agents.find().forEach(agent => {
+      // Find the Agent's histories
+      const agentHistories = AgentsHistories.find({ owner: agent._id }, { sort: { iteration : 1 }})
+
+      // Build the history array from the AgentHistories
+      const history = agentHistories.map(agentHistory => {
+        return {
+          iteration: agentHistory.iteration,
+          current: agentHistory.current,
+          best: agentHistory.best,
+        }
+      })
+
+      // Update the Agent with the history
+      Agents.update(agent._id, { $set: { history } })
+    })
+
+    // Remove the AgentHistories collection
+    AgentsHistories.rawCollection().drop()
+  }
 })

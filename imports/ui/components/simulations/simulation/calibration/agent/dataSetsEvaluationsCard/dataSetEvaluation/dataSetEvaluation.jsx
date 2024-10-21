@@ -5,12 +5,12 @@ import { useTracker } from "meteor/react-meteor-data"
 import DataSetsClass from "../../../../../../../../api/dataSets/both/class.js"
 
 import Alert from "react-s-alert-v3"
+import ClipLoader from "react-spinners/ClipLoader";
 
 import Chart from "./chart/chart.jsx"
 import DataDisplay from "./dataDisplay/dataDisplay.jsx"
 
 import "./dataSetEvaluation.css"
-import ClipLoader from "react-spinners/ClipLoader";
 
 export default DataSetEvaluation = props => {
   const [isDataSetReady, setDataSetReady] = useState(false)

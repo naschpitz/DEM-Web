@@ -93,12 +93,12 @@ export default class Simulations extends SimulationsBoth {
     if (!["new", "stopped", "done", "failed"].includes(state))
       throw { message: "Only new, stopped, done or failed simulations can be removed" }
 
-    SimulationsBoth.remove(simulationId)
-
     Sceneries.removeByOwner(simulationId)
     Logs.removeByOwner(simulationId)
 
     if (simulation.primary) Calibrations.removeByOwner(simulationId)
+
+    SimulationsBoth.remove(simulationId)
   }
 
   static removeByGroup(groupId) {

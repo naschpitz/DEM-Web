@@ -12,33 +12,38 @@ import FormInput from "@naschpitz/form-input";
 import DataSetEvaluation from "./dataSetEvaluation/dataSetEvaluation.jsx"
 
 import "./dataSetsEvaluationsCard.css"
+import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
 
 export default DataSetsEvaluationsCard = props => {
-  const [isAgentReady, setIsAgentReady] = useState(false)
+  const [isAgentHistoriesReady, setIsAgentHistoriesReady] = useState(false)
   const [selectedIteration, setSelectedIteration] = useState(null)
   const [selectedDataSetsEvaluations, setSelectedDataSetsEvaluations] = useState(null)
 
   useTracker(() => {
-    Meteor.subscribe("agents.agent", props.agentId, {
+    Meteor.subscribe("agentsHistories.byOwner", props.agentId, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-      onReady: () => setIsAgentReady(true),
+      onReady: () => setIsAgentHistoriesReady(true),
     })
   }, [props.agentId])
 
   const dataSetsEvaluationsHistory = useTracker(() => {
-    const agent = AgentsClass.findOne(props.agentId)
+    const agentHistories = AgentsHistories.find({ owner: props.agentId }, { sort: { iteration: 1 }}).fetch()
 
-    // Set the selected iteration to the last iteration
-    if (!selectedIteration && agent?.history.length > 0)
-      setSelectedIteration(agent.history[agent.history.length - 1].iteration)
-
-    return agent.history.map(history => {
+    return agentHistories.map(agentHistory => {
       return {
-        iteration: history.iteration,
-        dataSetsEvaluations: history.current.dataSetsEvaluations,
+        iteration: agentHistory.iteration,
+        dataSetsEvaluations: agentHistory.current.dataSetsEvaluations,
       }
     })
   }, [props.agentId])
+
+  useEffect(() => {
+    if(!selectedIteration && dataSetsEvaluationsHistory.length > 0) {
+      const lastIteration = dataSetsEvaluationsHistory[dataSetsEvaluationsHistory.length - 1].iteration
+
+      setSelectedIteration(lastIteration)
+    }
+  }, [dataSetsEvaluationsHistory])
 
   useEffect(() => {
     // Find a history that matches the selected iteration
@@ -59,7 +64,7 @@ export default DataSetsEvaluationsCard = props => {
     setSelectedIteration(value)
   }
 
-  if (!isAgentReady)
+  if (!isAgentHistoriesReady)
     return (
       <div className="container-fluid text-center" id="scenery">
         <ClipLoader size={50} color={"#DDD"} loading={true} />

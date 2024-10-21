@@ -2,8 +2,8 @@ import { Meteor } from "meteor/meteor"
 
 import moment from "moment"
 
-import Logs from "../../logs/both/class"
-import Simulations from "../both/class"
+import Logs from "../../../logs/both/class"
+import Simulations from "../../both/class"
 
 // Find stalled Simulations and set its state to 'failed'
 const bound = Meteor.bindEnvironment(() => {

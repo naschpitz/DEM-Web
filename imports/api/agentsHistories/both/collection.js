@@ -1,21 +1,27 @@
-import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 
-import CalibrationsDAO from "./dao"
-import SimulationsDAO from "../../simulations/both/dao"
+import AgentsDAO from "../../agents/both/dao";
+import CalibrationsDAO from "../../agents/both/dao";
+import SimulationsDAO from "../../simulations/both/dao";
 
-import SimulationScore from "./schemas/simulationScore"
+import SimulationScore from "./schemas/simulationScore";
 
-const Agents = new Mongo.Collection("agents")
+const AgentsHistories = new Mongo.Collection("agentsHistories");
 
-Agents.schema = new SimpleSchema({
+AgentsHistories.schema = new SimpleSchema({
   owner: {
     type: String,
-    label: "Calibration Owner",
+    label: "Agent Owner",
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
+  },
+  iteration: {
+    type: Number,
+    label: "Iteration",
+    defaultValue: 0,
+    optional: true,
   },
   current: {
     type: SimulationScore,
@@ -25,17 +31,6 @@ Agents.schema = new SimpleSchema({
   best: {
     type: SimulationScore,
     label: "Best",
-    optional: true,
-  },
-  index: {
-    type: Number,
-    label: "Index",
-    optional: false,
-  },
-  iteration: {
-    type: Number,
-    label: "Iteration",
-    defaultValue: 0,
     optional: true,
   },
   createdAt: {
@@ -57,29 +52,29 @@ Agents.schema = new SimpleSchema({
   },
 })
 
-Agents.schema.addValidator(function () {
+AgentsHistories.schema.addValidator(function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const calibration = CalibrationsDAO.findOne(this.owner)
+    const agent = AgentsDAO.findOne(this.owner)
+    const calibration = CalibrationsDAO.findOne(agent.owner)
     const simulation = SimulationsDAO.findOne(calibration.owner)
 
     if (simulation.owner !== userId) return "notOwner"
   }
 })
 
-Agents.schema.messageBox.messages({
+AgentsHistories.schema.messageBox.messages({
   en: {
     notAuthorized: "User not logged in",
     notOwner: "The user is not the simulation's owner",
   },
 })
 
-Agents.attachSchema(Agents.schema)
+AgentsHistories.attachSchema(AgentsHistories.schema)
 
-Meteor.isServer && Agents.rawCollection().createIndex({ owner: 1 }, { background: true })
-Meteor.isServer && Agents.rawCollection().createIndex({ owner: 1, index: 1 }, { unique: true, background: true })
+Meteor.isServer && AgentsHistories.rawCollection().createIndex({ owner: 1 }, { background: true })
 
-export default Agents
+export default AgentsHistories

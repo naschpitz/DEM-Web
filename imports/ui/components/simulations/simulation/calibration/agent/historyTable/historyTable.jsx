@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { useNavigate } from "react-router-dom"
 
-import AgentsClass from "/imports/api/agents/both/class"
+import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
 import LogsClass from "../../../../../../../api/logs/both/class"
 
 import Alert from "react-s-alert-v3"
@@ -13,7 +13,7 @@ import ReactTable from "react-table-v6"
 import "./historyTable.css"
 
 export default HistoryTable = props => {
-  const [isAgentReady, setIsAgentReady] = useState(false)
+  const [isAgentHistoriesReady, setIsAgentHistoriesReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
 
   const navigate = useNavigate()
@@ -21,34 +21,32 @@ export default HistoryTable = props => {
   useTracker(() => {
     if (!props.agentId) return
 
-    Meteor.subscribe("agents.agent", props.agentId, {
+    Meteor.subscribe("agentsHistories.byOwner", props.agentId, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
-      onReady: () => setIsAgentReady(true),
+      onReady: () => setIsAgentHistoriesReady(true),
     })
   }, [props.agentId])
 
-  const history = useTracker(() => {
-    const agent = AgentsClass.findOne(props.agentId)
-
-    return agent?.history ? agent.history : []
+  const agentHistories = useTracker(() => {
+    return AgentsHistories.find({ owner: props.agentId }, { sort: { iteration: 1 }}).fetch()
   }, [props.agentId])
 
   useTracker(() => {
-    const simulationsIds = history.map(history => history.current.simulation)
+    const simulationsIds = agentHistories.map(agentHistory => agentHistory.current.simulation)
 
     Meteor.subscribe("logs.last", false, simulationsIds, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
       onReady: () => setIsLogsReady(true),
     })
-  }, [history])
+  }, [agentHistories])
 
   const logs = useTracker(() => {
-    if (!isAgentReady) return []
+    if (!isAgentHistoriesReady) return []
 
-    const simulationsIds = history.map(history => history.current.simulation)
+    const simulationsIds = agentHistories.map(agentHistory => agentHistory.current.simulation)
 
     return LogsClass.find({ owner: { $in: simulationsIds } }).fetch()
-  }, [history, isAgentReady])
+  }, [agentHistories, isAgentHistoriesReady])
 
   function getColumns() {
     return [
@@ -156,12 +154,12 @@ export default HistoryTable = props => {
     navigate("/simulations/" + data.original.current.simulation)
   }
 
-  const isReady = isAgentReady && isLogsReady
+  const isReady = isAgentHistoriesReady && isLogsReady
 
   return (
     <div id="historyTable">
       <ReactTable
-        data={history}
+        data={agentHistories}
         loading={!isReady}
         loadingText="Loading agent history list..."
         columns={getColumns()}

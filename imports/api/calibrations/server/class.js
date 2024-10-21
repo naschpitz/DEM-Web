@@ -95,7 +95,7 @@ export default class Calibrations extends CalibrationsBoth {
     await Agents.updateAllScores(calibrationId)
 
     Calibrations.log(calibrationId, "Saving agents' histories.")
-    await Agents.saveAllHistories(calibrationId)
+    await Agents.saveAllAgentsHistories(calibrationId)
 
     const calibration = CalibrationsBoth.findOne(calibrationId)
 

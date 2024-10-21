@@ -3,13 +3,13 @@ import JoSk from "josk";
 
 const Josk = new Mongo.Collection("josk")
 
-import calibrationTask from "../../calibrations/server/tasks"
-import simulationTask from "../../simulations/server/tasks"
+import restartCalibrationsTask from "../../calibrations/server/task/restartCalibrations"
+import checkStalledSimulationsTask from "../../simulations/server/tasks/checkStalledSimulations"
 
 const db = Josk.rawDatabase()
 const job = new JoSk({ db: db, onError: (error) => console.log(error) })
 
-job.setImmediate(calibrationTask, "calibrationTask")
+//job.setImmediate(restartCalibrationsTask, "calibrationTask")
 
 // Delay in milliseconds
-job.setInterval(simulationTask, 10 * 1000, "simulationTask")
+//job.setInterval(checkStalledSimulationsTask, 10 * 1000, "simulationTask")

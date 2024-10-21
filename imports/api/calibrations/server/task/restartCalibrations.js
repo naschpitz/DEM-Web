@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor"
 
-import Calibrations from "../both/class"
-import Hypervisor from "./hypervisor"
+import Calibrations from "../../both/class"
+import Hypervisor from "../hypervisor"
 
 // Find Calibrations in progress and re-initialize them
 const bound = Meteor.bindEnvironment(() => {

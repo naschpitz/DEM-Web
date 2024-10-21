@@ -1,7 +1,7 @@
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 
-import Data from "./data.js"
+import Data from "../../../agents/both/schemas/data.js"
 
 export default DataSetEvaluation = new SimpleSchema({
   dataSet: {

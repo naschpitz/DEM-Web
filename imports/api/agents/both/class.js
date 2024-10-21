@@ -2,6 +2,7 @@ import _ from "lodash"
 
 import AgentsDAO from "./dao"
 
+import AgentsHistories from "../../agentsHistories/both/class";
 import Calibrations from "../../calibrations/both/class"
 import Materials from "../../materials/both/class"
 import NonSolidObjects from "../../nonSolidObjects/both/class"
@@ -110,17 +111,17 @@ export default class Agents extends AgentsDAO {
     // For each iteration, up until currentIteration, get the best global score of that iteration.
     const bestScores = []
 
-    const numHistory = agents[0].history.length
+    const numAgentsHistories = AgentsHistories.find({ owner: agents[0]._id }).count()
 
-    for (let i = 0; i < numHistory; i++) {
+    for (let i = 0; i < numAgentsHistories; i++) {
       // Get the SimulationScore of the best global agent of the iteration i
       agents.forEach(agent => {
-        const history = agent.history[i]
+        const agentHistory = AgentsHistories.findOne({ owner: agent._id, iteration: i })
 
-        // Check if the best of the history is the best global.
-        if (history.best.bestGlobal)
+        // Check if the best of the agent history is the best global.
+        if (agentHistory.best.bestGlobal)
           // Push the best score of the best global agent of the iteration i
-          bestScores.push(history.best.score)
+          bestScores.push(agentHistory.best.score)
       })
     }
 
