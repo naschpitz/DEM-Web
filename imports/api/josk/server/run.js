@@ -9,7 +9,7 @@ import checkStalledSimulationsTask from "../../simulations/server/tasks/checkSta
 const db = Josk.rawDatabase()
 const job = new JoSk({ db: db, onError: (error) => console.log(error) })
 
-//job.setImmediate(restartCalibrationsTask, "calibrationTask")
+job.setImmediate(restartCalibrationsTask, "calibrationTask")
 
 // Delay in milliseconds
-//job.setInterval(checkStalledSimulationsTask, 10 * 1000, "simulationTask")
+job.setInterval(checkStalledSimulationsTask, 10 * 1000, "simulationTask")
