@@ -22,16 +22,12 @@ export default class Frames extends FramesBoth {
 
   static insert(frame) {
     const scenery = Sceneries.findOne(frame.owner)
-    if (!scenery) {
+    if (!scenery)
       throw { message: "Frames.insert(): scenery not found" }
-      return
-    }
 
     const simulation = Simulations.findOne(scenery.owner)
-    if (!simulation) {
+    if (!simulation)
       throw { message: "Frames.insert(): simulation not found" }
-      return
-    }
 
     const state = simulation.state
     const instance = simulation.instance
@@ -137,11 +133,15 @@ export default class Frames extends FramesBoth {
       if (match !== null) files.push(file)
     })
 
-    files.forEach(file =>
-      unlinkSync(currentStoragePath + "/" + file, error => {
-        /* Do nothing */
-      })
-    )
+    files.forEach(file => {
+      if (scenery.storage === "s3")
+        unlinkSync(currentStoragePath + "/" + file)
+
+      if (scenery.storage === "local")
+        unlink(currentStoragePath + "/" + file, error => {
+          /* Do nothing */
+        })
+    })
   }
 
   static setStorage(sceneryId, currentStorage, newStorage) {
@@ -165,14 +165,19 @@ export default class Frames extends FramesBoth {
 
       copyFileSync(src, dst)
 
-      if (currentStorage === "s3")
-        unlinkSync(src, error => {
+      if (currentStorage === "s3") {
+        try {
+          unlinkSync(src)
+        } catch (error) {
           /* Do nothing */
-        })
-      else
+        }
+      }
+
+      else {
         unlink(src, error => {
           /* Do nothing */
         })
+      }
     })
   }
 }

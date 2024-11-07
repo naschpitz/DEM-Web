@@ -1,5 +1,6 @@
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
+import DataSetEvaluation from "../../../agentsHistories/both/schemas/dataSetEvaluation";
 
 export default SimulationScore = new SimpleSchema({
   score: {
@@ -25,5 +26,14 @@ export default SimulationScore = new SimpleSchema({
     label: "Simulation Id",
     regEx: SimpleSchema.RegEx.Id,
     optional: false,
+  },
+  dataSetsEvaluations: {
+    type: Array,
+    label: "Data Sets Evaluations",
+    defaultValue: [],
+    optional: true,
+  },
+  "dataSetsEvaluations.$": {
+    type: DataSetEvaluation,
   },
 })
