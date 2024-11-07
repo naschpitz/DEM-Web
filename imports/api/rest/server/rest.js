@@ -7,6 +7,7 @@ import connectRoute from "connect-route"
 import Frames from "../../frames/server/class.js"
 import Simulations from "../../simulations/server/class.js"
 import Logs from "../../logs/both/class.js"
+import Sceneries from "../../sceneries/both/class";
 
 WebApp.connectHandlers.use(
   connectRoute(function (router) {
@@ -22,10 +23,26 @@ WebApp.connectHandlers.use(
           const inflateCallback = Meteor.bindEnvironment((error, data) => {
             const frame = EJSON.parse(data.toString())
 
+            const scenery = Sceneries.findOne(frame.owner)
+            if (!scenery) {
+              console.log("/api/frames: scenery not found")
+              return
+            }
+
+            const simulation = Simulations.findOne(scenery.owner)
+            if (!simulation) {
+              console.log("/api/frames: simulation not found")
+              return
+            }
+
             try {
-              Frames.insert(frame)
+              // Accepts the frame if the simulation instance on the frame is the same as the current simulation
+              // instance on the server.
+              if (frame.instance === simulation.instance) {
+                Frames.insert(frame)
+              }
             } catch (error) {
-              console.log("Error inserting frame: ", error)
+              console.log("/api/frames, error inserting frame: ", error)
             }
           })
 
@@ -57,12 +74,27 @@ WebApp.connectHandlers.use(
           const inflateCallback = Meteor.bindEnvironment((error, data) => {
             const simulationLog = EJSON.parse(data.toString())
 
-            Simulations.setState(simulationLog.owner, simulationLog.state)
-            Logs.insert(simulationLog, false)
+            const simulation = Simulations.findOne(simulationLog.owner)
+            if (!simulation) {
+              console.log("/api/logs: simulation not found")
+              return
+            }
+
+            // Set the state of the simulation and insert the log only if the instance of the simulation currently on
+            // the server is same as the one that generated the log.
+            try {
+              if (simulationLog.instance === simulation.instance) {
+                Simulations.setState(simulationLog.owner, simulationLog.state)
+                Logs.insert(simulationLog)
+              }
+            } catch (error) {
+              console.log("/api/logs, error inserting log: ", error)
+            }
           })
 
           zlib.inflate(compressedData, inflateCallback)
 
+          // This runs asynchronously
           res.end("OK")
         })
       )

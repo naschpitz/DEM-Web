@@ -29,12 +29,8 @@ export default class Frames extends FramesBoth {
     if (!simulation)
       throw { message: "Frames.insert(): simulation not found" }
 
-    const state = simulation.state
-    const instance = simulation.instance
-
     // Refuses the frame if the simulation has been stopped.
-    // Or if the instance is different from the one that started the simulation.
-    if (state === "stopped" || frame.instance !== instance) return
+    if (simulation.state === "stopped") return
 
     // The frame._id is created before the insertion because the files need it in their filenames.
     // I could insert the frame before and use the returned id, but some kind of control would be necessary to
