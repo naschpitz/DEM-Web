@@ -10,9 +10,13 @@ export default class CameraFilters extends CameraFiltersDAO {
     delete newCameraFilter._id
     newCameraFilter.owner = newSceneryId
 
-    const newCameraFilterId = CameraFilterDAO.insert(newCameraFilter)
+    const newCameraFilterId = CameraFiltersDAO.insert(newCameraFilter)
 
     return newCameraFilterId
+  }
+
+  static create(sceneryId) {
+    return CameraFiltersDAO.insert({ owner: sceneryId })
   }
 
   static removeByOwner(sceneryId) {

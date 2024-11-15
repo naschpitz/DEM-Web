@@ -15,7 +15,7 @@ Cameras.schema = new SimpleSchema({
   axis: {
     type: String,
     label: "Axis",
-    optional: false,
+    optional: true,
     allowedValues: ["x", "y", "z"],
   },
   min: {

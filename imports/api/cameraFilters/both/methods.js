@@ -3,9 +3,9 @@ import { Meteor } from "meteor/meteor"
 import CameraFilters from "./class.js"
 
 Meteor.methods({
-  "cameraFilters.insert"(cameraFilter) {
+  "cameraFilters.create"(sceneryId) {
     try {
-      CameraFilters.insert(cameraFilter)
+      CameraFilters.create(sceneryId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
