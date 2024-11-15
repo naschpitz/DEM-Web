@@ -18,12 +18,4 @@ Meteor.methods({
       throw new Meteor.Error("500", error.message)
     }
   },
-
-  "cameras.removeByOwner"(sceneryId) {
-    try {
-      Cameras.remove(sceneryId)
-    } catch (error) {
-      throw new Meteor.Error("500", error.message)
-    }
-  },
 })
