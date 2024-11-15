@@ -104,7 +104,7 @@ export default NonSolidObjects = props => {
 
     Meteor.call("nonSolidObjects.remove", data.original._id, error => {
       if (error) Alert.error("Error removing non-solid object: " + error.reason)
-      else Alert.success("Non-solid object successfully created.")
+      else Alert.success("Non-solid object successfully removed.")
 
       setIsRemoving(false)
     })

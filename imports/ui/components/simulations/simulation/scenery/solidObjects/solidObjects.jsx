@@ -104,7 +104,7 @@ export default SolidObjects = props => {
 
     Meteor.call("solidObjects.remove", data.original._id, error => {
       if (error) Alert.error("Error removing solid object: " + error.reason)
-      else Alert.success("Solid object successfully created.")
+      else Alert.success("Solid object successfully removed.")
 
       setIsRemoving(false)
     })
