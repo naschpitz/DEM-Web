@@ -3,9 +3,9 @@ import { Mongo } from "meteor/mongo"
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 
-const Cameras = new Mongo.Collection("cameras")
+const CameraFilters = new Mongo.Collection("cameraFilters")
 
-Cameras.schema = new SimpleSchema({
+CameraFilters.schema = new SimpleSchema({
   owner: {
     type: String,
     label: "Scenery owner",
@@ -47,21 +47,21 @@ Cameras.schema = new SimpleSchema({
   },
 })
 
-Cameras.schema.addValidator(function () {
+CameraFilters.schema.addValidator(function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 })
 
-Cameras.schema.messageBox.messages({
+CameraFilters.schema.messageBox.messages({
   en: {
     notAuthorized: "User not logged in",
     notOwner: "The user is not the simulation's owner",
   },
 })
 
-Cameras.attachSchema(Cameras.schema)
+CameraFilters.attachSchema(CameraFilters.schema)
 
-Meteor.isServer && Cameras.rawCollection().createIndex({ owner: 1 }, { background: true })
+Meteor.isServer && CameraFilters.rawCollection().createIndex({ owner: 1 }, { background: true })
 
-export default Cameras
+export default CameraFilters
