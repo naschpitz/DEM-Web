@@ -22,4 +22,37 @@ export default class CameraFilters extends CameraFiltersDAO {
   static removeByOwner(sceneryId) {
     CameraFiltersDAO.remove({ owner: sceneryId })
   }
+
+  static isWithinLimits(vertices, cameraFilters) {
+    return vertices.every((vertex) => {
+      const x = vertex[0]
+      const y = vertex[1]
+      const z = vertex[2]
+
+      return cameraFilters.every((cameraFilter) => {
+        let { axis, min, max } = cameraFilter
+
+        min = min !== undefined ? min : -Infinity
+        max = max !== undefined ? max : Infinity
+
+        let resultX = true
+        let resultY = true
+        let resultZ = true
+
+        switch (axis) {
+          case "x":
+            resultX |= x >= min && y <= max
+            break
+          case "y":
+            resultY |= y >= min && y <= max
+            break
+          case "z":
+            resultZ |= z >= min && z <= max
+            break
+        }
+
+        return resultX && resultY && resultZ
+      })
+    })
+  }
 }

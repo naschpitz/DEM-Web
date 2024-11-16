@@ -7,6 +7,7 @@ import { writeFileSync, readFileSync, unlink } from "fs"
 import { execFileSync } from "child_process"
 
 import Cameras from "../../cameras/both/class.js"
+import CameraFilters from "../../cameraFilters/both/class.js"
 import Frames from "../../frames/server/class.js"
 import ObjectsProperties from "../../objectsProperties/both/class.js"
 
@@ -24,6 +25,7 @@ export default class FramesImages {
     const scenery = frame.scenery
 
     const camera = Cameras.findOne({ owner: frame.owner })
+    const cameraFilters = CameraFilters.find({ owner: frame.owner }).fetch()
 
     const nonSolidObjects = _.get(scenery, "objects.nonSolidObjects", [])
     const solidObjects = _.get(scenery, "objects.solidObjects", [])
@@ -115,6 +117,10 @@ export default class FramesImages {
       const pigmentScript = getPigmentScript(nonSolidObject._id)
 
       nonSolidObject.particles.forEach(particle => {
+        // Do not add the particle to the script if it is outside the camera filter
+        if (!CameraFilters.isWithinLimits(particle.currentPosition, cameraFilters))
+          return
+
         script += getParticleScript(particle, pigmentScript)
         script += "\n"
       })
