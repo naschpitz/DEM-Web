@@ -46,7 +46,7 @@ export default class CameraFilters extends CameraFiltersDAO {
 
         switch (axis) {
           case "x":
-            resultX = x >= min && y <= max
+            resultX = x >= min && x <= max
             break
           case "y":
             resultY = y >= min && y <= max
