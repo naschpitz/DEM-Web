@@ -11,7 +11,7 @@ import Simulations from "../../simulations/both/class.js";
 import VideosBoth from "../both/class.js";
 
 export default class Videos extends VideosBoth {
-  static render(userId, sceneryId, settings) {
+  static async render(userId, sceneryId, settings) {
     const scenery = Sceneries.findOne(sceneryId);
     const simulationId = scenery.owner;
 
@@ -43,7 +43,7 @@ export default class Videos extends VideosBoth {
     mkdirSync(imagesPath);
 
     try {
-      FramesImages.renderAll(sceneryId, settings.dimensions, true, imagesPath, settings.initialFrame, settings.finalFrame);
+      await FramesImages.renderAll(sceneryId, settings.dimensions, true, imagesPath, settings.initialFrame, settings.finalFrame);
     } catch (error) {
       rmdirSync(imagesPath, { recursive: true });
       VideosBoth.setState(videoId, "errorRendering", error);

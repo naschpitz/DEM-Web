@@ -2,6 +2,7 @@ import _ from "lodash"
 
 import Calibrations from "../../calibrations/both/class"
 import Cameras from "../../cameras/both/class.js"
+import CameraFilters from "../../cameraFilters/both/class.js"
 import Frames from "../../frames/both/class"
 import Materials from "../../materials/both/class.js"
 import NonSolidObjects from "../../nonSolidObjects/both/class.js"
@@ -20,6 +21,7 @@ export default class Sceneries extends SceneriesDAO {
     const newSceneryId = SceneriesDAO.insert(newScenery)
 
     Cameras.clone(oldSceneryId, newSceneryId)
+    CameraFilters.clone(oldSceneryId, newSceneryId)
 
     const materialsMap = Materials.clone(oldSceneryId, newSceneryId)
     const nonSolidObjectsMap = NonSolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)

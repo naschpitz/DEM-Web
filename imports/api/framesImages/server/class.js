@@ -12,8 +12,8 @@ import Frames from "../../frames/server/class.js"
 import ObjectsProperties from "../../objectsProperties/both/class.js"
 
 export default class FramesImages {
-  static render(frameId, dimensions, keepImageFile, path, imageName) {
-    const frame = Frames.getFullFrame(frameId)
+  static async render(frameId, dimensions, keepImageFile, path, imageName) {
+    const frame = await Frames.getFullFrame(frameId)
 
     if (!frame) return
 
@@ -217,12 +217,14 @@ export default class FramesImages {
 
     const frames = Frames.find(selector, { sort: { step: 1 } }).fetch()
 
-    return frames.map((frame, index) => {
+    const promises = frames.map(async (frame, index) => {
       const imageName = index + ".png"
 
-      const data = this.render(frame._id, dimensions, keepImageFile, path, imageName)
+      const data = await this.render(frame._id, dimensions, keepImageFile, path, imageName)
 
       return [frame._id, data]
     })
+
+    return Promise.all(promises)
   }
 }

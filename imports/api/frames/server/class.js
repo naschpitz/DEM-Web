@@ -1,10 +1,11 @@
 import { Meteor } from "meteor/meteor"
 import { EJSON } from "meteor/ejson"
 import { Random } from "meteor/random"
-import zlib from "zlib"
 import _ from "lodash"
 
 import { unlink, unlinkSync, writeFileSync, readFileSync, readdirSync, copyFileSync } from "fs"
+
+import { deflateWithPigz, inflateWithPigz } from "../../utils/pigz";
 
 import FramesBoth from "../both/class.js"
 import Sceneries from "../../sceneries/both/class.js"
@@ -20,7 +21,7 @@ export default class Frames extends FramesBoth {
     }
   }
 
-  static insert(frame) {
+  static async insert(frame) {
     const scenery = Sceneries.findOne(frame.owner)
     if (!scenery)
       throw { message: "Frames.insert(): scenery not found" }
@@ -42,7 +43,7 @@ export default class Frames extends FramesBoth {
 
     const currentStoragePath = Frames.getStoragePath(scenery.storage)
 
-    nonSolidObjects.forEach(nonSolidObject => {
+    for (const nonSolidObject of nonSolidObjects) {
       const particles = nonSolidObject.particles
 
       // If there are no particles, there is no need to save the file.
@@ -51,14 +52,18 @@ export default class Frames extends FramesBoth {
       if (!particles) return
 
       const data = EJSON.stringify(particles)
-      const compressedData = zlib.deflateSync(data.toString(), { level: 9 })
 
-      const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id
+      try {
+        const deflatedData = await deflateWithPigz(data.toString())
+        const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id
 
-      writeFileSync(fileName, compressedData)
-    })
+        writeFileSync(fileName, deflatedData)
+      } catch (error) {
+        console.log("Error deflating nonSolidObject: ", error)
+      }
+    }
 
-    solidObjects.forEach(solidObject => {
+    for (const solidObject of solidObjects) {
       const faces = solidObject.faces
 
       // If there are no faces, there is no need to save the file.
@@ -67,17 +72,21 @@ export default class Frames extends FramesBoth {
       if (!faces) return
 
       const data = EJSON.stringify(faces)
-      const compressedData = zlib.deflateSync(data.toString(), { level: 9 })
 
-      const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id
+      try {
+        const deflatedData = await deflateWithPigz(data.toString())
+        const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id
 
-      writeFileSync(fileName, compressedData)
-    })
+        writeFileSync(fileName, deflatedData)
+      } catch (error) {
+        console.log("Error deflating solidObject: ", error)
+      }
+    }
 
     FramesBoth.insert(frame)
   }
 
-  static getFullFrame(frameId) {
+  static async getFullFrame(frameId) {
     const frame = FramesBoth.findOne(frameId)
 
     if (!frame) return
@@ -89,23 +98,34 @@ export default class Frames extends FramesBoth {
 
     const currentStoragePath = Frames.getStoragePath(scenery.storage)
 
-    nonSolidObjects.forEach(nonSolidObject => {
-      const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id
+    const nonSolidObjectsPromises = nonSolidObjects.map(async (nonSolidObject) => {
+      try {
+        const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id
 
-      const compressedData = readFileSync(fileName)
-      const data = zlib.inflateSync(compressedData)
+        const deflatedData = readFileSync(fileName)
+        const inflatedData = await inflateWithPigz(deflatedData)
 
-      nonSolidObject.particles = EJSON.parse(data.toString())
+        nonSolidObject.particles = EJSON.parse(inflatedData.toString())
+      } catch (error) {
+        console.log("Error inflating nonSolidObject: ", error)
+      }
     })
 
-    solidObjects.forEach(solidObject => {
-      const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + solidObject._id
+    const solidObjectsPromises = solidObjects.map(async (solidObject) => {
+      try {
+        const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + solidObject._id
 
-      const compressedData = readFileSync(fileName)
-      const data = zlib.inflateSync(compressedData)
+        const deflatedData = readFileSync(fileName)
+        const inflatedData = await inflateWithPigz(deflatedData)
 
-      solidObject.faces = EJSON.parse(data.toString())
+        solidObject.faces = EJSON.parse(inflatedData.toString())
+      } catch (error) {
+        console.log("Error inflating solidObject: ", error)
+      }
     })
+
+    await Promise.all(nonSolidObjectsPromises)
+    await Promise.all(solidObjectsPromises)
 
     return frame
   }

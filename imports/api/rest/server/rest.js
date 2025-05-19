@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor"
 import { EJSON } from "meteor/ejson"
-import * as zlib from "zlib"
+import { inflateWithPigz } from "../../utils/pigz.js"
+import zlib from "zlib"
 
 import connectRoute from "connect-route"
 
@@ -12,50 +13,52 @@ import Sceneries from "../../sceneries/both/class";
 WebApp.connectHandlers.use(
   connectRoute(function (router) {
     router.post("/api/frames", function (req, res, next) {
-      let body = []
+      const body = [];
 
-      req.on("data", chunk => body.push(chunk))
+      req.on("data", (chunk) => body.push(chunk));
       req.on(
         "end",
-        Meteor.bindEnvironment(() => {
-          const compressedData = Buffer.concat(body)
+        Meteor.bindEnvironment(async () => {
+          const deflatedData = Buffer.concat(body);
 
-          const inflateCallback = Meteor.bindEnvironment((error, data) => {
-            const frame = EJSON.parse(data.toString())
-
-            const scenery = Sceneries.findOne(frame.owner)
-            if (!scenery) {
-              console.log("/api/frames: scenery not found")
-              return
-            }
-
-            const simulation = Simulations.findOne(scenery.owner)
-            if (!simulation) {
-              console.log("/api/frames: simulation not found")
-              return
-            }
+          try {
+            const inflatedData = await inflateWithPigz(deflatedData);
 
             try {
-              // Accepts the frame if the simulation instance on the frame is the same as the current simulation
-              // instance on the server.
+              const frame = EJSON.parse(inflatedData.toString());
+
+              const scenery = Sceneries.findOne(frame.owner);
+              if (!scenery) {
+                console.log("/api/frames: scenery not found");
+                return;
+              }
+
+              const simulation = Simulations.findOne(scenery.owner);
+              if (!simulation) {
+                console.log("/api/frames: simulation not found");
+                return;
+              }
+
               if (frame.instance === simulation.instance) {
-                Frames.insert(frame)
+                await Frames.insert(frame);
               }
             } catch (error) {
-              console.log("/api/frames, error inserting frame: ", error)
+              console.log("/api/frames, error inserting frame: ", error);
             }
-          })
 
-          // This runs asynchronously
-          zlib.inflate(compressedData, inflateCallback)
-
-          res.end("OK")
+            res.end("OK");
+          } catch (error) {
+            console.log("/api/frames, error inflating frame: ", error);
+            res.writeHead(400, "Decompression failed");
+            res.end();
+          }
         })
       )
-      req.on("error", error => {
-        res.writeHead(400, "Error receiving frame")
-        res.end()
-      })
+
+      req.on("error", (error) => {
+        res.writeHead(400, "Error receiving frame");
+        res.end();
+      });
     })
   })
 )
@@ -69,7 +72,7 @@ WebApp.connectHandlers.use(
       req.on(
         "end",
         Meteor.bindEnvironment(() => {
-          const compressedData = Buffer.concat(body)
+          const deflatedData = Buffer.concat(body)
 
           const inflateCallback = Meteor.bindEnvironment((error, data) => {
             const simulationLog = EJSON.parse(data.toString())
@@ -92,7 +95,7 @@ WebApp.connectHandlers.use(
             }
           })
 
-          zlib.inflate(compressedData, inflateCallback)
+          zlib.inflate(deflatedData, inflateCallback)
 
           // This runs asynchronously
           res.end("OK")
