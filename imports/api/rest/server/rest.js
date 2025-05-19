@@ -95,6 +95,7 @@ WebApp.connectHandlers.use(
             }
           })
 
+          // TODO: Replace zlib by pigz here too
           zlib.inflate(deflatedData, inflateCallback)
 
           // This runs asynchronously

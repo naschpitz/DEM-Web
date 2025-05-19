@@ -37,10 +37,10 @@ export default Storage = ({ scenery }) => {
     return scenery.storage === "local" ? "s3" : "local"
   }
 
-  const currentStorageText = getStorageText(scenery.storage)
-  const newStorageText = getStorageText(getNewStorage())
-
   if (scenery) {
+    const currentStorageText = getStorageText(scenery.storage)
+    const newStorageText = getStorageText(getNewStorage())
+
     return (
       <div id="storage" className="text-center">
         <p>
