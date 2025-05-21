@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 
 import { closeSync, mkdirSync, openSync, rmdirSync, statSync, unlink } from "fs";
-import { execFileSync } from "child_process";
+import { spawn } from "child_process"
 import waitOn from "wait-on";
 
 import FramesImages from "../../framesImages/server/class.js";
@@ -45,6 +45,7 @@ export default class Videos extends VideosBoth {
     try {
       await FramesImages.renderAll(sceneryId, settings.dimensions, true, imagesPath, settings.initialFrame, settings.finalFrame);
     } catch (error) {
+      console.log("Error rendering images: ", error);
       rmdirSync(imagesPath, { recursive: true });
       VideosBoth.setState(videoId, "errorRendering", error);
       return;
@@ -85,7 +86,25 @@ export default class Videos extends VideosBoth {
     VideosBoth.setState(videoId, "encoding");
 
     try {
-      execFileSync(command, args);
+      await new Promise((resolve, reject) => {
+        const ffmpeg = spawn(command, args);
+
+        ffmpeg.stderr.on("data", data => {
+          // Do nothing, but still this callback is necessary, otherwise the process will hang.
+        });
+
+        ffmpeg.on("error", error => {
+          console.error("ffmpeg error:", error);
+          reject(error);
+        });
+
+        ffmpeg.on("close", code => {
+          if (code !== 0) {
+            return reject(new Error(`ffmpeg exited with code ${code}`));
+          }
+          resolve();
+        });
+      });
     } catch (error) {
       VideosBoth.setState(videoId, "errorEncoding", error);
       return;

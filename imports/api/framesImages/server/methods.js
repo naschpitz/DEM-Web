@@ -11,14 +11,4 @@ Meteor.methods({
       throw new Meteor.Error("500", error.message)
     }
   },
-
-  // Currently not used
-  async "framesImages.renderAll"(sceneryId, dimensions) {
-    try {
-      this.unblock()
-      return await FramesImages.renderAll(sceneryId, dimensions)
-    } catch (error) {
-      throw new Meteor.Error("500", error.message)
-    }
-  },
 })

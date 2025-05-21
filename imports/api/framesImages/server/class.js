@@ -3,8 +3,8 @@ import { Random } from "meteor/random"
 import _ from "lodash"
 
 import { cpus } from "os"
-import { writeFileSync, readFileSync, unlink } from "fs"
-import { execFileSync } from "child_process"
+import { writeFileSync, readFileSync, unlinkSync } from "fs";
+import { spawn } from "child_process"
 
 import Cameras from "../../cameras/both/class.js"
 import CameraFilters from "../../cameraFilters/both/class.js"
@@ -41,7 +41,6 @@ export default class FramesImages {
 
     const random = Random.id(6)
     const scriptPath = (path ? path + "/" : Meteor.settings.tmpPath + "/") + frameId + "_" + random + ".pov"
-
     writeFileSync(scriptPath, script)
 
     let nCpus = cpus().length
@@ -59,30 +58,71 @@ export default class FramesImages {
     args.push("+MI" + 1024)
     args.push("-D")
 
-    let data
-
-    try {
+    return new Promise((resolve, reject) => {
       if (keepImageFile) {
-        const imagePath = (path ? path + "/" : "") + (imageName ? imageName : frameId + "_" + random + ".png")
+        const imagePath = (path ? path + "/" : "") + (imageName ? imageName : frameId + "_" + Random.id(6) + ".png")
         args.push("+O" + imagePath)
 
-        execFileSync(command, args)
-        data = readFileSync(imagePath)
+        const porvray = spawn(command, args)
+
+        porvray.stderr.on("data", error => {
+          // Do nothing, but still this callback is necessary, otherwise the process will hang.
+        })
+
+        porvray.on("error", error => {
+          console.error("POV-Ray error:", error)
+
+          cleanUp(scriptPath)
+          reject(error)
+        })
+
+        porvray.on("close", code => {
+          cleanUp(scriptPath)
+
+          if (code !== 0) {
+            console.log("ERROR: POV-Ray exited with code " + code)
+            return reject(new Error("POV-Ray exited with code " + code))
+          }
+
+          try {
+            const image = readFileSync(imagePath)
+            resolve(Buffer.from(image, "binary").toString("base64"))
+          } catch (error) {
+            console.log("Error reading image file: ", error)
+            reject(error)
+          }
+        })
       } else {
-        args.push("+O-")
+        args.push("+O-") // output to stdout
+        const porvray = spawn(command, args)
 
-        // 10MB of maximum buffer to stdout or stderr.
-        data = execFileSync(command, args, { maxBuffer: 10485760 })
+        let chunks = []
+
+        porvray.stdout.on("data", chunk => chunks.push(chunk))
+
+        porvray.stderr.on("data", error => {
+          // Do nothing, but still this callback is necessary, otherwise the process will hang.
+        })
+
+        porvray.on("error", error => {
+          console.error("POV-Ray error:", error)
+
+          cleanUp(scriptPath)
+          reject(error)
+        })
+
+        porvray.on("close", code => {
+          cleanUp(scriptPath)
+
+          if (code !== 0) {
+            return reject(new Error("POV-Ray exited with code " + code))
+          }
+
+          const buffer = Buffer.concat(chunks)
+          resolve(buffer.toString("base64"))
+        })
       }
-    } catch (error) {
-      throw error
-    } finally {
-      unlink(scriptPath, error => {
-        /* Do nothing */
-      })
-    }
-
-    return Buffer.from(data, "binary").toString("base64")
+    })
 
     function getBackgroudScript() {
       return "background { color rgb <0, 0, 0> }"
@@ -182,9 +222,17 @@ export default class FramesImages {
 
       return script
     }
+
+    function cleanUp(scriptPath) {
+      unlinkSync(scriptPath, error => {
+        if (error) {
+          console.error("Error removing povray script file: ", scriptPath, error)
+        }
+      })
+    }
   }
 
-  static renderAll(sceneryId, dimensions, keepImageFile, path, initialFrame, finalFrame) {
+  static async renderAll(sceneryId, dimensions, keepImageFile, path, initialFrame, finalFrame) {
     const selector = {
       owner: sceneryId,
     }
@@ -217,14 +265,20 @@ export default class FramesImages {
 
     const frames = Frames.find(selector, { sort: { step: 1 } }).fetch()
 
-    const promises = frames.map(async (frame, index) => {
-      const imageName = index + ".png"
+    const renderSequentially = async (frames) => {
+      const results = []
+      let index = 0
 
-      const data = await this.render(frame._id, dimensions, keepImageFile, path, imageName)
+      for (const frame of frames) {
+        const imageName = index + ".png"
+        const result = await this.render(frame._id, dimensions, keepImageFile, path, imageName)
+        results.push(result)
+        index++
+      }
 
-      return [frame._id, data]
-    })
+      return results
+    }
 
-    return Promise.all(promises)
+    return await renderSequentially.call(this, frames)
   }
 }
