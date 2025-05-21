@@ -8,12 +8,12 @@ export default class Logs extends LogsDAO {
     LogsDAO.remove({ owner: ownerId })
   }
 
-  static clone(ownerId, newOwnerId) {
-    const logs = LogsDAO.find({ owner: ownerId })
+  static clone(oldSimulationId, newSimulationId) {
+    const logs = LogsDAO.find({ owner: oldSimulationId })
 
     logs.forEach(log => {
       delete log._id
-      log.owner = newOwnerId
+      log.owner = newSimulationId
 
       LogsDAO.insert(log, { getAutoValues: false })
     })

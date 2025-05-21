@@ -4,15 +4,14 @@ import CameraFiltersDAO from "./dao.js"
 
 export default class CameraFilters extends CameraFiltersDAO {
   static clone(oldSceneryId, newSceneryId) {
-    const oldCameraFilter = CameraFiltersDAO.findOne({ owner: oldSceneryId })
+    const cameraFilters = CameraFiltersDAO.find({ owner: oldSceneryId })
 
-    const newCameraFilter = _.clone(oldCameraFilter)
-    delete newCameraFilter._id
-    newCameraFilter.owner = newSceneryId
+    cameraFilters.forEach(cameraFilter => {
+      delete cameraFilter._id
+      cameraFilter.owner = newSceneryId
 
-    const newCameraFilterId = CameraFiltersDAO.insert(newCameraFilter)
-
-    return newCameraFilterId
+      CameraFiltersDAO.insert(cameraFilter)
+    })
   }
 
   static create(sceneryId) {
