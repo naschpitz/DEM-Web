@@ -30,12 +30,12 @@ export default class Frames extends FramesDAO {
 
     const selector = {
       owner: sceneryId,
-      $or: [{ "scenery.objects.nonSolidObjects._id": objectId }, { "scenery.objects.solidObjects._id": objectId }],
+      $or: [{ "scenery.objects.nonSolidObjects._id": objectId }, { "scenery.objects.solidObjects._id": objectId }]
     }
 
     if (minInterval || maxInterval) selector.$and = filter
 
-    const frames = FramesDAO.find(selector).fetch()
+    const frames = FramesDAO.find(selector, { sort: { step: 1 } }).fetch()
 
     let data = ""
 

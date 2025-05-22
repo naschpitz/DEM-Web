@@ -34,7 +34,7 @@ export default Chart = ({ sceneryId, objectId, dataName, minInterval, maxInterva
 
     if (minInterval || maxInterval) selector.$and = filter
 
-    const frames = FramesClass.find(selector)
+    const frames = FramesClass.find(selector, { sort: { step: 1 } })
 
     return frames.map(frame => {
       let object = null

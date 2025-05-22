@@ -167,7 +167,7 @@ export default class Agents extends AgentsBoth {
       const simulation = Simulations.findOne(agent.current.simulation)
       const scenery = Sceneries.findOne({ owner: simulation._id })
 
-      const frames = Frames.find({ owner: scenery._id }, { sort: { time: 1 } }).fetch()
+      const frames = Frames.find({ owner: scenery._id }, { sort: { step: 1 } }).fetch()
       const dataSets = DataSets.find({ owner: agent.owner, enabled: true }).fetch()
 
       // Sanity check: calculate the expected number of frames for the scenery.
