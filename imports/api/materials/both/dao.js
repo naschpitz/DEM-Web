@@ -2,32 +2,9 @@ import dot from "dot-object"
 import _ from "lodash"
 
 import MaterialsCol from "./collection.js"
+import createDAO from "../../baseDAO/createDAO";
 
-export default class MaterialsDAO {
-  static find(...args) {
-    return MaterialsCol.find(...args)
-  }
-
-  static findOne(...args) {
-    return MaterialsCol.findOne(...args)
-  }
-
-  static insert(...args) {
-    return MaterialsCol.insert(...args)
-  }
-
-  static update(...args) {
-    return MaterialsCol.update(...args)
-  }
-
-  static upsert(...args) {
-    return MaterialsCol.upsert(...args)
-  }
-
-  static remove(...args) {
-    return MaterialsCol.remove(...args)
-  }
-
+export default class MaterialsDAO extends createDAO(MaterialsCol) {
   static updateObj(material) {
     const dottedMaterial = dot.dot(material)
     const arraysPaths = getArraysPaths(material)

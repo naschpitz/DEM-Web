@@ -1,28 +1,9 @@
 import _ from "lodash"
 
 import FramesCol from "./collection.js"
+import createDAO from "../../baseDAO/createDAO.js"
 
-export default class FramesDAO {
-  static find(...args) {
-    return FramesCol.find(...args)
-  }
-
-  static findOne(...args) {
-    return FramesCol.findOne(...args)
-  }
-
-  static update(...args) {
-    return FramesCol.update(...args)
-  }
-
-  static upsert(...args) {
-    return FramesCol.upsert(...args)
-  }
-
-  static remove(...args) {
-    return FramesCol.remove(...args)
-  }
-
+export default class FramesDAO extends createDAO(FramesCol) {
   static insert(frame) {
     const scenery = frame.scenery
 

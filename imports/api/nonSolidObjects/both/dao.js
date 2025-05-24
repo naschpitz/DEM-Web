@@ -2,32 +2,9 @@ import dot from "dot-object"
 import _ from "lodash"
 
 import NonSolidObjectsCol from "./collection.js"
+import createDAO from "../../baseDAO/createDAO";
 
-export default class NonSolidObjectsDAO {
-  static find(...args) {
-    return NonSolidObjectsCol.find(...args)
-  }
-
-  static findOne(...args) {
-    return NonSolidObjectsCol.findOne(...args)
-  }
-
-  static insert(...args) {
-    return NonSolidObjectsCol.insert(...args)
-  }
-
-  static update(...args) {
-    return NonSolidObjectsCol.update(...args)
-  }
-
-  static upsert(...args) {
-    return NonSolidObjectsCol.upsert(...args)
-  }
-
-  static remove(...args) {
-    return NonSolidObjectsCol.remove(...args)
-  }
-
+export default class NonSolidObjectsDAO extends createDAO(NonSolidObjectsCol) {
   static updateObj(nonSolidObject) {
     const dottedNonSolidObject = dot.dot(nonSolidObject)
     const arraysPaths = getArraysPaths(nonSolidObject)

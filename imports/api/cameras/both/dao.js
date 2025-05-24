@@ -2,32 +2,9 @@ import dot from "dot-object"
 import _ from "lodash"
 
 import CamerasCol from "./collection.js"
+import createDAO from "../../baseDAO/createDAO";
 
-export default class CamerasDAO {
-  static find(...args) {
-    return CamerasCol.find(...args)
-  }
-
-  static findOne(...args) {
-    return CamerasCol.findOne(...args)
-  }
-
-  static insert(...args) {
-    return CamerasCol.insert(...args)
-  }
-
-  static update(...args) {
-    return CamerasCol.update(...args)
-  }
-
-  static upsert(...args) {
-    return CamerasCol.upsert(...args)
-  }
-
-  static remove(...args) {
-    return CamerasCol.remove(...args)
-  }
-
+export default class CamerasDAO extends createDAO(CamerasCol) {
   static updateObj(camera) {
     const dottedCamera = dot.dot(camera)
     const arraysPaths = getArraysPaths(camera)

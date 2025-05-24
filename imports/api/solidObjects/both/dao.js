@@ -2,32 +2,9 @@ import dot from "dot-object"
 import _ from "lodash"
 
 import SolidObjectsCol from "./collection.js"
+import createDAO from "../../baseDAO/createDAO.js"
 
-export default class SolidObjects {
-  static find(...args) {
-    return SolidObjectsCol.find(...args)
-  }
-
-  static findOne(...args) {
-    return SolidObjectsCol.findOne(...args)
-  }
-
-  static insert(...args) {
-    return SolidObjectsCol.insert(...args)
-  }
-
-  static update(...args) {
-    return SolidObjectsCol.update(...args)
-  }
-
-  static upsert(...args) {
-    return SolidObjectsCol.upsert(...args)
-  }
-
-  static remove(...args) {
-    return SolidObjectsCol.remove(...args)
-  }
-
+export default class SolidObjectsDAO extends createDAO(SolidObjectsCol) {
   static updateObj(solidObject) {
     const dottedSolidObject = dot.dot(solidObject)
     const arraysPaths = getArraysPaths(solidObject)

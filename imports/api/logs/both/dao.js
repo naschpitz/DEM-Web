@@ -1,27 +1,6 @@
 import LogsCol from "./collection.js"
+import createDAO from "../../baseDAO/createDAO.js"
 
-export default class LogsDAO {
-  static find(...args) {
-    return LogsCol.find(...args)
-  }
+export default class LogsDAO extends createDAO(LogsCol) {
 
-  static findOne(...args) {
-    return LogsCol.findOne(...args)
-  }
-
-  static insert(...args) {
-    return LogsCol.insert(...args)
-  }
-
-  static update(...args) {
-    return LogsCol.update(...args)
-  }
-
-  static upsert(...args) {
-    return LogsCol.upsert(...args)
-  }
-
-  static remove(...args) {
-    return LogsCol.remove(...args)
-  }
 }

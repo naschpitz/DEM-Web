@@ -2,32 +2,9 @@ import dot from "dot-object"
 import _ from "lodash"
 
 import SceneriesCol from "./collection.js"
+import createDAO from "../../baseDAO/createDAO";
 
-export default class SceneriesDAO {
-  static find(...args) {
-    return SceneriesCol.find(...args)
-  }
-
-  static findOne(...args) {
-    return SceneriesCol.findOne(...args)
-  }
-
-  static insert(...args) {
-    return SceneriesCol.insert(...args)
-  }
-
-  static update(...args) {
-    return SceneriesCol.update(...args)
-  }
-
-  static upsert(...args) {
-    return SceneriesCol.upsert(...args)
-  }
-
-  static remove(...args) {
-    return SceneriesCol.remove(...args)
-  }
-
+export default class SceneriesDAO extends createDAO(SceneriesCol) {
   static updateObj(scenery) {
     const dottedScenery = dot.dot(scenery)
     const arraysPaths = getArraysPaths(scenery)
