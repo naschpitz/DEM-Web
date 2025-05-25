@@ -3,9 +3,9 @@ import { Meteor } from "meteor/meteor"
 import Simulations from "./class.js"
 
 Meteor.methods({
-  "simulations.clone"(simulationId) {
+  async "simulations.clone"(simulationId) {
     try {
-      Simulations.clone(simulationId)
+      await Simulations.clone(simulationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

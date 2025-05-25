@@ -8,15 +8,28 @@ export default class Logs extends LogsDAO {
     LogsDAO.remove({ owner: ownerId })
   }
 
-  static clone(oldSimulationId, newSimulationId) {
-    const logs = LogsDAO.find({ owner: oldSimulationId })
+  static async clone(oldSimulationId, newSimulationId) {
+    const rawCollection = LogsDAO.rawCollection();
 
-    logs.forEach(log => {
-      delete log._id
-      log.owner = newSimulationId
+    const cursor = rawCollection.find({ owner: oldSimulationId });
+    const batchSize = 1000;
+    let batch = [];
 
-      LogsDAO.insert(log, { getAutoValues: false })
-    })
+    while (await cursor.hasNext()) {
+      const log = await cursor.next();
+      const { _id, ...rest } = log;
+      batch.push({ ...rest, owner: newSimulationId });
+
+      if (batch.length === batchSize) {
+        await rawCollection.insertMany(batch, { ordered: false });
+        batch = []; // reset batch
+      }
+    }
+
+    // Insert any remaining logs
+    if (batch.length > 0) {
+      await rawCollection.insertMany(batch, { ordered: false });
+    }
   }
 
   static getDuration(duration) {

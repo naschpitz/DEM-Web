@@ -3,10 +3,10 @@ import { Meteor } from "meteor/meteor"
 import Calibrations from "./class.js"
 
 Meteor.methods({
-  "calibrations.start"(calibrationId) {
+  async "calibrations.start"(calibrationId) {
     try {
       this.unblock()
-      Calibrations.start(calibrationId)
+      await Calibrations.start(calibrationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }

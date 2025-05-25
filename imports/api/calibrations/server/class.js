@@ -7,11 +7,11 @@ import DataSets from "../../dataSets/both/class";
 import Parameters from "../../parameters/both/class";
 
 export default class Calibrations extends CalibrationsBoth {
-  static start(calibrationId) {
+  static async start(calibrationId) {
     const hypervisor = new Hypervisor(calibrationId)
 
     try {
-      hypervisor.initialize()
+      await hypervisor.initialize()
     } catch (error) {
       console.log(error)
     }

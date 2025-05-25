@@ -4,7 +4,7 @@ import Calibrations from "../../both/class"
 import Hypervisor from "../hypervisor"
 
 // Find Calibrations in progress and re-initialize them
-const bound = Meteor.bindEnvironment(() => {
+const bound = Meteor.bindEnvironment(async () => {
   const calibrationsInProgress = Calibrations.find({
     state: { $in: ["running", "paused"] },
   })
@@ -17,15 +17,15 @@ const bound = Meteor.bindEnvironment(() => {
 
   console.log("Found " + calibrationsInProgress.count() + " Calibrations in progress, initializing Hypervisors.")
 
-  calibrationsInProgress.forEach(calibration => {
+  for (const calibration of calibrationsInProgress.fetch()) {
     const hypervisor = new Hypervisor(calibration._id)
 
     try {
-      hypervisor.initialize()
+      await hypervisor.initialize()
     } catch (error) {
       console.log(error)
     }
-  })
+  }
 
   console.log("Done checking for Calibrations in progress.")
 })

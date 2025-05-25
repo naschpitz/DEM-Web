@@ -10,7 +10,7 @@ import SceneriesDAO from "./dao.js"
 import SolidObjects from "../../solidObjects/both/class.js"
 
 export default class Sceneries extends SceneriesDAO {
-  static clone(oldSimulationId, newSimulationId, frames = false) {
+  static async clone(oldSimulationId, newSimulationId, frames = false) {
     const oldScenery = SceneriesDAO.findOne({ owner: oldSimulationId })
 
     const newScenery = _.cloneDeep(oldScenery)
@@ -28,7 +28,7 @@ export default class Sceneries extends SceneriesDAO {
     const solidObjectsMap = SolidObjects.clone(oldSceneryId, newSceneryId, materialsMap)
 
     if (frames) {
-      Frames.clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap)
+      await Frames.clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap)
     }
 
     return {

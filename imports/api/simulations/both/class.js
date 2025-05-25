@@ -6,7 +6,7 @@ import Sceneries from "../../sceneries/both/class.js"
 import SimulationsDAO from "./dao.js"
 
 export default class Simulations extends SimulationsDAO {
-  static clone(simulationId, primary = true, logs = false, frames = false) {
+  static async clone(simulationId, primary = true, logs = false, frames = false) {
     const oldSimulation = SimulationsDAO.findOne(simulationId)
 
     const newSimulation = _.cloneDeep(oldSimulation)
@@ -25,7 +25,7 @@ export default class Simulations extends SimulationsDAO {
 
     const newSimulationId = SimulationsDAO.insert(newSimulation)
 
-    const maps = Sceneries.clone(simulationId, newSimulationId, frames)
+    const maps = await Sceneries.clone(simulationId, newSimulationId, frames)
 
     if (primary) {
       Calibrations.clone(
@@ -38,7 +38,7 @@ export default class Simulations extends SimulationsDAO {
     }
 
     if (logs) {
-      Logs.clone(simulationId, newSimulationId)
+      await Logs.clone(simulationId, newSimulationId)
     }
 
     return newSimulationId

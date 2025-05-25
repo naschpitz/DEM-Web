@@ -3,23 +3,42 @@ import _ from "lodash"
 import FramesDAO from "./dao.js"
 
 export default class Frames extends FramesDAO {
-  static clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap) {
-    const frames = FramesDAO.find({ owner: oldSceneryId })
+  static async clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap) {
+    const rawCollection = FramesDAO.rawCollection();
+    const cursor = rawCollection.find({ owner: oldSceneryId });
 
-    frames.forEach(frame => {
-      delete frame._id
-      frame.owner = newSceneryId
+    const batchSize = 1000;
+    let batch = [];
 
-      frame.scenery.objects.nonSolidObjects.forEach(nonSolidObject => {
-        nonSolidObject._id = nonSolidObjectsMap[nonSolidObject._id]
+    while (await cursor.hasNext()) {
+      const frame = await cursor.next();
+      const { _id, ...rest } = frame;
+
+      // Update the owner
+      rest.owner = newSceneryId;
+
+      // Update object IDs
+      const nonSolidObjects = rest.scenery?.objects?.nonSolidObjects ?? [];
+      nonSolidObjects.forEach(nonSolidObject => {
+        nonSolidObject._id = nonSolidObjectsMap[nonSolidObject._id];
+      });
+
+      const solidObjects = rest.scenery?.objects?.solidObjects ?? [];
+      solidObjects.forEach(solidObject => {
+        solidObject._id = solidObjectsMap[solidObject._id];
       })
 
-      frame.scenery.objects.solidObjects.forEach(solidObject => {
-        solidObject._id = solidObjectsMap[solidObject._id]
-      })
+      batch.push(rest);
 
-      FramesDAO.insert(frame, { getAutoValues: false })
-    })
+      if (batch.length === batchSize) {
+        await rawCollection.insertMany(batch, { ordered: false });
+        batch = [];
+      }
+    }
+
+    if (batch.length > 0) {
+      await rawCollection.insertMany(batch, { ordered: false });
+    }
   }
 
   static getData(sceneryId, objectId, dataName, minInterval, maxInterval) {

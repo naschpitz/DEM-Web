@@ -14,7 +14,7 @@ export default class Hypervisor {
     this.timer = null
   }
 
-  initialize() {
+  async initialize() {
     this.log("Hypervisor initialization began.")
 
     const calibration = Calibrations.findOne(this.calibrationId)
@@ -23,7 +23,9 @@ export default class Hypervisor {
     const diffAgents = calibration.agentsNumber - numAgents
 
     this.log(`Creating ${diffAgents} agents.`)
-    _.times(diffAgents, index => Agents.create(this.calibrationId, index))
+    for (let i = 0; i < diffAgents; i++) {
+      await Agents.create(this.calibrationId, numAgents + i)
+    }
     this.log("Agents created.")
 
     this.startObservers()

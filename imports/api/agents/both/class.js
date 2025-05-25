@@ -12,12 +12,12 @@ import Simulations from "../../simulations/both/class"
 import SolidObjects from "../../solidObjects/both/class"
 
 export default class Agents extends AgentsDAO {
-  static create(calibrationId, index) {
+  static async create(calibrationId, index) {
     const calibration = Calibrations.findOne(calibrationId)
 
     // Clones the original simulation (thus, scenery and materials). The cloned simulation is not primary, as it is
     // intended to be used by the agents only.
-    const currentSimulationId = Simulations.clone(calibration.owner, false)
+    const currentSimulationId = await Simulations.clone(calibration.owner, false)
     Simulations.updateObj({
       _id: currentSimulationId,
       server: calibration.server,
@@ -28,7 +28,7 @@ export default class Agents extends AgentsDAO {
 
     // The best simulation will be a clone of the original simulation, because it has to be kept while the current
     // simulation is being constantly altered by the agent.
-    const bestSimulationId = Simulations.clone(currentSimulationId, false)
+    const bestSimulationId = await Simulations.clone(currentSimulationId, false)
 
     return AgentsDAO.insert({
       owner: calibrationId,

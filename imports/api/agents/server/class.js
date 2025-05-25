@@ -88,25 +88,22 @@ export default class Agents extends AgentsBoth {
   }
 
   static async saveAgentHistory(agentId) {
-    return new Promise((resolve) => {
-      const agent = AgentsBoth.findOne(agentId)
+    const agent = AgentsBoth.findOne(agentId)
 
-      const best = { ...agent.best }
-      best.simulation = Simulations.clone(agent.best.simulation, false, true, true)
+    const best = { ...agent.best }
+    best.simulation = await Simulations.clone(agent.best.simulation, false, true, true)
 
-      const current = { ...agent.current }
-      current.simulation = Simulations.clone(agent.current.simulation, false, true, true)
+    const current = { ...agent.current }
+    current.simulation = await Simulations.clone(agent.current.simulation, false, true, true)
 
-      const agentHistory = {
-        owner: agentId,
-        iteration: agent.iteration,
-        best: best,
-        current: current,
-      }
+    const agentHistory = {
+      owner: agentId,
+      iteration: agent.iteration,
+      best: best,
+      current: current,
+    }
 
-      AgentsHistories.insert(agentHistory)
-      resolve()
-    })
+    AgentsHistories.insert(agentHistory)
   }
 
   static observe(agentId, callback) {
@@ -148,11 +145,8 @@ export default class Agents extends AgentsBoth {
     Agents.updateBestGlobal(calibrationId)
 
     async function updateScores(agentId) {
-      return new Promise((resolve) => {
-        updateCurrentScore(agentId)
-        updateBestScore(agentId)
-        resolve()
-      })
+      updateCurrentScore(agentId)
+      await updateBestScore(agentId)
     }
 
     function updateCurrentScore(agentId) {
@@ -299,7 +293,7 @@ export default class Agents extends AgentsBoth {
       })
     }
 
-    function updateBestScore(agentId) {
+    async function updateBestScore(agentId) {
       const agent = Agents.findOne(agentId)
 
       if (!agent.current.valid) return
@@ -308,7 +302,7 @@ export default class Agents extends AgentsBoth {
       // best score, then the best agent's simulation object is updated with the current agent's object
       if (agent.current.score < agent.best.score || !agent.best.valid) {
         // Clones the current simulation (thus, scenery and materials).
-        const newBestSimulationId = Simulations.clone(agent.current.simulation, false)
+        const newBestSimulationId = await Simulations.clone(agent.current.simulation, false)
 
         // Removes the old best simulation
         Simulations.remove(agent.best.simulation)
