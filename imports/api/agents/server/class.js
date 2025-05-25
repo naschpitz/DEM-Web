@@ -400,7 +400,8 @@ export default class Agents extends AgentsBoth {
             _.get(bestGMaterial, coefficient),
             parameter.c1,
             parameter.c2,
-            parameter.perturbation
+            parameter.perturbation,
+            parameter.allowNegative
           )
 
           _.set(currentMaterial, coefficient, value)
@@ -421,7 +422,8 @@ export default class Agents extends AgentsBoth {
             _.get(bestGNSO, coefficient),
             parameter.c1,
             parameter.c2,
-            parameter.perturbation
+            parameter.perturbation,
+            parameter.allowNegative
           )
 
           _.set(currentNSO, coefficient, value)
@@ -442,7 +444,8 @@ export default class Agents extends AgentsBoth {
             _.get(bestGSO, coefficient),
             parameter.c1,
             parameter.c2,
-            parameter.perturbation
+            parameter.perturbation,
+            parameter.allowNegative
           )
 
           _.set(currentSO, coefficient, value)
@@ -453,19 +456,31 @@ export default class Agents extends AgentsBoth {
       }
     }
 
-    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, c1, c2, perturbation) {
+    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, c1, c2, perturbation, allowNegative) {
       const random1 = Math.random()
       const random2 = Math.random()
 
       let bestVelocity = bestCoefficient - coefficient
 
-      if (bestVelocity === 0)
-        bestVelocity = (Math.random() - 0.5) * perturbation * coefficient
+      if (bestVelocity === 0) {
+        if (allowNegative)
+          bestVelocity = (Math.random() - 0.5)
+        else
+          bestVelocity = Math.random()
+
+        bestVelocity *= perturbation * coefficient
+      }
 
       let bestGlobalVelocity = bestGlobalCoefficient - coefficient
 
-      if (bestGlobalVelocity === 0)
-        bestGlobalVelocity = (Math.random() - 0.5) * perturbation * coefficient
+      if (bestGlobalVelocity === 0) {
+        if (allowNegative)
+          bestGlobalVelocity = (Math.random() - 0.5)
+        else
+          bestGlobalVelocity = Math.random()
+
+        bestGlobalVelocity *= perturbation * coefficient
+      }
 
       return coefficient + c1 * random1 * bestVelocity + c2 * random2 * bestGlobalVelocity
     }

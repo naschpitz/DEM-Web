@@ -53,6 +53,12 @@ Parameters.schema = new SimpleSchema({
     optional: true,
     defaultValue: 0.01
   },
+  allowNegative: {
+    type: Boolean,
+    label: "Allow negative",
+    optional: true,
+    defaultValue: false
+  },
   createdAt: {
     type: Date,
     label: "Created at",

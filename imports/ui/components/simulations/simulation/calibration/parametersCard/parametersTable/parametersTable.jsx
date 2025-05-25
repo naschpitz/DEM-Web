@@ -161,6 +161,22 @@ export default ParametersTable = props => {
         ),
       },
       {
+        Header: "Allow Negative",
+        accessor: "allowNegative",
+        Cell: cellInfo => (
+          <div className="d-flex ml-auto mr-auto">
+            <FormInput
+              name={cellInfo.column.id}
+              value={cellInfo.original.allowNegative}
+              type="checkbox"
+              size="small"
+              inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+              onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
+            />
+          </div>
+        ),
+      },
+      {
         Header: "Remove",
         id: "removeButton",
         className: "text-center",
