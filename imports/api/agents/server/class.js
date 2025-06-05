@@ -457,32 +457,37 @@ export default class Agents extends AgentsBoth {
     }
 
     function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, c1, c2, perturbation, allowNegative) {
-      const random1 = Math.random()
-      const random2 = Math.random()
+      // Tries to find a valid coefficient 1000 times.
+      for (let i = 0; i < 1000; i++) {
+        const newValue = sortCoefficient()
 
-      let bestVelocity = bestCoefficient - coefficient
+        if (allowNegative || newValue >= 0) return newValue
+      }
 
-      if (bestVelocity === 0) {
-        if (allowNegative)
+      // If we reach this point, it means that we couldn't find a valid coefficient after 1000 tries.
+      // This should never happen, but just in case, we return the coefficient as 0 if it is negative and !allowNegative.
+      return allowNegative ? coefficient : 0
+
+      function sortCoefficient() {
+        const random1 = Math.random()
+        const random2 = Math.random()
+
+        let bestVelocity = bestCoefficient - coefficient
+
+        if (bestVelocity === 0)
           bestVelocity = (Math.random() - 0.5)
-        else
-          bestVelocity = Math.random()
 
         bestVelocity *= perturbation * coefficient
-      }
 
-      let bestGlobalVelocity = bestGlobalCoefficient - coefficient
+        let bestGlobalVelocity = bestGlobalCoefficient - coefficient
 
-      if (bestGlobalVelocity === 0) {
-        if (allowNegative)
+        if (bestGlobalVelocity === 0)
           bestGlobalVelocity = (Math.random() - 0.5)
-        else
-          bestGlobalVelocity = Math.random()
 
         bestGlobalVelocity *= perturbation * coefficient
-      }
 
-      return coefficient + c1 * random1 * bestVelocity + c2 * random2 * bestGlobalVelocity
+        return coefficient + c1 * random1 * bestVelocity + c2 * random2 * bestGlobalVelocity
+      }
     }
   }
 }
