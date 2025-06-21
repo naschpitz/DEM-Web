@@ -143,7 +143,7 @@ export default class Calibrations extends CalibrationsBoth {
   }
 
   static async getNumNewAgents(calibrationId) {
-    const agents = Agents.find({ owner: calibrationId }).fetchAsync()
+    const agents = await Agents.find({ owner: calibrationId }).fetchAsync()
 
     let numNewAgents = 0
     for (const agent of agents) {
