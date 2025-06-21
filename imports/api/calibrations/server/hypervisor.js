@@ -197,7 +197,7 @@ export default class Hypervisor {
     const calibration = await Calibrations.findOneAsync(this.calibrationId)
     const currentIteration = calibration.currentIteration
 
-    const numAgents = Agents.find({ owner: this.calibrationId }).count()
+    const numAgents = await Agents.find({ owner: this.calibrationId }).countAsync()
     const maxIterations = calibration.maxIterations
 
     // Get the number of agents to run or running

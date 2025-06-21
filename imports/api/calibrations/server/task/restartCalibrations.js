@@ -9,13 +9,15 @@ const bound = Meteor.bindEnvironment(async () => {
     state: { $in: ["running", "paused"] },
   })
 
+  const numCalibrationsInProgress = await calibrationsInProgress.countAsync()
+
   // Will not continue with the job if there are no calibrations in progress.
   // Avoids console.log pollution.
-  if (calibrationsInProgress.count() === 0) {
+  if (numCalibrationsInProgress === 0) {
     return
   }
 
-  console.log("Found " + calibrationsInProgress.count() + " Calibrations in progress, initializing Hypervisors.")
+  console.log("Found " + numCalibrationsInProgress + " Calibrations in progress, initializing Hypervisors.")
 
   for (const calibration of calibrationsInProgress.fetchAsync()) {
     const hypervisor = new Hypervisor(calibration._id)

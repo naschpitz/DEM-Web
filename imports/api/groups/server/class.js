@@ -7,7 +7,9 @@ export default class Groups extends GroupsBoth {
     const allowedStates = ["new", "stopped", "done", "failed"]
     const activeSimulations = Simulations.find({ group: groupId, state: { $nin: allowedStates } })
 
-    if (activeSimulations.count() > 0) {
+    const numActiveSimulations = await activeSimulations.countAsync()
+
+    if (numActiveSimulations > 0) {
       throw { message: "This group and its contents cannot be removed as it contains active simulations" }
     }
 
