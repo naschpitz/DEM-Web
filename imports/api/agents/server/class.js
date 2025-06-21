@@ -46,7 +46,7 @@ export default class Agents extends AgentsBoth {
   }
 
   static async removeByOwner(owner) {
-    const agents = await AgentsBoth.find({ owner: owner }).fetchAsync()
+    const agents = AgentsBoth.find({ owner: owner })
 
     const agentsPromises = await agents.mapAsync(async (agent) => {
       await Simulations.removeAsync(agent.current.simulation)
