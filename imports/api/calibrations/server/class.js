@@ -45,7 +45,7 @@ export default class Calibrations extends CalibrationsBoth {
 
     await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "stopped" })
 
-    const agentsPromises = await Agents.find({ owner: calibrationId }).map(async (agent) => {
+    const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async (agent) => {
       const state = Agents.getState(agent._id)
 
       if (state === "running" || state === "paused") await Agents.stop(agent._id)

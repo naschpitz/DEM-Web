@@ -48,13 +48,13 @@ export default class Agents extends AgentsBoth {
   static async removeByOwner(owner) {
     const agents = await AgentsBoth.find({ owner: owner }).fetchAsync()
 
-    const agentsPromises = agents.map(async (agent) => {
+    const agentsPromises = await agents.mapAsync(async (agent) => {
       await Simulations.removeAsync(agent.current.simulation)
       await Simulations.removeAsync(agent.best.simulation)
 
       const agentsHistories = AgentsHistories.find({ owner: agent._id })
 
-      const agentsHistoriesPromises = agentsHistories.map(async (agentHistory) => {
+      const agentsHistoriesPromises = await agentsHistories.mapAsync(async (agentHistory) => {
         await Simulations.removeAsync(agentHistory.current.simulation)
         await Simulations.removeAsync(agentHistory.best.simulation)
       })
@@ -87,7 +87,7 @@ export default class Agents extends AgentsBoth {
   static async saveAllAgentsHistories(calibrationId) {
     const agents = AgentsBoth.find({ owner: calibrationId })
 
-    const saveAgentsHistoryPromises = agents.map(agent => Agents.saveAgentHistory(agent._id))
+    const saveAgentsHistoryPromises = await agents.mapAsync(agent => Agents.saveAgentHistory(agent._id))
     await Promise.all(saveAgentsHistoryPromises)
   }
 
@@ -113,18 +113,18 @@ export default class Agents extends AgentsBoth {
   static async observe(agentId, callback) {
     const agent = await AgentsBoth.findOneAsync(agentId)
 
-    const agentObserve = AgentsBoth.find({ _id: agentId }).observe({
+    const agentObserve = await AgentsBoth.find({ _id: agentId }).observeAsync({
       changed: (agentNew, agentOld) => callback("agent", agentId, agentNew, agentOld),
     })
 
-    const simulationObserve = Simulations.find({ _id: agent.current.simulation }).observe({
+    const simulationObserve = await Simulations.find({ _id: agent.current.simulation }).observeAsync({
       changed: (simulationNew, simulationOld) => callback("simulation", agentId, simulationNew, simulationOld),
     })
 
     const simulation = await Simulations.findOneAsync(agent.current.simulation)
     const scenery = await Sceneries.findOneAsync({ owner: simulation._id })
 
-    const frameObserve = Frames.find({ owner: scenery._id }).observe({
+    const frameObserve = await Frames.find({ owner: scenery._id }).observeAsync({
       added: frame => callback("frame", agentId, frame),
     })
 
@@ -143,7 +143,7 @@ export default class Agents extends AgentsBoth {
   static async updateAllScores(calibrationId) {
     const agents = AgentsBoth.find({ owner: calibrationId })
 
-    const scoresPromises = agents.map(agent => updateScores(agent._id))
+    const scoresPromises = await agents.mapAsync(agent => updateScores(agent._id))
     await Promise.all(scoresPromises)
 
     await Agents.updateBestGlobal(calibrationId)

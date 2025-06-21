@@ -4,7 +4,7 @@ import CameraFiltersDAO from "./dao.js"
 
 export default class CameraFilters extends CameraFiltersDAO {
   static async clone(oldSceneryId, newSceneryId) {
-    const cameraFilters = CameraFiltersDAO.find({ owner: oldSceneryId })
+    const cameraFilters = await CameraFiltersDAO.find({ owner: oldSceneryId }).fetchAsync()
 
     for (const cameraFilter of cameraFilters) {
       delete cameraFilter._id

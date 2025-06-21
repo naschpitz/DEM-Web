@@ -11,7 +11,7 @@ export default class DataSets extends DataSetsDAO {
   static async clone(oldCalibrationId, newCalibrationId) {
     const oldDataSets = DataSetsDAO.find({ owner: oldCalibrationId })
 
-    const dataSetIdsPromises = oldDataSets.map(async (oldDataSet) => {
+    const dataSetIdsPromises = await oldDataSets.mapAsync(async (oldDataSet) => {
       const newDataSet = _.cloneDeep(oldDataSet)
       delete newDataSet._id
 

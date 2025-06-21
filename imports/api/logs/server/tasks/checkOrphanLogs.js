@@ -5,9 +5,9 @@ import Logs from "../../../logs/both/class"
 import Simulations from "../../../simulations/both/class"
 
 // Find stalled Simulations and set its state to 'failed'
-const bound = Meteor.bindEnvironment(() => {
-  const simulationsIds = Simulations.find({}).map(simulation => simulation._id)
-  const calibrationsIds = Calibrations.find({}).map(calibration => calibration._id)
+const bound = Meteor.bindEnvironment(async () => {
+  const simulationsIds = await Simulations.find({}).mapAsync(simulation => simulation._id)
+  const calibrationsIds = await Calibrations.find({}).mapAsync(calibration => calibration._id)
 
   // Merge the two arrays
   const ids = simulationsIds.concat(calibrationsIds)

@@ -9,7 +9,7 @@ import SolidObjects from "../../solidObjects/both/class"
 
 export default class Materials extends MaterialsDAO {
   static async clone(oldSceneryId, newSceneryId) {
-    const oldMaterials = MaterialsDAO.find({ owner: oldSceneryId })
+    const oldMaterials = await MaterialsDAO.find({ owner: oldSceneryId }).fetchAsync()
 
     const materialsMap = new Map()
 

@@ -39,7 +39,7 @@ export default class Agents extends AgentsDAO {
 
     // Updates the objects coefficients with the boundaries
     async function initializeCoefficients(calibrationId, simulationId) {
-      const promises = Parameters.find({ owner: calibrationId }).map(async (parameter) => {
+      const promises = await Parameters.find({ owner: calibrationId }).mapAsync(async (parameter) => {
         const parameterId = parameter._id
 
         await Agents.updateMaterialObject(parameterId, simulationId)
