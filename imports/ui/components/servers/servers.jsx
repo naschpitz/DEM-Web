@@ -37,9 +37,10 @@ export default () => {
     _.set(server, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("servers.update", server, error => {
-        if (error) Alert.error("Error updating server: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("servers.update", server)
+        .catch((error) => {
+          Alert.error("Error updating server: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -145,12 +146,16 @@ export default () => {
 
     setIsCreating(true)
 
-    Meteor.callAsync("servers.create", error => {
-      if (error) Alert.error("Error creating server: " + error.reason)
-      else Alert.success("Server successfully created.")
-
-      setIsCreating(false)
-    })
+    Meteor.callAsync("servers.create")
+      .then(() => {
+        Alert.success("Server successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating server: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreating(false)
+      })
   }
 
   function onRemoveDone(result, data) {
@@ -160,12 +165,16 @@ export default () => {
 
     const materialId = data.original._id
 
-    Meteor.callAsync("servers.remove", materialId, error => {
-      if (error) Alert.error("Error removing server: " + error.reason)
-      else Alert.success("Server successfully removed.")
-
-      setIsRemoving(false)
-    })
+    Meteor.callAsync("servers.remove", materialId)
+      .then(() => {
+        Alert.success("Server successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing server: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   return (

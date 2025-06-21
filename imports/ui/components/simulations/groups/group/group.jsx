@@ -45,12 +45,16 @@ export default (props) => {
 
     setIsRemovingGroup(true)
 
-    Meteor.callAsync("groups.remove", data, error => {
-      if (error) Alert.error("Error removing group: " + error.reason)
-      else Alert.success("Group successfully removed.")
-
-      setIsRemovingGroup(false)
-    })
+    Meteor.callAsync("groups.remove", data)
+      .then(() => {
+        Alert.success("Group successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing group: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemovingGroup(false)
+      })
   }
 
   function onEditClick() {
@@ -69,10 +73,13 @@ export default (props) => {
 
     group.name = name
 
-    Meteor.callAsync("groups.update", group, error => {
-      if (error) Alert.error("Error updating group: " + error.reason)
-      else Alert.success("Group name successfully updated.")
-    })
+    Meteor.callAsync("groups.update", group)
+      .then(() => {
+        Alert.success("Group name successfully updated.")
+      })
+      .catch((error) => {
+        Alert.error("Error updating group: " + error.reason)
+      })
   }
 
   function onCancelClick() {

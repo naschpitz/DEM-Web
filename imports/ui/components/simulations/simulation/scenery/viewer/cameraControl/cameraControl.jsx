@@ -33,12 +33,13 @@ export default (props) => {
     _.set(newCamera, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("cameras.update", newCamera, error => {
-        if (error) Alert.error("Error saving camera: " + error.reason)
-        else {
+      Meteor.callAsync("cameras.update", newCamera)
+        .then(() => {
           if (props.onChange) props.onChange()
-        }
-      })
+        })
+        .catch((error) => {
+          Alert.error("Error saving camera: " + error.reason)
+        })
     }
   }
 

@@ -10,9 +10,6 @@ if (Meteor.isServer) {
     const simulation = await Simulations.findOneAsync({ _id: simulationId })
     if (!simulation) return this.error(new Meteor.Error("404", "Not found", "No Simulation found."))
 
-    console.log("simulation", simulation)
-    console.log(this.userId)
-
     if (simulation.owner !== this.userId)
       return this.error(
         new Meteor.Error("401", "Unauthorized", "The current user is not the owner of this Calibration.")
@@ -26,8 +23,6 @@ if (Meteor.isServer) {
 
     const calibrations = await Calibrations.find({ _id: calibrationId }).fetchAsync()
     if (calibrations.length === 0) return this.error(new Meteor.Error("404", "Not found", "No Calibration found."))
-
-    console.log("calibration", calibrations)
 
     const calibrationFound = calibrations[0]
 

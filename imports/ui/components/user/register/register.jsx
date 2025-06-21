@@ -32,47 +32,50 @@ export default (props) => {
     const messageDisplay = messageDisplayRef.current
     messageDisplay.hide(registerMsgId)
 
-    Meteor.callAsync("users.create", options, callback)
-
     setIsRegistering(true)
 
-    function callback(error) {
-      if (error)
-        registerMsgId = messageDisplay.show("error", "Error registering user: " + getErrorMessage(error), registerMsgId)
-      else {
+    Meteor.callAsync("users.create", options)
+      .then(() => {
         registerMsgId = messageDisplay.show(
           "success",
           "User successfully registered. A confirmation e-mail has been sent to you.",
           registerMsgId
         )
         Meteor.loginWithPassword(email, password)
-      }
-
-      setIsRegistering(false)
-    }
+      })
+      .catch((error) => {
+        registerMsgId = messageDisplay.show("error", "Error registering user: " + getErrorMessage(error), registerMsgId)
+      })
+      .finally(() => {
+        setIsRegistering(false)
+      })
   }
 
   function onEmailChange() {
     const email = emailRef.current.value
 
-    Meteor.callAsync("users.getUserByEmail", email, callback)
-
     const messageDisplay = messageDisplayRef.current
     messageDisplay.hide(existsMsgId)
 
-    function callback(error, result) {
-      if (result) {
-        setUsernameExists(true)
-        existsMsgId = messageDisplay.show(
-          "error",
-          "There is already an user registered with this e-mail address.",
-          existsMsgId
-        )
-      } else {
+    Meteor.callAsync("users.getUserByEmail", email)
+      .then((result) => {
+        if (result) {
+          setUsernameExists(true)
+          existsMsgId = messageDisplay.show(
+            "error",
+            "There is already an user registered with this e-mail address.",
+            existsMsgId
+          )
+        } else {
+          setUsernameExists(false)
+          messageDisplay.hide(existsMsgId)
+        }
+      })
+      .catch((error) => {
+        // Handle error if needed
         setUsernameExists(false)
         messageDisplay.hide(existsMsgId)
-      }
-    }
+      })
   }
 
   function onPasswordChange(password) {

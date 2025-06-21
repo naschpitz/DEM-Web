@@ -92,9 +92,10 @@ export default (props) => {
     _.set(solidObject, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("solidObjects.update", solidObject, error => {
-        if (error) Alert.error("Error updating solid object: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("solidObjects.update", solidObject)
+        .catch((error) => {
+          Alert.error("Error updating solid object: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -103,12 +104,16 @@ export default (props) => {
 
     setIsRemoving(true)
 
-    Meteor.callAsync("solidObjects.remove", data.original._id, error => {
-      if (error) Alert.error("Error removing solid object: " + error.reason)
-      else Alert.success("Solid object successfully removed.")
-
-      setIsRemoving(false)
-    })
+    Meteor.callAsync("solidObjects.remove", data.original._id)
+      .then(() => {
+        Alert.success("Solid object successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing solid object: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   return (

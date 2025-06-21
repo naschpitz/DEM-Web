@@ -60,11 +60,10 @@ export default (props) => {
       ...dataSelector,
     }
 
-    Meteor.callAsync("dataSets.update", dataSet, error => {
-      if (error) {
+    Meteor.callAsync("dataSets.update", dataSet)
+      .catch((error) => {
         Alert.error("Error: " + getErrorMessage(error))
-      }
-    })
+      })
   }
 
   function onDataImporter(dataSet) {
@@ -73,11 +72,10 @@ export default (props) => {
       data: dataSet.data?.map(data => ({ time: data[0], value: data[1] })),
     }
 
-    Meteor.callAsync("dataSets.update", newDataSet, error => {
-      if (error) {
+    Meteor.callAsync("dataSets.update", newDataSet)
+      .catch((error) => {
         Alert.error("Error: " + getErrorMessage(error))
-      }
-    })
+      })
   }
 
   function onRemoveDataSetDone(result, data) {
@@ -85,15 +83,16 @@ export default (props) => {
 
     setIsRemovingDataSet(true)
 
-    Meteor.callAsync("dataSets.remove", data, error => {
-      if (error) {
-        Alert.error("Error: " + getErrorMessage(error))
-      } else {
+    Meteor.callAsync("dataSets.remove", data)
+      .then(() => {
         Alert.success("Data set successfully removed.")
-      }
-
-      setIsRemovingDataSet(false)
-    })
+      })
+      .catch((error) => {
+        Alert.error("Error: " + getErrorMessage(error))
+      })
+      .finally(() => {
+        setIsRemovingDataSet(false)
+      })
   }
 
   const sceneryId = scenery?._id

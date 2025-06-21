@@ -131,9 +131,10 @@ export default (props) => {
     _.set(cameraFilter, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "axis"))) {
-      Meteor.callAsync("cameraFilters.update", cameraFilter, error => {
-        if (error) Alert.error("Error updating camera filter: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("cameraFilters.update", cameraFilter)
+        .catch((error) => {
+          Alert.error("Error updating camera filter: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -142,12 +143,16 @@ export default (props) => {
 
     setIsRemoving(true)
 
-    Meteor.callAsync("cameraFilters.remove", data.original._id, error => {
-      if (error) Alert.error("Error removing camera filter object: " + error.reason)
-      else Alert.success("Camera filter successfully removed.")
-
-      setIsRemoving(false)
-    })
+    Meteor.callAsync("cameraFilters.remove", data.original._id)
+      .then(() => {
+        Alert.success("Camera filter successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing camera filter object: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   return (

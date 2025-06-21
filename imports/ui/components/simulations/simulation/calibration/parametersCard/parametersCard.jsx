@@ -17,12 +17,16 @@ export default (props) => {
 
     setIsCreatingParameter(true)
 
-    Meteor.callAsync("parameters.create", props.calibrationId, error => {
-      if (error) Alert.error("Error creating parameters: " + error.reason)
-      else Alert.success("Parameter successfully created.")
-
-      setIsCreatingParameter(false)
-    })
+    Meteor.callAsync("parameters.create", props.calibrationId)
+      .then(() => {
+        Alert.success("Parameter successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating parameters: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreatingParameter(false)
+      })
   }
 
   return (

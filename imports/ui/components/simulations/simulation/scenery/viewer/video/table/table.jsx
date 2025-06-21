@@ -157,9 +157,10 @@ export default ({ sceneryId }) => {
     _.set(video, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("videos.update", video, error => {
-        if (error) Alert.error("Error updating video: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("videos.update", video)
+        .catch((error) => {
+          Alert.error("Error updating video: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -169,12 +170,16 @@ export default ({ sceneryId }) => {
     const videoId = data.original._id
     setRemoving(videoId, true)
 
-    Meteor.callAsync("videos.remove", videoId, error => {
-      if (error) Alert.error("Error removing video: " + error.reason)
-      else Alert.success("Video successfully removed.")
-
-      setRemoving(videoId, false)
-    })
+    Meteor.callAsync("videos.remove", videoId)
+      .then(() => {
+        Alert.success("Video successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing video: " + error.reason)
+      })
+      .finally(() => {
+        setRemoving(videoId, false)
+      })
   }
 
   function getRemoving(videoId) {

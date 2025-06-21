@@ -30,10 +30,13 @@ export default () => {
   function onCreateDone(result, data) {
     if (!result) return
 
-    Meteor.callAsync("groups.create", error => {
-      if (error) Alert.error("Error creating group: " + error.reason)
-      else Alert.success("Group successfully created.")
-    })
+    Meteor.callAsync("groups.create")
+      .then(() => {
+        Alert.success("Group successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating group: " + error.reason)
+      })
   }
 
   return (

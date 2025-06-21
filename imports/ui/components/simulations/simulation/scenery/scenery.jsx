@@ -43,9 +43,10 @@ export default (props) => {
 
     _.set(newScenery, name, value)
 
-    Meteor.callAsync("sceneries.update", newScenery, error => {
-      if (error) Alert.error("Error saving scenery: " + error.reason)
-    })
+    Meteor.callAsync("sceneries.update", newScenery)
+      .catch((error) => {
+        Alert.error("Error saving scenery: " + error.reason)
+      })
   }
 
   function onCreateNSODone(result) {
@@ -53,12 +54,16 @@ export default (props) => {
 
     setIsCreatingNSO(true)
 
-    Meteor.callAsync("nonSolidObjects.create", scenery._id, error => {
-      if (error) Alert.error("Error creating non-solid object: " + error.reason)
-      else Alert.success("Non-solid object successfully created.")
-
-      setIsCreatingNSO(false)
-    })
+    Meteor.callAsync("nonSolidObjects.create", scenery._id)
+      .then(() => {
+        Alert.success("Non-solid object successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating non-solid object: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreatingNSO(false)
+      })
   }
 
   function onCreateSODone(result) {
@@ -66,12 +71,16 @@ export default (props) => {
 
     setIsCreatingSO(true)
 
-    Meteor.callAsync("solidObjects.create", scenery._id, error => {
-      if (error) Alert.error("Error creating solid object: " + error.reason)
-      else Alert.success("Solid object successfully created.")
-
-      setIsCreatingSO(false)
-    })
+    Meteor.callAsync("solidObjects.create", scenery._id)
+      .then(() => {
+        Alert.success("Solid object successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating solid object: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreatingSO(false)
+      })
   }
 
   function onCreateMaterialDone(result) {
@@ -79,12 +88,16 @@ export default (props) => {
 
     setIsCreatingMaterial(true)
 
-    Meteor.callAsync("materials.create", scenery._id, error => {
-      if (error) Alert.error("Error creating material: " + error.reason)
-      else Alert.success("Material successfully created.")
-
-      setIsCreatingMaterial(false)
-    })
+    Meteor.callAsync("materials.create", scenery._id)
+      .then(() => {
+        Alert.success("Material successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating material: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreatingMaterial(false)
+      })
   }
 
   const sceneryId = _.get(scenery, "_id")

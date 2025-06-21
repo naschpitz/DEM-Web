@@ -35,12 +35,16 @@ export default (props) => {
 
     setIsCreatingDataSet(true)
 
-    Meteor.callAsync("dataSets.create", props.calibrationId, error => {
-      if (error) Alert.error("Error creating data set: " + error.reason)
-      else Alert.success("Data set successfully created.")
-
-      setIsCreatingDataSet(false)
-    })
+    Meteor.callAsync("dataSets.create", props.calibrationId)
+      .then(() => {
+        Alert.success("Data set successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating data set: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreatingDataSet(false)
+      })
   }
 
   if (isDataSetsReady) {

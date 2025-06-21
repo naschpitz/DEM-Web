@@ -92,9 +92,10 @@ export default (props) => {
     _.set(material, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("materials.update", material, error => {
-        if (error) Alert.error("Error updating material: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("materials.update", material)
+        .catch((error) => {
+          Alert.error("Error updating material: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -105,12 +106,16 @@ export default (props) => {
 
     const materialId = data.original._id
 
-    Meteor.callAsync("materials.remove", materialId, error => {
-      if (error) Alert.error("Error removing material: " + error.reason)
-      else Alert.success("Material successfully removed.")
-
-      setIsRemoving(false)
-    })
+    Meteor.callAsync("materials.remove", materialId)
+      .then(() => {
+        Alert.success("Material successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing material: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   return (

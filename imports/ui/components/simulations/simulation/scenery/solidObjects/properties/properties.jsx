@@ -31,9 +31,10 @@ export default (props) => {
     _.set(object, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "fixed" || name === "material"))) {
-      Meteor.callAsync("solidObjects.update", object, error => {
-        if (error) Alert.error("Error saving solid object: " + error.reason)
-      })
+      Meteor.callAsync("solidObjects.update", object)
+        .catch((error) => {
+          Alert.error("Error saving solid object: " + error.reason)
+        })
     }
   }
 

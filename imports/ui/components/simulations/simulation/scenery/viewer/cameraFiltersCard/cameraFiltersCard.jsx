@@ -20,12 +20,16 @@ export default (props) => {
 
     setIsCreatingCameraFilter(true)
 
-    Meteor.callAsync("cameraFilters.create", sceneryId, error => {
-      if (error) Alert.error("Error creating camera filter: " + error.reason)
-      else Alert.success("Camera filter successfully created.")
-
-      setIsCreatingCameraFilter(false)
-    })
+    Meteor.callAsync("cameraFilters.create", sceneryId)
+      .then(() => {
+        Alert.success("Camera filter successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating camera filter: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreatingCameraFilter(false)
+      })
   }
 
   return (

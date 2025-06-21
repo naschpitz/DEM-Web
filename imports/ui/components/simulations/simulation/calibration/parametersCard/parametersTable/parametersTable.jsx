@@ -211,9 +211,10 @@ export default (props) => {
     _.set(parameter, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "type" || "material" || "coefficient"))) {
-      Meteor.callAsync("parameters.update", parameter, error => {
-        if (error) Alert.error("Error updating parameter: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("parameters.update", parameter)
+        .catch((error) => {
+          Alert.error("Error updating parameter: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -224,12 +225,16 @@ export default (props) => {
 
     const parameterId = data.original._id
 
-    Meteor.callAsync("parameters.remove", parameterId, error => {
-      if (error) Alert.error("Error removing parameter: " + error.reason)
-      else Alert.success("Parameter successfully removed.")
-
-      setIsRemoving(false)
-    })
+    Meteor.callAsync("parameters.remove", parameterId)
+      .then(() => {
+        Alert.success("Parameter successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing parameter: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   return (

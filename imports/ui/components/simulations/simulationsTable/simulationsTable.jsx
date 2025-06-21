@@ -168,9 +168,10 @@ export default (props) => {
     _.set(simulation, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("simulations.update", simulation, error => {
-        if (error) Alert.error("Error updating simulation: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("simulations.update", simulation)
+        .catch((error) => {
+          Alert.error("Error updating simulation: " + getErrorMessage(error))
+        })
     }
   }
 

@@ -15,22 +15,22 @@ export default (props) => {
 
     switch (props.type) {
       case "material": {
-        Meteor.callAsync("materials.getById", props.materialObjectId, (error, result) => {
-          if (error) {
+        Meteor.callAsync("materials.getById", props.materialObjectId)
+          .then((result) => {
+            const coefficients = getForcesCoefficientsOptions(result.forceType)
+            const dragCoefficients = getDragForcesCoefficientsOptions(result.dragForceType)
+
+            setOptions([
+              { value: "", text: "-- Select a Coefficient --" },
+              { value: "", text: "-- Forces Coefficients --" },
+              ...coefficients,
+              { value: "", text: "-- Drag Forces Coefficients --" },
+              ...dragCoefficients,
+            ])
+          })
+          .catch((error) => {
             Alert.error("Error: " + getErrorMessage(error))
-          }
-
-          const coefficients = getForcesCoefficientsOptions(result.forceType)
-          const dragCoefficients = getDragForcesCoefficientsOptions(result.dragForceType)
-
-          setOptions([
-            { value: "", text: "-- Select a Coefficient --" },
-            { value: "", text: "-- Forces Coefficients --" },
-            ...coefficients,
-            { value: "", text: "-- Drag Forces Coefficients --" },
-            ...dragCoefficients,
-          ])
-        })
+          })
 
         break
       }

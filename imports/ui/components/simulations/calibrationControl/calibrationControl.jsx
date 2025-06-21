@@ -59,9 +59,10 @@ export default (props) => {
     _.set(newCalibration, name, value)
 
     if (event === "onBlur" || (event === "onChange" && name === "server")) {
-      Meteor.callAsync("calibrations.update", newCalibration, error => {
-        if (error) Alert.error("Error updating server: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("calibrations.update", newCalibration)
+        .catch((error) => {
+          Alert.error("Error updating server: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -70,12 +71,16 @@ export default (props) => {
 
     setIsStarting(true)
 
-    Meteor.callAsync("calibrations.start", props.calibrationId, error => {
-      if (error) Alert.error("Error running calibration: " + error.reason)
-      else Alert.success("Run order successfully issued.")
-
-      setIsStarting(false)
-    })
+    Meteor.callAsync("calibrations.start", props.calibrationId)
+      .then(() => {
+        Alert.success("Run order successfully issued.")
+      })
+      .catch((error) => {
+        Alert.error("Error running calibration: " + error.reason)
+      })
+      .finally(() => {
+        setIsStarting(false)
+      })
   }
 
   function onCalibrationPauseDone(result) {
@@ -83,12 +88,16 @@ export default (props) => {
 
     setIsPausing(true)
 
-    Meteor.callAsync("calibrations.pause", props.calibrationId, error => {
-      if (error) Alert.error("Error pausing calibration: " + error.reason)
-      else Alert.success("Pause order successfully issued.")
-
-      setIsPausing(false)
-    })
+    Meteor.callAsync("calibrations.pause", props.calibrationId)
+      .then(() => {
+        Alert.success("Pause order successfully issued.")
+      })
+      .catch((error) => {
+        Alert.error("Error pausing calibration: " + error.reason)
+      })
+      .finally(() => {
+        setIsPausing(false)
+      })
   }
 
   function onCalibrationStopDone(result) {
@@ -96,12 +105,16 @@ export default (props) => {
 
     setIsStopping(true)
 
-    Meteor.callAsync("calibrations.stop", props.calibrationId, error => {
-      if (error) Alert.error("Error stopping calibration: " + error.reason)
-      else Alert.success("Stop order successfully issued.")
-
-      setIsStopping(false)
-    })
+    Meteor.callAsync("calibrations.stop", props.calibrationId)
+      .then(() => {
+        Alert.success("Stop order successfully issued.")
+      })
+      .catch((error) => {
+        Alert.error("Error stopping calibration: " + error.reason)
+      })
+      .finally(() => {
+        setIsStopping(false)
+      })
   }
 
   function onCalibrationResetDone(result) {
@@ -109,12 +122,16 @@ export default (props) => {
 
     setIsResetting(true)
 
-    Meteor.callAsync("calibrations.reset", props.calibrationId, error => {
-      if (error) Alert.error("Error resetting calibration: " + error.reason)
-      else Alert.success("Calibration successfully reset.")
-
-      setIsResetting(false)
-    })
+    Meteor.callAsync("calibrations.reset", props.calibrationId)
+      .then(() => {
+        Alert.success("Calibration successfully reset.")
+      })
+      .catch((error) => {
+        Alert.error("Error resetting calibration: " + error.reason)
+      })
+      .finally(() => {
+        setIsResetting(false)
+      })
   }
 
   const showFields = props.showFields

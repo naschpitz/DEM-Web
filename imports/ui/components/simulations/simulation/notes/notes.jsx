@@ -50,10 +50,13 @@ export default (props) => {
         notes: value,
       }
 
-      Meteor.callAsync("simulations.update", simulation, error => {
-        if (error) Alert.error("Error saving notes: " + error.reason)
-        else Alert.success("Notes saved.", { timeout: 2000 })
-      })
+      Meteor.callAsync("simulations.update", simulation)
+        .then(() => {
+          Alert.success("Notes saved.", { timeout: 2000 })
+        })
+        .catch((error) => {
+          Alert.error("Error saving notes: " + error.reason)
+        })
     }
   }
 

@@ -15,37 +15,37 @@ export default (props) => {
 
     switch (props.type) {
       case "material": {
-        Meteor.callAsync("materials.getByCalibration", props.calibrationId, (error, result) => {
-          if (error) {
-            Alert.error("Error: " + getErrorMessage(error))
-          } else {
+        Meteor.callAsync("materials.getByCalibration", props.calibrationId)
+          .then((result) => {
             setMaterialsObjects(result)
-          }
-        })
+          })
+          .catch((error) => {
+            Alert.error("Error: " + getErrorMessage(error))
+          })
 
         break
       }
 
       case "nonSolidObject": {
-        Meteor.callAsync("nonSolidObjects.getByCalibration", props.calibrationId, (error, result) => {
-          if (error) {
-            Alert.error("Error: " + getErrorMessage(error))
-          } else {
+        Meteor.callAsync("nonSolidObjects.getByCalibration", props.calibrationId)
+          .then((result) => {
             setMaterialsObjects(result)
-          }
-        })
+          })
+          .catch((error) => {
+            Alert.error("Error: " + getErrorMessage(error))
+          })
 
         break
       }
 
       case "solidObject": {
-        Meteor.callAsync("solidObjects.getByCalibration", props.calibrationId, (error, result) => {
-          if (error) {
-            Alert.error("Error: " + getErrorMessage(error))
-          } else {
+        Meteor.callAsync("solidObjects.getByCalibration", props.calibrationId)
+          .then((result) => {
             setMaterialsObjects(result)
-          }
-        })
+          })
+          .catch((error) => {
+            Alert.error("Error: " + getErrorMessage(error))
+          })
 
         break
       }

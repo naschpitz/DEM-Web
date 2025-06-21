@@ -16,12 +16,13 @@ export default (props) => {
 
     _.set(newObjectProperty, "color", color.rgb)
 
-    Meteor.callAsync("objectsProperties.update", newObjectProperty, error => {
-      if (error) Alert.error("Error saving object property: " + error.reason)
-      else {
+    Meteor.callAsync("objectsProperties.update", newObjectProperty)
+      .then(() => {
         if (props.onChange) props.onChange()
-      }
-    })
+      })
+      .catch((error) => {
+        Alert.error("Error saving object property: " + error.reason)
+      })
   }
 
   return (

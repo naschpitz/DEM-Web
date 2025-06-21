@@ -36,12 +36,16 @@ export default () => {
 
     setIsCreating(true)
 
-    Meteor.callAsync("simulations.create", error => {
-      if (error) Alert.error("Error creating simulation: " + error.reason)
-      else Alert.success("Simulation successfully created.")
-
-      setIsCreating(false)
-    })
+    Meteor.callAsync("simulations.create")
+      .then(() => {
+        Alert.success("Simulation successfully created.")
+      })
+      .catch((error) => {
+        Alert.error("Error creating simulation: " + error.reason)
+      })
+      .finally(() => {
+        setIsCreating(false)
+      })
   }
 
   return (

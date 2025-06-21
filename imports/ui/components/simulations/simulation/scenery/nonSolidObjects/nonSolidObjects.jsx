@@ -92,9 +92,10 @@ export default (props) => {
     _.set(nonSolidObject, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("nonSolidObjects.update", nonSolidObject, error => {
-        if (error) Alert.error("Error updating non-solid object: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("nonSolidObjects.update", nonSolidObject)
+        .catch((error) => {
+          Alert.error("Error updating non-solid object: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -103,12 +104,16 @@ export default (props) => {
 
     setIsRemoving(true)
 
-    Meteor.callAsync("nonSolidObjects.remove", data.original._id, error => {
-      if (error) Alert.error("Error removing non-solid object: " + error.reason)
-      else Alert.success("Non-solid object successfully removed.")
-
-      setIsRemoving(false)
-    })
+    Meteor.callAsync("nonSolidObjects.remove", data.original._id)
+      .then(() => {
+        Alert.success("Non-solid object successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing non-solid object: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   return (

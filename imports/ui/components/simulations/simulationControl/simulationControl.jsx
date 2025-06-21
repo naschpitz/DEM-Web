@@ -72,9 +72,10 @@ export default (props) => {
     _.set(newSimulation, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "group" || name === "server" || name === "multiGPU" || name === "calcNeigh"))) {
-      Meteor.callAsync("simulations.update", newSimulation, error => {
-        if (error) Alert.error("Error updating server: " + getErrorMessage(error))
-      })
+      Meteor.callAsync("simulations.update", newSimulation)
+        .catch((error) => {
+          Alert.error("Error updating server: " + getErrorMessage(error))
+        })
     }
   }
 
@@ -83,12 +84,16 @@ export default (props) => {
 
     setIsStarting(true)
 
-    Meteor.callAsync("simulations.start", props.simulationId, error => {
-      if (error) Alert.error("Error running simulation: " + error.reason)
-      else Alert.success("Run order successfully issued.")
-
-      setIsStarting(false)
-    })
+    Meteor.callAsync("simulations.start", props.simulationId)
+      .then(() => {
+        Alert.success("Run order successfully issued.")
+      })
+      .catch((error) => {
+        Alert.error("Error running simulation: " + error.reason)
+      })
+      .finally(() => {
+        setIsStarting(false)
+      })
   }
 
   function onSimulationPauseDone(result) {
@@ -96,12 +101,16 @@ export default (props) => {
 
     setIsPausing(true)
 
-    Meteor.callAsync("simulations.pause", props.simulationId, error => {
-      if (error) Alert.error("Error pausing simulation: " + error.reason)
-      else Alert.success("Pause order successfully issued.")
-
-      setIsPausing(false)
-    })
+    Meteor.callAsync("simulations.pause", props.simulationId)
+      .then(() => {
+        Alert.success("Pause order successfully issued.")
+      })
+      .catch((error) => {
+        Alert.error("Error pausing simulation: " + error.reason)
+      })
+      .finally(() => {
+        setIsPausing(false)
+      })
   }
 
   function onSimulationStopDone(result) {
@@ -109,12 +118,16 @@ export default (props) => {
 
     setIsStopping(true)
 
-    Meteor.callAsync("simulations.stop", props.simulationId, error => {
-      if (error) Alert.error("Error stopping simulation: " + error.reason)
-      else Alert.success("Stop order successfully issued.")
-
-      setIsStopping(false)
-    })
+    Meteor.callAsync("simulations.stop", props.simulationId)
+      .then(() => {
+        Alert.success("Stop order successfully issued.")
+      })
+      .catch((error) => {
+        Alert.error("Error stopping simulation: " + error.reason)
+      })
+      .finally(() => {
+        setIsStopping(false)
+      })
   }
 
   function onSimulationResetDone(result) {
@@ -122,12 +135,16 @@ export default (props) => {
 
     setIsResetting(true)
 
-    Meteor.callAsync("simulations.reset", props.simulationId, error => {
-      if (error) Alert.error("Error resetting simulation: " + error.reason)
-      else Alert.success("Simulation successfully reset.")
-
-      setIsResetting(false)
-    })
+    Meteor.callAsync("simulations.reset", props.simulationId)
+      .then(() => {
+        Alert.success("Simulation successfully reset.")
+      })
+      .catch((error) => {
+        Alert.error("Error resetting simulation: " + error.reason)
+      })
+      .finally(() => {
+        setIsResetting(false)
+      })
   }
 
   function onSimulationCloneDone(result) {
@@ -135,12 +152,16 @@ export default (props) => {
 
     setIsCloning(true)
 
-    Meteor.callAsync("simulations.clone", props.simulationId, error => {
-      if (error) Alert.error("Error cloning simulation: " + error.reason)
-      else Alert.success("Simulation successfully cloned.")
-
-      setIsCloning(false)
-    })
+    Meteor.callAsync("simulations.clone", props.simulationId)
+      .then(() => {
+        Alert.success("Simulation successfully cloned.")
+      })
+      .catch((error) => {
+        Alert.error("Error cloning simulation: " + error.reason)
+      })
+      .finally(() => {
+        setIsCloning(false)
+      })
   }
 
   function onSimulationRemoveDone(result) {
@@ -148,12 +169,16 @@ export default (props) => {
 
     setIsRemoving(true)
 
-    Meteor.callAsync("simulations.remove", props.simulationId, error => {
-      if (error) Alert.error("Error removing simulation: " + error.reason)
-      else Alert.success("Simulation successfully removed.")
-
-      setIsRemoving(false)
-    })
+    Meteor.callAsync("simulations.remove", props.simulationId)
+      .then(() => {
+        Alert.success("Simulation successfully removed.")
+      })
+      .catch((error) => {
+        Alert.error("Error removing simulation: " + error.reason)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   const showFields = props.showFields
