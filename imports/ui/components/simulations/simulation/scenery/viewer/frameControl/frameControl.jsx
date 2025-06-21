@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import FramesClass from "../../../../../../../api/frames/both/class.js"
 
 import { FaFastBackward, FaStepBackward, FaStepForward, FaFastForward } from "react-icons/fa"
@@ -12,7 +13,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./frameControl.css"
 
-export default FrameControl = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
   const [currentFrameIndex, setCurrentFrameIndex] = useState(0)
 

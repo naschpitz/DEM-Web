@@ -4,7 +4,7 @@ import SimpleSchema from 'meteor/aldeed:simple-schema'
 import NonSolidObject from "./nonSolidObject.js"
 import SolidObject from "./solidObject.js"
 
-export default Objects = new SimpleSchema({
+export default new SimpleSchema({
   nonSolidObjects: {
     type: Array,
     label: "Non-Solid Objects",

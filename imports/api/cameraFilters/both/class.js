@@ -3,23 +3,23 @@ import _ from "lodash"
 import CameraFiltersDAO from "./dao.js"
 
 export default class CameraFilters extends CameraFiltersDAO {
-  static clone(oldSceneryId, newSceneryId) {
+  static async clone(oldSceneryId, newSceneryId) {
     const cameraFilters = CameraFiltersDAO.find({ owner: oldSceneryId })
 
-    cameraFilters.forEach(cameraFilter => {
+    for (const cameraFilter of cameraFilters) {
       delete cameraFilter._id
       cameraFilter.owner = newSceneryId
 
-      CameraFiltersDAO.insert(cameraFilter)
-    })
+      await CameraFiltersDAO.insertAsync(cameraFilter)
+    }
   }
 
-  static create(sceneryId) {
-    return CameraFiltersDAO.insert({ owner: sceneryId })
+  static async create(sceneryId) {
+    return await CameraFiltersDAO.insertAsync({ owner: sceneryId })
   }
 
-  static removeByOwner(sceneryId) {
-    CameraFiltersDAO.remove({ owner: sceneryId })
+  static async removeByOwner(sceneryId) {
+    await CameraFiltersDAO.removeAsync({ owner: sceneryId })
   }
 
   static isWithinLimits(positions, cameraFilters) {

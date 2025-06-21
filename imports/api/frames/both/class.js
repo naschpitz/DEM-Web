@@ -41,7 +41,7 @@ export default class Frames extends FramesDAO {
     }
   }
 
-  static getData(sceneryId, objectId, dataName, minInterval, maxInterval) {
+  static async getData(sceneryId, objectId, dataName, minInterval, maxInterval) {
     const filter = []
 
     if (minInterval) filter.push({ time: { $gte: minInterval } })
@@ -54,7 +54,7 @@ export default class Frames extends FramesDAO {
 
     if (minInterval || maxInterval) selector.$and = filter
 
-    const frames = FramesDAO.find(selector, { sort: { step: 1 } }).fetch()
+    const frames = await FramesDAO.find(selector, { sort: { step: 1 } }).fetchAsync()
 
     let data = ""
 

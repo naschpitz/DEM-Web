@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../../../api/simulations/both/class"
 
 import Alert from "react-s-alert-v3"
@@ -14,7 +15,7 @@ import SimulationsTable from "../../simulationsTable/simulationsTable.jsx"
 
 import "./group.css"
 
-export default Group = props => {
+export default (props) => {
   const [isRemovingGroup, setIsRemovingGroup] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -44,7 +45,7 @@ export default Group = props => {
 
     setIsRemovingGroup(true)
 
-    Meteor.call("groups.remove", data, error => {
+    Meteor.callAsync("groups.remove", data, error => {
       if (error) Alert.error("Error removing group: " + error.reason)
       else Alert.success("Group successfully removed.")
 
@@ -68,7 +69,7 @@ export default Group = props => {
 
     group.name = name
 
-    Meteor.call("groups.update", group, error => {
+    Meteor.callAsync("groups.update", group, error => {
       if (error) Alert.error("Error updating group: " + error.reason)
       else Alert.success("Group name successfully updated.")
     })

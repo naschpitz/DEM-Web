@@ -1,11 +1,13 @@
 import dot from "dot-object"
 import _ from "lodash"
 
+import getArraysPaths from "../../utils/getArrayPaths";
+
 import SceneriesCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO";
 
 export default class SceneriesDAO extends createDAO(SceneriesCol) {
-  static updateObj(scenery) {
+  static async updateObjAsync(scenery) {
     const dottedScenery = dot.dot(scenery)
     const arraysPaths = getArraysPaths(scenery)
 
@@ -24,7 +26,7 @@ export default class SceneriesDAO extends createDAO(SceneriesCol) {
       !_.isEmpty(value) ? (set[key] = value) : (unset[key] = "")
     })
 
-    SceneriesCol.update(dottedScenery._id, {
+    await SceneriesCol.updateAsync(dottedScenery._id, {
       $set: set,
       $unset: unset,
     })

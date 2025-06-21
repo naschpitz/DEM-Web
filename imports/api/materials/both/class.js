@@ -8,7 +8,7 @@ import Sceneries from "../../sceneries/both/class"
 import SolidObjects from "../../solidObjects/both/class"
 
 export default class Materials extends MaterialsDAO {
-  static clone(oldSceneryId, newSceneryId) {
+  static async clone(oldSceneryId, newSceneryId) {
     const oldMaterials = MaterialsDAO.find({ owner: oldSceneryId })
 
     const materialsMap = new Map()
@@ -20,54 +20,54 @@ export default class Materials extends MaterialsDAO {
       materialsMap[oldMaterialId] = newMaterialId
     })
 
-    oldMaterials.forEach(oldMaterial => {
+    for (const oldMaterial of oldMaterials) {
       const newMaterial = _.clone(oldMaterial)
       newMaterial._id = materialsMap[oldMaterial._id]
       newMaterial.owner = newSceneryId
       newMaterial.material1 = materialsMap[oldMaterial.material1]
       newMaterial.material2 = materialsMap[oldMaterial.material2]
 
-      MaterialsDAO.insert(newMaterial)
-    })
+      await MaterialsDAO.insertAsync(newMaterial)
+    }
 
     return materialsMap
   }
 
-  static create(owner) {
-    return MaterialsDAO.insert({ owner: owner })
+  static async create(owner) {
+    return await MaterialsDAO.insertAsync({ owner: owner })
   }
 
-  static usesMaterial(materialId) {
-    const materialFound = MaterialsDAO.findOne({ $or: [{ material1: materialId }, { material2: materialId }] })
+  static async usesMaterial(materialId) {
+    const materialFound = await MaterialsDAO.findOneAsync({ $or: [{ material1: materialId }, { material2: materialId }] })
 
     return !!materialFound
   }
 
-  static remove(materialId) {
-    const nsoResult = NonSolidObjects.usesMaterial(materialId)
+  static async removeAsync(materialId) {
+    const nsoResult = await NonSolidObjects.usesMaterial(materialId)
     if (nsoResult) throw { message: "Cannot remove material, a Non-Solid Object makes reference to it." }
 
-    const soResult = SolidObjects.usesMaterial(materialId)
+    const soResult = await SolidObjects.usesMaterial(materialId)
     if (soResult) throw { message: "Cannot remove material, a Solid Object makes reference to it." }
 
-    const parameterResult = Parameters.usesMaterialObject(materialId)
+    const parameterResult = await Parameters.usesMaterialObject(materialId)
     if (parameterResult) throw { message: "Cannot remove material, a Parameter makes reference to it." }
 
-    const materialResult = this.usesMaterial(materialId)
+    const materialResult = await this.usesMaterial(materialId)
     if (materialResult) throw { message: "Cannot remove material, another Material makes reference to it." }
 
-    MaterialsDAO.remove(materialId)
+    await MaterialsDAO.removeAsync(materialId)
   }
 
-  static removeByOwner(sceneryId) {
-    MaterialsDAO.remove({ owner: sceneryId })
+  static async removeByOwner(sceneryId) {
+    await MaterialsDAO.removeAsync({ owner: sceneryId })
   }
 
-  static getByCalibration(calibrationId) {
-    const scenery = Sceneries.findByCalibration(calibrationId)
+  static async getByCalibration(calibrationId) {
+    const scenery = await Sceneries.findByCalibration(calibrationId)
     if (!scenery) throw { code: "404", message: "Scenery not found" }
 
     const sceneryId = scenery._id
-    return Materials.find({ owner: sceneryId }).fetch()
+    return await Materials.find({ owner: sceneryId }).fetchAsync()
   }
 }

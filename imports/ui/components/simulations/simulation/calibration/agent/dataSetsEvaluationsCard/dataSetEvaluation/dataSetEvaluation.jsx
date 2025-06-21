@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
 import DataSetsClass from "../../../../../../../../api/dataSets/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -12,7 +13,7 @@ import DataDisplay from "./dataDisplay/dataDisplay.jsx"
 
 import "./dataSetEvaluation.css"
 
-export default DataSetEvaluation = props => {
+export default (props) => {
   const [isDataSetReady, setDataSetReady] = useState(false)
 
   const dataSetId = props.dataSetEvaluation?.dataSet

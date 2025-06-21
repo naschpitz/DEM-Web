@@ -7,7 +7,7 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./storage.css"
 
-export default Storage = ({ scenery }) => {
+export default ({ scenery }) => {
   const [isMoving, setIsMoving] = useState(false)
 
   function onMoveDone(result) {

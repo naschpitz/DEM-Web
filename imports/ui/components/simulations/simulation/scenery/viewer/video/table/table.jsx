@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
 import VideosClass from "../../../../../../../../api/videos/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -13,7 +14,7 @@ import ReactTable from "react-table-v6"
 
 import "./table.css"
 
-export default Table = ({ sceneryId }) => {
+export default ({ sceneryId }) => {
   const [isReady, setIsReady] = useState(false)
   const [isRemoving, setIsRemoving] = useState(new Map())
 
@@ -156,7 +157,7 @@ export default Table = ({ sceneryId }) => {
     _.set(video, name, value)
 
     if (event === "onBlur") {
-      Meteor.call("videos.update", video, error => {
+      Meteor.callAsync("videos.update", video, error => {
         if (error) Alert.error("Error updating video: " + getErrorMessage(error))
       })
     }
@@ -168,7 +169,7 @@ export default Table = ({ sceneryId }) => {
     const videoId = data.original._id
     setRemoving(videoId, true)
 
-    Meteor.call("videos.remove", videoId, error => {
+    Meteor.callAsync("videos.remove", videoId, error => {
       if (error) Alert.error("Error removing video: " + error.reason)
       else Alert.success("Video successfully removed.")
 

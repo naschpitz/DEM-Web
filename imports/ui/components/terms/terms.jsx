@@ -2,7 +2,7 @@ import React from "react"
 
 import "./terms.css"
 
-export default Terms = () => {
+export default () => {
   return (
     <div id="terms" className="container text-justify">
       <h2 style={{ textAlign: "center" }}>

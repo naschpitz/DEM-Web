@@ -3,17 +3,18 @@ import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
+import CameraFiltersClass from "../../../../../../../../api/cameraFilters/both/class.js"
+
 import Alert from "react-s-alert-v3";
 import { ButtonEnhanced } from "@naschpitz/button-enhanced";
 import FormInput from "@naschpitz/form-input";
 import { useTracker } from "meteor/react-meteor-data";
 import ReactTable from "react-table-v6";
 
-import CameraFiltersClass from "../../../../../../../../api/cameraFilters/both/class.js"
-
 import "./cameraFiltersTable.css"
 
-export default CameraFiltersTable = (props) => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -130,7 +131,7 @@ export default CameraFiltersTable = (props) => {
     _.set(cameraFilter, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "axis"))) {
-      Meteor.call("cameraFilters.update", cameraFilter, error => {
+      Meteor.callAsync("cameraFilters.update", cameraFilter, error => {
         if (error) Alert.error("Error updating camera filter: " + getErrorMessage(error))
       })
     }
@@ -141,7 +142,7 @@ export default CameraFiltersTable = (props) => {
 
     setIsRemoving(true)
 
-    Meteor.call("cameraFilters.remove", data.original._id, error => {
+    Meteor.callAsync("cameraFilters.remove", data.original._id, error => {
       if (error) Alert.error("Error removing camera filter object: " + error.reason)
       else Alert.success("Camera filter successfully removed.")
 

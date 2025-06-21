@@ -3,7 +3,7 @@ import SimpleSchema from 'meteor/aldeed:simple-schema'
 
 import Vertex from "../../../sharedSchemas/vertex.js"
 
-export default Face = new SimpleSchema({
+export default new SimpleSchema({
   currentPosition: {
     type: Array,
     minCount: 1,

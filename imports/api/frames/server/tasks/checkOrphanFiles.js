@@ -16,7 +16,7 @@ const bound = Meteor.bindEnvironment(() => {
     if (match !== null) {
       const frameId = match[1]
 
-      const frame = Frames.findOne(frameId)
+      const frame = Frames.findOneAsync(frameId)
 
       if (!frame) localFilesToRemove.push(Meteor.settings.localPath + "/" + file)
     }
@@ -29,7 +29,7 @@ const bound = Meteor.bindEnvironment(() => {
     if (match !== null) {
       const frameId = match[1]
 
-      const frame = Frames.findOne(frameId)
+      const frame = Frames.findOneAsync(frameId)
 
       if (!frame) s3FilesToRemove.push(Meteor.settings.s3Path + "/" + file)
     }

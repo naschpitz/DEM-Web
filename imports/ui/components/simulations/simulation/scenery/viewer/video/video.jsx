@@ -10,7 +10,7 @@ import Table from "./table/table.jsx"
 
 import "./video.css"
 
-export default Video = ({ sceneryId }) => {
+export default ({ sceneryId }) => {
   const [settings, setSettings] = useState({
     dimensions: {
       width: 1920,

@@ -8,7 +8,7 @@ const bound = Meteor.bindEnvironment(() => {
   const sceneriesIds = Sceneries.find({}).map(scenery => scenery._id)
   const framesIdsToDelete = Frames.find({ owner: { $nin: sceneriesIds } }).map(frame => frame._id)
 
-  const count = Frames.remove({ _id: { $in: framesIdsToDelete } })
+  const count = Frames.removeAsync({ _id: { $in: framesIdsToDelete } })
 
   console.log(`Removed ${count} orphan frames.`)
 })

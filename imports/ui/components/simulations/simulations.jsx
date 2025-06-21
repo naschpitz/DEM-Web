@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../api/simulations/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
@@ -13,7 +14,7 @@ import SimulationsTable from "./simulationsTable/simulationsTable.jsx"
 
 import "./simulations.css"
 
-export default Simulations = props => {
+export default () => {
   const [isCreating, setIsCreating] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
 
@@ -35,7 +36,7 @@ export default Simulations = props => {
 
     setIsCreating(true)
 
-    Meteor.call("simulations.create", error => {
+    Meteor.callAsync("simulations.create", error => {
       if (error) Alert.error("Error creating simulation: " + error.reason)
       else Alert.success("Simulation successfully created.")
 

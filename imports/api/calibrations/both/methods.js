@@ -3,41 +3,41 @@ import { Meteor } from "meteor/meteor"
 import Calibrations from "./class.js"
 
 Meteor.methods({
-  "calibrations.create"() {
+  async "calibrations.create"() {
     try {
-      Calibrations.create()
+      await Calibrations.create()
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "calibrations.update"(calibration) {
+  async "calibrations.update"(calibration) {
     try {
-      Calibrations.updateObj(calibration)
+      await Calibrations.updateObjAsync(calibration)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "calibrations.setState"(simulationId, state) {
+  async "calibrations.setState"(simulationId, state) {
     try {
-      Calibrations.setState(simulationId, state)
+      await Calibrations.setState(simulationId, state)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "calibrations.usesServer"(serverId) {
+  async "calibrations.usesServer"(serverId) {
     try {
-      Calibrations.usesServer(serverId)
+      await Calibrations.usesServer(serverId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "calibrations.removeServer"(serverId) {
+  async "calibrations.removeServer"(serverId) {
     try {
-      Calibrations.removeServer(serverId)
+      await Calibrations.removeServer(serverId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

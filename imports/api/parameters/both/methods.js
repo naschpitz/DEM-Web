@@ -3,33 +3,33 @@ import { Meteor } from "meteor/meteor"
 import Parameters from "./class.js"
 
 Meteor.methods({
-  "parameters.create"(calibrationId) {
+  async "parameters.create"(calibrationId) {
     try {
-      Parameters.create(calibrationId)
+      await Parameters.create(calibrationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "parameters.update"(parameter) {
+  async "parameters.update"(parameter) {
     try {
-      Parameters.updateObj(parameter)
+      await Parameters.updateObjAsync(parameter)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "parameters.remove"(parameterId) {
+  async "parameters.remove"(parameterId) {
     try {
-      Parameters.remove(parameterId)
+      await Parameters.removeAsync(parameterId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "parameters.removeByOwner"(calibrationId) {
+  async "parameters.removeByOwner"(calibrationId) {
     try {
-      Parameters.removeByOwner(calibrationId)
+      await Parameters.removeByOwner(calibrationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

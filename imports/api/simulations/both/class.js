@@ -7,7 +7,7 @@ import SimulationsDAO from "./dao.js"
 
 export default class Simulations extends SimulationsDAO {
   static async clone(simulationId, primary = true, logs = false, frames = false) {
-    const oldSimulation = SimulationsDAO.findOne(simulationId)
+    const oldSimulation = await SimulationsDAO.findOneAsync(simulationId)
 
     const newSimulation = _.cloneDeep(oldSimulation)
     delete newSimulation._id
@@ -23,12 +23,12 @@ export default class Simulations extends SimulationsDAO {
       newSimulation.multiGPU = false
     }
 
-    const newSimulationId = SimulationsDAO.insert(newSimulation)
+    const newSimulationId = await SimulationsDAO.insertAsync(newSimulation)
 
     const maps = await Sceneries.clone(simulationId, newSimulationId, frames)
 
     if (primary) {
-      Calibrations.clone(
+      await Calibrations.clone(
         simulationId,
         newSimulationId,
         maps.materialsMap,
@@ -44,15 +44,15 @@ export default class Simulations extends SimulationsDAO {
     return newSimulationId
   }
 
-  static create(owner) {
-    const simulationId = SimulationsDAO.insert({ owner: owner })
+  static async create(owner) {
+    const simulationId = await SimulationsDAO.insertAsync({ owner: owner })
 
-    Calibrations.create(simulationId)
-    Sceneries.create(simulationId)
+    await Calibrations.create(simulationId)
+    await Sceneries.create(simulationId)
   }
 
-  static setState(simulationId, state) {
-    const simulation = Simulations.findOne(simulationId)
+  static async setState(simulationId, state) {
+    const simulation = await Simulations.findOneAsync(simulationId)
     if (!simulation) {
       throw { message: "Simulations.setState(): simulation not found" }
     }
@@ -67,11 +67,11 @@ export default class Simulations extends SimulationsDAO {
       state: state,
     }
 
-    SimulationsDAO.updateObj(newSimulation)
+    await SimulationsDAO.updateObjAsync(newSimulation)
   }
 
-  static usesServer(serverId) {
-    const simulationFound = Simulations.findOne({
+  static async usesServer(serverId) {
+    const simulationFound = await Simulations.findOneAsync({
       server: serverId,
       state: { $in: ["setToRun", "running", "setToPause", "paused", "setToStop"] },
     })
@@ -79,8 +79,8 @@ export default class Simulations extends SimulationsDAO {
     return !!simulationFound
   }
 
-  static removeServer(serverId) {
-    Simulations.update(
+  static async removeServer(serverId) {
+    await Simulations.updateSync(
       {
         server: serverId,
         state: { $nin: ["setToRun", "running", "setToPause", "paused", "setToStop"] },
@@ -96,10 +96,10 @@ export default class Simulations extends SimulationsDAO {
 
   // If a simulationId is provided, it will remove only the simulations from the group it belongs to.
   // Otherwise, if a groupId is provided, it will remove all simulations from that group.
-  static unsetGroup(simulationId, groupId) {
+  static async unsetGroup(simulationId, groupId) {
     const selector = simulationId ? { _id: simulationId } : { group: groupId }
 
-    Simulations.update(
+    await Simulations.updateSync(
       selector,
       {
         $unset: {
@@ -135,8 +135,8 @@ export default class Simulations extends SimulationsDAO {
     }
   }
 
-  static setInstance(simulationId, instance) {
-    SimulationsDAO.updateObj({
+  static async setInstance(simulationId, instance) {
+    await SimulationsDAO.updateObjAsync({
       _id: simulationId,
       instance: instance
     });

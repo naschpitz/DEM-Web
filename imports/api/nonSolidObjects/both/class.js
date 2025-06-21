@@ -6,12 +6,12 @@ import Parameters from "../../parameters/both/class"
 import Sceneries from "../../sceneries/both/class"
 
 export default class NonSolidObjects extends NonSolidObjectsDAO {
-  static clone(oldSceneryId, newSceneryId, materialsMap) {
-    const oldNonSolidObjects = NonSolidObjects.find({ owner: oldSceneryId })
+  static async clone(oldSceneryId, newSceneryId, materialsMap) {
+    const oldNonSolidObjects = NonSolidObjects.find({ owner: oldSceneryId }).fetchAsync()
 
     const nonSolidObjectsMap = {}
 
-    oldNonSolidObjects.forEach(oldNonSolidObject => {
+    for (const oldNonSolidObject of oldNonSolidObjects) {
       const newNonSolidObject = _.cloneDeep(oldNonSolidObject)
       delete newNonSolidObject._id
 
@@ -19,52 +19,52 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
       newNonSolidObject.material = materialsMap[oldNonSolidObject.material]
 
       const oldNonSolidObjectId = oldNonSolidObject._id
-      const newNonSolidObjectId = NonSolidObjectsDAO.insert(newNonSolidObject)
+      const newNonSolidObjectId = await NonSolidObjectsDAO.insertAsync(newNonSolidObject)
 
-      ObjectsProperties.clone(oldNonSolidObjectId, newNonSolidObjectId)
+      await ObjectsProperties.clone(oldNonSolidObjectId, newNonSolidObjectId)
 
       nonSolidObjectsMap[oldNonSolidObjectId] = newNonSolidObjectId
-    })
+    }
 
     return nonSolidObjectsMap
   }
 
-  static create(sceneryId) {
-    const nonSolidObjectId = NonSolidObjectsDAO.insert({ owner: sceneryId })
-    ObjectsProperties.create(nonSolidObjectId)
+  static async create(sceneryId) {
+    const nonSolidObjectId = await NonSolidObjectsDAO.insertAsync({ owner: sceneryId })
+    await ObjectsProperties.create(nonSolidObjectId)
 
     return nonSolidObjectId
   }
 
-  static remove(nonSolidObjectId) {
-    const parameterResult = Parameters.usesMaterialObject(nonSolidObjectId)
+  static async removeAsync(nonSolidObjectId) {
+    const parameterResult = await Parameters.usesMaterialObject(nonSolidObjectId)
     if (parameterResult) throw { message: "Cannot remove non-solid object, a Parameter makes reference to it." }
 
-    NonSolidObjectsDAO.remove(nonSolidObjectId)
-    ObjectsProperties.removeByOwner(nonSolidObjectId)
+    await NonSolidObjectsDAO.removeAsync(nonSolidObjectId)
+    await ObjectsProperties.removeByOwner(nonSolidObjectId)
   }
 
-  static removeByOwner(sceneryId) {
+  static async removeByOwner(sceneryId) {
     const nonSolidObjects = NonSolidObjects.find({ owner: sceneryId })
 
     nonSolidObjects.forEach(nonSolidObject => {
       ObjectsProperties.removeByOwner(nonSolidObject._id)
     })
 
-    NonSolidObjectsDAO.remove({ owner: sceneryId })
+    await NonSolidObjectsDAO.removeAsync({ owner: sceneryId })
   }
 
-  static usesMaterial(materialId) {
-    const materialFound = NonSolidObjects.findOne({ material: materialId })
+  static async usesMaterial(materialId) {
+    const materialFound = await NonSolidObjects.findOneAsync({ material: materialId })
 
     return !!materialFound
   }
 
-  static getByCalibration(calibrationId) {
-    const scenery = Sceneries.findByCalibration(calibrationId)
+  static async getByCalibration(calibrationId) {
+    const scenery = await Sceneries.findByCalibration(calibrationId)
     if (!scenery) throw { code: "404", message: "Scenery not found" }
 
     const sceneryId = scenery._id
-    return NonSolidObjects.find({ owner: sceneryId }).fetch()
+    return await NonSolidObjects.find({ owner: sceneryId }).fetchAsync()
   }
 }

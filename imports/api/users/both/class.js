@@ -2,16 +2,17 @@ import { Meteor } from "meteor/meteor"
 import _ from "lodash"
 
 export default class Users {
-  static forceLogout(userId) {
-    Meteor.users.update(userId, {
+  static async forceLogout(userId) {
+    await Meteor.users.updateAsync(userId, {
       $set: {
         "services.resume.loginTokens": [],
       },
     })
   }
 
-  static emailExists(email) {
-    return !!this.getUserByEmail(email)
+  static async emailExists(email) {
+    const user = await this.getUserByEmail(email)
+    return !!user
   }
 
   static getEmail(user) {
@@ -32,8 +33,8 @@ export default class Users {
     if (email) return email
   }
 
-  static getUserByEmail(email) {
-    return Meteor.users.findOne({
+  static async getUserByEmail(email) {
+    return await Meteor.users.findOneAsync({
       $or: [
         { "emails.address": email },
         { "services.facebook.email": email },

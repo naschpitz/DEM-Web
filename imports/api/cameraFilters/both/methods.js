@@ -13,7 +13,7 @@ Meteor.methods({
 
   "cameraFilters.update"(cameraFilter) {
     try {
-      CameraFilters.updateObj(cameraFilter)
+      CameraFilters.updateObjAsync(cameraFilter)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
@@ -21,7 +21,7 @@ Meteor.methods({
 
   "cameraFilters.remove"(cameraFilterId) {
     try {
-      CameraFilters.remove(cameraFilterId)
+      CameraFilters.removeAsync(cameraFilterId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import SolidObjectsClass from "../../../../../../api/solidObjects/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -14,7 +15,7 @@ import ReactTable from "react-table-v6"
 
 import "./solidObjects.css"
 
-export default SolidObjects = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -91,7 +92,7 @@ export default SolidObjects = props => {
     _.set(solidObject, name, value)
 
     if (event === "onBlur") {
-      Meteor.call("solidObjects.update", solidObject, error => {
+      Meteor.callAsync("solidObjects.update", solidObject, error => {
         if (error) Alert.error("Error updating solid object: " + getErrorMessage(error))
       })
     }
@@ -102,7 +103,7 @@ export default SolidObjects = props => {
 
     setIsRemoving(true)
 
-    Meteor.call("solidObjects.remove", data.original._id, error => {
+    Meteor.callAsync("solidObjects.remove", data.original._id, error => {
       if (error) Alert.error("Error removing solid object: " + error.reason)
       else Alert.success("Solid object successfully removed.")
 

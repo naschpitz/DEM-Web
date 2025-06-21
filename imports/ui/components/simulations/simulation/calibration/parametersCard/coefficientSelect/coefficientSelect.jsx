@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { Meteor } from "meteor/meteor"
 
-import Alert from "react-s-alert-v3"
-
-import FormInput from "@naschpitz/form-input"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import { getDragForcesCoefficientsOptions, getForcesCoefficientsOptions } from "../../../../../../common/materials"
 
-export default CoefficientSelect = props => {
+import Alert from "react-s-alert-v3"
+import FormInput from "@naschpitz/form-input"
+
+export default (props) => {
   const [options, setOptions] = useState([])
 
   useEffect(() => {
@@ -14,7 +15,7 @@ export default CoefficientSelect = props => {
 
     switch (props.type) {
       case "material": {
-        Meteor.call("materials.getById", props.materialObjectId, (error, result) => {
+        Meteor.callAsync("materials.getById", props.materialObjectId, (error, result) => {
           if (error) {
             Alert.error("Error: " + getErrorMessage(error))
           }

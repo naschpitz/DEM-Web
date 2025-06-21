@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react"
 import { Meteor } from "meteor/meteor"
 
+import getErrorMessage from "../../../../api/utils/getErrorMessage";
+
 import { FaTimes } from "react-icons/fa"
 import MessageDisplay from "../../messageDisplay/messageDisplay.jsx"
 import PasswordFields from "../passwordsFields/passwordsFields.jsx"
@@ -9,7 +11,7 @@ import "./register.css"
 
 let registerMsgId, existsMsgId, passwordMsgId
 
-export default Register = props => {
+export default (props) => {
   const [isRegistering, setIsRegistering] = useState(false)
   const [password, setPassword] = useState(false)
   const [usernameExists, setUsernameExists] = useState(false)
@@ -30,7 +32,7 @@ export default Register = props => {
     const messageDisplay = messageDisplayRef.current
     messageDisplay.hide(registerMsgId)
 
-    Meteor.call("users.create", options, callback)
+    Meteor.callAsync("users.create", options, callback)
 
     setIsRegistering(true)
 
@@ -53,7 +55,7 @@ export default Register = props => {
   function onEmailChange() {
     const email = emailRef.current.value
 
-    Meteor.call("users.getUserByEmail", email, callback)
+    Meteor.callAsync("users.getUserByEmail", email, callback)
 
     const messageDisplay = messageDisplayRef.current
     messageDisplay.hide(existsMsgId)

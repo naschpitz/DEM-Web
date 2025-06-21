@@ -58,7 +58,7 @@ Servers.schema.addValidator(function () {
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const server = Servers.findOne(this.docId)
+    const server = Servers.findOneAsync(this.docId)
 
     if (server.owner !== userId) return "notOwner"
   }

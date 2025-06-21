@@ -3,17 +3,17 @@ import { Meteor } from "meteor/meteor"
 import Sceneries from "../server/class"
 
 Meteor.methods({
-  "sceneries.removeByOwner"(simulationId) {
+  async "sceneries.removeByOwner"(simulationId) {
     try {
-      Sceneries.removeByOwner(simulationId)
+      await Sceneries.removeByOwner(simulationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "sceneries.setStorage"(sceneryId, storage) {
+  async "sceneries.setStorage"(sceneryId, storage) {
     try {
-      Sceneries.setStorage(sceneryId, storage)
+      await Sceneries.setStorage(sceneryId, storage)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

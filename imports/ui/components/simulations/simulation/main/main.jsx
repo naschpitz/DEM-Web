@@ -7,7 +7,7 @@ import SimulationControl from "../../simulationControl/simulationControl.jsx"
 
 import "./main.css"
 
-export default Main = props => {
+export default (props) => {
   const simulationId = props.simulationId
 
   // If the simulation is primary, show the viewer.

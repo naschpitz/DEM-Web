@@ -132,7 +132,7 @@ Migrations.add({
         }
 
         // Insert the history in the AgentsHistories collection
-        AgentsHistories.insert(agentHistory)
+        AgentsHistories.insertAsync(agentHistory)
       })
 
       // Remove the history from the Agent

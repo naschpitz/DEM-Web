@@ -16,7 +16,7 @@ const bound = Meteor.bindEnvironment(() => {
   const logsIdsToDelete = Logs.find({ owner: { $nin: ids } }).map(log => log._id)
 
   // Remove the logs
-  const count = Logs.remove({ _id: { $in: logsIdsToDelete } })
+  const count = Logs.removeAsync({ _id: { $in: logsIdsToDelete } })
 
   console.log(`Removed ${count} orphan logs.`)
 })

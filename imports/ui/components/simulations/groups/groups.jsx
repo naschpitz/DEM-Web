@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import GroupsClass from "../../../../api/groups/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
@@ -12,7 +13,7 @@ import Group from "./group/group.jsx"
 
 import "./groups.css"
 
-export default Groups = props => {
+export default () => {
   const [isGroupsReady, setIsGroupsReady] = useState(false)
 
   useTracker(() => {
@@ -29,7 +30,7 @@ export default Groups = props => {
   function onCreateDone(result, data) {
     if (!result) return
 
-    Meteor.call("groups.create", error => {
+    Meteor.callAsync("groups.create", error => {
       if (error) Alert.error("Error creating group: " + error.reason)
       else Alert.success("Group successfully created.")
     })

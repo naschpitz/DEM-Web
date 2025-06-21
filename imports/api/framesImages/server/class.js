@@ -24,20 +24,25 @@ export default class FramesImages {
 
     const scenery = frame.scenery
 
-    const camera = Cameras.findOne({ owner: frame.owner })
-    const cameraFilters = CameraFilters.find({ owner: frame.owner }).fetch()
+    const camera = await Cameras.findOneAsync({ owner: frame.owner })
+    const cameraFilters = await CameraFilters.find({ owner: frame.owner }).fetchAsync()
 
     const nonSolidObjects = _.get(scenery, "objects.nonSolidObjects", [])
     const solidObjects = _.get(scenery, "objects.solidObjects", [])
 
     let script = ""
 
-    script += getBackgroudScript() + "\n\n"
-    script += getCameraScript(camera) + "\n\n"
-    script += getLightScript(camera) + "\n\n"
+    script += await getBackgroudScript() + "\n\n"
+    script += await getCameraScript(camera) + "\n\n"
+    script += await getLightScript(camera) + "\n\n"
 
-    nonSolidObjects.forEach(nonSolidObject => (script += getNonSolidObjectScript(nonSolidObject) + "\n\n"))
-    solidObjects.forEach(solidObject => (script += getSolidObjectScript(solidObject) + "\n\n"))
+    for (const nonSolidObject of nonSolidObjects) {
+      script += await getNonSolidObjectScript(nonSolidObject) + "\n\n"
+    }
+
+    for (const solidObject of solidObjects) {
+      script += await getSolidObjectScript(solidObject) + "\n\n"
+    }
 
     const random = Random.id(6)
     const scriptPath = (path ? path + "/" : Meteor.settings.tmpPath + "/") + frameId + "_" + random + ".pov"
@@ -124,11 +129,11 @@ export default class FramesImages {
       }
     })
 
-    function getBackgroudScript() {
+    async function getBackgroudScript() {
       return "background { color rgb <0, 0, 0> }"
     }
 
-    function getCameraScript(camera) {
+    async function getCameraScript(camera) {
       const position = _.get(camera, "position").map(value => (value !== null ? value : 0))
       const lookAt = _.get(camera, "lookAt").map(value => (value !== null ? value : 0))
 
@@ -142,7 +147,7 @@ export default class FramesImages {
       return script
     }
 
-    function getLightScript(camera) {
+    async function getLightScript(camera) {
       let script = ""
       script += "light_source { <"
       script += camera.position[0] + "," + camera.position[2] + "," + camera.position[1]
@@ -151,37 +156,37 @@ export default class FramesImages {
       return script
     }
 
-    function getNonSolidObjectScript(nonSolidObject) {
+    async function getNonSolidObjectScript(nonSolidObject) {
       let script = ""
 
-      const pigmentScript = getPigmentScript(nonSolidObject._id)
+      const pigmentScript = await getPigmentScript(nonSolidObject._id)
 
-      nonSolidObject.particles.forEach(particle => {
+      for (const particle of nonSolidObject.particles) {
         // Do not add the particle to the script if it is outside the camera filter
         if (!CameraFilters.isWithinLimits(particle.currentPosition, cameraFilters))
-          return
+          continue
 
-        script += getParticleScript(particle, pigmentScript)
+        script += await getParticleScript(particle, pigmentScript)
         script += "\n"
-      })
+      }
 
       return script
     }
 
-    function getSolidObjectScript(solidObject) {
+    async function getSolidObjectScript(solidObject) {
       let script = ""
 
-      const pigmentScript = getPigmentScript(solidObject._id)
+      const pigmentScript = await getPigmentScript(solidObject._id)
 
-      solidObject.faces.forEach(face => {
-        script += getFaceScript(face, pigmentScript)
+      for (const face of solidObject.faces) {
+        script += await getFaceScript(face, pigmentScript)
         script += "\n"
-      })
+      }
 
       return script
     }
 
-    function getParticleScript(particle, pigmentScript) {
+    async function getParticleScript(particle, pigmentScript) {
       let script = ""
       script += "sphere { <"
       script += particle.currentPosition[0] + "," + particle.currentPosition[2] + "," + particle.currentPosition[1]
@@ -193,7 +198,7 @@ export default class FramesImages {
       return script
     }
 
-    function getFaceScript(face, pigmentScript) {
+    async function getFaceScript(face, pigmentScript) {
       let script = ""
       script += "triangle { "
 
@@ -211,8 +216,8 @@ export default class FramesImages {
       return script
     }
 
-    function getPigmentScript(objectId) {
-      const objectProperty = ObjectsProperties.findOne({ owner: objectId })
+    async function getPigmentScript(objectId) {
+      const objectProperty = await ObjectsProperties.findOneAsync({ owner: objectId })
       const color = objectProperty.color
 
       let script = ""
@@ -238,7 +243,7 @@ export default class FramesImages {
     }
 
     if (initialFrame || finalFrame) {
-      const frames = Frames.find(selector, { sort: { step: 1 } }).fetch()
+      const frames = await Frames.find(selector, { sort: { step: 1 } }).fetchAsync()
 
       if (initialFrame > finalFrame) throw { message: "Initial frame can't be higher than final frame" }
 
@@ -263,7 +268,7 @@ export default class FramesImages {
       }
     }
 
-    const frames = Frames.find(selector, { sort: { step: 1 } }).fetch()
+    const frames = await Frames.find(selector, { sort: { step: 1 } }).fetchAsync()
 
     const renderSequentially = async (frames) => {
       const results = []

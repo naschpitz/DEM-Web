@@ -3,7 +3,7 @@ import ReactPlayer from "react-player"
 
 import "./home.css"
 
-export default Home = () => {
+export default () => {
   return (
     <div id="home" className="container">
       <h1 className="text-center">Welcome to DEM</h1>

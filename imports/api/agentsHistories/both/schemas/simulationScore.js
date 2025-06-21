@@ -3,7 +3,7 @@ import SimpleSchema from 'meteor/aldeed:simple-schema'
 
 import DataSetEvaluation from "./dataSetEvaluation"
 
-export default SimulationScore = new SimpleSchema({
+export default new SimpleSchema({
   score: {
     type: Number,
     label: "Score Value",

@@ -1,11 +1,13 @@
 import dot from "dot-object"
 import _ from "lodash"
 
+import getArraysPaths from "../../utils/getArrayPaths";
+
 import CamerasCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO";
 
 export default class CamerasDAO extends createDAO(CamerasCol) {
-  static updateObj(camera) {
+  static async updateObjAsync(camera) {
     const dottedCamera = dot.dot(camera)
     const arraysPaths = getArraysPaths(camera)
 
@@ -24,7 +26,7 @@ export default class CamerasDAO extends createDAO(CamerasCol) {
       !_.isEmpty(value) ? (set[key] = value) : (unset[key] = "")
     })
 
-    CamerasCol.update(dottedCamera._id, {
+    await CamerasCol.updateAsync(dottedCamera._id, {
       $set: set,
       $unset: unset,
     })

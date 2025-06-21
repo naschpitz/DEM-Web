@@ -13,7 +13,7 @@ Meteor.methods({
 
   "solidObjects.update"(solidObject) {
     try {
-      SolidObjects.updateObj(solidObject)
+      SolidObjects.updateObjAsync(solidObject)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
@@ -21,7 +21,7 @@ Meteor.methods({
 
   "solidObjects.remove"(solidObjectId) {
     try {
-      SolidObjects.remove(solidObjectId)
+      SolidObjects.removeAsync(solidObjectId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
@@ -53,7 +53,7 @@ Meteor.methods({
 
   "solidObjects.getById"(solidObjectId) {
     try {
-      return SolidObjects.findOne(solidObjectId)
+      return SolidObjects.findOneAsync(solidObjectId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

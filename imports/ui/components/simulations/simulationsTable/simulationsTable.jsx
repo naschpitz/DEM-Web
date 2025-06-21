@@ -5,6 +5,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 import LogsClass from "../../../../api/logs/both/class.js"
 
@@ -17,7 +18,7 @@ import SimulationControl from "../simulationControl/simulationControl.jsx"
 
 import "./simulationsTable.css"
 
-export default SimulationsTable = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
 
   const navigate = useNavigate()
@@ -167,7 +168,7 @@ export default SimulationsTable = props => {
     _.set(simulation, name, value)
 
     if (event === "onBlur") {
-      Meteor.call("simulations.update", simulation, error => {
+      Meteor.callAsync("simulations.update", simulation, error => {
         if (error) Alert.error("Error updating simulation: " + getErrorMessage(error))
       })
     }

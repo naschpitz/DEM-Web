@@ -3,7 +3,8 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
-import AgentsClass from "../../../../../../../api/agents/both/class.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
+import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
 
 import Alert from "react-s-alert-v3"
 import ClipLoader from "react-spinners/ClipLoader"
@@ -12,9 +13,8 @@ import FormInput from "@naschpitz/form-input";
 import DataSetEvaluation from "./dataSetEvaluation/dataSetEvaluation.jsx"
 
 import "./dataSetsEvaluationsCard.css"
-import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
 
-export default DataSetsEvaluationsCard = props => {
+export default (props) => {
   const [isAgentHistoriesReady, setIsAgentHistoriesReady] = useState(false)
   const [selectedIteration, setSelectedIteration] = useState(null)
   const [selectedDataSetsEvaluations, setSelectedDataSetsEvaluations] = useState(null)

@@ -13,71 +13,75 @@ import Simulations from "../../simulations/server/class"
 import SolidObjects from "../../solidObjects/both/class"
 
 export default class Agents extends AgentsBoth {
-  static start(agentId) {
-    const agent = Agents.findOne(agentId)
+  static async start(agentId) {
+    const agent = Agents.findOneAsync(agentId)
 
-    Simulations.start(agent.current.simulation)
+    await Simulations.start(agent.current.simulation)
   }
 
-  static pause(agentId) {
-    const agent = AgentsBoth.findOne(agentId)
+  static async pause(agentId) {
+    const agent = await AgentsBoth.findOneAsync(agentId)
 
-    Simulations.pause(agent.current.simulation)
+    await Simulations.pause(agent.current.simulation)
   }
 
-  static stop(agentId) {
-    const agent = AgentsBoth.findOne(agentId)
+  static async stop(agentId) {
+    const agent = await AgentsBoth.findOneAsync(agentId)
 
-    Simulations.stop(agent.current.simulation)
+    await Simulations.stop(agent.current.simulation)
   }
 
-  static reset(agentId) {
-    const agent = AgentsBoth.findOne(agentId)
+  static async reset(agentId) {
+    const agent = await AgentsBoth.findOneAsync(agentId)
 
-    AgentsBoth.updateObj({ _id: agentId, iteration: 0 })
-    Simulations.reset(agent.current.simulation)
+    await AgentsBoth.updateObjAsync({ _id: agentId, iteration: 0 })
+    await Simulations.reset(agent.current.simulation)
   }
 
-  static retry(agentId) {
-    const agent = AgentsBoth.findOne(agentId)
+  static async retry(agentId) {
+    const agent = await AgentsBoth.findOneAsync(agentId)
 
-    Simulations.reset(agent.current.simulation)
-    Simulations.start(agent.current.simulation)
+    await Simulations.reset(agent.current.simulation)
+    await Simulations.start(agent.current.simulation)
   }
 
-  static removeByOwner(owner) {
-    const agents = AgentsBoth.find({ owner: owner }).fetch()
+  static async removeByOwner(owner) {
+    const agents = await AgentsBoth.find({ owner: owner }).fetchAsync()
 
-    agents.forEach(agent => {
-      Simulations.remove(agent.current.simulation)
-      Simulations.remove(agent.best.simulation)
+    const agentsPromises = agents.map(async (agent) => {
+      await Simulations.removeAsync(agent.current.simulation)
+      await Simulations.removeAsync(agent.best.simulation)
 
       const agentsHistories = AgentsHistories.find({ owner: agent._id })
 
-      agentsHistories.forEach(agentHistory => {
-        Simulations.remove(agentHistory.current.simulation)
-        Simulations.remove(agentHistory.best.simulation)
+      const agentsHistoriesPromises = agentsHistories.map(async (agentHistory) => {
+        await Simulations.removeAsync(agentHistory.current.simulation)
+        await Simulations.removeAsync(agentHistory.best.simulation)
       })
 
-      AgentsHistories.removeByOwner(agent._id)
+      await Promise.all(agentsHistoriesPromises)
+
+      await AgentsHistories.removeByOwner(agent._id)
     })
 
+    await Promise.all(agentsPromises)
+
     const agentIds = agents.map(agent => agent._id)
-    AgentsBoth.remove({ _id: { $in: agentIds } })
+    await AgentsBoth.removeAsync({ _id: { $in: agentIds } })
   }
 
-  static setBestGlobal(agentId) {
+  static async setBestGlobal(agentId) {
     // Get this agent based on the 'agentId'
-    const agent = AgentsBoth.findOne(agentId)
+    const agent = await AgentsBoth.findOneAsync(agentId)
 
     // Get the other agents with the same 'agent.owner' and set their 'bestGlobal' to false
-    AgentsBoth.update({ owner: agent.owner }, { $set: { "best.bestGlobal": false } }, { multi: true })
+    await AgentsBoth.update({ owner: agent.owner }, { $set: { "best.bestGlobal": false } }, { multi: true })
 
-    AgentsBoth.updateObj({ _id: agentId, "best.bestGlobal": true })
+    await AgentsBoth.updateObjAsync({ _id: agentId, "best.bestGlobal": true })
   }
 
-  static getBestGlobal(calibrationId) {
-    return AgentsBoth.findOne({ owner: calibrationId, "best.bestGlobal": true })
+  static async getBestGlobal(calibrationId) {
+    return await AgentsBoth.findOneAsync({ owner: calibrationId, "best.bestGlobal": true })
   }
 
   static async saveAllAgentsHistories(calibrationId) {
@@ -88,7 +92,7 @@ export default class Agents extends AgentsBoth {
   }
 
   static async saveAgentHistory(agentId) {
-    const agent = AgentsBoth.findOne(agentId)
+    const agent = await AgentsBoth.findOneAsync(agentId)
 
     const best = { ...agent.best }
     best.simulation = await Simulations.clone(agent.best.simulation, false, true, true)
@@ -103,11 +107,11 @@ export default class Agents extends AgentsBoth {
       current: current,
     }
 
-    AgentsHistories.insert(agentHistory)
+    await AgentsHistories.insertAsync(agentHistory)
   }
 
-  static observe(agentId, callback) {
-    const agent = AgentsBoth.findOne(agentId)
+  static async observe(agentId, callback) {
+    const agent = await AgentsBoth.findOneAsync(agentId)
 
     const agentObserve = AgentsBoth.find({ _id: agentId }).observe({
       changed: (agentNew, agentOld) => callback("agent", agentId, agentNew, agentOld),
@@ -117,8 +121,8 @@ export default class Agents extends AgentsBoth {
       changed: (simulationNew, simulationOld) => callback("simulation", agentId, simulationNew, simulationOld),
     })
 
-    const simulation = Simulations.findOne(agent.current.simulation)
-    const scenery = Sceneries.findOne({ owner: simulation._id })
+    const simulation = await Simulations.findOneAsync(agent.current.simulation)
+    const scenery = await Sceneries.findOneAsync({ owner: simulation._id })
 
     const frameObserve = Frames.find({ owner: scenery._id }).observe({
       added: frame => callback("frame", agentId, frame),
@@ -142,27 +146,27 @@ export default class Agents extends AgentsBoth {
     const scoresPromises = agents.map(agent => updateScores(agent._id))
     await Promise.all(scoresPromises)
 
-    Agents.updateBestGlobal(calibrationId)
+    await Agents.updateBestGlobal(calibrationId)
 
     async function updateScores(agentId) {
-      updateCurrentScore(agentId)
+      await updateCurrentScore(agentId)
       await updateBestScore(agentId)
     }
 
-    function updateCurrentScore(agentId) {
-      const state = Agents.getState(agentId)
+    async function updateCurrentScore(agentId) {
+      const state = await Agents.getState(agentId)
 
       if (state !== "done") {
-        Agents.updateObj({ _id: agentId, current: { valid: false } })
+        await Agents.updateObjAsync({ _id: agentId, current: { valid: false } })
         return
       }
 
-      const agent = Agents.findOne(agentId)
-      const simulation = Simulations.findOne(agent.current.simulation)
-      const scenery = Sceneries.findOne({ owner: simulation._id })
+      const agent = await Agents.findOneAsync(agentId)
+      const simulation = await Simulations.findOneAsync(agent.current.simulation)
+      const scenery = await Sceneries.findOneAsync({ owner: simulation._id })
 
-      const frames = Frames.find({ owner: scenery._id }, { sort: { step: 1 } }).fetch()
-      const dataSets = DataSets.find({ owner: agent.owner, enabled: true }).fetch()
+      const frames = await Frames.find({ owner: scenery._id }, { sort: { step: 1 } }).fetchAsync()
+      const dataSets = await DataSets.find({ owner: agent.owner, enabled: true }).fetchAsync()
 
       // Sanity check: calculate the expected number of frames for the scenery.
       // The expected number of frames is the total time of the simulation divided by the frame time, rounded to the
@@ -173,15 +177,16 @@ export default class Agents extends AgentsBoth {
       // valid. This will prevent the agent from being considered for the best global agent, as its score will be 0,
       // since there are no frames to evaluate.
       if (frames.length !== expectedFrames) {
-        Agents.updateObj({ _id: agentId, current: { valid: false } })
+        await Agents.updateObjAsync({ _id: agentId, current: { valid: false } })
         return
       }
 
       const dataSetsEvaluations = []
+      let currentScore = 0
 
-      const currentScore = dataSets.reduce((score, dataSet) => {
+      for (const dataSet of dataSets) {
         const objectId = dataSet.object
-        const object = NonSolidObjects.findOne(objectId) || SolidObjects.findOne(objectId)
+        const object = await NonSolidObjects.findOneAsync(objectId) || await SolidObjects.findOneAsync(objectId)
 
         const objectCallSign = object.callSign
         const dataName = dataSet.dataName
@@ -204,10 +209,12 @@ export default class Agents extends AgentsBoth {
         const simulationData = []
         const errorData = []
 
-        const dataSetScore = frames.reduce((score, frame) => {
+        let dataSetScore = 0
+
+        for (const frame of frames) {
           // Get the non-solid or solid object that belongs to the Frame's Scenery and has the same callSign as the DataSet's
-          const nonSolidObject = NonSolidObjects.findOne({ owner: frame.owner, callSign: objectCallSign })
-          const solidObject = SolidObjects.findOne({ owner: frame.owner, callSign: objectCallSign })
+          const nonSolidObject = await NonSolidObjects.findOneAsync({ owner: frame.owner, callSign: objectCallSign })
+          const solidObject = await SolidObjects.findOneAsync({ owner: frame.owner, callSign: objectCallSign })
 
           const object = nonSolidObject || solidObject
 
@@ -230,14 +237,15 @@ export default class Agents extends AgentsBoth {
             }
           }
 
-          // If the start condition is not met, then the score is 0, thus it won't be penalized.
-          if (hasCondition && !conditionMet) return 0
+          // If the start condition is not met, then the score is 0, do not add the frame to the evaluation
+          if (hasCondition && !conditionMet) continue
 
           // The current time is the frame time minus the startAt time.
           const currentTime = frame.time - startedAt
 
-          // If the time of the frame is not between the minTime and the maxTime of the DataSet, then the score is 0.
-          if (currentTime < minTime || currentTime > maxTime) return 0
+          // If the time of the frame is not between the minTime and the maxTime of the DataSet, then do not add the frame
+          // to the evaluation
+          if (currentTime < minTime || currentTime > maxTime) continue
 
           // Evaluate the spline at the current time to get the reference value.
           const refValue = spline.at(currentTime)
@@ -265,8 +273,8 @@ export default class Agents extends AgentsBoth {
 
           // Divide the score by the number of evaluated frames, to get an error number that is not dependent on the
           // number of frames used to evaluate it.
-          return (score + weightedError)
-        }, 0)
+          dataSetScore += weightedError
+        }
 
         // Calculate the score of the dataSet by dividing the dataSetScore by the number of frames
         const proportionalScore = numFrames ? (dataSetScore / numFrames) : 0
@@ -280,10 +288,10 @@ export default class Agents extends AgentsBoth {
           errorData: errorData,
         })
 
-        return (score + proportionalScore)
-      }, 0)
+        currentScore += proportionalScore
+      }
 
-      Agents.updateObj({
+      await Agents.updateObjAsync({
         _id: agentId,
         current: {
           score: currentScore,
@@ -294,7 +302,7 @@ export default class Agents extends AgentsBoth {
     }
 
     async function updateBestScore(agentId) {
-      const agent = Agents.findOne(agentId)
+      const agent = await Agents.findOneAsync(agentId)
 
       if (!agent.current.valid) return
 
@@ -304,11 +312,11 @@ export default class Agents extends AgentsBoth {
         // Clones the current simulation (thus, scenery and materials).
         const newBestSimulationId = await Simulations.clone(agent.current.simulation, false)
 
-        // Removes the old best simulation
-        Simulations.remove(agent.best.simulation)
+        // Removes the old best simulation, no need to await for it.
+        Simulations.removeAsync(agent.best.simulation)
 
         // Updates the best object with the new best simulation id and its score.
-        Agents.updateObj({
+        await Agents.updateObjAsync({
           _id: agentId,
           best: { score: agent.current.score, simulation: newBestSimulationId, valid: true },
         })
@@ -333,7 +341,7 @@ export default class Agents extends AgentsBoth {
     }
   }
 
-  static updateBestGlobal(calibrationId) {
+  static async updateBestGlobal(calibrationId) {
     const bestScores = Agents.find({ owner: calibrationId, "best.valid": true }).map(agent => ({
       agentId: agent._id,
       score: agent.best.score,
@@ -348,12 +356,12 @@ export default class Agents extends AgentsBoth {
       bestScores[0]
     ).agentId
 
-    Agents.setBestGlobal(bestGAgentId)
+    await Agents.setBestGlobal(bestGAgentId)
   }
 
   static async nextAllIterations(calibrationId) {
     const agents = Agents.find({ owner: calibrationId })
-    const bestGAgent = Agents.getBestGlobal(calibrationId)
+    const bestGAgent = await Agents.getBestGlobal(calibrationId)
 
     // TODO: What if there is no bestGAgent, because no agent has a valid best score?
 
@@ -362,35 +370,34 @@ export default class Agents extends AgentsBoth {
   }
 
   static async nextIteration(agentId, bestGAgentId) {
-    return new Promise(async (resolve) => {
-      const agent = Agents.findOne(agentId)
-      const bestGAgent = Agents.findOne(bestGAgentId)
+    const agent = await Agents.findOneAsync(agentId)
+    const bestGAgent = await Agents.findOneAsync(bestGAgentId)
 
-      Simulations.reset(agent.current.simulation)
+    await Simulations.reset(agent.current.simulation)
 
-      updateCoefficients(agent, bestGAgent)
+    await updateCoefficients(agent, bestGAgent)
 
-      Agents.updateObj({ _id: agentId, iteration: agent.iteration + 1 })
-      resolve()
-    })
+    await Agents.updateObjAsync({ _id: agentId, iteration: agent.iteration + 1 })
 
-    function updateCoefficients(agent, bestGAgent) {
+    async function updateCoefficients(agent, bestGAgent) {
       const calibrationId = agent.owner
+      const parameters = Parameters.find({ owner: calibrationId })
 
-      Parameters.find({ owner: calibrationId }).forEach(parameter => updateCoefficient(parameter, agent, bestGAgent))
+      const updateCoefficientsPromises = parameters.map(parameter => updateCoefficient(parameter, agent, bestGAgent))
+      await Promise.all(updateCoefficientsPromises)
     }
 
-    function updateCoefficient(parameter, agent, bestGAgent) {
-      const scenery = Sceneries.findOne({ owner: agent.current.simulation })
-      const bestScenery = Sceneries.findOne({ owner: agent.best.simulation })
-      const bestGScenery = Sceneries.findOne({ owner: bestGAgent.best.simulation })
+    async function updateCoefficient(parameter, agent, bestGAgent) {
+      const scenery = await Sceneries.findOneAsync({ owner: agent.current.simulation })
+      const bestScenery = await Sceneries.findOneAsync({ owner: agent.best.simulation })
+      const bestGScenery = await Sceneries.findOneAsync({ owner: bestGAgent.best.simulation })
 
       switch (parameter.type) {
         case "material": {
-          const referenceMaterial = Materials.findOne(parameter.materialObject)
-          const currentMaterial = Materials.findOne({ owner: scenery._id, callSign: referenceMaterial.callSign })
-          const bestMaterial = Materials.findOne({ owner: bestScenery._id, callSign: referenceMaterial.callSign })
-          const bestGMaterial = Materials.findOne({ owner: bestGScenery._id, callSign: referenceMaterial.callSign })
+          const referenceMaterial = await Materials.findOneAsync(parameter.materialObject)
+          const currentMaterial = await Materials.findOneAsync({ owner: scenery._id, callSign: referenceMaterial.callSign })
+          const bestMaterial = await Materials.findOneAsync({ owner: bestScenery._id, callSign: referenceMaterial.callSign })
+          const bestGMaterial = await Materials.findOneAsync({ owner: bestGScenery._id, callSign: referenceMaterial.callSign })
 
           const coefficient = parameter.coefficient
 
@@ -405,15 +412,15 @@ export default class Agents extends AgentsBoth {
           )
 
           _.set(currentMaterial, coefficient, value)
-          Materials.updateObj(currentMaterial)
+          await Materials.updateObjAsync(currentMaterial)
 
           break
         }
         case "nonSolidObject": {
-          const referenceNSO = NonSolidObjects.findOne(parameter.materialObject)
-          const currentNSO = NonSolidObjects.findOne({ owner: scenery._id, callSign: referenceNSO.callSign })
-          const bestNSO = NonSolidObjects.findOne({ owner: bestScenery._id, callSign: referenceNSO.callSign })
-          const bestGNSO = NonSolidObjects.findOne({ owner: bestGScenery._id, callSign: referenceNSO.callSign })
+          const referenceNSO = await NonSolidObjects.findOneAsync(parameter.materialObject)
+          const currentNSO = await NonSolidObjects.findOneAsync({ owner: scenery._id, callSign: referenceNSO.callSign })
+          const bestNSO = await NonSolidObjects.findOneAsync({ owner: bestScenery._id, callSign: referenceNSO.callSign })
+          const bestGNSO = await NonSolidObjects.findOneAsync({ owner: bestGScenery._id, callSign: referenceNSO.callSign })
 
           const coefficient = parameter.coefficient
           const value = calculateCoefficient(
@@ -427,15 +434,15 @@ export default class Agents extends AgentsBoth {
           )
 
           _.set(currentNSO, coefficient, value)
-          NonSolidObjects.updateObj(currentNSO)
+          await NonSolidObjects.updateObjAsync(currentNSO)
 
           break
         }
         case "solidObject": {
-          const referenceSO = SolidObjects.findOne(parameter.materialObject)
-          const currentSO = SolidObjects.findOne({ owner: scenery._id, callSign: referenceSO.callSign })
-          const bestSO = SolidObjects.findOne({ owner: bestScenery._id, callSign: referenceSO.callSign })
-          const bestGSO = SolidObjects.findOne({ owner: bestGScenery._id, callSign: referenceSO.callSign })
+          const referenceSO = await SolidObjects.findOneAsync(parameter.materialObject)
+          const currentSO = await SolidObjects.findOneAsync({ owner: scenery._id, callSign: referenceSO.callSign })
+          const bestSO = await SolidObjects.findOneAsync({ owner: bestScenery._id, callSign: referenceSO.callSign })
+          const bestGSO = await SolidObjects.findOneAsync({ owner: bestGScenery._id, callSign: referenceSO.callSign })
 
           const coefficient = parameter.coefficient
           const value = calculateCoefficient(
@@ -449,7 +456,7 @@ export default class Agents extends AgentsBoth {
           )
 
           _.set(currentSO, coefficient, value)
-          SolidObjects.updateObj(currentSO)
+          await SolidObjects.updateObjAsync(currentSO)
 
           break
         }

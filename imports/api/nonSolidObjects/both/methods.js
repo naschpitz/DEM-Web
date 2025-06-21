@@ -3,57 +3,57 @@ import { Meteor } from "meteor/meteor"
 import NonSolidObjects from "./class.js"
 
 Meteor.methods({
-  "nonSolidObjects.create"(owner) {
+  async "nonSolidObjects.create"(owner) {
     try {
-      NonSolidObjects.create(owner)
+      await NonSolidObjects.create(owner)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "nonSolidObjects.update"(nonSolidObject) {
+  async "nonSolidObjects.update"(nonSolidObject) {
     try {
-      NonSolidObjects.updateObj(nonSolidObject)
+      await NonSolidObjects.updateObjAsync(nonSolidObject)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "nonSolidObjects.remove"(nonSolidObjectId) {
+  async "nonSolidObjects.remove"(nonSolidObjectId) {
     try {
-      NonSolidObjects.remove(nonSolidObjectId)
+      await NonSolidObjects.removeAsync(nonSolidObjectId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "nonSolidObjects.removeByOwner"(sceneryId) {
+  async "nonSolidObjects.removeByOwner"(sceneryId) {
     try {
-      NonSolidObjects.removeByOwner(sceneryId)
+      await NonSolidObjects.removeByOwner(sceneryId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "nonSolidObjects.usesMaterial"(materialId) {
+  async "nonSolidObjects.usesMaterial"(materialId) {
     try {
-      return NonSolidObjects.usesMaterial(materialId)
+      return await NonSolidObjects.usesMaterial(materialId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "nonSolidObjects.getByCalibration"(calibrationId) {
+  async "nonSolidObjects.getByCalibration"(calibrationId) {
     try {
-      return NonSolidObjects.getByCalibration(calibrationId)
+      return await NonSolidObjects.getByCalibration(calibrationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "nonSolidObjects.getById"(nonSolidObjectId) {
+  async "nonSolidObjects.getById"(nonSolidObjectId) {
     try {
-      return NonSolidObjects.findOne(nonSolidObjectId)
+      return await NonSolidObjects.findOneAsync(nonSolidObjectId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

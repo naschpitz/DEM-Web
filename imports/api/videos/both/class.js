@@ -1,7 +1,7 @@
 import VideosDAO from "./dao.js";
 
 export default class Videos extends VideosDAO {
-  static setState(videoId, state, error) {
+  static async setState(videoId, state, error) {
     const video = {
       _id: videoId,
       meta: {
@@ -10,10 +10,10 @@ export default class Videos extends VideosDAO {
       }
     };
 
-    VideosDAO.updateObj(video);
+    await VideosDAO.updateObjAsync(video);
   }
 
-  static removeByOwner(sceneryId) {
-    VideosDAO.remove({ "meta.owner": sceneryId });
+  static async removeByOwner(sceneryId) {
+    await VideosDAO.removeAsync({ "meta.owner": sceneryId });
   }
 }

@@ -6,12 +6,12 @@ import Sceneries from "../../sceneries/both/class"
 import Parameters from "../../parameters/both/class"
 
 export default class SolidObjects extends SolidObjectsDAO {
-  static clone(oldSceneryId, newSceneryId, materialsMap) {
-    const oldSolidObjects = SolidObjectsDAO.find({ owner: oldSceneryId })
+  static async clone(oldSceneryId, newSceneryId, materialsMap) {
+    const oldSolidObjects = await SolidObjectsDAO.find({ owner: oldSceneryId }).fetchAsync()
 
     const solidObjectsMap = {}
 
-    oldSolidObjects.forEach(oldSolidObject => {
+    for (const oldSolidObject of oldSolidObjects) {
       const newSolidObject = _.cloneDeep(oldSolidObject)
       delete newSolidObject._id
 
@@ -19,52 +19,56 @@ export default class SolidObjects extends SolidObjectsDAO {
       newSolidObject.material = materialsMap[oldSolidObject.material]
 
       const oldSolidObjectId = oldSolidObject._id
-      const newSolidObjectId = SolidObjectsDAO.insert(newSolidObject)
+      const newSolidObjectId = await SolidObjectsDAO.insertAsync(newSolidObject)
 
-      ObjectsProperties.clone(oldSolidObjectId, newSolidObjectId)
+      await ObjectsProperties.clone(oldSolidObjectId, newSolidObjectId)
 
       solidObjectsMap[oldSolidObjectId] = newSolidObjectId
-    })
+    }
 
     return solidObjectsMap
   }
 
-  static create(sceneryId) {
-    const solidObjectId = SolidObjectsDAO.insert({ owner: sceneryId })
-    ObjectsProperties.create(solidObjectId)
+  static async create(sceneryId) {
+    const solidObjectId = await SolidObjectsDAO.insertAsync({ owner: sceneryId })
+    await ObjectsProperties.create(solidObjectId)
 
     return solidObjectId
   }
 
-  static remove(solidObjectId) {
-    const parameterResult = Parameters.usesMaterialObject(solidObjectId)
+  static async removeAsync(solidObjectId) {
+    const parameterResult = await Parameters.usesMaterialObject(solidObjectId)
     if (parameterResult) throw { message: "Cannot remove solid object, a Parameter makes reference to it." }
 
-    SolidObjectsDAO.remove(solidObjectId)
-    ObjectsProperties.removeByOwner(solidObjectId)
+    const promises = []
+    promises.push(SolidObjectsDAO.removeAsync(solidObjectId))
+    promises.push(ObjectsProperties.removeByOwner(solidObjectId))
+
+    await Promise.all(promises)
   }
 
-  static removeByOwner(sceneryId) {
+  static async removeByOwner(sceneryId) {
     const solidObjects = SolidObjectsDAO.find({ owner: sceneryId })
 
-    solidObjects.forEach(solidObject => {
-      ObjectsProperties.removeByOwner(solidObject._id)
+    const promises = await solidObjects.mapAsync(async (solidObject) => {
+      await ObjectsProperties.removeByOwner(solidObject._id)
     })
 
-    SolidObjectsDAO.remove({ owner: sceneryId })
+    await Promise.all(promises)
+    await SolidObjectsDAO.removeAsync({ owner: sceneryId })
   }
 
-  static usesMaterial(materialId) {
-    const materialFound = SolidObjects.findOne({ material: materialId })
+  static async usesMaterial(materialId) {
+    const materialFound = await SolidObjects.findOneAsync({ material: materialId })
 
     return !!materialFound
   }
 
-  static getByCalibration(calibrationId) {
-    const scenery = Sceneries.findByCalibration(calibrationId)
+  static async getByCalibration(calibrationId) {
+    const scenery = await Sceneries.findByCalibration(calibrationId)
     if (!scenery) throw { code: "404", message: "Scenery not found" }
 
     const sceneryId = scenery._id
-    return SolidObjects.find({ owner: sceneryId }).fetch()
+    return await SolidObjects.find({ owner: sceneryId }).fetchAsync()
   }
 }

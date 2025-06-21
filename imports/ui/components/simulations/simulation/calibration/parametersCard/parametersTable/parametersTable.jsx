@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import Parameters from "../../../../../../../api/parameters/both/class"
 
 import Alert from "react-s-alert-v3"
@@ -15,7 +16,7 @@ import MaterialObjectSelect from "../materialObjectSelect/materialObjectSelect.j
 
 import "./parametersTable.css"
 
-export default ParametersTable = props => {
+export default (props) => {
   const [isParametersReady, setIsParametersReady] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -210,7 +211,7 @@ export default ParametersTable = props => {
     _.set(parameter, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "type" || "material" || "coefficient"))) {
-      Meteor.call("parameters.update", parameter, error => {
+      Meteor.callAsync("parameters.update", parameter, error => {
         if (error) Alert.error("Error updating parameter: " + getErrorMessage(error))
       })
     }
@@ -223,7 +224,7 @@ export default ParametersTable = props => {
 
     const parameterId = data.original._id
 
-    Meteor.call("parameters.remove", parameterId, error => {
+    Meteor.callAsync("parameters.remove", parameterId, error => {
       if (error) Alert.error("Error removing parameter: " + error.reason)
       else Alert.success("Parameter successfully removed.")
 

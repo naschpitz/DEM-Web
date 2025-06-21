@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -14,7 +15,7 @@ import DataSet from "./dataSet/dataSet.jsx"
 
 import "./dataSetsCard.css"
 
-export default DataSetsCard = props => {
+export default (props) => {
   const [isDataSetsReady, setIsDataSetsReady] = useState(false)
   const [isCreatingDataSet, setIsCreatingDataSet] = useState(false)
 
@@ -34,7 +35,7 @@ export default DataSetsCard = props => {
 
     setIsCreatingDataSet(true)
 
-    Meteor.call("dataSets.create", props.calibrationId, error => {
+    Meteor.callAsync("dataSets.create", props.calibrationId, error => {
       if (error) Alert.error("Error creating data set: " + error.reason)
       else Alert.success("Data set successfully created.")
 

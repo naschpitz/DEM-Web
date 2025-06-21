@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import CalibrationsClass from "../../../../../api/calibrations/both/class"
 import LogsClass from "../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../api/simulations/both/class"
@@ -14,7 +15,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./log.css"
 
-export default Log = props => {
+export default (props) => {
   const [isObjectReady, setIsObjectReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
   const [isReady, setIsReady] = useState(false)

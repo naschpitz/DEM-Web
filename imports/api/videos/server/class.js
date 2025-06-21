@@ -12,10 +12,10 @@ import VideosBoth from "../both/class.js";
 
 export default class Videos extends VideosBoth {
   static async render(userId, sceneryId, settings) {
-    const scenery = Sceneries.findOne(sceneryId);
+    const scenery = await Sceneries.findOneAsync(sceneryId);
     const simulationId = scenery.owner;
 
-    const simulation = Simulations.findOne(simulationId);
+    const simulation = await Simulations.findOneAsync(simulationId);
 
     const videoId = Random.id();
 
@@ -47,7 +47,7 @@ export default class Videos extends VideosBoth {
     } catch (error) {
       console.log("Error rendering images: ", error);
       rmdirSync(imagesPath, { recursive: true });
-      VideosBoth.setState(videoId, "errorRendering", error);
+      await VideosBoth.setState(videoId, "errorRendering", error);
       return;
     }
 
@@ -83,7 +83,7 @@ export default class Videos extends VideosBoth {
     // Output file path.
     args.push(videoFilePath);
 
-    VideosBoth.setState(videoId, "encoding");
+    await VideosBoth.setState(videoId, "encoding");
 
     try {
       await new Promise((resolve, reject) => {
@@ -106,7 +106,7 @@ export default class Videos extends VideosBoth {
         });
       });
     } catch (error) {
-      VideosBoth.setState(videoId, "errorEncoding", error);
+      await VideosBoth.setState(videoId, "errorEncoding", error);
       return;
     } finally {
       rmdirSync(imagesPath, { recursive: true });
@@ -116,7 +116,7 @@ export default class Videos extends VideosBoth {
 
     const stats = statSync(videoFilePath);
 
-    VideosBoth.update(
+    await VideosBoth.updateSync(
       videoId,
       {
         $set: {
@@ -130,8 +130,8 @@ export default class Videos extends VideosBoth {
     );
   }
 
-  static remove(videoId) {
-    const file = VideosBoth.findOne(videoId);
+  static async removeAsync(videoId) {
+    const file = VideosBoth.findOneAsync(videoId);
 
     if (file.meta.state === "rendering" || file.meta.state === "encoding")
       throw { message: "Videos in 'rendering' or 'encoding' states cannot be removed." };
@@ -139,6 +139,6 @@ export default class Videos extends VideosBoth {
     unlink(file.path, (error) => { /* Do nothing */
     });
 
-    VideosBoth.remove(videoId);
+    await VideosBoth.removeAsync(videoId);
   }
 }

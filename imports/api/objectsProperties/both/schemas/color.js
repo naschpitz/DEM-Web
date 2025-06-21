@@ -1,7 +1,7 @@
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 
-export default Color = new SimpleSchema({
+export default new SimpleSchema({
   r: {
     type: Number,
     label: "Red",

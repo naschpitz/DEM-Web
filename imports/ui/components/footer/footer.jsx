@@ -1,10 +1,10 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import useScreenSize from "../screenSize/screenSize.jsx"
+import useScreenSize from "../screenSize/useScreenSize.jsx"
 
 import "./footer.css"
 
-export default Footer = () => {
+export default () => {
   const screenSize = useScreenSize()
 
   function renderText() {

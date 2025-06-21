@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react"
 
 import { ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
-import Spline from "cubic-spline";
 
 import styles from "./chart.module.css"
 
-export default Chart = props => {
+export default (props) => {
   const [data, setData] = useState([])
 
   useEffect(() => {

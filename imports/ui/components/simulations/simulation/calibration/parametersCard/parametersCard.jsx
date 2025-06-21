@@ -9,7 +9,7 @@ import ParametersTable from "./parametersTable/parametersTable"
 
 import "./parametersCard.css"
 
-export default ParametersCard = props => {
+export default (props) => {
   const [isCreatingParameter, setIsCreatingParameter] = useState(false)
 
   function onCreateParameterDone(result) {
@@ -17,7 +17,7 @@ export default ParametersCard = props => {
 
     setIsCreatingParameter(true)
 
-    Meteor.call("parameters.create", props.calibrationId, error => {
+    Meteor.callAsync("parameters.create", props.calibrationId, error => {
       if (error) Alert.error("Error creating parameters: " + error.reason)
       else Alert.success("Parameter successfully created.")
 

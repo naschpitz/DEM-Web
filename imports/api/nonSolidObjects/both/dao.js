@@ -1,11 +1,13 @@
 import dot from "dot-object"
 import _ from "lodash"
 
+import getArraysPaths from "../../utils/getArrayPaths";
+
 import NonSolidObjectsCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO";
 
 export default class NonSolidObjectsDAO extends createDAO(NonSolidObjectsCol) {
-  static updateObj(nonSolidObject) {
+  static async updateObjAsync(nonSolidObject) {
     const dottedNonSolidObject = dot.dot(nonSolidObject)
     const arraysPaths = getArraysPaths(nonSolidObject)
 
@@ -24,7 +26,7 @@ export default class NonSolidObjectsDAO extends createDAO(NonSolidObjectsCol) {
       !_.isEmpty(value) ? (set[key] = value) : (unset[key] = "")
     })
 
-    NonSolidObjectsCol.update(dottedNonSolidObject._id, {
+    await NonSolidObjectsCol.updateAsync(dottedNonSolidObject._id, {
       $set: set,
       $unset: unset,
     })

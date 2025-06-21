@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import FramesClass from "../../../../../../../api/frames/both/class.js"
 
 import { ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
@@ -11,7 +12,7 @@ import Alert from "react-s-alert-v3"
 
 import "./chart.css"
 
-export default Chart = ({ sceneryId, objectId, dataName, minInterval, maxInterval }) => {
+export default ({ sceneryId, objectId, dataName, minInterval, maxInterval }) => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {

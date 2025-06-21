@@ -10,7 +10,7 @@ import CameraFilterTable from "./cameraFiltersTable/cameraFiltersTable.jsx"
 
 import "./cameraFiltersCard.css"
 
-export default CameraFiltersCard = (props) => {
+export default (props) => {
   const [isCreatingCameraFilter, setIsCreatingCameraFilter] = useState(false)
 
   const sceneryId = props.sceneryId
@@ -20,7 +20,7 @@ export default CameraFiltersCard = (props) => {
 
     setIsCreatingCameraFilter(true)
 
-    Meteor.call("cameraFilters.create", sceneryId, error => {
+    Meteor.callAsync("cameraFilters.create", sceneryId, error => {
       if (error) Alert.error("Error creating camera filter: " + error.reason)
       else Alert.success("Camera filter successfully created.")
 

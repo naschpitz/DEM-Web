@@ -11,49 +11,49 @@ Meteor.methods({
     }
   },
 
-  "simulations.create"() {
+  async "simulations.create"() {
     try {
-      Simulations.create()
+      await Simulations.create()
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "simulations.update"(simulation) {
+  async "simulations.update"(simulation) {
     try {
-      Simulations.updateObj(simulation)
+      await Simulations.updateObjAsync(simulation)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "simulations.setState"(simulationId, state) {
+  async "simulations.setState"(simulationId, state) {
     try {
-      Simulations.setState(simulationId, state)
+      await Simulations.setState(simulationId, state)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "simulations.usesServer"(serverId) {
+  async "simulations.usesServer"(serverId) {
     try {
-      Simulations.usesServer(serverId)
+      await Simulations.usesServer(serverId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "simulations.removeServer"(serverId) {
+  async "simulations.removeServer"(serverId) {
     try {
-      Simulations.removeServer(serverId)
+      await Simulations.removeServer(serverId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "simulations.unsetGroup"(simulationId, groupId) {
+  async "simulations.unsetGroup"(simulationId, groupId) {
     try {
-      Simulations.unsetGroup(simulationId, groupId)
+      await Simulations.unsetGroup(simulationId, groupId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

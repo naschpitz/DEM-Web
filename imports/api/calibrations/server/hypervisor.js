@@ -15,51 +15,55 @@ export default class Hypervisor {
   }
 
   async initialize() {
-    this.log("Hypervisor initialization began.")
+    await this.log("Hypervisor initialization began.")
 
-    const calibration = Calibrations.findOne(this.calibrationId)
+    const calibration = await Calibrations.findOneAsync(this.calibrationId)
 
-    const numAgents = Agents.find({ owner: this.calibrationId }).count()
+    const numAgents = await Agents.find({ owner: this.calibrationId }).countAsync()
     const diffAgents = calibration.agentsNumber - numAgents
 
-    this.log(`Creating ${diffAgents} agents.`)
+    await this.log(`Creating ${diffAgents} agents.`)
     for (let i = 0; i < diffAgents; i++) {
       await Agents.create(this.calibrationId, numAgents + i)
     }
-    this.log("Agents created.")
+    await this.log("Agents created.")
 
-    this.startObservers()
+    await this.startObservers()
 
-    this.log("Hypervisor initialization ended.")
+    await this.log("Hypervisor initialization ended.")
 
     const boundCheck = Meteor.bindEnvironment(this.check, null, this)
     this.timer = setInterval(boundCheck, 5000)
   }
 
-  startObservers() {
-    this.log("Initializing calibration observer.")
-    this.calibrationObserver = Calibrations.observe(this.calibrationId, this.calibrationHandler.bind(this))
-    this.log("Calibration observer initialized.")
+  async startObservers() {
+    await this.log("Initializing calibration observer.")
+    this.calibrationObserver = await Calibrations.observeAsync(this.calibrationId, this.calibrationHandler.bind(this))
+    await this.log("Calibration observer initialized.")
 
     const agents = Agents.find({ owner: this.calibrationId })
 
-    this.log("Initializing agents observers.")
-    this.agentsObservers = agents.map(agent => Agents.observe(agent._id, this.agentHandler.bind(this)))
-    this.log("Agents observers initialized.")
+    await this.log("Initializing agents observers.")
+    const agentsObserversPromises = await agents.mapAsync(async (agent) => {
+      const observer = await Agents.observeAsync(agent._id, this.agentHandler.bind(this))
+      return observer
+    })
+    this.agentsObservers = await Promise.all(agentsObserversPromises)
+    await this.log("Agents observers initialized.")
   }
 
-  stopObservers() {
-    this.log("Stopping observers.")
+  async stopObservers() {
+    await this.log("Stopping observers.")
 
-    this.log("Stopping calibration observer.")
+    await this.log("Stopping calibration observer.")
     this.calibrationObserver.stop()
-    this.log("Calibration observer stopped.")
+    await this.log("Calibration observer stopped.")
 
-    this.log("Stopping agents observers.")
+    await this.log("Stopping agents observers.")
     this.agentsObservers.forEach(observer => observer.stop())
-    this.log("Agents observers stopped.")
+    await this.log("Agents observers stopped.")
 
-    this.log("Observers stopped.")
+    await this.log("Observers stopped.")
   }
 
   async check() {
@@ -72,84 +76,88 @@ export default class Hypervisor {
   }
 
   async dispatchAgents() {
-    const calibration = Calibrations.findOne(this.calibrationId)
+    const calibration = await Calibrations.findOneAsync(this.calibrationId)
 
     if (calibration.state !== "running") return
 
-    let numRunningAgents = Calibrations.getNumRunningAgents(calibration._id)
+    const numRunningAgents = await Calibrations.getNumRunningAgents(calibration._id)
     const numMissingAgents = calibration.instancesNumber - numRunningAgents
 
     // In case agents are started manually, numMissingAgents can be negative
     if (numMissingAgents <= 0) return
 
-    const eligibleAgents = Agents.find({ owner: calibration._id })
-      .fetch()
-      .filter(agent => {
-        const state = Agents.getState(agent._id)
+    const eligibleAgentsPromises = await Agents.find({ owner: calibration._id }).mapAsync(async (agent) => {
+      const state = await Agents.getState(agent._id)
 
-        // "new" and "paused" agents are eligible to be started
-        // "failed" agents are eligible to be retried
-        if (["new", "paused", "failed"].includes(state) && agent.iteration === calibration.currentIteration) return true
+      // "new" and "paused" agents are eligible to be started
+      // "failed" agents are eligible to be retried
+      if (["new", "paused", "failed"].includes(state) && agent.iteration === calibration.currentIteration)
+        return agent
 
-        return false
-      })
+      return null
+    })
+
+    const eligibleAgents = (await Promise.all(eligibleAgentsPromises)).filter(Boolean)
 
     if (numRunningAgents === 0 && eligibleAgents.length === 0) {
-      this.log("No running or eligible agents found, advancing to the next calibration iteration.")
+      await this.log("No running or eligible agents found, advancing to the next calibration iteration.")
       await Calibrations.nextIteration(this.calibrationId)
       return
     }
 
     if (eligibleAgents.length !== 0) {
-      this.log("Dispatching agents.")
+      await this.log("Dispatching agents.")
       const agentsToStart = _.take(eligibleAgents, numMissingAgents)
-      agentsToStart.forEach(agent => {
-        try {
-          const state = Agents.getState(agent._id)
 
-          if (state === "new" || state === "paused") Agents.start(agent._id)
-          if (state === "failed") Agents.retry(agent._id)
+      const agentsToStartPromises = agentsToStart.map(async (agent) => {
+        try {
+          const state = await Agents.getState(agent._id)
+
+          if (state === "new" || state === "paused") await Agents.start(agent._id)
+          if (state === "failed") await Agents.retry(agent._id)
         } catch (error) {
-          this.log(`Agent #${agent.index} simulation has failed to start.`)
+          await this.log(`Agent #${agent.index} simulation has failed to start.`)
         }
       })
+
+      await Promise.all(agentsToStartPromises)
     }
   }
 
-  calibrationHandler(calibration) {
+  async calibrationHandler(calibration) {
     if (calibration.state === "stopped") {
-      this.log("Calibration has stopped, stopping hypervisor.")
-      this.stopObservers()
+      await this.log("Calibration has stopped, stopping hypervisor.")
+      await this.stopObservers()
       clearInterval(this.timer)
     }
   }
 
-  agentHandler(type, agentId, objectNew, objectOld) {
-    const agent = Agents.findOne(agentId)
-    const calibration = Calibrations.findOne(agent.owner)
+  async agentHandler(type, agentId, objectNew, objectOld) {
+    const agent = await Agents.findOneAsync(agentId)
+    const calibration = await Calibrations.findOneAsync(agent.owner)
 
     if (type === "frame") {
       const frame = objectNew
 
       if (Frames.getHighestEnergy(frame) > calibration.maxEnergy) {
-        this.log(
+        await this.log(
           `Agent #${agent.index} total kinetic energy has exceeded the maximum value set by the calibration, stopping it.`
         )
 
         try {
-          Agents.stop(agentId)
+          await Agents.stop(agentId)
         } catch (error) {
-          this.log(`Agent #${agent.index} simulation has failed to stop.`)
+          await this.log(`Agent #${agent.index} simulation has failed to stop.`)
         }
       }
 
       if (Frames.hasInvalidData(frame)) {
-        this.log(`Agent #${agent.index} has invalid data, stopping it.`)
+        await this.log(`Agent #${agent.index} has invalid data, stopping it.`)
 
         try {
-          Agents.stop(agentId)
+          await Agents.stop(agentId)
         } catch (error) {
-          this.log(`Agent #${agent.index} simulation has failed to stop.`)
+          await this.log(`Agent #${agent.index} simulation has failed to stop.`)
         }
       }
 
@@ -164,42 +172,42 @@ export default class Hypervisor {
       if (simulationNew.state === simulationOld.state) return;
 
       if (simulationNew.state === "stopped" || simulationNew.state === "done") {
-        this.log(`Agent #${agent.index} simulation has stopped.`)
+        await this.log(`Agent #${agent.index} simulation has stopped.`)
       }
 
       if (simulationNew.state === "failed") {
-        this.log(`Agent #${agent.index} simulation has failed.`)
+        await this.log(`Agent #${agent.index} simulation has failed.`)
       }
 
       this.runCheck = true
     }
   }
 
-  log(message) {
-    const calibration = Calibrations.findOne(this.calibrationId)
+  async log(message) {
+    const calibration = await Calibrations.findOneAsync(this.calibrationId)
 
     const state = calibration.state
-    const progress = this.getProgress()
+    const progress = await this.getProgress()
 
-    Logs.insert({ owner: this.calibrationId, message: message, state: state, progress: progress })
+    await Logs.insertAsync({ owner: this.calibrationId, message: message, state: state, progress: progress })
   }
 
   // Should this function be moved to the Calibrations class?
-  getProgress() {
-    const calibration = Calibrations.findOne(this.calibrationId)
+  async getProgress() {
+    const calibration = await Calibrations.findOneAsync(this.calibrationId)
     const currentIteration = calibration.currentIteration
 
     const numAgents = Agents.find({ owner: this.calibrationId }).count()
     const maxIterations = calibration.maxIterations
 
     // Get the number of agents to run or running
-    const numNewAgents = Calibrations.getNumNewAgents(this.calibrationId)
-    const numRunningAgents = Calibrations.getNumRunningAgents(this.calibrationId)
+    const numNewAgents = await Calibrations.getNumNewAgents(this.calibrationId)
+    const numRunningAgents = await Calibrations.getNumRunningAgents(this.calibrationId)
 
     const numAgentsToRun = numNewAgents + numRunningAgents
 
     // Get the first log message
-    const firstLog = Logs.findOne({ owner: this.calibrationId }, { sort: { createdAt: 1 } })
+    const firstLog = await Logs.findOneAsync({ owner: this.calibrationId }, { sort: { createdAt: 1 } })
 
     if (!firstLog) return undefined
 

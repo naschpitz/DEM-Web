@@ -5,7 +5,7 @@ import VideosCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO.js"
 
 export default class VideosDAO extends createDAO(VideosCol) {
-  static updateObj(video) {
+  static updateObjAsync(video) {
     const error = _.get(video, "meta.error")
 
     // Removes circular reference.

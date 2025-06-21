@@ -16,67 +16,75 @@ export default class Calibrations extends CalibrationsBoth {
       console.log(error)
     }
 
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "running" })
+    await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "running" })
   }
 
-  static pause(calibrationId) {
-    const calibration = CalibrationsBoth.findOne(calibrationId)
+  static async pause(calibrationId) {
+    const calibration = await CalibrationsBoth.findOneAsync(calibrationId)
     const state = calibration.state
 
     if (state !== "running") throw { message: "Only running calibrations can be paused" }
 
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "paused" })
+    await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "paused" })
 
-    const agents = Agents.find({ owner: calibrationId })
-    agents.forEach(agent => {
+    const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async (agent) => {
       const state = Agents.getState(agent._id)
 
-      if (state === "running") Agents.pause(agent._id)
+      if (state === "running") await Agents.pause(agent._id)
     })
+
+    await Promise.all(agentsPromises)
   }
 
-  static stop(calibrationId) {
-    const calibration = CalibrationsBoth.findOne(calibrationId)
+  static async stop(calibrationId) {
+    const calibration = await CalibrationsBoth.findOneAsync(calibrationId)
     const state = calibration.state
 
     if (state !== "paused" && state !== "running")
       throw { message: "Only paused or running calibrations can be stopped" }
 
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "stopped" })
+    await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "stopped" })
 
-    const agents = Agents.find({ owner: calibrationId })
-    agents.forEach(agent => {
+    const agentsPromises = await Agents.find({ owner: calibrationId }).map(async (agent) => {
       const state = Agents.getState(agent._id)
 
-      if (state === "running" || state === "paused") Agents.stop(agent._id)
+      if (state === "running" || state === "paused") await Agents.stop(agent._id)
     })
+
+    await Promise.all(agentsPromises)
   }
 
-  static reset(calibrationId) {
-    const calibration = CalibrationsBoth.findOne(calibrationId)
+  static async reset(calibrationId) {
+    const calibration = await CalibrationsBoth.findOneAsync(calibrationId)
     const state = calibration.state
 
     if (state === "running" || state === "paused") throw { message: "Running or paused calibration cannot be reset" }
 
-    Logs.removeByOwner(calibrationId)
-    Agents.removeByOwner(calibrationId)
+    const promises = []
+    promises.push(Logs.removeByOwner(calibrationId))
+    promises.push(Agents.removeByOwner(calibrationId))
 
-    CalibrationsBoth.updateObj({ _id: calibrationId, state: "new", currentIteration: 0 })
+    await Promise.all(promises)
+
+    await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "new", currentIteration: 0 })
   }
 
-  static removeByOwner(simulationId) {
-    const calibration = CalibrationsDAO.findOne({ owner: simulationId })
+  static async removeByOwner(simulationId) {
+    const calibration = await CalibrationsDAO.findOneAsync({ owner: simulationId })
 
-    DataSets.removeByOwner(calibration._id)
-    Logs.removeByOwner(calibration._id)
-    Parameters.removeByOwner(calibration._id)
-    Agents.removeByOwner(calibration._id)
+    const promises = []
+    promises.push(DataSets.removeByOwner(calibration._id))
+    promises.push(Logs.removeByOwner(calibration._id))
+    promises.push(Parameters.removeByOwner(calibration._id))
+    promises.push(Agents.removeByOwner(calibration._id))
 
-    CalibrationsDAO.remove(calibration._id)
+    await Promise.all(promises)
+
+    await CalibrationsDAO.removeAsync(calibration._id)
   }
 
-  static removeServer(serverId) {
-    CalibrationsDAO.update(
+  static async removeServer(serverId) {
+    await CalibrationsDAO.update(
       {
         server: serverId,
         state: { $nin: ["paused", "running"] },
@@ -91,62 +99,68 @@ export default class Calibrations extends CalibrationsBoth {
 
   static async nextIteration(calibrationId) {
     // Update Agents' scores
-    Calibrations.log(calibrationId, "Updating agents' scores.")
+    await Calibrations.log(calibrationId, "Updating agents' scores.")
     await Agents.updateAllScores(calibrationId)
 
-    Calibrations.log(calibrationId, "Saving agents' histories.")
+    await Calibrations.log(calibrationId, "Saving agents' histories.")
     await Agents.saveAllAgentsHistories(calibrationId)
 
-    const calibration = CalibrationsBoth.findOne(calibrationId)
+    const calibration = CalibrationsBoth.findOneAsync(calibrationId)
 
     // After saving the history, we can check the stop condition
-    Calibrations.log(calibrationId, "Checking stop condition.")
-    const stopConditionMet = Calibrations.checkStopCondition(calibrationId)
-    const bestScores = Agents.getBestScores(calibrationId)
+    await Calibrations.log(calibrationId, "Checking stop condition.")
+    const stopConditionMet = await Calibrations.checkStopCondition(calibrationId)
+    const bestScores = await Agents.getBestScores(calibrationId)
 
     stopConditionMet ?
-      Calibrations.log(calibrationId, "Stop condition met.") :
-      Calibrations.log(calibrationId, "Stop condition not met.")
+      await Calibrations.log(calibrationId, "Stop condition met.") :
+      await Calibrations.log(calibrationId, "Stop condition not met.")
 
-    Calibrations.log(calibrationId, `Best scores: ${bestScores.map(score => score.toFixed(8)).join(", ")}`)
+    await Calibrations.log(calibrationId, `Best scores: ${bestScores.map(score => score.toFixed(8)).join(", ")}`)
 
     if ((calibration.currentIteration < calibration.maxIterations - 1) && !stopConditionMet) {
-      Calibrations.log(calibrationId, "Advancing all agents to the next iteration.")
+      await Calibrations.log(calibrationId, "Advancing all agents to the next iteration.")
       await Agents.nextAllIterations(calibrationId)
 
-      Calibrations.log(calibrationId, "Advancing calibration to the next iteration.")
-      CalibrationsBoth.updateObj({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
+      await Calibrations.log(calibrationId, "Advancing calibration to the next iteration.")
+      await CalibrationsBoth.updateObjAsync({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
     } else {
-      Calibrations.log(calibrationId, "Calibration done.")
-      Calibrations.setState(calibrationId, "done")
+      await Calibrations.log(calibrationId, "Calibration done.")
+      await Calibrations.setState(calibrationId, "done")
     }
   }
 
-  static getNumRunningAgents(calibrationId) {
-    const agents = Agents.find({ owner: calibrationId }).fetch()
+  static async getNumRunningAgents(calibrationId) {
+    const agents = await Agents.find({ owner: calibrationId }).fetchAsync()
 
-    return agents.reduce((acc, agent) => {
-      const state = Agents.getState(agent._id)
-      return state === "setToRun" || state === "running" ? acc + 1 : acc
-    }, 0)
+    let numRunningAgents = 0
+    for (const agent of agents) {
+      const state = await Agents.getState(agent._id)
+      if (state === "setToRun" || state === "running") numRunningAgents++
+    }
+
+    return numRunningAgents
   }
 
-  static getNumNewAgents(calibrationId) {
-    const agents = Agents.find({ owner: calibrationId }).fetch()
+  static async getNumNewAgents(calibrationId) {
+    const agents = Agents.find({ owner: calibrationId }).fetchAsync()
 
-    return agents.reduce((acc, agent) => {
-      const state = Agents.getState(agent._id)
-      return state === "new" ? acc + 1 : acc
-    }, 0)
+    let numNewAgents = 0
+    for (const agent of agents) {
+      const state = await Agents.getState(agent._id)
+      if (state === "new") numNewAgents++
+    }
+
+    return numNewAgents
   }
 
-  static observe(calibrationId, callback) {
-    return CalibrationsBoth.find({ _id: calibrationId }).observe({
+  static async observe(calibrationId, callback) {
+    return await CalibrationsBoth.find({ _id: calibrationId }).observeAsync({
       changed: calibration => callback(calibration),
     })
   }
 
-  static log(calibrationId, message) {
-    Logs.insert({ owner: calibrationId, message: message })
+  static async log(calibrationId, message) {
+    await Logs.insertAsync({ owner: calibrationId, message: message })
   }
 }

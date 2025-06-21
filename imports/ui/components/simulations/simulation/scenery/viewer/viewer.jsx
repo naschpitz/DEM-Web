@@ -18,7 +18,7 @@ import "./viewer.css"
 
 let framesImages = new Map()
 
-export default Viewer = ({ sceneryId }) => {
+export default ({ sceneryId }) => {
   const [currentFrameImage, setCurrentFrameImage] = useState(null)
 
   // useDeepEffect cannot handle null or undefined.

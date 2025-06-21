@@ -3,7 +3,7 @@ import SimpleSchema from 'meteor/aldeed:simple-schema'
 
 import Data from "../../../agents/both/schemas/data.js"
 
-export default DataSetEvaluation = new SimpleSchema({
+export default new SimpleSchema({
   dataSet: {
     type: String,
     label: "Data Set Id",

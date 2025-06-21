@@ -6,8 +6,8 @@ import DataSets from "../../dataSets/both/class.js"
 import Parameters from "../../parameters/both/class"
 
 export default class Calibrations extends CalibrationsDAO {
-  static clone(oldSimulationId, newSimulationId, materialsMap, nonSolidObjectsMap, solidObjectsMap) {
-    const oldCalibration = CalibrationsDAO.findOne({ owner: oldSimulationId })
+  static async clone(oldSimulationId, newSimulationId, materialsMap, nonSolidObjectsMap, solidObjectsMap) {
+    const oldCalibration = await CalibrationsDAO.findOneAsync({ owner: oldSimulationId })
 
     const newCalibration = _.cloneDeep(oldCalibration)
     delete newCalibration._id
@@ -17,34 +17,34 @@ export default class Calibrations extends CalibrationsDAO {
     newCalibration.currentIteration = 0
 
     const oldCalibrationId = oldCalibration._id
-    const newCalibrationId = CalibrationsDAO.insert(newCalibration)
+    const newCalibrationId = await CalibrationsDAO.insertAsync(newCalibration)
 
-    Parameters.clone(oldCalibrationId, newCalibrationId, materialsMap, nonSolidObjectsMap, solidObjectsMap)
-    DataSets.clone(oldCalibrationId, newCalibrationId)
+    await Parameters.clone(oldCalibrationId, newCalibrationId, materialsMap, nonSolidObjectsMap, solidObjectsMap)
+    await DataSets.clone(oldCalibrationId, newCalibrationId)
 
     return newCalibrationId
   }
 
-  static create(simulationId) {
-    CalibrationsDAO.insert({ owner: simulationId })
+  static async create(simulationId) {
+    await CalibrationsDAO.insertAsync({ owner: simulationId })
   }
 
-  static setState(calibrationId, state) {
+  static async setState(calibrationId, state) {
     const calibration = {
       _id: calibrationId,
       state: state,
     }
 
-    CalibrationsDAO.updateObj(calibration)
+    await CalibrationsDAO.updateObjAsync(calibration)
   }
 
-  static usesServer(serverId) {
-    const calibrationFound = CalibrationsDAO.findOne({ server: serverId, state: { $in: ["paused", "running"] } })
+  static async usesServer(serverId) {
+    const calibrationFound = await CalibrationsDAO.findOneAsync({ server: serverId, state: { $in: ["paused", "running"] } })
 
     return !!calibrationFound
   }
 
-  static getState(calibration) {
+  static async getState(calibration) {
     switch (calibration?.state) {
       case "new":
         return "New"
@@ -61,11 +61,11 @@ export default class Calibrations extends CalibrationsDAO {
     }
   }
 
-  static checkStopCondition(calibrationId) {
-    const calibration = CalibrationsDAO.findOne(calibrationId)
+  static async checkStopCondition(calibrationId) {
+    const calibration = await CalibrationsDAO.findOneAsync(calibrationId)
 
     const numScores = calibration.numIntervals + 1
-    const bestScores = Agents.getBestScores(calibrationId)
+    const bestScores = await Agents.getBestScores(calibrationId)
 
     // Note: smaller scores are better, they mean less error
     if (bestScores.length >= numScores) {

@@ -90,13 +90,13 @@ Calibrations.schema = new SimpleSchema({
   },
 })
 
-Calibrations.schema.addValidator(function () {
+Calibrations.schema.addValidator(async function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const simulation = SimulationsDAO.findOne(this.owner)
+    const simulation = await SimulationsDAO.findOneAsync(this.owner)
 
     if (simulation.owner !== userId) return "notOwner"
   }

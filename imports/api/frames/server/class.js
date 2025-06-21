@@ -21,14 +21,14 @@ export default class Frames extends FramesBoth {
     }
   }
 
-  static async insert(frame) {
-    const scenery = Sceneries.findOne(frame.owner)
+  static async insertAsync(frame) {
+    const scenery = await Sceneries.findOneAsync(frame.owner)
     if (!scenery)
-      throw { message: "Frames.insert(): scenery not found" }
+      throw { message: "Frames.insertAsync(): scenery not found" }
 
-    const simulation = Simulations.findOne(scenery.owner)
+    const simulation = await Simulations.findOneAsync(scenery.owner)
     if (!simulation)
-      throw { message: "Frames.insert(): simulation not found" }
+      throw { message: "Frames.insertAsync(): simulation not found" }
 
     // Refuses the frame if the simulation has been stopped.
     if (simulation.state === "stopped") return
@@ -83,15 +83,15 @@ export default class Frames extends FramesBoth {
       }
     }
 
-    FramesBoth.insert(frame)
+    FramesBoth.insertAsync(frame)
   }
 
   static async getFullFrame(frameId) {
-    const frame = FramesBoth.findOne(frameId)
+    const frame = await FramesBoth.findOneAsync(frameId)
 
     if (!frame) return
 
-    const scenery = Sceneries.findOne(frame.owner)
+    const scenery = await Sceneries.findOneAsync(frame.owner)
 
     const nonSolidObjects = _.get(frame, "scenery.objects.nonSolidObjects", [])
     const solidObjects = _.get(frame, "scenery.objects.solidObjects", [])
@@ -130,13 +130,13 @@ export default class Frames extends FramesBoth {
     return frame
   }
 
-  static removeByOwner(sceneryId) {
-    const scenery = Sceneries.findOne(sceneryId)
+  static async removeByOwner(sceneryId) {
+    const scenery = await Sceneries.findOneAsync(sceneryId)
     const currentStoragePath = Frames.getStoragePath(scenery.storage)
 
     // For the same reason of the insertion, but in an opposite order, frames must be removed before it's file, thus
     // avoiding them to be used in an incomplete state.
-    FramesBoth.remove({ owner: sceneryId })
+    await FramesBoth.removeAsync({ owner: sceneryId })
 
     const expression = sceneryId + "*"
     const regex = new RegExp(expression, "i")
@@ -160,7 +160,7 @@ export default class Frames extends FramesBoth {
     })
   }
 
-  static setStorage(sceneryId, currentStorage, newStorage) {
+  static async setStorage(sceneryId, currentStorage, newStorage) {
     const currentStoragePath = Frames.getStoragePath(currentStorage)
     const newStoragePath = Frames.getStoragePath(newStorage)
 

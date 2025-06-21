@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import CalibrationClass from "../../../../../api/calibrations/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -15,7 +16,7 @@ import ParametersCard from "./parametersCard/parametersCard.jsx"
 
 import "./calibration.css"
 
-export default Calibration = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {

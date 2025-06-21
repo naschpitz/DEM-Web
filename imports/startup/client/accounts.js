@@ -2,6 +2,8 @@ import { Meteor } from "meteor/meteor"
 
 import Alert from "react-s-alert-v3"
 
+import getErrorMessage from "../../api/utils/getErrorMessage";
+
 Accounts.onEmailVerificationLink(function (token) {
   Accounts.verifyEmail(token, verifyCallback)
 

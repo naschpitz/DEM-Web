@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import MaterialsClass from "../../../../../../../api/materials/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -10,7 +11,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./properties.css"
 
-export default Properties = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -30,7 +31,7 @@ export default Properties = props => {
     _.set(object, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "fixed" || name === "material"))) {
-      Meteor.call("solidObjects.update", object, error => {
+      Meteor.callAsync("solidObjects.update", object, error => {
         if (error) Alert.error("Error saving solid object: " + error.reason)
       })
     }

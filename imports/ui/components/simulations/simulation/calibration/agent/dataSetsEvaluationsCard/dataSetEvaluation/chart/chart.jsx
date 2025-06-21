@@ -4,7 +4,7 @@ import { ResponsiveContainer, ComposedChart, Area, Line, Bar, CartesianGrid, XAx
 
 import styles from "./chart.module.css"
 
-export default Chart = props => {
+export default (props) => {
   const [data, setData] = useState([])
 
   useEffect(() => {

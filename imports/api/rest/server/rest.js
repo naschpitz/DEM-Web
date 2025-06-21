@@ -27,20 +27,20 @@ WebApp.connectHandlers.use(
             try {
               const frame = EJSON.parse(inflatedData.toString());
 
-              const scenery = Sceneries.findOne(frame.owner);
+              const scenery = await Sceneries.findOneAsync(frame.owner);
               if (!scenery) {
                 console.log("/api/frames: scenery not found");
                 return;
               }
 
-              const simulation = Simulations.findOne(scenery.owner);
+              const simulation = await Simulations.findOneAsync(scenery.owner);
               if (!simulation) {
                 console.log("/api/frames: simulation not found");
                 return;
               }
 
               if (frame.instance === simulation.instance) {
-                await Frames.insert(frame);
+                await Frames.insertAsync(frame);
               }
             } catch (error) {
               console.log("/api/frames, error inserting frame: ", error);
@@ -71,34 +71,29 @@ WebApp.connectHandlers.use(
       req.on("data", chunk => body.push(chunk))
       req.on(
         "end",
-        Meteor.bindEnvironment(() => {
+        Meteor.bindEnvironment(async () => {
           const deflatedData = Buffer.concat(body)
+          const inflatedData = await inflateWithPigz(deflatedData)
 
-          const inflateCallback = Meteor.bindEnvironment((error, data) => {
-            const simulationLog = EJSON.parse(data.toString())
+          const simulationLog = EJSON.parse(inflatedData.toString())
 
-            const simulation = Simulations.findOne(simulationLog.owner)
-            if (!simulation) {
-              console.log("/api/logs: simulation not found")
-              return
+          const simulation = await Simulations.findOneAsync(simulationLog.owner)
+          if (!simulation) {
+            console.log("/api/logs: simulation not found")
+            return
+          }
+
+          // Set the state of the simulation and insert the log only if the instance of the simulation currently on
+          // the server is same as the one that generated the log.
+          try {
+            if (simulationLog.instance === simulation.instance) {
+              await Simulations.setState(simulationLog.owner, simulationLog.state)
+              await Logs.insertAsync(simulationLog)
             }
+          } catch (error) {
+            console.log("/api/logs, error inserting log: ", error)
+          }
 
-            // Set the state of the simulation and insert the log only if the instance of the simulation currently on
-            // the server is same as the one that generated the log.
-            try {
-              if (simulationLog.instance === simulation.instance) {
-                Simulations.setState(simulationLog.owner, simulationLog.state)
-                Logs.insert(simulationLog)
-              }
-            } catch (error) {
-              console.log("/api/logs, error inserting log: ", error)
-            }
-          })
-
-          // TODO: Replace zlib by pigz here too
-          zlib.inflate(deflatedData, inflateCallback)
-
-          // This runs asynchronously
           res.end("OK")
         })
       )

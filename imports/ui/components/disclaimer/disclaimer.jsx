@@ -2,7 +2,7 @@ import React from "react"
 
 import "./disclaimer.css"
 
-export default Disclaimer = () => {
+export default () => {
   return (
     <div id="disclaimer" className="container text-justify">
       <h2 style={{ textAlign: "center" }}>

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
+
 import AgentsClass from "../../../../../../api/agents/both/class"
 import LogsClass from "../../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../../api/simulations/both/class"
@@ -13,7 +15,7 @@ import ReactTable from "react-table-v6"
 
 import "./agentsTable.css"
 
-export default AgentsTable = props => {
+export default (props) => {
   const [isAgentsReady, setIsAgentsReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)

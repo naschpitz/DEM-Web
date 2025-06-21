@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import MaterialsClass from "../../../../../../api/materials/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -14,7 +15,7 @@ import ReactTable from "react-table-v6"
 
 import "./materials.css"
 
-export default Material = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -91,7 +92,7 @@ export default Material = props => {
     _.set(material, name, value)
 
     if (event === "onBlur") {
-      Meteor.call("materials.update", material, error => {
+      Meteor.callAsync("materials.update", material, error => {
         if (error) Alert.error("Error updating material: " + getErrorMessage(error))
       })
     }
@@ -104,7 +105,7 @@ export default Material = props => {
 
     const materialId = data.original._id
 
-    Meteor.call("materials.remove", materialId, error => {
+    Meteor.callAsync("materials.remove", materialId, error => {
       if (error) Alert.error("Error removing material: " + error.reason)
       else Alert.success("Material successfully removed.")
 

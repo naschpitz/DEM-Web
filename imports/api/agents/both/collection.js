@@ -57,14 +57,14 @@ Agents.schema = new SimpleSchema({
   },
 })
 
-Agents.schema.addValidator(function () {
+Agents.schema.addValidator(async function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const calibration = CalibrationsDAO.findOne(this.owner)
-    const simulation = SimulationsDAO.findOne(calibration.owner)
+    const calibration = await CalibrationsDAO.findOneAsync(this.owner)
+    const simulation = await SimulationsDAO.findOneAsync(calibration.owner)
 
     if (simulation.owner !== userId) return "notOwner"
   }

@@ -12,23 +12,27 @@ export default function createDAO(collection) {
       return collection.findOne(...args);
     }
 
-    static insert(...args) {
-      return collection.insert(...args);
+    static async findOneAsync(...args) {
+      return collection.findOneAsync(...args);
     }
 
-    static update(...args) {
-      return collection.update(...args);
+    static async insertAsync(...args) {
+      return collection.insertAsync(...args);
     }
 
-    static upsert(...args) {
-      return collection.upsert(...args);
+    static async updateAsync(...args) {
+      return collection.updateAsync(...args);
     }
 
-    static remove(...args) {
-      return collection.remove(...args);
+    static async upsertAsync(...args) {
+      return collection.upsertAsync(...args);
     }
 
-    static updateObj(obj) {
+    static async removeAsync(...args) {
+      return collection.removeAsync(...args);
+    }
+
+    static async updateObjAsync(obj) {
       dot.keepArray = true
       const dottedObj = dot.dot(obj);
 

@@ -13,7 +13,7 @@ Meteor.methods({
 
   "sceneries.update"(scenery) {
     try {
-      Sceneries.updateObj(scenery)
+      Sceneries.updateObjAsync(scenery)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

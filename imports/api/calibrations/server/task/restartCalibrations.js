@@ -17,7 +17,7 @@ const bound = Meteor.bindEnvironment(async () => {
 
   console.log("Found " + calibrationsInProgress.count() + " Calibrations in progress, initializing Hypervisors.")
 
-  for (const calibration of calibrationsInProgress.fetch()) {
+  for (const calibration of calibrationsInProgress.fetchAsync()) {
     const hypervisor = new Hypervisor(calibration._id)
 
     try {

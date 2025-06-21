@@ -5,32 +5,31 @@ import Calibrations from "./class.js"
 Meteor.methods({
   async "calibrations.start"(calibrationId) {
     try {
-      this.unblock()
       await Calibrations.start(calibrationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "calibrations.pause"(calibrationId) {
+  async "calibrations.pause"(calibrationId) {
     try {
-      Calibrations.pause(calibrationId)
+      await Calibrations.pause(calibrationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "calibrations.stop"(calibrationId) {
+  async "calibrations.stop"(calibrationId) {
     try {
-      Calibrations.stop(calibrationId)
+      await Calibrations.stop(calibrationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "calibrations.reset"(calibrationId) {
+  async "calibrations.reset"(calibrationId) {
     try {
-      Calibrations.reset(calibrationId)
+      await Calibrations.reset(calibrationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

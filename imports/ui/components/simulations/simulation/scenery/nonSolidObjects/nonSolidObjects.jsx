@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import NonSolidObjectsClass from "../../../../../../api/nonSolidObjects/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -14,7 +15,7 @@ import ReactTable from "react-table-v6"
 
 import "./nonSolidObjects.css"
 
-export default NonSolidObjects = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -91,7 +92,7 @@ export default NonSolidObjects = props => {
     _.set(nonSolidObject, name, value)
 
     if (event === "onBlur") {
-      Meteor.call("nonSolidObjects.update", nonSolidObject, error => {
+      Meteor.callAsync("nonSolidObjects.update", nonSolidObject, error => {
         if (error) Alert.error("Error updating non-solid object: " + getErrorMessage(error))
       })
     }
@@ -102,7 +103,7 @@ export default NonSolidObjects = props => {
 
     setIsRemoving(true)
 
-    Meteor.call("nonSolidObjects.remove", data.original._id, error => {
+    Meteor.callAsync("nonSolidObjects.remove", data.original._id, error => {
       if (error) Alert.error("Error removing non-solid object: " + error.reason)
       else Alert.success("Non-solid object successfully removed.")
 

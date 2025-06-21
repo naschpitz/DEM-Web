@@ -13,24 +13,24 @@ import SolidObjects from "../../solidObjects/both/class"
 
 export default class Agents extends AgentsDAO {
   static async create(calibrationId, index) {
-    const calibration = Calibrations.findOne(calibrationId)
+    const calibration = await Calibrations.findOneAsync(calibrationId)
 
     // Clones the original simulation (thus, scenery and materials). The cloned simulation is not primary, as it is
     // intended to be used by the agents only.
     const currentSimulationId = await Simulations.clone(calibration.owner, false)
-    Simulations.updateObj({
+    await Simulations.updateObjAsync({
       _id: currentSimulationId,
       server: calibration.server,
     })
 
     // Updates the materials and objects for the cloned simulation's scenery
-    initializeCoefficients(calibrationId, currentSimulationId)
+    await initializeCoefficients(calibrationId, currentSimulationId)
 
     // The best simulation will be a clone of the original simulation, because it has to be kept while the current
     // simulation is being constantly altered by the agent.
     const bestSimulationId = await Simulations.clone(currentSimulationId, false)
 
-    return AgentsDAO.insert({
+    return await AgentsDAO.insertAsync({
       owner: calibrationId,
       current: { simulation: currentSimulationId },
       best: { simulation: bestSimulationId },
@@ -38,35 +38,37 @@ export default class Agents extends AgentsDAO {
     })
 
     // Updates the objects coefficients with the boundaries
-    function initializeCoefficients(calibrationId, simulationId) {
-      Parameters.find({ owner: calibrationId }).forEach(parameter => {
+    async function initializeCoefficients(calibrationId, simulationId) {
+      const promises = Parameters.find({ owner: calibrationId }).map(async (parameter) => {
         const parameterId = parameter._id
 
-        Agents.updateMaterialObject(parameterId, simulationId)
+        await Agents.updateMaterialObject(parameterId, simulationId)
       })
+
+      await Promise.all(promises)
     }
   }
 
-  static updateMaterialObject(parameterId, simulationId) {
-    const parameter = Parameters.findOne(parameterId)
-    const simulation = Simulations.findOne(simulationId)
-    const scenery = Sceneries.findOne({ owner: simulation._id })
+  static async updateMaterialObject(parameterId, simulationId) {
+    const parameter = await Parameters.findOneAsync(parameterId)
+    const simulation = await Simulations.findOneAsync(simulationId)
+    const scenery = await Sceneries.findOneAsync({ owner: simulation._id })
 
     switch (parameter.type) {
       case "material": {
-        const originalMaterial = Materials.findOne(parameter.materialObject)
-        const material = Materials.findOne({ owner: scenery._id, callSign: originalMaterial.callSign })
+        const originalMaterial = await Materials.findOneAsync(parameter.materialObject)
+        const material = await Materials.findOneAsync({ owner: scenery._id, callSign: originalMaterial.callSign })
 
         const value = getValue(material, parameter)
         _.set(material, parameter.coefficient, value)
 
-        Materials.updateObj(material)
+        await Materials.updateObjAsync(material)
 
         break
       }
       case "nonSolidObject": {
-        const originalNonSolidObject = NonSolidObjects.findOne(parameter.materialObject)
-        const nonSolidObject = NonSolidObjects.findOne({
+        const originalNonSolidObject = await NonSolidObjects.findOneAsync(parameter.materialObject)
+        const nonSolidObject = await NonSolidObjects.findOneAsync({
           owner: scenery._id,
           callSign: originalNonSolidObject.callSign,
         })
@@ -74,18 +76,18 @@ export default class Agents extends AgentsDAO {
         const value = getValue(nonSolidObject, parameter)
         _.set(nonSolidObject, parameter.coefficient, value)
 
-        NonSolidObjects.updateObj(nonSolidObject)
+        await NonSolidObjects.updateObjAsync(nonSolidObject)
 
         break
       }
       case "solidObject": {
-        const originalSolidObject = SolidObjects.findOne(parameter.materialObject)
-        const solidObject = SolidObjects.findOne({ owner: scenery._id, callSign: originalSolidObject.callSign })
+        const originalSolidObject = await SolidObjects.findOneAsync(parameter.materialObject)
+        const solidObject = await SolidObjects.findOneAsync({ owner: scenery._id, callSign: originalSolidObject.callSign })
 
         const value = getValue(solidObject, parameter)
         _.set(solidObject, parameter.coefficient, value)
 
-        SolidObjects.updateObj(solidObject)
+        await SolidObjects.updateObjAsync(solidObject)
 
         break
       }
@@ -98,31 +100,31 @@ export default class Agents extends AgentsDAO {
     }
   }
 
-  static getState(agentId) {
-    const agent = Agents.findOne(agentId)
-    const simulation = Simulations.findOne(agent.current.simulation)
+  static async getState(agentId) {
+    const agent = await Agents.findOneAsync(agentId)
+    const simulation = await Simulations.findOneAsync(agent.current.simulation)
 
     return simulation.state
   }
 
-  static getBestScores(calibrationId) {
-    const agents = Agents.find({ owner: calibrationId }).fetch()
+  static async getBestScores(calibrationId) {
+    const agents = await Agents.find({ owner: calibrationId }).fetchAsync()
 
     // For each iteration, up until currentIteration, get the best global score of that iteration.
     const bestScores = []
 
-    const numAgentsHistories = AgentsHistories.find({ owner: agents[0]._id }).count()
+    const numAgentsHistories = await AgentsHistories.find({ owner: agents[0]._id }).countAsync()
 
     for (let i = 0; i < numAgentsHistories; i++) {
       // Get the SimulationScore of the best global agent of the iteration i
-      agents.forEach(agent => {
-        const agentHistory = AgentsHistories.findOne({ owner: agent._id, iteration: i })
+      for (const agent of agents) {
+        const agentHistory = await AgentsHistories.findOneAsync({ owner: agent._id, iteration: i })
 
         // Check if the best of the agent history is the best global.
         if (agentHistory.best.bestGlobal)
           // Push the best score of the best global agent of the iteration i
           bestScores.push(agentHistory.best.score)
-      })
+      }
     }
 
     return bestScores

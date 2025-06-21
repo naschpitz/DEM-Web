@@ -2,20 +2,20 @@ import ServersDAO from "./dao.js"
 import Simulations from "../../simulations/both/class.js"
 
 export default class Servers extends ServersDAO {
-  static create() {
-    return ServersDAO.insert({})
+  static async create() {
+    return await ServersDAO.insertAsync({})
   }
 
-  static remove(serverId) {
-    const simulation = Simulations.usesServer(serverId)
+  static async removeAsync(serverId) {
+    const simulation = await Simulations.usesServer(serverId)
     if (simulation) throw { message: "Cannot remove server, an active simulation makes reference to it." }
 
-    ServersDAO.remove(serverId)
-    Simulations.removeServer(serverId)
+    await ServersDAO.removeAsync(serverId)
+    await Simulations.removeServer(serverId)
   }
 
-  static getPostOptions(serverId, path, data) {
-    const server = ServersDAO.findOne(serverId)
+  static async getPostOptions(serverId, path, data) {
+    const server = await ServersDAO.findOneAsync(serverId)
 
     return {
       url: "https://" + server.url + ":" + server.port + path,

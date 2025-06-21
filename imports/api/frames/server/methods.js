@@ -7,7 +7,7 @@ Meteor.methods({
     if (this.connection) throw new Meteor.Error("500", "This method can only be called from server")
 
     try {
-      await Frames.insert(frame)
+      await Frames.insertAsync(frame)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

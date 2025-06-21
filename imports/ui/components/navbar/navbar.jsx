@@ -131,7 +131,7 @@ const Navbar = props => {
   }
 
   function onConfirmEmailClick() {
-    Meteor.call("users.sendVerificationEmail")
+    Meteor.callAsync("users.sendVerificationEmail")
 
     Alert.success("A confirmation e-mail has been sent to you.")
   }

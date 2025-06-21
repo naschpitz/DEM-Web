@@ -9,9 +9,9 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./dataExporter.css"
 
-export default DataExporter = ({ sceneryId, objectId, dataName, minInterval, maxInterval }) => {
+export default ({ sceneryId, objectId, dataName, minInterval, maxInterval }) => {
   function onClick() {
-    Meteor.call("frames.getData", sceneryId, objectId, dataName, minInterval, maxInterval, (error, result) => {
+    Meteor.callAsync("frames.getData", sceneryId, objectId, dataName, minInterval, maxInterval, (error, result) => {
       if (error) Alert.error("Error getting frame data: " + error.reason)
       else fileDownload(result, "data.txt")
     })

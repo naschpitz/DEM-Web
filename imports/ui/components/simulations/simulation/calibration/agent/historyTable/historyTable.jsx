@@ -3,6 +3,8 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { useNavigate } from "react-router-dom"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
+
 import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
 import LogsClass from "../../../../../../../api/logs/both/class"
 
@@ -12,7 +14,7 @@ import ReactTable from "react-table-v6"
 
 import "./historyTable.css"
 
-export default HistoryTable = props => {
+export default (props) => {
   const [isAgentHistoriesReady, setIsAgentHistoriesReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
 

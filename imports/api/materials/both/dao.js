@@ -1,11 +1,13 @@
 import dot from "dot-object"
 import _ from "lodash"
 
+import getArraysPaths from "../../utils/getArrayPaths";
+
 import MaterialsCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO";
 
 export default class MaterialsDAO extends createDAO(MaterialsCol) {
-  static updateObj(material) {
+  static async updateObjAsync(material) {
     const dottedMaterial = dot.dot(material)
     const arraysPaths = getArraysPaths(material)
 
@@ -24,7 +26,7 @@ export default class MaterialsDAO extends createDAO(MaterialsCol) {
       !_.isEmpty(value) ? (set[key] = value) : (unset[key] = "")
     })
 
-    MaterialsCol.update(dottedMaterial._id, {
+    await MaterialsCol.updateAsync(dottedMaterial._id, {
       $set: set,
       $unset: unset,
     })

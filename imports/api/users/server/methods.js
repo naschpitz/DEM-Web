@@ -4,41 +4,41 @@ import Users from "../both/class.js"
 
 if (Meteor.isServer) {
   Meteor.methods({
-    "users.getUserByEmail"(email) {
-      return Meteor.users.findOne({
+    async "users.getUserByEmail"(email) {
+      return await Meteor.users.findOneAsync({
         "emails.address": email,
       })
     },
 
-    "users.getUserById"(id) {
-      return Meteor.users.findOne(id)
+    async "users.getUserById"(id) {
+      return await Meteor.users.findOneAsync(id)
     },
 
-    "users.sendVerificationEmail"() {
+    async "users.sendVerificationEmail"() {
       if (this.userId && Meteor.isServer) Accounts.sendVerificationEmail(this.userId)
     },
 
-    "users.create"(options, callback) {
-      const userId = Accounts.createUser(options, callback)
+    async "users.create"(options) {
+      const userId = await Accounts.createUserAsync(options)
 
       if (userId) Accounts.sendVerificationEmail(userId)
     },
 
-    "users.invite"(email) {
+    async "users.invite"(email) {
       if (!this.userId) throw new Meteor.Error("401", "Unauthorized", "User not logged in.")
 
       const options = {
         email: email,
       }
 
-      const userFound = Meteor.call("users.getUserByEmail", email)
+      const userFound = await Meteor.callAsync("users.getUserByEmail", email)
 
       if (userFound) throw new Meteor.Error("403", "There is already an user registered with this e-mail address.")
 
       let userId = null
 
       if (userFound) userId = userFound._id
-      else userId = Accounts.createUser(options)
+      else userId = await Accounts.createUserAsync(options)
 
       if (userId) Accounts.sendEnrollmentEmail(userId)
       else throw new Meteor.Error("500", "Error creating user.")
@@ -46,10 +46,10 @@ if (Meteor.isServer) {
       return true
     },
 
-    "users.resendInvitation"(userId) {
+    async "users.resendInvitation"(userId) {
       if (!this.userId) throw new Meteor.Error("401", "Unauthorized", "User not logged in.")
 
-      const userFound = Meteor.users.findOne(userId)
+      const userFound = await Meteor.users.findOneAsync(userId)
 
       if (!userFound) throw new Meteor.Error("403", "Forbidden", "User not found.")
 

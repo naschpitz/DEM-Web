@@ -3,55 +3,57 @@ import { Meteor } from "meteor/meteor"
 import Materials from "./class.js"
 
 Meteor.methods({
-  "materials.create"(owner) {
+  async "materials.create"(owner) {
     try {
-      Materials.create(owner)
+      await Materials.create(owner)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "materials.update"(material) {
+  async "materials.update"(material) {
     try {
-      Materials.updateObj(material)
+      await Materials.updateObjAsync(material)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "materials.usesMaterial"(materialId) {
+  async "materials.usesMaterial"(materialId) {
     try {
-      Materials.usesMaterial(materialId)
+      await Materials.usesMaterial(materialId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "materials.remove"(materialId) {
+  async "materials.remove"(materialId) {
     try {
-      Materials.remove(materialId)
+      await Materials.removeAsync(materialId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "materials.removeByOwner"(sceneryId) {
-    Materials.remove({ owner: sceneryId }, error => {
-      if (error) throw new Meteor.Error("500", error.message)
-    })
+  async "materials.removeByOwner"(sceneryId) {
+    try {
+      await Materials.removeAsync({ owner: sceneryId })
+    } catch (error) {
+      throw new Meteor.Error("500", error.message)
+    }
   },
 
-  "materials.getByCalibration"(calibrationId) {
+  async "materials.getByCalibration"(calibrationId) {
     try {
-      return Materials.getByCalibration(calibrationId)
+      return await Materials.getByCalibration(calibrationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "materials.getById"(materialId) {
+  async "materials.getById"(materialId) {
     try {
-      return Materials.findOne(materialId)
+      return await Materials.findOneAsync(materialId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

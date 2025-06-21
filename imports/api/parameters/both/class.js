@@ -3,12 +3,12 @@ import _ from "lodash"
 import ParametersDAO from "./dao.js"
 
 export default class Parameters extends ParametersDAO {
-  static clone(oldCalibrationId, newCalibrationId, materialsMap, nonSolidObjectsMap, solidObjectsMap) {
-    const oldParameters = ParametersDAO.find({ owner: oldCalibrationId })
+  static async clone(oldCalibrationId, newCalibrationId, materialsMap, nonSolidObjectsMap, solidObjectsMap) {
+    const oldParameters = await ParametersDAO.find({ owner: oldCalibrationId }).fetchAsync()
 
     const parametersMap = {}
 
-    oldParameters.forEach(oldParameter => {
+    for (const oldParameter of oldParameters) {
       const newParameter = _.cloneDeep(oldParameter)
       delete newParameter._id
 
@@ -26,25 +26,25 @@ export default class Parameters extends ParametersDAO {
           break
       }
 
-      const newParameterId = ParametersDAO.insert(newParameter)
+      const newParameterId = await ParametersDAO.insertAsync(newParameter)
 
       parametersMap[oldParameter._id] = newParameterId
-    })
+    }
 
     return parametersMap
   }
 
-  static create(calibrationId) {
-    ParametersDAO.insert({ owner: calibrationId })
+  static async create(calibrationId) {
+    await ParametersDAO.insertAsync({ owner: calibrationId })
   }
 
-  static usesMaterialObject(materialObjectId) {
-    const parameter = ParametersDAO.findOne({ materialObject: materialObjectId })
+  static async usesMaterialObject(materialObjectId) {
+    const parameter = await ParametersDAO.findOneAsync({ materialObject: materialObjectId })
 
     return !!parameter
   }
 
-  static removeByOwner(calibrationId) {
-    ParametersDAO.remove({ owner: calibrationId })
+  static async removeByOwner(calibrationId) {
+    await ParametersDAO.removeAsync({ owner: calibrationId })
   }
 }

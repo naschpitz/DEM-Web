@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import NonSolidObjectsClass from "../../../../../../../api/nonSolidObjects/both/class.js"
 import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.js"
 
@@ -12,7 +13,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./dataSelector.css"
 
-export default DataSelector = props => {
+export default (props) => {
   const [isNonSolidObjectsReady, setIsNonSolidObjectsReady] = useState(false)
   const [isSolidObjectsReady, setIsSolidObjectsReady] = useState(false)
   const [data, setData] = useState({})

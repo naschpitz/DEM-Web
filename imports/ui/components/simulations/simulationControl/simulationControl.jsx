@@ -3,6 +3,8 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
+import Groups from "../../../../api/groups/both/class";
 import ServersClass from "../../../../api/servers/both/class.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
@@ -12,9 +14,8 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 
 import "./simulationControl.css"
-import Groups from "../../../../api/groups/both/class";
 
-export default SimulationControl = props => {
+export default (props) => {
   const [isStarting, setIsStarting] = useState(false)
   const [isPausing, setIsPausing] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
@@ -71,7 +72,7 @@ export default SimulationControl = props => {
     _.set(newSimulation, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "group" || name === "server" || name === "multiGPU" || name === "calcNeigh"))) {
-      Meteor.call("simulations.update", newSimulation, error => {
+      Meteor.callAsync("simulations.update", newSimulation, error => {
         if (error) Alert.error("Error updating server: " + getErrorMessage(error))
       })
     }
@@ -82,7 +83,7 @@ export default SimulationControl = props => {
 
     setIsStarting(true)
 
-    Meteor.call("simulations.start", props.simulationId, error => {
+    Meteor.callAsync("simulations.start", props.simulationId, error => {
       if (error) Alert.error("Error running simulation: " + error.reason)
       else Alert.success("Run order successfully issued.")
 
@@ -95,7 +96,7 @@ export default SimulationControl = props => {
 
     setIsPausing(true)
 
-    Meteor.call("simulations.pause", props.simulationId, error => {
+    Meteor.callAsync("simulations.pause", props.simulationId, error => {
       if (error) Alert.error("Error pausing simulation: " + error.reason)
       else Alert.success("Pause order successfully issued.")
 
@@ -108,7 +109,7 @@ export default SimulationControl = props => {
 
     setIsStopping(true)
 
-    Meteor.call("simulations.stop", props.simulationId, error => {
+    Meteor.callAsync("simulations.stop", props.simulationId, error => {
       if (error) Alert.error("Error stopping simulation: " + error.reason)
       else Alert.success("Stop order successfully issued.")
 
@@ -121,7 +122,7 @@ export default SimulationControl = props => {
 
     setIsResetting(true)
 
-    Meteor.call("simulations.reset", props.simulationId, error => {
+    Meteor.callAsync("simulations.reset", props.simulationId, error => {
       if (error) Alert.error("Error resetting simulation: " + error.reason)
       else Alert.success("Simulation successfully reset.")
 
@@ -134,7 +135,7 @@ export default SimulationControl = props => {
 
     setIsCloning(true)
 
-    Meteor.call("simulations.clone", props.simulationId, error => {
+    Meteor.callAsync("simulations.clone", props.simulationId, error => {
       if (error) Alert.error("Error cloning simulation: " + error.reason)
       else Alert.success("Simulation successfully cloned.")
 
@@ -147,7 +148,7 @@ export default SimulationControl = props => {
 
     setIsRemoving(true)
 
-    Meteor.call("simulations.remove", props.simulationId, error => {
+    Meteor.callAsync("simulations.remove", props.simulationId, error => {
       if (error) Alert.error("Error removing simulation: " + error.reason)
       else Alert.success("Simulation successfully removed.")
 

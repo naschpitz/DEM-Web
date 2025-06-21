@@ -6,12 +6,6 @@ import "moment/locale/es.js"
 import "moment/locale/fr.js"
 import "moment/locale/pt.js"
 
+import getLanguage from "../../api/utils/getLanguage"
+
 moment.locale(getLanguage())
-
-attachTooltip = function () {
-  $('[data-toggle="tooltip"]').tooltip()
-}
-
-detachTooltip = function () {
-  $('[data-toggle="tooltip"]').tooltip("dispose")
-}

@@ -8,39 +8,39 @@ import Simulations from "../../simulations/both/class"
 import SolidObjects from "../../solidObjects/both/class"
 
 export default class DataSets extends DataSetsDAO {
-  static clone(oldCalibrationId, newCalibrationId) {
+  static async clone(oldCalibrationId, newCalibrationId) {
     const oldDataSets = DataSetsDAO.find({ owner: oldCalibrationId })
 
-    const dataSetIds = oldDataSets.map(oldDataSet => {
+    const dataSetIdsPromises = oldDataSets.map(async (oldDataSet) => {
       const newDataSet = _.cloneDeep(oldDataSet)
       delete newDataSet._id
 
       newDataSet.owner = newCalibrationId
 
-      const oldObject = NonSolidObjects.findOne(oldDataSet.object) || SolidObjects.findOne(oldDataSet.object)
+      const oldObject = await NonSolidObjects.findOneAsync(oldDataSet.object) || await SolidObjects.findOneAsync(oldDataSet.object)
 
-      const newCalibration = Calibrations.findOne(newCalibrationId)
-      const newSimulation = Simulations.findOne(newCalibration.owner)
-      const newScenery = Sceneries.findOne({ owner: newSimulation._id })
+      const newCalibration = await Calibrations.findOneAsync(newCalibrationId)
+      const newSimulation = await Simulations.findOneAsync(newCalibration.owner)
+      const newScenery = await Sceneries.findOneAsync({ owner: newSimulation._id })
 
-      const newNonSolidObject = NonSolidObjects.findOne({ owner: newScenery._id, callSign: oldObject.callSign })
-      const newSolidObject = SolidObjects.findOne({ owner: newScenery._id, callSign: oldObject.callSign })
+      const newNonSolidObject = await NonSolidObjects.findOneAsync({ owner: newScenery._id, callSign: oldObject.callSign })
+      const newSolidObject = await SolidObjects.findOneAsync({ owner: newScenery._id, callSign: oldObject.callSign })
 
       const newObject = newNonSolidObject || newSolidObject
 
       newDataSet.object = newObject._id
 
-      DataSetsDAO.insert(newDataSet)
+      return await DataSetsDAO.insertAsync(newDataSet)
     })
 
-    return dataSetIds
+    return Promise.all(dataSetIdsPromises)
   }
 
-  static create(calibrationId) {
-    return DataSetsDAO.insert({ owner: calibrationId })
+  static async create(calibrationId) {
+    return await DataSetsDAO.insertAsync({ owner: calibrationId })
   }
 
-  static removeByOwner(calibrationId) {
-    DataSetsDAO.remove({ owner: calibrationId })
+  static async removeByOwner(calibrationId) {
+    await DataSetsDAO.removeAsync({ owner: calibrationId })
   }
 }

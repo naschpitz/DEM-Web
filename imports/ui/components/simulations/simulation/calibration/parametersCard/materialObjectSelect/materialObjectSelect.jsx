@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
+
 import Alert from "react-s-alert-v3"
 import FormInput from "@naschpitz/form-input"
 
-export default MaterialObjectSelect = props => {
+export default (props) => {
   const [materialsObjects, setMaterialsObjects] = useState([])
 
   useTracker(() => {
@@ -13,7 +15,7 @@ export default MaterialObjectSelect = props => {
 
     switch (props.type) {
       case "material": {
-        Meteor.call("materials.getByCalibration", props.calibrationId, (error, result) => {
+        Meteor.callAsync("materials.getByCalibration", props.calibrationId, (error, result) => {
           if (error) {
             Alert.error("Error: " + getErrorMessage(error))
           } else {
@@ -25,7 +27,7 @@ export default MaterialObjectSelect = props => {
       }
 
       case "nonSolidObject": {
-        Meteor.call("nonSolidObjects.getByCalibration", props.calibrationId, (error, result) => {
+        Meteor.callAsync("nonSolidObjects.getByCalibration", props.calibrationId, (error, result) => {
           if (error) {
             Alert.error("Error: " + getErrorMessage(error))
           } else {
@@ -37,7 +39,7 @@ export default MaterialObjectSelect = props => {
       }
 
       case "solidObject": {
-        Meteor.call("solidObjects.getByCalibration", props.calibrationId, (error, result) => {
+        Meteor.callAsync("solidObjects.getByCalibration", props.calibrationId, (error, result) => {
           if (error) {
             Alert.error("Error: " + getErrorMessage(error))
           } else {

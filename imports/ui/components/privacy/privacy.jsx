@@ -2,7 +2,7 @@ import React from "react"
 
 import "./privacy.css"
 
-export default Privacy = () => {
+export default () => {
   return (
     <div id="privacy" className="container text-justify">
       <h2 style={{ textAlign: "center" }}>

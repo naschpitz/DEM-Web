@@ -2,7 +2,7 @@ import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 import { Random } from "meteor/random"
 
-export default SolidObject = new SimpleSchema({
+export default new SimpleSchema({
   _id: {
     type: String,
     label: "Solid Object id",

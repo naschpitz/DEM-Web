@@ -52,15 +52,15 @@ AgentsHistories.schema = new SimpleSchema({
   },
 })
 
-AgentsHistories.schema.addValidator(function () {
+AgentsHistories.schema.addValidator(async function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const agent = AgentsDAO.findOne(this.owner)
-    const calibration = CalibrationsDAO.findOne(agent.owner)
-    const simulation = SimulationsDAO.findOne(calibration.owner)
+    const agent = await AgentsDAO.findOneAsync(this.owner)
+    const calibration = await CalibrationsDAO.findOneAsync(agent.owner)
+    const simulation = await SimulationsDAO.findOneAsync(calibration.owner)
 
     if (simulation.owner !== userId) return "notOwner"
   }

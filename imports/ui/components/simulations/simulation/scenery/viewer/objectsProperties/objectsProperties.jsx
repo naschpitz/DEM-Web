@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import NonSolidObjectsClass from "../../../../../../../api/nonSolidObjects/both/class.js"
 import ObjectsPropertiesClass from "../../../../../../../api/objectsProperties/both/class.js"
 import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.js"
@@ -15,7 +16,7 @@ import ReactTable from "react-table-v6"
 
 import "./objectsProperties.css"
 
-export default ObjectsProperties = props => {
+export default (props) => {
   const [isNonSolidObjectsReady, setIsNonSolidObjectsReady] = useState(false)
   const [isSolidObjectsReady, setIsSolidObjectsReady] = useState(false)
   const [isObjectsPropertiesReady, setIsObjectsPropertiesReady] = useState(false)

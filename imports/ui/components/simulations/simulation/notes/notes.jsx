@@ -2,14 +2,15 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
+import SimulationsClass from "../../../../../api/simulations/both/class"
+
 import Alert from "react-s-alert-v3"
 import FormInput from "@naschpitz/form-input"
 
-import SimulationsClass from "../../../../../api/simulations/both/class"
-
 import "./notes.css"
 
-export default Notes = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
   const [timerId, setTimerId] = useState(null)
 
@@ -49,7 +50,7 @@ export default Notes = props => {
         notes: value,
       }
 
-      Meteor.call("simulations.update", simulation, error => {
+      Meteor.callAsync("simulations.update", simulation, error => {
         if (error) Alert.error("Error saving notes: " + error.reason)
         else Alert.success("Notes saved.", { timeout: 2000 })
       })

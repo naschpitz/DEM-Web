@@ -7,34 +7,38 @@ import SolidObjects from "../../solidObjects/both/class.js"
 import Videos from "../../videos/both/class"
 
 export default class Sceneries extends SceneriesBoth {
-  static resetByOwner(simulationId) {
-    const scenery = SceneriesBoth.findOne({ owner: simulationId })
+  static async resetByOwner(simulationId) {
+    const scenery = await SceneriesBoth.findOneAsync({ owner: simulationId })
 
-    Frames.removeByOwner(scenery._id)
+    await Frames.removeByOwner(scenery._id)
   }
 
-  static removeByOwner(simulationId) {
-    const scenery = SceneriesBoth.findOne({ owner: simulationId })
+  static async removeByOwner(simulationId) {
+    const scenery = await SceneriesBoth.findOneAsync({ owner: simulationId })
     const sceneryId = scenery._id
 
-    Frames.removeByOwner(sceneryId)
-    NonSolidObjects.removeByOwner(sceneryId)
-    SolidObjects.removeByOwner(sceneryId)
-    Materials.removeByOwner(sceneryId)
-    Cameras.removeByOwner(sceneryId)
-    Videos.removeByOwner(sceneryId)
+    const promises = []
 
-    SceneriesBoth.remove(sceneryId)
+    promises.push(Frames.removeByOwner(sceneryId))
+    promises.push(NonSolidObjects.removeByOwner(sceneryId))
+    promises.push(SolidObjects.removeByOwner(sceneryId))
+    promises.push(Materials.removeByOwner(sceneryId))
+    promises.push(Cameras.removeByOwner(sceneryId))
+    promises.push(Videos.removeByOwner(sceneryId))
+
+    await Promise.all(promises)
+
+    await SceneriesBoth.removeAsync(sceneryId)
   }
 
-  static setStorage(sceneryId, newStorage) {
-    const scenery = SceneriesBoth.findOne(sceneryId)
+  static async setStorage(sceneryId, newStorage) {
+    const scenery = await SceneriesBoth.findOneAsync(sceneryId)
     const currentStorage = scenery.storage
 
     if (currentStorage === newStorage) return
 
-    Frames.setStorage(sceneryId, currentStorage, newStorage)
+    await Frames.setStorage(sceneryId, currentStorage, newStorage)
 
-    SceneriesBoth.update(sceneryId, { $set: { storage: newStorage } })
+    await SceneriesBoth.updateAsync(sceneryId, { $set: { storage: newStorage } })
   }
 }

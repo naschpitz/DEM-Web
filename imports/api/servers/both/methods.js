@@ -3,33 +3,33 @@ import { Meteor } from "meteor/meteor"
 import Servers from "./class.js"
 
 Meteor.methods({
-  "servers.create"() {
+  async "servers.create"() {
     try {
-      Servers.create()
+      await Servers.create()
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "servers.update"(server) {
+  async "servers.update"(server) {
     try {
-      Servers.updateObj(server)
+      await Servers.updateObjAsync(server)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "servers.remove"(serverId) {
+  async "servers.remove"(serverId) {
     try {
-      Servers.remove(serverId)
+      await Servers.removeAsync(serverId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "servers.getPostOptions"(serverId, path, data) {
+  async "servers.getPostOptions"(serverId, path, data) {
     try {
-      return Servers.getPostOptions(serverId, path, data)
+      return await Servers.getPostOptions(serverId, path, data)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

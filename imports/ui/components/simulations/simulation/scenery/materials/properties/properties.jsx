@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import MaterialsClass from "../../../../../../../api/materials/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -18,7 +19,7 @@ import {
 
 import "./properties.css"
 
-export default Properties = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -39,7 +40,7 @@ export default Properties = props => {
 
     _.set(material, name, value)
 
-    Meteor.call("materials.update", material, error => {
+    Meteor.callAsync("materials.update", material, error => {
       if (error) Alert.error("Error saving material: " + error.reason)
     })
   }

@@ -1,6 +1,7 @@
-import React, { useState } from "react"
+import { useState } from "react"
+import bsSize from "../../../api/utils/bsSize.js"
 
-export default useScreenSize = () => {
+export default () => {
   const [screenSize, setScreenSize] = useState(bsSize())
 
   window.addEventListener("resize", () => {

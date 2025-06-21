@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
+import getErrorMessage from "../../../api/utils/getErrorMessage"
 import ServersClass from "../../../api/servers/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
@@ -14,7 +15,7 @@ import ReactTable from "react-table-v6"
 
 import "./servers.css"
 
-export default Servers = props => {
+export default () => {
   const [isCreating, setIsCreating] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
   const [isReady, setIsReady] = useState(false)
@@ -36,7 +37,7 @@ export default Servers = props => {
     _.set(server, name, value)
 
     if (event === "onBlur") {
-      Meteor.call("servers.update", server, error => {
+      Meteor.callAsync("servers.update", server, error => {
         if (error) Alert.error("Error updating server: " + getErrorMessage(error))
       })
     }
@@ -144,7 +145,7 @@ export default Servers = props => {
 
     setIsCreating(true)
 
-    Meteor.call("servers.create", error => {
+    Meteor.callAsync("servers.create", error => {
       if (error) Alert.error("Error creating server: " + error.reason)
       else Alert.success("Server successfully created.")
 
@@ -159,7 +160,7 @@ export default Servers = props => {
 
     const materialId = data.original._id
 
-    Meteor.call("servers.remove", materialId, error => {
+    Meteor.callAsync("servers.remove", materialId, error => {
       if (error) Alert.error("Error removing server: " + error.reason)
       else Alert.success("Server successfully removed.")
 

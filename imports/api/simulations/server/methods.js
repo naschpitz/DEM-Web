@@ -38,7 +38,7 @@ Meteor.methods({
 
   "simulations.remove"(simulationId) {
     try {
-      Simulations.remove(simulationId)
+      Simulations.removeAsync(simulationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

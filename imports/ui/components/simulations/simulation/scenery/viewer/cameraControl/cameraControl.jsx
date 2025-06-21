@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import CamerasClass from "../../../../../../../api/cameras/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -12,7 +13,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./cameraControl.css"
 
-export default CameraControl = props => {
+export default (props) => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -32,7 +33,7 @@ export default CameraControl = props => {
     _.set(newCamera, name, value)
 
     if (event === "onBlur") {
-      Meteor.call("cameras.update", newCamera, error => {
+      Meteor.callAsync("cameras.update", newCamera, error => {
         if (error) Alert.error("Error saving camera: " + error.reason)
         else {
           if (props.onChange) props.onChange()

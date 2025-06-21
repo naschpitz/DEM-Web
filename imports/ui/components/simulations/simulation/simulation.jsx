@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
 import Alert from "react-s-alert-v3"
@@ -14,7 +15,7 @@ import Main from "./main/main.jsx"
 
 import "./simulation.css"
 
-export default Simulation = props => {
+export default () => {
   const [isReady, setIsReady] = useState(false)
 
   const navigate = useNavigate()

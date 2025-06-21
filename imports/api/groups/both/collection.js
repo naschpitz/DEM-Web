@@ -54,7 +54,7 @@ Groups.schema.addValidator(function () {
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const simulation = Simulations.findOne(this.docId)
+    const simulation = Simulations.findOneAsync(this.docId)
 
     if (simulation.owner !== userId) return "notOwner"
   }

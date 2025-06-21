@@ -13,7 +13,7 @@ Meteor.methods({
 
   "dataSets.update"(dataSet) {
     try {
-      DataSets.updateObj(dataSet)
+      DataSets.updateObjAsync(dataSet)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
@@ -21,7 +21,7 @@ Meteor.methods({
 
   "dataSets.remove"(dataSetId) {
     try {
-      DataSets.remove(dataSetId)
+      DataSets.removeAsync(dataSetId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

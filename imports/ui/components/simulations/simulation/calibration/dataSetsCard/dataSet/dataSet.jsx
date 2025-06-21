@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import CalibrationsClass from "../../../../../../../api/calibrations/both/class.js"
 import SceneriesClass from "../../../../../../../api/sceneries/both/class.js"
 
@@ -15,7 +16,7 @@ import DataSelector from "./dataSelector/dataSelector.jsx"
 
 import "./dataSet.css"
 
-export default DataSet = props => {
+export default (props) => {
   const [isCalibrationReady, setIsCalibrationReady] = useState(false)
   const [isSceneryReady, setIsSceneryReady] = useState(false)
   const [isRemovingDataSet, setIsRemovingDataSet] = useState(false)
@@ -59,7 +60,7 @@ export default DataSet = props => {
       ...dataSelector,
     }
 
-    Meteor.call("dataSets.update", dataSet, error => {
+    Meteor.callAsync("dataSets.update", dataSet, error => {
       if (error) {
         Alert.error("Error: " + getErrorMessage(error))
       }
@@ -72,7 +73,7 @@ export default DataSet = props => {
       data: dataSet.data?.map(data => ({ time: data[0], value: data[1] })),
     }
 
-    Meteor.call("dataSets.update", newDataSet, error => {
+    Meteor.callAsync("dataSets.update", newDataSet, error => {
       if (error) {
         Alert.error("Error: " + getErrorMessage(error))
       }
@@ -84,7 +85,7 @@ export default DataSet = props => {
 
     setIsRemovingDataSet(true)
 
-    Meteor.call("dataSets.remove", data, error => {
+    Meteor.callAsync("dataSets.remove", data, error => {
       if (error) {
         Alert.error("Error: " + getErrorMessage(error))
       } else {

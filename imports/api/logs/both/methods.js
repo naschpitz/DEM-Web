@@ -5,7 +5,7 @@ import Logs from "./class.js"
 Meteor.methods({
   "logs.insert"(log) {
     try {
-      return Logs.insert(log)
+      return Logs.insertAsync(log)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }

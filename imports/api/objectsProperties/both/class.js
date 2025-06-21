@@ -3,23 +3,23 @@ import _ from "lodash"
 import ObjectsPropertiesDAO from "./dao.js"
 
 export default class ObjectsProperties extends ObjectsPropertiesDAO {
-  static clone(oldObjectId, newObjectId) {
-    const oldObjectProperty = ObjectsPropertiesDAO.findOne({ owner: oldObjectId })
+  static async clone(oldObjectId, newObjectId) {
+    const oldObjectProperty = await ObjectsPropertiesDAO.findOneAsync({ owner: oldObjectId })
 
     const newObjectProperty = _.clone(oldObjectProperty)
     delete newObjectProperty._id
     newObjectProperty.owner = newObjectId
 
-    const newObjectPropertyId = ObjectsPropertiesDAO.insert(newObjectProperty)
+    const newObjectPropertyId = await ObjectsPropertiesDAO.insertAsync(newObjectProperty)
 
     return newObjectPropertyId
   }
 
-  static create(objectId) {
-    ObjectsPropertiesDAO.insert({ owner: objectId })
+  static async create(objectId) {
+    await ObjectsPropertiesDAO.insertAsync({ owner: objectId })
   }
 
-  static removeByOwner(objectId) {
-    ObjectsPropertiesDAO.remove({ owner: objectId })
+  static async removeByOwner(objectId) {
+    await ObjectsPropertiesDAO.removeAsync({ owner: objectId })
   }
 }

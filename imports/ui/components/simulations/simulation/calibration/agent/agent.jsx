@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { useParams } from "react-router-dom"
 
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import Agents from "../../../../../../api/agents/both/class"
 import Simulations from "../../../../../../api/simulations/both/class"
 
@@ -15,7 +16,7 @@ import Main from "../../main/main"
 
 import "./agent.css"
 
-export default Agent = props => {
+export default () => {
   const [isSimulationReady, setIsSimulationReady] = useState(false)
   const [isAgentReady, setIsAgentReady] = useState(false)
 

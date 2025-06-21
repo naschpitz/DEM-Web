@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
+import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import SceneriesClass from "../../../../../api/sceneries/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
@@ -20,7 +21,7 @@ import Viewer from "./viewer/viewer.jsx"
 
 import "./scenery.css"
 
-export default Scenery = props => {
+export default (props) => {
   const [isCreatingMaterial, setIsCreatingMaterial] = useState(false)
   const [isCreatingNSO, setIsCreatingNSO] = useState(false)
   const [isCreatingSO, setIsCreatingSO] = useState(false)
@@ -42,7 +43,7 @@ export default Scenery = props => {
 
     _.set(newScenery, name, value)
 
-    Meteor.call("sceneries.update", newScenery, error => {
+    Meteor.callAsync("sceneries.update", newScenery, error => {
       if (error) Alert.error("Error saving scenery: " + error.reason)
     })
   }
@@ -52,7 +53,7 @@ export default Scenery = props => {
 
     setIsCreatingNSO(true)
 
-    Meteor.call("nonSolidObjects.create", scenery._id, error => {
+    Meteor.callAsync("nonSolidObjects.create", scenery._id, error => {
       if (error) Alert.error("Error creating non-solid object: " + error.reason)
       else Alert.success("Non-solid object successfully created.")
 
@@ -65,7 +66,7 @@ export default Scenery = props => {
 
     setIsCreatingSO(true)
 
-    Meteor.call("solidObjects.create", scenery._id, error => {
+    Meteor.callAsync("solidObjects.create", scenery._id, error => {
       if (error) Alert.error("Error creating solid object: " + error.reason)
       else Alert.success("Solid object successfully created.")
 
@@ -78,7 +79,7 @@ export default Scenery = props => {
 
     setIsCreatingMaterial(true)
 
-    Meteor.call("materials.create", scenery._id, error => {
+    Meteor.callAsync("materials.create", scenery._id, error => {
       if (error) Alert.error("Error creating material: " + error.reason)
       else Alert.success("Material successfully created.")
 

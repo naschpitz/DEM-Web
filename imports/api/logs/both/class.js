@@ -4,8 +4,8 @@ import LogsDAO from "./dao.js"
 import Simulations from "../../simulations/both/class";
 
 export default class Logs extends LogsDAO {
-  static removeByOwner(ownerId) {
-    LogsDAO.remove({ owner: ownerId })
+  static async removeByOwner(ownerId) {
+    await LogsDAO.removeAsync({ owner: ownerId })
   }
 
   static async clone(oldSimulationId, newSimulationId) {

@@ -3,17 +3,17 @@ import { Meteor } from "meteor/meteor";
 import Videos from "./class.js";
 
 Meteor.methods({
-  "videos.update"(material) {
+  async "videos.update"(material) {
     try {
-      Videos.updateObj(material);
+      await Videos.updateObjAsync(material);
     } catch (error) {
       throw new Meteor.Error("500", error.message);
     }
   },
 
-  "videos.remove"(videoId) {
+  async "videos.remove"(videoId) {
     try {
-      Videos.remove(videoId);
+      await Videos.removeAsync(videoId);
     } catch (error) {
       throw new Meteor.Error("500", error.message);
     }
