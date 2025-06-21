@@ -44,7 +44,7 @@ export default class Calibrations extends CalibrationsDAO {
     return !!calibrationFound
   }
 
-  static async getState(calibration) {
+  static getState(calibration) {
     switch (calibration?.state) {
       case "new":
         return "New"
