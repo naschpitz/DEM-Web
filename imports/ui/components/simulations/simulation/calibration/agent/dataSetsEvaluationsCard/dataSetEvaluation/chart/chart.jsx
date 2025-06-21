@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 
 import { ResponsiveContainer, ComposedChart, Area, Line, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 
-import styles from "./chart.module.css"
+import { Wrapper } from "./chart.styles"
 
 export default (props) => {
   const [data, setData] = useState([])
@@ -29,7 +29,7 @@ export default (props) => {
   }, [props.data])
 
   return (
-    <div id={styles.chart}>
+    <Wrapper>
       <ResponsiveContainer minHeight={300}>
         <ComposedChart data={data} margin={{ top: 10, right: 0, left: 10, bottom: 0 }} W>
           <defs>
@@ -68,6 +68,6 @@ export default (props) => {
           />
         </ComposedChart>
       </ResponsiveContainer>
-    </div>
+    </Wrapper>
   )
 }
