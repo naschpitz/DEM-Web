@@ -8,7 +8,7 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
 import LogsClass from "../../../../../../../api/logs/both/class"
 
-import Alert from "../../../../../../utils/Alert.js"
+import Alert from "../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import ReactTable from "react-table-v6"
 

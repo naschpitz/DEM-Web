@@ -9,7 +9,7 @@ import AgentsClass from "../../../../../../api/agents/both/class"
 import LogsClass from "../../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../../api/simulations/both/class"
 
-import Alert from "../../../../../utils/Alert.js"
+import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import ReactTable from "react-table-v6"
 

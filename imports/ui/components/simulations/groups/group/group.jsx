@@ -5,7 +5,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../../../api/simulations/both/class"
 
-import Alert from "../../../../utils/Alert.js"
+import Alert from "../../../../utils/alert.js"
 
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaTrashAlt, FaEdit, FaCheck, FaTimes } from "react-icons/fa"

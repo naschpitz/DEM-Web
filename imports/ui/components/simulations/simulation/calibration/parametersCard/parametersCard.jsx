@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 
-import Alert from "../../../../../utils/Alert.js"
+import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaPlus } from "react-icons/fa"
 

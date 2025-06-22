@@ -7,7 +7,7 @@ import _ from "lodash"
 import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
 import VideosClass from "../../../../../../../../api/videos/both/class.js"
 
-import Alert from "../../../../../../../utils/Alert.js"
+import Alert from "../../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import ReactTable from "react-table-v6"

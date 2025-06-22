@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor"
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import { getDragForcesCoefficientsOptions, getForcesCoefficientsOptions } from "../../../../../../common/materials"
 
-import Alert from "../../../../../../utils/Alert.js"
+import Alert from "../../../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
 
 export default (props) => {

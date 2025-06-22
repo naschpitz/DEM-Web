@@ -1,7 +1,7 @@
 import React from "react"
 import { Routes, Route } from "react-router-dom"
 
-import { Toaster } from "react-hot-toast"
+import CustomToaster from "../../components/toaster/toaster"
 import { UniqueModal } from "@naschpitz/unique-modal"
 
 import "./main.css"
@@ -117,15 +117,7 @@ export default function App() {
         </Routes>
       </footer>
 
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 7500,
-          style: {
-            maxWidth: '500px',
-          },
-        }}
-      />
+      <CustomToaster />
     </div>
   )
 }

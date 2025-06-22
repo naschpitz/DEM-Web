@@ -12,7 +12,7 @@ class Alert {
    */
   static success(message, options = {}) {
     const duration = options.timeout === "none" ? Infinity : (options.timeout || 7500)
-    
+
     return toast.success(message, {
       duration,
       position: 'bottom-right',
@@ -36,7 +36,7 @@ class Alert {
    */
   static error(message, options = {}) {
     const duration = options.timeout === "none" ? Infinity : (options.timeout || 7500)
-    
+
     return toast.error(message, {
       duration,
       position: 'bottom-right',
@@ -60,7 +60,7 @@ class Alert {
    */
   static warning(message, options = {}) {
     const duration = options.timeout === "none" ? Infinity : (options.timeout || 7500)
-    
+
     return toast(message, {
       duration,
       position: 'bottom-right',
@@ -81,7 +81,7 @@ class Alert {
    */
   static info(message, options = {}) {
     const duration = options.timeout === "none" ? Infinity : (options.timeout || 7500)
-    
+
     return toast(message, {
       duration,
       position: 'bottom-right',
@@ -117,7 +117,7 @@ class Alert {
    */
   static custom(message, options = {}) {
     const duration = options.timeout === "none" ? Infinity : (options.timeout || 7500)
-    
+
     return toast(message, {
       duration,
       position: 'bottom-right',

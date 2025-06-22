@@ -6,7 +6,7 @@ import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import GroupsClass from "../../../../api/groups/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
-import Alert from "../../../utils/Alert.js"
+import Alert from "../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import Group from "./group/group.jsx"

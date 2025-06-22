@@ -6,7 +6,7 @@ import _ from "lodash"
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
 
-import Alert from "../../../../../../utils/Alert.js"
+import Alert from "../../../../../../utils/alert.js"
 import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input";
 

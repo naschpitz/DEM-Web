@@ -9,7 +9,7 @@ import ServersClass from "../../../../api/servers/both/class.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
 import { FaClone, FaPause, FaPlay, FaStop, FaSync, FaTrashAlt } from "react-icons/fa"
-import Alert from "../../../utils/Alert.js"
+import Alert from "../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 

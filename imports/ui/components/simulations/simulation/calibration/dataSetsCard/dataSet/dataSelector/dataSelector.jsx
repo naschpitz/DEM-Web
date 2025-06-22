@@ -8,7 +8,7 @@ import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.j
 import NonSolidObjectsClass from "../../../../../../../../api/nonSolidObjects/both/class.js"
 import SolidObjectsClass from "../../../../../../../../api/solidObjects/both/class.js"
 
-import Alert from "../../../../../../../utils/Alert.js"
+import Alert from "../../../../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
 
 import "./dataSelector.css"

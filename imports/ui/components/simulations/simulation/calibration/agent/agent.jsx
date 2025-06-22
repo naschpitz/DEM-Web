@@ -7,7 +7,7 @@ import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import Agents from "../../../../../../api/agents/both/class"
 import Simulations from "../../../../../../api/simulations/both/class"
 
-import Alert from "../../../../../utils/Alert.js"
+import Alert from "../../../../../utils/alert.js"
 import ClipLoader from "react-spinners/ClipLoader"
 
 import DataSetsEvaluationsCard from "./dataSetsEvaluationsCard/dataSetsEvaluationsCard";

@@ -7,7 +7,7 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import FramesClass from "../../../../../../../api/frames/both/class.js"
 
 import { FaFastBackward, FaStepBackward, FaStepForward, FaFastForward } from "react-icons/fa"
-import Alert from "../../../../../../utils/Alert.js"
+import Alert from "../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 

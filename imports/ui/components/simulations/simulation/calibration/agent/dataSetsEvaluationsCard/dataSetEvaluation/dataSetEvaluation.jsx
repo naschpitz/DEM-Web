@@ -5,7 +5,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
 import DataSetsClass from "../../../../../../../../api/dataSets/both/class.js"
 
-import Alert from "../../../../../../../utils/Alert.js"
+import Alert from "../../../../../../../utils/alert.js"
 import ClipLoader from "react-spinners/ClipLoader";
 
 import Chart from "./chart/chart.jsx"
