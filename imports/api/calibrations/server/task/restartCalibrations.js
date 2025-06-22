@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor"
 
 import Calibrations from "../../both/class"
-import Hypervisor from "../hypervisor"
+import HypervisorManager from "../hypervisorManager";
 
 // Find Calibrations in progress and re-initialize them
 const task = Meteor.bindEnvironment(async () => {
@@ -22,7 +22,7 @@ const task = Meteor.bindEnvironment(async () => {
   const calibrationsInProgress = await calibrationsInProgressPromises.fetchAsync()
 
   for (const calibration of calibrationsInProgress) {
-    const hypervisor = new Hypervisor(calibration._id)
+    const hypervisor = HypervisorManager.getInstance(calibration._id)
 
     try {
       await hypervisor.initialize()

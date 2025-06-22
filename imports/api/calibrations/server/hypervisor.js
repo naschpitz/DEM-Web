@@ -4,6 +4,7 @@ import _ from "lodash"
 import Agents from "../../agents/server/class"
 import Calibrations from "./class"
 import Frames from "../../frames/both/class"
+import HypervisorManager from "./hypervisorManager"
 import Logs from "../../logs/both/class"
 
 export default class Hypervisor {
@@ -127,21 +128,29 @@ export default class Hypervisor {
   async calibrationHandler(newCalibration, oldCalibration) {
     if (newCalibration.state === "paused") {
       await this.log("Calibration has paused, stopping hypervisor.")
-      await this.stopObservers()
-      clearInterval(this.timer)
+      await this.cleanup()
     }
 
     if (newCalibration.state === "stopped") {
       await this.log("Calibration has stopped, stopping hypervisor.")
-      await this.stopObservers()
-      clearInterval(this.timer)
+      await this.cleanup()
     }
 
     if (newCalibration.state === "done") {
       await this.log("Calibration has finished, stopping hypervisor.")
-      await this.stopObservers()
-      clearInterval(this.timer)
+      await this.cleanup()
     }
+  }
+
+  // Clean up hypervisor and remove from manager
+  async cleanup() {
+    await this.stopObservers()
+    if (this.timer) {
+      clearInterval(this.timer)
+      this.timer = null
+    }
+    // Remove this instance from the manager
+    HypervisorManager.removeInstance(this.calibrationId)
   }
 
   async agentHandler(type, agentId, objectNew, objectOld) {

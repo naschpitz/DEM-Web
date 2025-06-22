@@ -1,6 +1,6 @@
 import Agents from "../../agents/server/class"
 import CalibrationsBoth from "../both/class"
-import Hypervisor from "./hypervisor"
+import HypervisorManager from "./hypervisorManager"
 import Logs from "../../logs/both/class"
 import CalibrationsDAO from "../both/dao";
 import DataSets from "../../dataSets/both/class";
@@ -8,7 +8,7 @@ import Parameters from "../../parameters/both/class";
 
 export default class Calibrations extends CalibrationsBoth {
   static async start(calibrationId) {
-    const hypervisor = new Hypervisor(calibrationId)
+    const hypervisor = HypervisorManager.getInstance(calibrationId)
 
     try {
       await hypervisor.initialize()
