@@ -30,7 +30,6 @@
     "element-resize-detector": "^1.2.1",
     "filesize": "^6.1.0",
     "install": "^0.13.0",
-    "josk": "^3.0.2",
     "jquery": "^3.4.1",
     "js-file-download": "^0.4.12",
     "lodash": "^4.17.15",

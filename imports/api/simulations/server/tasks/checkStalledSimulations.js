@@ -6,7 +6,7 @@ import Logs from "../../../logs/both/class"
 import Simulations from "../../both/class"
 
 // Find stalled Simulations and set its state to 'failed'
-const bound = Meteor.bindEnvironment(async () => {
+const task = Meteor.bindEnvironment(async () => {
   const sixtySecondsAgo = moment().subtract(60, "seconds").toDate()
 
   const stalledSimulations = await Simulations.find({
@@ -49,10 +49,5 @@ const bound = Meteor.bindEnvironment(async () => {
 
   console.log("Done checking for stalled Simulations.")
 })
-
-const task = (ready) => {
-  bound()
-  ready()
-}
 
 export default task

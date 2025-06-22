@@ -4,7 +4,7 @@ import Calibrations from "../../both/class"
 import Hypervisor from "../hypervisor"
 
 // Find Calibrations in progress and re-initialize them
-const bound = Meteor.bindEnvironment(async () => {
+const task = Meteor.bindEnvironment(async () => {
   const calibrationsInProgress = Calibrations.find({
     state: { $in: ["running", "paused"] },
   })
@@ -31,10 +31,5 @@ const bound = Meteor.bindEnvironment(async () => {
 
   console.log("Done checking for Calibrations in progress.")
 })
-
-const task = (ready) => {
-  bound()
-  ready()
-}
 
 export default task

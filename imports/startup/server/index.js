@@ -23,7 +23,7 @@ import "../../api/framesImages/server/methods.js"
 import "../../api/groups/server/methods.js"
 import "../../api/groups/server/publications.js"
 
-import "../../api/josk/server/run.js"
+import "../../api/scheduler/server/scheduler.js"
 
 import "../../api/logs/server/publications.js"
 
