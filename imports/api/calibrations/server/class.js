@@ -105,7 +105,7 @@ export default class Calibrations extends CalibrationsBoth {
     await Calibrations.log(calibrationId, "Saving agents' histories.")
     await Agents.saveAllAgentsHistories(calibrationId)
 
-    const calibration = CalibrationsBoth.findOneAsync(calibrationId)
+    const calibration = await CalibrationsBoth.findOneAsync(calibrationId)
 
     // After saving the history, we can check the stop condition
     await Calibrations.log(calibrationId, "Checking stop condition.")
