@@ -5,7 +5,7 @@ import VideosCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO.js"
 
 export default class VideosDAO extends createDAO(VideosCol) {
-  static updateObjAsync(video) {
+  static async updateObjAsync(video) {
     const error = _.get(video, "meta.error")
 
     // Removes circular reference.
@@ -22,7 +22,7 @@ export default class VideosDAO extends createDAO(VideosCol) {
       value != null ? set[key] = value : unset[key] = ""
     })
 
-    VideosCol.update(video._id, {
+    await VideosCol.updateAsync(video._id, {
         $set: set,
         $unset: unset
     })

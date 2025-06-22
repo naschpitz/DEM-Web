@@ -116,7 +116,7 @@ export default class Videos extends VideosBoth {
 
     const stats = statSync(videoFilePath);
 
-    await VideosCollection.collection.updateAsync(
+    await VideosBoth.updateAsync(
       videoId,
       {
         $set: {
@@ -131,7 +131,7 @@ export default class Videos extends VideosBoth {
   }
 
   static async removeAsync(videoId) {
-    const file = await VideosCollection.findOneAsync(videoId);
+    const file = await VideosBoth.findOneAsync(videoId);
 
     if (file.meta.state === "rendering" || file.meta.state === "encoding")
       throw { message: "Videos in 'rendering' or 'encoding' states cannot be removed." };
@@ -139,6 +139,6 @@ export default class Videos extends VideosBoth {
     unlink(file.path, (error) => { /* Do nothing */
     });
 
-    await VideosCollection.removeAsync(videoId);
+    await VideosBoth.removeAsync(videoId);
   }
 }
