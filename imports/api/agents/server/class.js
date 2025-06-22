@@ -110,7 +110,7 @@ export default class Agents extends AgentsBoth {
     await AgentsHistories.insertAsync(agentHistory)
   }
 
-  static async observe(agentId, callback) {
+  static async observeAsync(agentId, callback) {
     const agent = await AgentsBoth.findOneAsync(agentId)
 
     const agentObserve = await AgentsBoth.find({ _id: agentId }).observeAsync({

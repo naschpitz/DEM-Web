@@ -154,7 +154,7 @@ export default class Calibrations extends CalibrationsBoth {
     return numNewAgents
   }
 
-  static async observe(calibrationId, callback) {
+  static async observeAsync(calibrationId, callback) {
     return await CalibrationsBoth.find({ _id: calibrationId }).observeAsync({
       changed: calibration => callback(calibration),
     })

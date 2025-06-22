@@ -44,10 +44,9 @@ export default class Hypervisor {
     const agents = Agents.find({ owner: this.calibrationId })
 
     await this.log("Initializing agents observers.")
-    const agentsObserversPromises = await agents.mapAsync(async (agent) => {
-      const observer = await Agents.observeAsync(agent._id, this.agentHandler.bind(this))
-      return observer
-    })
+    const agentsObserversPromises = await agents.mapAsync(async (agent) => (
+      await Agents.observeAsync(agent._id, this.agentHandler.bind(this))
+    ))
     this.agentsObservers = await Promise.all(agentsObserversPromises)
     await this.log("Agents observers initialized.")
   }
