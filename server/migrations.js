@@ -143,10 +143,10 @@ Migrations.add({
     // For Each Agent
     await Agents.find().forEachAsync(async agent => {
       // Find the Agent's histories
-      const agentHistories = AgentsHistories.find({ owner: agent._id }, { sort: { iteration : 1 }})
+      const agentHistories = await AgentsHistories.find({ owner: agent._id }, { sort: { iteration : 1 }}).fetchAsync()
 
       // Build the history array from the AgentHistories
-      const history = await agentHistories.mapAsync(agentHistory => {
+      const history = agentHistories.map(agentHistory => {
         return {
           iteration: agentHistory.iteration,
           current: agentHistory.current,

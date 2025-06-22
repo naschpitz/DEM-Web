@@ -46,15 +46,15 @@ export default class Agents extends AgentsBoth {
   }
 
   static async removeByOwner(owner) {
-    const agents = AgentsBoth.find({ owner: owner })
+    const agents = await AgentsBoth.find({ owner: owner }).fetchAsync()
 
-    const agentsPromises = await agents.mapAsync(async (agent) => {
+    const agentsPromises = agents.map(async (agent) => {
       await Simulations.removeAsync(agent.current.simulation)
       await Simulations.removeAsync(agent.best.simulation)
 
-      const agentsHistories = AgentsHistories.find({ owner: agent._id })
+      const agentsHistories = await AgentsHistories.find({ owner: agent._id }).fetchAsync()
 
-      const agentsHistoriesPromises = await agentsHistories.mapAsync(async (agentHistory) => {
+      const agentsHistoriesPromises = agentsHistories.map(async (agentHistory) => {
         await Simulations.removeAsync(agentHistory.current.simulation)
         await Simulations.removeAsync(agentHistory.best.simulation)
       })
@@ -66,7 +66,7 @@ export default class Agents extends AgentsBoth {
 
     await Promise.all(agentsPromises)
 
-    const agentIds = await agents.mapAsync(agent => agent._id)
+    const agentIds = agents.map(agent => agent._id)
     await AgentsBoth.removeAsync({ _id: { $in: agentIds } })
   }
 

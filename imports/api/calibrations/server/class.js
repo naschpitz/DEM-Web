@@ -28,7 +28,7 @@ export default class Calibrations extends CalibrationsBoth {
     await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "paused" })
 
     const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async (agent) => {
-      const state = Agents.getState(agent._id)
+      const state = await Agents.getState(agent._id)
 
       if (state === "running") await Agents.pause(agent._id)
     })
@@ -46,7 +46,7 @@ export default class Calibrations extends CalibrationsBoth {
     await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "stopped" })
 
     const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async (agent) => {
-      const state = Agents.getState(agent._id)
+      const state = await Agents.getState(agent._id)
 
       if (state === "running" || state === "paused") await Agents.stop(agent._id)
     })
@@ -156,7 +156,7 @@ export default class Calibrations extends CalibrationsBoth {
 
   static async observeAsync(calibrationId, callback) {
     return await CalibrationsBoth.find({ _id: calibrationId }).observeAsync({
-      changed: calibration => callback(calibration),
+      changed: ((newCalibration, oldCalibration) => callback(newCalibration, oldCalibration))
     })
   }
 

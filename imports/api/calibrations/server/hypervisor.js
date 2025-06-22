@@ -124,9 +124,21 @@ export default class Hypervisor {
     }
   }
 
-  async calibrationHandler(calibration) {
-    if (calibration.state === "stopped") {
+  async calibrationHandler(newCalibration, oldCalibration) {
+    if (newCalibration.state === "paused") {
+      await this.log("Calibration has paused, stopping hypervisor.")
+      await this.stopObservers()
+      clearInterval(this.timer)
+    }
+
+    if (newCalibration.state === "stopped") {
       await this.log("Calibration has stopped, stopping hypervisor.")
+      await this.stopObservers()
+      clearInterval(this.timer)
+    }
+
+    if (newCalibration.state === "done") {
+      await this.log("Calibration has finished, stopping hypervisor.")
       await this.stopObservers()
       clearInterval(this.timer)
     }
