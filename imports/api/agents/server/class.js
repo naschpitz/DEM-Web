@@ -350,8 +350,6 @@ export default class Agents extends AgentsBoth {
     // If no valid best scores are found, then the best global agent is not updated.
     if (bestScores.length === 0) return
 
-    console.log("bestScores", bestScores)
-
     // Gets the agentId with the lowest score
     const bestGAgentId = bestScores.reduce(
       (acc, score) => (score.score < acc.score ? score : acc),
