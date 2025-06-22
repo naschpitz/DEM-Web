@@ -110,6 +110,9 @@ Simulations.schema = new SimpleSchema({
   updatedAt: {
     type: Date,
     label: "Updated at",
+    autoValue: function () {
+      return new Date()
+    },
   },
 })
 
