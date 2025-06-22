@@ -66,7 +66,7 @@ export default class Agents extends AgentsBoth {
 
     await Promise.all(agentsPromises)
 
-    const agentIds = agents.map(agent => agent._id)
+    const agentIds = await agents.mapAsync(agent => agent._id)
     await AgentsBoth.removeAsync({ _id: { $in: agentIds } })
   }
 

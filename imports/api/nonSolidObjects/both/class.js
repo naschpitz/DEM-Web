@@ -7,7 +7,7 @@ import Sceneries from "../../sceneries/both/class"
 
 export default class NonSolidObjects extends NonSolidObjectsDAO {
   static async clone(oldSceneryId, newSceneryId, materialsMap) {
-    const oldNonSolidObjects = NonSolidObjects.find({ owner: oldSceneryId }).fetchAsync()
+    const oldNonSolidObjects = await NonSolidObjects.find({ owner: oldSceneryId }).fetchAsync()
 
     const nonSolidObjectsMap = {}
 

@@ -15,6 +15,9 @@ export default class Sceneries extends SceneriesBoth {
 
   static async removeByOwner(simulationId) {
     const scenery = await SceneriesBoth.findOneAsync({ owner: simulationId })
+
+    if (!scenery) return
+
     const sceneryId = scenery._id
 
     const promises = []

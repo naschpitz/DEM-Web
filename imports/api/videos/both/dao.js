@@ -27,4 +27,8 @@ export default class VideosDAO extends createDAO(VideosCol) {
         $unset: unset
     })
   }
+
+  static async addFile(filePath, opts) {
+    await VideosCol.addFile(filePath, opts)
+  }
 }

@@ -36,7 +36,7 @@ export default class Videos extends VideosBoth {
     // Create empty file.
     closeSync(openSync(videoFilePath, "w"));
 
-    VideosBoth.addFile(videoFilePath, opts);
+    await VideosBoth.addFile(videoFilePath, opts);
 
     const imagesPath = Meteor.settings.tmpPath + "/" + sceneryId + "_" + Random.id(6);
 
@@ -116,7 +116,7 @@ export default class Videos extends VideosBoth {
 
     const stats = statSync(videoFilePath);
 
-    await VideosBoth.updateSync(
+    await VideosCollection.collection.updateAsync(
       videoId,
       {
         $set: {
@@ -131,7 +131,7 @@ export default class Videos extends VideosBoth {
   }
 
   static async removeAsync(videoId) {
-    const file = VideosBoth.findOneAsync(videoId);
+    const file = await VideosCollection.findOneAsync(videoId);
 
     if (file.meta.state === "rendering" || file.meta.state === "encoding")
       throw { message: "Videos in 'rendering' or 'encoding' states cannot be removed." };
@@ -139,6 +139,6 @@ export default class Videos extends VideosBoth {
     unlink(file.path, (error) => { /* Do nothing */
     });
 
-    await VideosBoth.removeAsync(videoId);
+    await VideosCollection.removeAsync(videoId);
   }
 }

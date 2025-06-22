@@ -44,7 +44,7 @@ export default function createDAO(collection) {
         value != null ? (set[key] = value) : (unset[key] = "");
       });
 
-      return collection.update(obj._id, {
+      return collection.updateAsync(obj._id, {
         $set: set,
         $unset: unset,
       });
