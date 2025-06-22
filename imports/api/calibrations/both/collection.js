@@ -90,26 +90,6 @@ Calibrations.schema = new SimpleSchema({
   },
 })
 
-Calibrations.schema.addValidator(async function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-
-  if (this.isUpdate && this.connection) {
-    const calibration = await Calibrations.findOneAsync(this.docId)
-    const simulation = await SimulationsDAO.findOneAsync(calibration.owner)
-
-    if (simulation.owner !== userId) return "notOwner"
-  }
-})
-
-Calibrations.schema.messageBox.messages({
-  en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the simulation's owner",
-  },
-})
-
 Calibrations.attachSchema(Calibrations.schema)
 
 Meteor.isServer && Calibrations.rawCollection().createIndex({ owner: 1 }, { background: true })

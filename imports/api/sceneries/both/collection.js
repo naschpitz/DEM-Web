@@ -45,19 +45,6 @@ Sceneries.schema = new SimpleSchema({
   },
 })
 
-Sceneries.schema.addValidator(function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-})
-
-Sceneries.schema.messageBox.messages({
-  en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the simulation's owner",
-  },
-})
-
 Sceneries.attachSchema(Sceneries.schema)
 
 Meteor.isServer && Sceneries.rawCollection().createIndex({ owner: 1 }, { background: true })

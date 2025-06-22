@@ -48,25 +48,6 @@ Groups.schema = new SimpleSchema({
   },
 })
 
-Groups.schema.addValidator(async function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-
-  if (this.isUpdate && this.connection) {
-    const group = await Groups.findOneAsync(this.docId)
-
-    if (group.owner !== userId) return "notOwner"
-  }
-})
-
-Groups.schema.messageBox.messages({
-  en: {
-    notAuthorized: "You are not authorized to perform this action.",
-    notOwner: "The user is not the group's owner.",
-  },
-})
-
 Groups.attachSchema(Groups.schema)
 
 Meteor.isServer && Groups.rawCollection().createIndex({ owner: 1 }, { background: true })

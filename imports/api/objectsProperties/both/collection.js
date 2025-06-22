@@ -44,19 +44,6 @@ ObjectsProperties.schema = new SimpleSchema({
   },
 })
 
-ObjectsProperties.schema.addValidator(function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-})
-
-ObjectsProperties.schema.messageBox.messages({
-  en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the simulation's owner",
-  },
-})
-
 ObjectsProperties.attachSchema(ObjectsProperties.schema)
 
 Meteor.isServer && ObjectsProperties.rawCollection().createIndex({ owner: 1 }, { background: true })

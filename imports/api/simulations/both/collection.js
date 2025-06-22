@@ -110,28 +110,6 @@ Simulations.schema = new SimpleSchema({
   updatedAt: {
     type: Date,
     label: "Updated at",
-    autoValue: function () {
-      return new Date()
-    },
-  },
-})
-
-Simulations.schema.addValidator(async function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-
-  if (this.isUpdate && this.connection) {
-    const simulation = await Simulations.findOneAsync(this.docId)
-
-    if (simulation.owner !== userId) return "notOwner"
-  }
-})
-
-Simulations.schema.messageBox.messages({
-  en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the simulation's owner",
   },
 })
 

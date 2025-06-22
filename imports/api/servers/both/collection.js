@@ -52,25 +52,6 @@ Servers.schema = new SimpleSchema({
   },
 })
 
-Servers.schema.addValidator(async function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-
-  if (this.isUpdate && this.connection) {
-    const server = await Servers.findOneAsync(this.docId)
-
-    if (server.owner !== userId) return "notOwner"
-  }
-})
-
-Servers.schema.messageBox.messages({
-  en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the server's owner",
-  },
-})
-
 Servers.attachSchema(Servers.schema)
 
 Meteor.isServer && Servers.rawCollection().createIndex({ owner: 1 }, { background: true })

@@ -111,18 +111,6 @@ DataSets.schema = new SimpleSchema({
   },
 })
 
-DataSets.schema.addValidator(function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-})
-
-DataSets.schema.messageBox.messages({
-  en: {
-    missingField: "{{name}} is required",
-  },
-})
-
 DataSets.attachSchema(DataSets.schema)
 
 Meteor.isServer && DataSets.rawCollection().createIndex({ owner: 1 }, { background: true })

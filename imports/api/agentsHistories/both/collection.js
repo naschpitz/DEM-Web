@@ -52,28 +52,6 @@ AgentsHistories.schema = new SimpleSchema({
   },
 })
 
-AgentsHistories.schema.addValidator(async function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-
-  if (this.isUpdate && this.connection) {
-    const agentHistory = await AgentsHistories.findOneAsync(this.docId)
-    const agent = await AgentsDAO.findOneAsync(agentHistory.owner)
-    const calibration = await CalibrationsDAO.findOneAsync(agent.owner)
-    const simulation = await SimulationsDAO.findOneAsync(calibration.owner)
-
-    if (simulation.owner !== userId) return "notOwner"
-  }
-})
-
-AgentsHistories.schema.messageBox.messages({
-  en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the simulation's owner",
-  },
-})
-
 AgentsHistories.attachSchema(AgentsHistories.schema)
 
 Meteor.isServer && AgentsHistories.rawCollection().createIndex({ owner: 1 }, { background: true })

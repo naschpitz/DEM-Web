@@ -53,19 +53,6 @@ Cameras.schema = new SimpleSchema({
   },
 })
 
-Cameras.schema.addValidator(function () {
-  const userId = this.userId
-
-  if (!userId && this.connection) return "notAuthorized"
-})
-
-Cameras.schema.messageBox.messages({
-  en: {
-    notAuthorized: "User not logged in",
-    notOwner: "The user is not the simulation's owner",
-  },
-})
-
 Cameras.attachSchema(Cameras.schema)
 
 Meteor.isServer && Cameras.rawCollection().createIndex({ owner: 1 }, { background: true })
