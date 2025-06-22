@@ -91,6 +91,9 @@ export default class Simulations extends SimulationsBoth {
 
   static async removeAsync(simulationId) {
     const simulation = await Simulations.findOneAsync(simulationId)
+
+    if (!simulation) return
+
     const state = simulation.state
 
     if (!["new", "stopped", "done", "failed"].includes(state))
