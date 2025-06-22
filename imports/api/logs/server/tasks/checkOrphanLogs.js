@@ -13,10 +13,10 @@ const bound = Meteor.bindEnvironment(async () => {
   const ids = simulationsIds.concat(calibrationsIds)
 
   // Find all logs whose owner is not in the ids array
-  const logsIdsToDelete = Logs.find({ owner: { $nin: ids } }).map(log => log._id)
+  const logsIdsToDelete = await Logs.find({ owner: { $nin: ids } }).mapAsync(log => log._id)
 
   // Remove the logs
-  const count = Logs.removeAsync({ _id: { $in: logsIdsToDelete } })
+  const count = await Logs.removeAsync({ _id: { $in: logsIdsToDelete } })
 
   console.log(`Removed ${count} orphan logs.`)
 })

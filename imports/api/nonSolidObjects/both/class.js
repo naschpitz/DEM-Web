@@ -45,12 +45,13 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
   }
 
   static async removeByOwner(sceneryId) {
-    const nonSolidObjects = NonSolidObjects.find({ owner: sceneryId })
+    const nonSolidObjects = await NonSolidObjects.find({ owner: sceneryId }).fetchAsync()
 
-    nonSolidObjects.forEach(nonSolidObject => {
-      ObjectsProperties.removeByOwner(nonSolidObject._id)
+    const promises = nonSolidObjects.map(async nonSolidObject => {
+      await ObjectsProperties.removeByOwner(nonSolidObject._id)
     })
 
+    await Promise.all(promises)
     await NonSolidObjectsDAO.removeAsync({ owner: sceneryId })
   }
 

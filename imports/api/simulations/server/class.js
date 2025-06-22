@@ -108,9 +108,9 @@ export default class Simulations extends SimulationsBoth {
   }
 
   static async removeByGroup(groupId) {
-    const simulations = Simulations.find({ group: groupId })
+    const simulations = await Simulations.find({ group: groupId }).fetchAsync()
 
-    const promises = await simulations.mapAsync(simulation => this.removeAsync(simulation._id))
+    const promises = simulations.map(simulation => this.removeAsync(simulation._id))
 
     await Promise.all(promises)
   }

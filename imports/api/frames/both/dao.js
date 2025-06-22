@@ -4,7 +4,7 @@ import FramesCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO.js"
 
 export default class FramesDAO extends createDAO(FramesCol) {
-  static insertAsync(frame) {
+  static async insertAsync(frame) {
     const scenery = frame.scenery
 
     const nonSolidObjects = _.get(scenery, "objects.nonSolidObjects", [])
@@ -21,6 +21,6 @@ export default class FramesDAO extends createDAO(FramesCol) {
     // As the 'Frame' schema has no 'particles' or 'faces' in 'nonSolidObject' and 'solidObject' respectively, they
     // will not be pushed into the collection automatically, in theory. SimplSchema is painfully slow to validate
     // (and clean) large documents, so a better idea was to remove those unnecessary fields prior to insertion.
-    FramesCol.insertAsync(frame)
+    await FramesCol.insertAsync(frame)
   }
 }

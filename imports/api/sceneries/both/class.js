@@ -50,17 +50,17 @@ export default class Sceneries extends SceneriesDAO {
   static async getMap(oldSceneryId, newSceneryId) {
     const materialsMap = {}
     const materialsPromises = await Materials.find({ owner: oldSceneryId }).mapAsync(async (oldMaterial) => {
-      materialsMap[oldMaterial._id] = await Materials.findOneAsync({ owner: newSceneryId, callSign: oldMaterial.callSign })._id
+      materialsMap[oldMaterial._id] = (await Materials.findOneAsync({ owner: newSceneryId, callSign: oldMaterial.callSign }))._id
     })
 
     const nonSolidObjectsMap = {}
     const nonSolidObjectsPromises = await NonSolidObjects.find({ owner: oldSceneryId }).mapAsync(async (oldNSO) => {
-      nonSolidObjectsMap[oldNSO._id] = await NonSolidObjects.findOneAsync({ owner: newSceneryId, callSign: oldNSO.callSign })._id
+      nonSolidObjectsMap[oldNSO._id] = (await NonSolidObjects.findOneAsync({ owner: newSceneryId, callSign: oldNSO.callSign }))._id
     })
 
     const solidObjectsMap = {}
     const solidObjectsPromises = await SolidObjects.find({ owner: oldSceneryId }).mapAsync(async (oldSO) => {
-      solidObjectsMap[oldSO._id] = SolidObjects.findOneAsync({ owner: newSceneryId, callSign: oldSO.callSign })._id
+      solidObjectsMap[oldSO._id] = (await SolidObjects.findOneAsync({ owner: newSceneryId, callSign: oldSO.callSign }))._id
     })
 
     await Promise.all(materialsPromises)

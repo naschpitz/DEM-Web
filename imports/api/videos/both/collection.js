@@ -10,11 +10,11 @@ const Videos = new FilesCollection({
   collectionName: "videos",
   storagePath: Meteor.settings.s3Path,
   downloadRoute: "/videos",
-  protected: function(fileObj) {
-    const scenery = Sceneries.findOneAsync(fileObj.meta.owner);
+  protected: async function(fileObj) {
+    const scenery = await Sceneries.findOneAsync(fileObj.meta.owner);
 
     const simulationId = scenery.owner;
-    const simulation = Simulations.findOneAsync(simulationId);
+    const simulation = await Simulations.findOneAsync(simulationId);
 
     const userId = this.params.query.xmtok;
 

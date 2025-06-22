@@ -83,7 +83,7 @@ export default class Frames extends FramesBoth {
       }
     }
 
-    FramesBoth.insertAsync(frame)
+    await FramesBoth.insertAsync(frame)
   }
 
   static async getFullFrame(frameId) {
@@ -143,7 +143,7 @@ export default class Frames extends FramesBoth {
 
     const files = []
 
-    readdirSync(currentStoragePath).map(file => {
+    readdirSync(currentStoragePath).forEach(file => {
       const match = file.match(regex)
 
       if (match !== null) files.push(file)

@@ -41,10 +41,10 @@ export default class Hypervisor {
     this.calibrationObserver = await Calibrations.observeAsync(this.calibrationId, this.calibrationHandler.bind(this))
     await this.log("Calibration observer initialized.")
 
-    const agents = Agents.find({ owner: this.calibrationId })
+    const agents = await Agents.find({ owner: this.calibrationId }).fetchAsync()
 
     await this.log("Initializing agents observers.")
-    const agentsObserversPromises = await agents.mapAsync(async (agent) => (
+    const agentsObserversPromises = agents.map(async (agent) => (
       await Agents.observeAsync(agent._id, this.agentHandler.bind(this))
     ))
     this.agentsObservers = await Promise.all(agentsObserversPromises)
@@ -85,7 +85,8 @@ export default class Hypervisor {
     // In case agents are started manually, numMissingAgents can be negative
     if (numMissingAgents <= 0) return
 
-    const eligibleAgentsPromises = await Agents.find({ owner: calibration._id }).mapAsync(async (agent) => {
+    const agents = await Agents.find({ owner: calibration._id }).fetchAsync()
+    const eligibleAgentsPromises = agents.map(async (agent) => {
       const state = await Agents.getState(agent._id)
 
       // "new" and "paused" agents are eligible to be started

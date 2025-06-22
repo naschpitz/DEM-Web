@@ -14,7 +14,7 @@ import SolidObjects from "../../solidObjects/both/class"
 
 export default class Agents extends AgentsBoth {
   static async start(agentId) {
-    const agent = Agents.findOneAsync(agentId)
+    const agent = await Agents.findOneAsync(agentId)
 
     await Simulations.start(agent.current.simulation)
   }
@@ -75,7 +75,7 @@ export default class Agents extends AgentsBoth {
     const agent = await AgentsBoth.findOneAsync(agentId)
 
     // Get the other agents with the same 'agent.owner' and set their 'bestGlobal' to false
-    await AgentsBoth.update({ owner: agent.owner }, { $set: { "best.bestGlobal": false } }, { multi: true })
+    await AgentsBoth.updateAsync({ owner: agent.owner }, { $set: { "best.bestGlobal": false } }, { multi: true })
 
     await AgentsBoth.updateObjAsync({ _id: agentId, "best.bestGlobal": true })
   }
@@ -85,9 +85,9 @@ export default class Agents extends AgentsBoth {
   }
 
   static async saveAllAgentsHistories(calibrationId) {
-    const agents = AgentsBoth.find({ owner: calibrationId })
+    const agents = await AgentsBoth.find({ owner: calibrationId }).fetchAsync()
 
-    const saveAgentsHistoryPromises = await agents.mapAsync(agent => Agents.saveAgentHistory(agent._id))
+    const saveAgentsHistoryPromises = agents.map(agent => Agents.saveAgentHistory(agent._id))
     await Promise.all(saveAgentsHistoryPromises)
   }
 
@@ -141,9 +141,9 @@ export default class Agents extends AgentsBoth {
   }
 
   static async updateAllScores(calibrationId) {
-    const agents = AgentsBoth.find({ owner: calibrationId })
+    const agents = await AgentsBoth.find({ owner: calibrationId }).fetchAsync()
 
-    const scoresPromises = await agents.mapAsync(agent => updateScores(agent._id))
+    const scoresPromises = agents.map(agent => updateScores(agent._id))
     await Promise.all(scoresPromises)
 
     await Agents.updateBestGlobal(calibrationId)
@@ -313,7 +313,7 @@ export default class Agents extends AgentsBoth {
         const newBestSimulationId = await Simulations.clone(agent.current.simulation, false)
 
         // Removes the old best simulation, no need to await for it.
-        Simulations.removeAsync(agent.best.simulation)
+        await Simulations.removeAsync(agent.best.simulation)
 
         // Updates the best object with the new best simulation id and its score.
         await Agents.updateObjAsync({
@@ -342,13 +342,15 @@ export default class Agents extends AgentsBoth {
   }
 
   static async updateBestGlobal(calibrationId) {
-    const bestScores = Agents.find({ owner: calibrationId, "best.valid": true }).map(agent => ({
+    const bestScores = await Agents.find({ owner: calibrationId, "best.valid": true }).mapAsync(agent => ({
       agentId: agent._id,
       score: agent.best.score,
     }))
 
     // If no valid best scores are found, then the best global agent is not updated.
     if (bestScores.length === 0) return
+
+    console.log("bestScores", bestScores)
 
     // Gets the agentId with the lowest score
     const bestGAgentId = bestScores.reduce(
@@ -360,7 +362,7 @@ export default class Agents extends AgentsBoth {
   }
 
   static async nextAllIterations(calibrationId) {
-    const agents = Agents.find({ owner: calibrationId })
+    const agents = await Agents.find({ owner: calibrationId }).fetchAsync()
     const bestGAgent = await Agents.getBestGlobal(calibrationId)
 
     // TODO: What if there is no bestGAgent, because no agent has a valid best score?
@@ -381,7 +383,7 @@ export default class Agents extends AgentsBoth {
 
     async function updateCoefficients(agent, bestGAgent) {
       const calibrationId = agent.owner
-      const parameters = Parameters.find({ owner: calibrationId })
+      const parameters = await Parameters.find({ owner: calibrationId }).fetchAsync()
 
       const updateCoefficientsPromises = parameters.map(parameter => updateCoefficient(parameter, agent, bestGAgent))
       await Promise.all(updateCoefficientsPromises)

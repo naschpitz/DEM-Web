@@ -6,9 +6,9 @@ import Sceneries from "../../../sceneries/server/class"
 // Find stalled Simulations and set its state to 'failed'
 const bound = Meteor.bindEnvironment(async () => {
   const sceneriesIds = await Sceneries.find({}).mapAsync(scenery => scenery._id)
-  const framesIdsToDelete = Frames.find({ owner: { $nin: sceneriesIds } }).map(frame => frame._id)
+  const framesIdsToDelete = await Frames.find({ owner: { $nin: sceneriesIds } }).mapAsync(frame => frame._id)
 
-  const count = Frames.removeAsync({ _id: { $in: framesIdsToDelete } })
+  const count = await Frames.removeAsync({ _id: { $in: framesIdsToDelete } })
 
   console.log(`Removed ${count} orphan frames.`)
 })

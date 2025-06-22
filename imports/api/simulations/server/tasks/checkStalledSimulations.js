@@ -42,10 +42,11 @@ const task = Meteor.bindEnvironment(async () => {
 
   console.log("Found " + stalledSimulations.length + " stalled Simulations.")
 
-  stalledSimulations.forEach(simulation => {
-    // No need to await for this promise.
+  const setStatePromises = stalledSimulations.map(simulation =>
     Simulations.setState(simulation._id, "failed")
-  })
+  )
+
+  await Promise.all(setStatePromises)
 
   console.log("Done checking for stalled Simulations.")
 })

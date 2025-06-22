@@ -4,36 +4,38 @@ import { readdirSync, unlink, unlinkSync } from "fs"
 import Frames from "../../server/class"
 
 // Find stalled Simulations and set its state to 'failed'
-const bound = Meteor.bindEnvironment(() => {
+const bound = Meteor.bindEnvironment(async () => {
   const localFilesToRemove = []
   const s3FilesToRemove = []
 
   // First look for the files in the local storage, then in the S3 storage.
-  readdirSync(Meteor.settings.localPath).map(file => {
+  const localFiles = readdirSync(Meteor.settings.localPath)
+  for (const file of localFiles) {
     // Extract the frameId from the filename, the format is "sceneryId-frameId-objectId"
     const match = file.match(/.*-(.*)-.*/)
 
     if (match !== null) {
       const frameId = match[1]
 
-      const frame = Frames.findOneAsync(frameId)
+      const frame = await Frames.findOneAsync(frameId)
 
       if (!frame) localFilesToRemove.push(Meteor.settings.localPath + "/" + file)
     }
-  })
+  }
 
-  readdirSync(Meteor.settings.s3Path).map(file => {
+  const s3Files = readdirSync(Meteor.settings.s3Path)
+  for (const file of s3Files) {
     // Extract the frameId from the filename, the format is "sceneryId-frameId-objectId"
     const match = file.match(/.*-(.*)-.*/)
 
     if (match !== null) {
       const frameId = match[1]
 
-      const frame = Frames.findOneAsync(frameId)
+      const frame = await Frames.findOneAsync(frameId)
 
       if (!frame) s3FilesToRemove.push(Meteor.settings.s3Path + "/" + file)
     }
-  })
+  }
 
   localFilesToRemove.forEach(file => {
     unlink(file, error => {

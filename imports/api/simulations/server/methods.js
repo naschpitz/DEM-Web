@@ -3,42 +3,42 @@ import { Meteor } from "meteor/meteor"
 import Simulations from "./class.js"
 
 Meteor.methods({
-  "simulations.start"(simulationId) {
+  async "simulations.start"(simulationId) {
     try {
-      Simulations.start(simulationId)
+      await Simulations.start(simulationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "simulations.pause"(simulationId) {
+  async "simulations.pause"(simulationId) {
     try {
-      Simulations.pause(simulationId)
+      await Simulations.pause(simulationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "simulations.stop"(simulationId) {
+  async "simulations.stop"(simulationId) {
     try {
-      Simulations.stop(simulationId)
+      await Simulations.stop(simulationId)
     } catch (error) {
       throw new Meteor.Error(error.code, error.message)
     }
   },
 
-  "simulations.reset"(simulationId) {
+  async "simulations.reset"(simulationId) {
     try {
       this.unblock()
-      Simulations.reset(simulationId)
+      await Simulations.reset(simulationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
   },
 
-  "simulations.remove"(simulationId) {
+  async "simulations.remove"(simulationId) {
     try {
-      Simulations.removeAsync(simulationId)
+      await Simulations.removeAsync(simulationId)
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
