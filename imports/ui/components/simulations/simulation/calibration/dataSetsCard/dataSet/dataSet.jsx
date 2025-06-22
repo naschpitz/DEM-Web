@@ -6,7 +6,7 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import CalibrationsClass from "../../../../../../../api/calibrations/both/class.js"
 import SceneriesClass from "../../../../../../../api/sceneries/both/class.js"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../../utils/Alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaTrashAlt } from "react-icons/fa"
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../utils/Alert.js"
 import ClipLoader from "react-spinners/ClipLoader"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 

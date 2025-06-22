@@ -5,7 +5,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import CalibrationClass from "../../../../../api/calibrations/both/class.js"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../utils/Alert.js"
 import ClipLoader from "react-spinners/ClipLoader"
 
 import AgentsTable from "./agentsTable/agentsTable.jsx"

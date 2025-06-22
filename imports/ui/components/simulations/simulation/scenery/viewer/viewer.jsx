@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../utils/Alert.js"
 import ERD from "element-resize-detector"
 
 import Canvas from "./canvas/canvas.jsx"

@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 
-import Alert from "react-s-alert-v3";
+import Alert from "../../../../../../utils/Alert.js";
 import { ButtonEnhanced } from "@naschpitz/button-enhanced";
 import { FaPlus } from "react-icons/fa";
 

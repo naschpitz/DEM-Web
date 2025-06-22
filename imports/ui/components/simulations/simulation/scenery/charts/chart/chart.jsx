@@ -8,7 +8,7 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import FramesClass from "../../../../../../../api/frames/both/class.js"
 
 import { ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../../utils/Alert.js"
 
 import "./chart.css"
 

@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../ui/utils/Alert.js"
 
 import getErrorMessage from "../../api/utils/getErrorMessage";
 

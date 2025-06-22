@@ -7,7 +7,7 @@ import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import CalibrationClass from "../../../../api/calibrations/both/class.js"
 import ServersClass from "../../../../api/servers/both/class.js"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../utils/Alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaPause, FaPlay, FaStop, FaSync } from "react-icons/fa"
 import FormInput from "@naschpitz/form-input"

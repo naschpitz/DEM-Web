@@ -9,7 +9,6 @@ import "bootstrap"
 
 // Will load Bootstrap's styles.
 import "bootstrap/dist/css/bootstrap.css"
-import "react-s-alert-v3/dist/s-alert-default.css"
 import "react-table-v6/react-table.css"
 
 import "@naschpitz/button-enhanced/dist/index.css"

@@ -6,7 +6,7 @@ import _ from "lodash"
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import Parameters from "../../../../../../../api/parameters/both/class"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../../utils/Alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import ReactTable from "react-table-v6"

@@ -1,7 +1,7 @@
 import React from "react"
 import { Routes, Route } from "react-router-dom"
 
-import Alert from "react-s-alert-v3"
+import { Toaster } from "react-hot-toast"
 import { UniqueModal } from "@naschpitz/unique-modal"
 
 import "./main.css"
@@ -117,7 +117,15 @@ export default function App() {
         </Routes>
       </footer>
 
-      <Alert stack={{ limit: 5 }} position="bottom-right" timeout={7500} html={true} />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 7500,
+          style: {
+            maxWidth: '500px',
+          },
+        }}
+      />
     </div>
   )
 }

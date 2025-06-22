@@ -8,7 +8,7 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import NonSolidObjectsClass from "../../../../../../../api/nonSolidObjects/both/class.js"
 import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.js"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../../utils/Alert.js"
 import FormInput from "@naschpitz/form-input"
 
 import "./dataSelector.css"

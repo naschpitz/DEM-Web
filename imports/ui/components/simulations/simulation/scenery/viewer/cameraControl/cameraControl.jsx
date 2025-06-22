@@ -7,7 +7,7 @@ import _ from "lodash"
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import CamerasClass from "../../../../../../../api/cameras/both/class.js"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../../utils/Alert.js"
 import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"
 

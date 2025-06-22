@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../../utils/Alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import Table from "./table/table.jsx"

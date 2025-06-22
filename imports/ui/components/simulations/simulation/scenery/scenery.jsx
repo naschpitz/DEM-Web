@@ -7,7 +7,7 @@ import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import SceneriesClass from "../../../../../api/sceneries/both/class.js"
 
 import { FaPlus } from "react-icons/fa"
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../utils/Alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"

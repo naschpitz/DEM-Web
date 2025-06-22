@@ -4,7 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 
-import Alert from "react-s-alert-v3"
+import Alert from "../../../../../../utils/Alert.js"
 import FormInput from "@naschpitz/form-input"
 
 export default (props) => {
