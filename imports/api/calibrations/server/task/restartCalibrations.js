@@ -5,11 +5,11 @@ import Hypervisor from "../hypervisor"
 
 // Find Calibrations in progress and re-initialize them
 const task = Meteor.bindEnvironment(async () => {
-  const calibrationsInProgress = Calibrations.find({
+  const calibrationsInProgressPromises = Calibrations.find({
     state: { $in: ["running", "paused"] },
   })
 
-  const numCalibrationsInProgress = await calibrationsInProgress.countAsync()
+  const numCalibrationsInProgress = await calibrationsInProgressPromises.countAsync()
 
   // Will not continue with the job if there are no calibrations in progress.
   // Avoids console.log pollution.
@@ -19,7 +19,9 @@ const task = Meteor.bindEnvironment(async () => {
 
   console.log("Found " + numCalibrationsInProgress + " Calibrations in progress, initializing Hypervisors.")
 
-  for (const calibration of calibrationsInProgress.fetchAsync()) {
+  const calibrationsInProgress = await calibrationsInProgressPromises.fetchAsync()
+
+  for (const calibration of calibrationsInProgress) {
     const hypervisor = new Hypervisor(calibration._id)
 
     try {
