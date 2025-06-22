@@ -116,13 +116,13 @@ Simulations.schema = new SimpleSchema({
   },
 })
 
-Simulations.schema.addValidator(function () {
+Simulations.schema.addValidator(async function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const simulation = Simulations.findOneAsync(this.docId)
+    const simulation = await Simulations.findOneAsync(this.docId)
 
     if (simulation.owner !== userId) return "notOwner"
   }

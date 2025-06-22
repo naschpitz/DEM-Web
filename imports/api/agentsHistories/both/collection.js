@@ -58,7 +58,8 @@ AgentsHistories.schema.addValidator(async function () {
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const agent = await AgentsDAO.findOneAsync(this.owner)
+    const agentHistory = await AgentsHistories.findOneAsync(this.docId)
+    const agent = await AgentsDAO.findOneAsync(agentHistory.owner)
     const calibration = await CalibrationsDAO.findOneAsync(agent.owner)
     const simulation = await SimulationsDAO.findOneAsync(calibration.owner)
 

@@ -48,15 +48,15 @@ Groups.schema = new SimpleSchema({
   },
 })
 
-Groups.schema.addValidator(function () {
+Groups.schema.addValidator(async function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const simulation = Simulations.findOneAsync(this.docId)
+    const group = await Groups.findOneAsync(this.docId)
 
-    if (simulation.owner !== userId) return "notOwner"
+    if (group.owner !== userId) return "notOwner"
   }
 })
 

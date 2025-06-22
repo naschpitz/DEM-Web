@@ -3,7 +3,7 @@ import { Mongo } from "meteor/mongo"
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 
-import CalibrationsDAO from "./dao"
+import CalibrationsDAO from "../../calibrations/both/dao"
 import SimulationsDAO from "../../simulations/both/dao"
 
 import SimulationScore from "./schemas/simulationScore"
@@ -63,7 +63,8 @@ Agents.schema.addValidator(async function () {
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const calibration = await CalibrationsDAO.findOneAsync(this.owner)
+    const agent = await Agents.findOneAsync(this.docId)
+    const calibration = await CalibrationsDAO.findOneAsync(agent.owner)
     const simulation = await SimulationsDAO.findOneAsync(calibration.owner)
 
     if (simulation.owner !== userId) return "notOwner"

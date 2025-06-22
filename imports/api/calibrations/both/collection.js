@@ -96,7 +96,8 @@ Calibrations.schema.addValidator(async function () {
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const simulation = await SimulationsDAO.findOneAsync(this.owner)
+    const calibration = await Calibrations.findOneAsync(this.docId)
+    const simulation = await SimulationsDAO.findOneAsync(calibration.owner)
 
     if (simulation.owner !== userId) return "notOwner"
   }

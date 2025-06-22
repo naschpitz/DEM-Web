@@ -52,13 +52,13 @@ Servers.schema = new SimpleSchema({
   },
 })
 
-Servers.schema.addValidator(function () {
+Servers.schema.addValidator(async function () {
   const userId = this.userId
 
   if (!userId && this.connection) return "notAuthorized"
 
   if (this.isUpdate && this.connection) {
-    const server = Servers.findOneAsync(this.docId)
+    const server = await Servers.findOneAsync(this.docId)
 
     if (server.owner !== userId) return "notOwner"
   }
