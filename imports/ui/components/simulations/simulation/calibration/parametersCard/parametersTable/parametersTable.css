@@ -1,0 +1,233 @@
+/* Table styling */
+#parametersTable .table {
+    margin-bottom: 0;
+}
+
+#parametersTable .table td {
+    vertical-align: middle;
+}
+
+#parametersTable .table th {
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+/* Fix form input styling within table */
+#parametersTable .table td #formInput {
+    margin: 0;
+}
+
+/* Center the checkbox in Allow Negative column */
+#parametersTable .table td .d-flex {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Column width adjustments */
+#parametersTable .table th:nth-child(1), /* Type */
+#parametersTable .table td:nth-child(1) {
+    width: 15%;
+    min-width: 120px;
+}
+
+#parametersTable .table th:nth-child(2), /* Material/Object */
+#parametersTable .table td:nth-child(2) {
+    width: 15%;
+    min-width: 150px;
+}
+
+#parametersTable .table th:nth-child(3), /* Coefficient */
+#parametersTable .table td:nth-child(3) {
+    width: 15%;
+    min-width: 120px;
+}
+
+#parametersTable .table th:nth-child(4), /* Variation */
+#parametersTable .table td:nth-child(4) {
+    width: 8%;
+    min-width: 80px;
+}
+
+#parametersTable .table th:nth-child(5), /* C1 */
+#parametersTable .table td:nth-child(5) {
+    width: 8%;
+    min-width: 80px;
+}
+
+#parametersTable .table th:nth-child(6), /* C2 */
+#parametersTable .table td:nth-child(6) {
+    width: 8%;
+    min-width: 80px;
+}
+
+#parametersTable .table th:nth-child(7), /* Perturbation */
+#parametersTable .table td:nth-child(7) {
+    width: 8%;
+    min-width: 80px;
+}
+
+#parametersTable .table th:nth-child(8), /* Allow Negative */
+#parametersTable .table td:nth-child(8) {
+    width: 10%;
+    min-width: 100px;
+}
+
+#parametersTable .table th:nth-child(9), /* Remove */
+#parametersTable .table td:nth-child(9) {
+    width: 8%;
+    min-width: 80px;
+}
+
+/* Ensure proper table layout */
+#parametersTable .table-responsive {
+    overflow-x: auto;
+}
+
+/* Pagination controls styling - responsive design */
+#parametersTable .pagination-wrapper {
+    margin-top: 1px; /* Minimal margin like original */
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    padding: 8px 10px;
+}
+
+#parametersTable .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+/* Compact buttons for narrow containers */
+#parametersTable .pagination-btn {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    min-width: 60px;
+}
+
+#parametersTable .pagination-btn:hover:not(:disabled) {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+#parametersTable .pagination-btn:disabled {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* Responsive breakpoints for larger containers */
+@media (min-width: 768px) {
+    #parametersTable .pagination-wrapper {
+        padding: 10px 15px;
+    }
+
+    #parametersTable .pagination-controls {
+        gap: 8px;
+    }
+
+    #parametersTable .pagination-btn {
+        padding: 5px 10px;
+        font-size: 13px;
+        min-width: 70px;
+    }
+}
+
+@media (min-width: 992px) {
+    #parametersTable .pagination-controls {
+        gap: 10px;
+    }
+
+    #parametersTable .pagination-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+        min-width: 80px;
+    }
+}
+
+/* Compact pagination info for narrow containers */
+#parametersTable .pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 8px;
+}
+
+#parametersTable .page-text {
+    color: #495057;
+    font-size: 12px;
+}
+
+#parametersTable .page-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 12px;
+}
+
+#parametersTable .page-size-select {
+    width: auto;
+    min-width: 70px;
+    font-size: 12px;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+/* Responsive pagination info for larger containers */
+@media (min-width: 768px) {
+    #parametersTable .pagination-info {
+        gap: 6px;
+        margin: 0 12px;
+    }
+
+    #parametersTable .page-text {
+        font-size: 13px;
+    }
+
+    #parametersTable .page-input {
+        width: 45px;
+        padding: 3px 5px;
+        font-size: 13px;
+    }
+
+    #parametersTable .page-size-select {
+        min-width: 80px;
+        font-size: 13px;
+        padding: 3px 6px;
+    }
+}
+
+@media (min-width: 992px) {
+    #parametersTable .pagination-info {
+        gap: 8px;
+        margin: 0 15px;
+    }
+
+    #parametersTable .page-text {
+        font-size: 14px;
+    }
+
+    #parametersTable .page-input {
+        width: 50px;
+        padding: 4px 6px;
+        font-size: 14px;
+    }
+
+    #parametersTable .page-size-select {
+        min-width: 90px;
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+}
