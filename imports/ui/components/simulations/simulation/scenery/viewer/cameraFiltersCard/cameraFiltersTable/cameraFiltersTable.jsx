@@ -3,6 +3,14 @@ import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  flexRender,
+  createColumnHelper,
+} from "@tanstack/react-table"
+
 import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
 import CameraFiltersClass from "../../../../../../../../api/cameraFilters/both/class.js"
 
@@ -10,7 +18,6 @@ import Alert from "../../../../../../../utils/alert.js";
 import { ButtonEnhanced } from "@naschpitz/button-enhanced";
 import FormInput from "@naschpitz/form-input";
 import { useTracker } from "meteor/react-meteor-data";
-import ReactTable from "react-table-v6";
 
 import "./cameraFiltersTable.css"
 
@@ -27,103 +34,105 @@ export default (props) => {
 
   const cameraFilters = useTracker(() => {
     return CameraFiltersClass.find({ owner: props.sceneryId }).fetch()
-  })
+  }, [props.sceneryId])
 
-  function getColumns() {
-    const axisOptions = [
-      { value: "", text: "-- Select Type --" },
-      { value: "x", text: "X" },
-      { value: "y", text: "Y" },
-      { value: "z", text: "Z" },
-    ]
+  // Create reactive data for the table
+  const data = React.useMemo(() => {
+    return cameraFilters.map(cameraFilter => ({
+      ...cameraFilter,
+    }))
+  }, [cameraFilters])
 
-    return [
-      {
-        Header: "Axis",
-        accessor: "axis",
-        Cell: cellInfo => (
-          <FormInput
-            name="axis"
-            value={getValue(cellInfo)}
-            type="dropdown"
-            options={axisOptions}
-            subtype="string"
-            autoComplete={false}
-            size="small"
-            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-            onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
-          />
-        ),
-      },
-      {
-        Header: "Min",
-        accessor: "min",
-        Cell: cellInfo => (
-          <FormInput
-            name="min"
-            value={getValue(cellInfo)}
-            type="field"
-            subtype="number"
-            autoComplete={false}
-            size="small"
-            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-            onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
-          />
-        ),
-      },
-      {
-        Header: "Max",
-        accessor: "max",
-        Cell: cellInfo => (
-          <FormInput
-            name="max"
-            value={getValue(cellInfo)}
-            type="field"
-            subtype="number"
-            autoComplete={false}
-            size="small"
-            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-            onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
-          />
-        ),
-      },
-      {
-        Header: "Remove",
-        id: "removeButton",
+  const columnHelper = createColumnHelper()
+
+  const axisOptions = [
+    { value: "", text: "-- Select Type --" },
+    { value: "x", text: "X" },
+    { value: "y", text: "Y" },
+    { value: "z", text: "Z" },
+  ]
+
+  const columns = React.useMemo(() => [
+    columnHelper.accessor("axis", {
+      header: "Axis",
+      cell: info => (
+        <FormInput
+          name="axis"
+          value={info.getValue()}
+          type="dropdown"
+          options={axisOptions}
+          subtype="string"
+          autoComplete={false}
+          size="small"
+          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+        />
+      ),
+    }),
+    columnHelper.accessor("min", {
+      header: "Min",
+      cell: info => (
+        <FormInput
+          name="min"
+          value={info.getValue()}
+          type="field"
+          subtype="number"
+          autoComplete={false}
+          size="small"
+          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+        />
+      ),
+    }),
+    columnHelper.accessor("max", {
+      header: "Max",
+      cell: info => (
+        <FormInput
+          name="max"
+          value={info.getValue()}
+          type="field"
+          subtype="number"
+          autoComplete={false}
+          size="small"
+          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+        />
+      ),
+    }),
+    columnHelper.display({
+      id: "remove",
+      header: "Remove",
+      cell: info => (
+        <ButtonEnhanced
+          buttonOptions={{
+            regularText: "Remove",
+            data: info,
+            className: "btn btn-sm btn-danger ml-auto mr-auto",
+            isAction: isRemoving,
+            actionText: "Removing...",
+            type: "button",
+          }}
+          confirmationOptions={{
+            title: "Confirm camera filter removal",
+            text: (
+              <span>
+                Do you really want to remove this camera filter?
+              </span>
+            ),
+            confirmButtonText: "Remove",
+            confirmButtonAction: "Removing...",
+            cancelButtonText: "Cancel",
+            onDone: onRemoveDone,
+          }}
+        />
+      ),
+      meta: {
         className: "text-center",
-        Cell: cellInfo => (
-          <ButtonEnhanced
-            buttonOptions={{
-              regularText: "Remove",
-              data: cellInfo,
-              className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: isRemoving,
-              actionText: "Removing...",
-              type: "button",
-            }}
-            confirmationOptions={{
-              title: "Confirm object removal",
-              text: (
-                <span>
-                  Do you really want to remove the object <strong>{cellInfo.original.name}</strong> ?
-                </span>
-              ),
-              confirmButtonText: "Remove",
-              confirmButtonAction: "Removing...",
-              cancelButtonText: "Cancel",
-              onDone: onRemoveDone,
-            }}
-          />
-        ),
       },
-    ]
-  }
+    }),
+  ], [isRemoving, axisOptions])
 
-  function getValue(cellInfo) {
-    const name = cellInfo.column.id
 
-    return _.get(cellInfo.original, name)
-  }
 
   function onEvent(event, data, name, value) {
     const cameraFilter = { _id: data._id }
@@ -155,16 +164,146 @@ export default (props) => {
       })
   }
 
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+    },
+  })
+
+  if (!isReady) {
+    return (
+      <div id="cameraFiltersTable">
+        <div className="text-center p-4">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading camera filters...</span>
+          </div>
+          <div className="mt-2">Loading camera filters...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (cameraFilters.length === 0) {
+    return (
+      <div id="cameraFiltersTable">
+        <div className="text-center p-4">
+          <div className="text-muted">No camera filters found.</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div id="cameraFiltersTable">
-      <ReactTable
-        data={cameraFilters}
-        columns={getColumns()}
-        defaultPageSize={5}
-        collapseOnDataChange={false}
-        className="-striped -highlight"
-        getTdProps={() => ({ style: { display: "flex", flexDirection: "column", justifyContent: "center" } })}
-      />
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead>
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th
+                    key={header.id}
+                    className={header.column.columnDef.meta?.className || ""}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map(row => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map(cell => (
+                  <td
+                    key={cell.id}
+                    className={cell.column.columnDef.meta?.className || ""}
+                    style={{ verticalAlign: "middle" }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Controls - responsive design */}
+      <div className="pagination-wrapper">
+        <div className="pagination-controls">
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </button>
+
+          <div className="pagination-info">
+            <span className="page-text">Page</span>
+            <input
+              type="number"
+              className="page-input"
+              value={table.getState().pagination.pageIndex + 1}
+              onChange={e => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              min="1"
+              max={table.getPageCount()}
+            />
+            <span className="page-text">of {table.getPageCount()}</span>
+          </div>
+
+          <select
+            className="form-control page-size-select"
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value))
+            }}
+          >
+            {[5, 10, 20, 30, 40, 50].map(pageSize => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize} rows
+              </option>
+            ))}
+          </select>
+
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
