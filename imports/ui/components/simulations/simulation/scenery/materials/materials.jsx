@@ -4,6 +4,15 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getExpandedRowModel,
+  flexRender,
+  createColumnHelper,
+} from "@tanstack/react-table"
+
 import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import MaterialsClass from "../../../../../../api/materials/both/class.js"
 
@@ -11,7 +20,6 @@ import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"
-import ReactTable from "react-table-v6"
 
 import "./materials.css"
 
@@ -28,63 +36,67 @@ export default (props) => {
 
   const materials = useTracker(() => {
     return MaterialsClass.find({ owner: props.sceneryId }).fetch()
-  })
+  }, [props.sceneryId])
 
-  function getColumns() {
-    return [
-      {
-        Header: "Name",
-        accessor: "name",
-        Cell: cellInfo => (
-          <FormInput
-            name="name"
-            value={getValue(cellInfo)}
-            type="field"
-            subtype="string"
-            autoComplete={false}
-            size="small"
-            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-            onEvent={(event, name, value) => onEvent(event, cellInfo.original, name, value)}
-          />
-        ),
-      },
-      {
-        Header: "Remove",
-        id: "removeButton",
+  // Create reactive data for the table
+  const data = React.useMemo(() => {
+    return materials.map(material => ({
+      ...material,
+    }))
+  }, [materials])
+
+  const columnHelper = createColumnHelper()
+
+  const columns = React.useMemo(() => [
+    columnHelper.accessor("name", {
+      header: "Name",
+      cell: info => (
+        <FormInput
+          name="name"
+          value={info.getValue()}
+          type="field"
+          subtype="string"
+          autoComplete={false}
+          size="small"
+          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+        />
+      ),
+    }),
+    columnHelper.display({
+      id: "remove",
+      header: "Remove",
+      cell: info => (
+        <ButtonEnhanced
+          buttonOptions={{
+            regularText: "Remove",
+            data: info,
+            className: "btn btn-sm btn-danger ml-auto mr-auto",
+            isAction: isRemoving,
+            actionText: "Removing...",
+            type: "button",
+          }}
+          confirmationOptions={{
+            title: "Confirm material removal",
+            text: (
+              <span>
+                Do you really want to remove the material <strong>{info.row.original.name}</strong> ?
+              </span>
+            ),
+            confirmButtonText: "Remove",
+            confirmButtonAction: "Removing...",
+            cancelButtonText: "Cancel",
+            onDone: onRemoveDone,
+          }}
+        />
+      ),
+      meta: {
         className: "text-center",
-        Cell: cellInfo => (
-          <ButtonEnhanced
-            buttonOptions={{
-              regularText: "Remove",
-              data: cellInfo,
-              className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: isRemoving,
-              actionText: "Removing...",
-              type: "button",
-            }}
-            confirmationOptions={{
-              title: "Confirm material removal",
-              text: (
-                <span>
-                  Do you really want to remove the material <strong>{cellInfo.original.name}</strong> ?
-                </span>
-              ),
-              confirmButtonText: "Remove",
-              confirmButtonAction: "Removing...",
-              cancelButtonText: "Cancel",
-              onDone: onRemoveDone,
-            }}
-          />
-        ),
       },
-    ]
-  }
+    }),
+  ], [isRemoving])
 
-  function getValue(cellInfo) {
-    const name = cellInfo.column.id
 
-    return _.get(cellInfo.original, name)
-  }
 
   function onEvent(event, data, name, value) {
     const material = { _id: data._id }
@@ -118,17 +130,173 @@ export default (props) => {
       })
   }
 
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getRowCanExpand: () => true,
+    enableExpanding: true,
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+      expanded: {},
+    },
+  })
+
+  if (!isReady) {
+    return (
+      <div id="materials">
+        <div className="text-center p-4">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading materials...</span>
+          </div>
+          <div className="mt-2">Loading materials...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (materials.length === 0) {
+    return (
+      <div id="materials">
+        <div className="text-center p-4">
+          <div className="text-muted">No materials found.</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div id="materials">
-      <ReactTable
-        data={materials}
-        columns={getColumns()}
-        defaultPageSize={5}
-        collapseOnDataChange={false}
-        className="-striped -highlight"
-        getTdProps={() => ({ style: { display: "flex", flexDirection: "column", justifyContent: "center" } })}
-        SubComponent={({ index, original }) => <Properties material={original} />}
-      />
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead>
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                <th style={{ width: "30px" }}></th>
+                {headerGroup.headers.map(header => (
+                  <th
+                    key={header.id}
+                    className={header.column.columnDef.meta?.className || ""}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map(row => (
+              <React.Fragment key={row.id}>
+                <tr>
+                  <td style={{ width: "30px", textAlign: "center", verticalAlign: "middle" }}>
+                    <button
+                      className="expansion-btn"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        row.toggleExpanded()
+                      }}
+                      type="button"
+                    >
+                      {row.getIsExpanded() ? "▼" : "▶"}
+                    </button>
+                  </td>
+                  {row.getVisibleCells().map(cell => (
+                    <td
+                      key={cell.id}
+                      className={cell.column.columnDef.meta?.className || ""}
+                      style={{ verticalAlign: "middle" }}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+                {row.getIsExpanded() && (
+                  <tr key={`${row.id}-expanded`}>
+                    <td colSpan={row.getVisibleCells().length + 1} style={{ padding: "1rem" }}>
+                      <Properties material={row.original} />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Controls - styled to match original */}
+      <div className="pagination-wrapper">
+        <div className="pagination-controls">
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </button>
+
+          <div className="pagination-info">
+            <span className="page-text">Page</span>
+            <input
+              type="number"
+              className="page-input"
+              value={table.getState().pagination.pageIndex + 1}
+              onChange={e => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              min="1"
+              max={table.getPageCount()}
+            />
+            <span className="page-text">of {table.getPageCount()}</span>
+          </div>
+
+          <select
+            className="form-control page-size-select"
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value))
+            }}
+          >
+            {[5, 10, 20, 30, 40, 50].map(pageSize => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize} rows
+              </option>
+            ))}
+          </select>
+
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
