@@ -223,7 +223,7 @@ export default (props) => {
   }
 
   function onDetailsClick(data) {
-    const agentId = data.original.agent._id
+    const agentId = data.row.original.agent._id
 
     navigate("/simulations/" + simulationId + "/calibration/agents/" + agentId)
   }
