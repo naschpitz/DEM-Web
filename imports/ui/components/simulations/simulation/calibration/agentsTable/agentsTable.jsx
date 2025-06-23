@@ -3,6 +3,14 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  flexRender,
+  createColumnHelper,
+} from "@tanstack/react-table"
+
 import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 
 import AgentsClass from "../../../../../../api/agents/both/class"
@@ -11,7 +19,6 @@ import SimulationsClass from "../../../../../../api/simulations/both/class"
 
 import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
-import ReactTable from "react-table-v6"
 
 import "./agentsTable.css"
 
@@ -75,103 +82,131 @@ export default (props) => {
     })
   }, [isLogsReady, isSimulationsReady, agents])
 
-  function getColumns() {
-    return [
+  // Create reactive data for the table
+  const data = React.useMemo(() => {
+    return tableData.map(item => ({
+      ...item,
+    }))
+  }, [tableData])
+
+  const columnHelper = createColumnHelper()
+
+  const columns = React.useMemo(() => [
+    columnHelper.accessor(
+      row => "#" + row.agent.index,
       {
-        Header: "Index",
         id: "index",
-        className: "text-center",
-        width: 75,
-        accessor: data => "#" + data.agent.index,
-      },
+        header: "Index",
+        meta: { className: "text-center" },
+        size: 75,
+      }
+    ),
+    columnHelper.accessor(
+      row => row.agent.iteration,
       {
-        Header: "Iteration",
         id: "iteration",
-        className: "text-center",
-        width: 75,
-        accessor: data => data.agent.iteration,
-      },
+        header: "Iteration",
+        meta: { className: "text-center" },
+        size: 75,
+      }
+    ),
+    columnHelper.accessor(
+      row => (row.agent.current.valid ? row.agent.current.score : "Invalid"),
       {
-        Header: "Current Score",
         id: "currentScore",
-        className: "text-center",
-        width: 100,
-        accessor: data => (data.agent.current.valid ? data.agent.current.score : "Invalid"),
-      },
+        header: "Current Score",
+        meta: { className: "text-center" },
+        size: 100,
+      }
+    ),
+    columnHelper.accessor(
+      row => (row.agent.best.valid ? row.agent.best.score : "Invalid"),
       {
-        Header: "Best Score",
         id: "bestScore",
-        className: "text-center",
-        width: 100,
-        accessor: data => (data.agent.best.valid ? data.agent.best.score : "Invalid"),
-      },
+        header: "Best Score",
+        meta: { className: "text-center" },
+        size: 100,
+      }
+    ),
+    columnHelper.accessor(
+      row => (row.agent.best.bestGlobal ? "Yes" : "No"),
       {
-        Header: "Is the Best Global?",
         id: "isBest",
-        className: "text-center",
-        width: 100,
-        accessor: data => (data.agent.best.bestGlobal ? "Yes" : "No"),
-      },
+        header: "Is the Best Global?",
+        meta: { className: "text-center" },
+        size: 100,
+      }
+    ),
+    columnHelper.accessor(
+      row => SimulationsClass.getState(row.simulation),
       {
-        Header: "State",
         id: "state",
-        className: "text-center",
-        width: 150,
-        accessor: data => SimulationsClass.getState(data.simulation),
-      },
+        header: "State",
+        meta: { className: "text-center" },
+        size: 150,
+      }
+    ),
+    columnHelper.accessor(
+      row => LogsClass.getPercentage(row.log),
       {
-        Header: "Progress",
         id: "progress",
-        className: "text-center",
-        accessor: data => LogsClass.getPercentage(data.log),
-        Cell: cellInfo => (
-          <div className="progress text-center">
-            <div
-              className={getProgressBarClassName(cellInfo.original.simulation?.state, cellInfo.value.value)}
-              role="progressbar"
-              aria-valuenow={cellInfo.value.value}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style={{ width: cellInfo.value.value + "%", color: "black" }}
-            >
-              {cellInfo.value.text}
+        header: "Progress",
+        cell: info => {
+          const progressData = info.getValue()
+          return (
+            <div className="progress text-center">
+              <div
+                className={getProgressBarClassName(info.row.original.simulation?.state, progressData.value)}
+                role="progressbar"
+                aria-valuenow={progressData.value}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style={{ width: progressData.value + "%", color: "black" }}
+              >
+                {progressData.text}
+              </div>
             </div>
-          </div>
-        ),
-      },
+          )
+        },
+        meta: { className: "text-center" },
+      }
+    ),
+    columnHelper.accessor(
+      row => LogsClass.getEt(row.log),
       {
-        Header: "ET",
         id: "et",
-        className: "text-center",
-        width: 200,
-        accessor: data => LogsClass.getEt(data.log),
-      },
+        header: "ET",
+        meta: { className: "text-center" },
+        size: 200,
+      }
+    ),
+    columnHelper.accessor(
+      row => LogsClass.getEta(row.log),
       {
-        Header: "ETA",
         id: "eta",
-        className: "text-center",
-        width: 200,
-        accessor: data => LogsClass.getEta(data.log),
-      },
-      {
-        Header: "Details",
-        id: "details",
-        className: "text-center",
-        width: 150,
-        Cell: cellInfo => (
-          <ButtonEnhanced
-            buttonOptions={{
-              regularText: "Details",
-              data: cellInfo,
-              onClick: onDetailsClick,
-              className: "btn btn-sm btn-info ml-auto mr-auto",
-              type: "button",
-            }}
-          />
-        ),
-      },
-    ]
-  }
+        header: "ETA",
+        meta: { className: "text-center" },
+        size: 200,
+      }
+    ),
+    columnHelper.display({
+      id: "details",
+      header: "Details",
+      cell: info => (
+        <ButtonEnhanced
+          buttonOptions={{
+            regularText: "Details",
+            data: info,
+            onClick: onDetailsClick,
+            className: "btn btn-sm btn-info ml-auto mr-auto",
+            type: "button",
+          }}
+        />
+      ),
+      meta: { className: "text-center" },
+      size: 150,
+    }),
+  ], [])
 
   function getProgressBarClassName(state, percentage) {
     let className = "progress-bar massive-font "
@@ -195,18 +230,150 @@ export default (props) => {
 
   const isReady = isAgentsReady && isLogsReady && isSimulationsReady
 
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 10,
+      },
+    },
+  })
+
+  if (!isReady) {
+    return (
+      <div id="agentsTable">
+        <div className="text-center p-4">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading agents list...</span>
+          </div>
+          <div className="mt-2">Loading agents list...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (tableData.length === 0) {
+    return (
+      <div id="agentsTable">
+        <div className="text-center p-4">
+          <div className="text-muted">No agents found.</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div id="agentsTable">
-      <ReactTable
-        data={tableData}
-        loading={!isReady}
-        loadingText="Loading agents list..."
-        columns={getColumns()}
-        collapseOnDataChange={false}
-        defaultPageSize={10}
-        className="-striped -highlight"
-        getTdProps={() => ({ style: { display: "flex", flexDirection: "column", justifyContent: "center" } })}
-      />
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead>
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th
+                    key={header.id}
+                    className={header.column.columnDef.meta?.className || ""}
+                    style={{ width: header.column.columnDef.size ? `${header.column.columnDef.size}px` : 'auto' }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map(row => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map(cell => (
+                  <td
+                    key={cell.id}
+                    className={cell.column.columnDef.meta?.className || ""}
+                    style={{
+                      verticalAlign: "middle",
+                      width: cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : 'auto'
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Controls - responsive design */}
+      <div className="pagination-wrapper">
+        <div className="pagination-controls">
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </button>
+
+          <div className="pagination-info">
+            <span className="page-text">Page</span>
+            <input
+              type="number"
+              className="page-input"
+              value={table.getState().pagination.pageIndex + 1}
+              onChange={e => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              min="1"
+              max={table.getPageCount()}
+            />
+            <span className="page-text">of {table.getPageCount()}</span>
+          </div>
+
+          <select
+            className="form-control page-size-select"
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value))
+            }}
+          >
+            {[5, 10, 20, 30, 40, 50].map(pageSize => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize} rows
+              </option>
+            ))}
+          </select>
+
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
