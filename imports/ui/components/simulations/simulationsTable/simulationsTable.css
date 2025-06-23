@@ -99,30 +99,32 @@
     background-color: #dee2e6 !important;
 }
 
-/* Pagination controls styling - match original design */
+/* Pagination controls styling - responsive design */
 #simulationsTable .pagination-wrapper {
     margin-top: 1px; /* Minimal margin like original */
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     border-top: none;
-    padding: 10px 15px;
+    padding: 8px 10px;
 }
 
 #simulationsTable .pagination-controls {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+    flex-wrap: wrap;
 }
 
+/* Compact buttons for narrow containers */
 #simulationsTable .pagination-btn {
     background-color: #6c757d;
     border-color: #6c757d;
     color: white;
-    padding: 6px 12px;
-    font-size: 14px;
+    padding: 4px 8px;
+    font-size: 12px;
     border-radius: 4px;
-    min-width: 80px;
+    min-width: 60px;
 }
 
 #simulationsTable .pagination-btn:hover:not(:disabled) {
@@ -138,33 +140,110 @@
     opacity: 0.65;
 }
 
+/* Responsive breakpoints for larger containers */
+@media (min-width: 768px) {
+    #simulationsTable .pagination-wrapper {
+        padding: 10px 15px;
+    }
+
+    #simulationsTable .pagination-controls {
+        gap: 8px;
+    }
+
+    #simulationsTable .pagination-btn {
+        padding: 5px 10px;
+        font-size: 13px;
+        min-width: 70px;
+    }
+}
+
+@media (min-width: 992px) {
+    #simulationsTable .pagination-controls {
+        gap: 10px;
+    }
+
+    #simulationsTable .pagination-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+        min-width: 80px;
+    }
+}
+
+/* Compact pagination info for narrow containers */
 #simulationsTable .pagination-info {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin: 0 15px;
+    gap: 4px;
+    margin: 0 8px;
 }
 
 #simulationsTable .page-text {
     color: #495057;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 #simulationsTable .page-input {
-    width: 50px;
+    width: 40px;
     text-align: center;
     border: 1px solid #ced4da;
     border-radius: 4px;
-    padding: 4px 6px;
-    font-size: 14px;
+    padding: 2px 4px;
+    font-size: 12px;
 }
 
 #simulationsTable .page-size-select {
     width: auto;
-    min-width: 90px;
-    font-size: 14px;
-    padding: 4px 8px;
+    min-width: 70px;
+    font-size: 12px;
+    padding: 2px 4px;
     border-radius: 4px;
+}
+
+/* Responsive pagination info for larger containers */
+@media (min-width: 768px) {
+    #simulationsTable .pagination-info {
+        gap: 6px;
+        margin: 0 12px;
+    }
+
+    #simulationsTable .page-text {
+        font-size: 13px;
+    }
+
+    #simulationsTable .page-input {
+        width: 45px;
+        padding: 3px 5px;
+        font-size: 13px;
+    }
+
+    #simulationsTable .page-size-select {
+        min-width: 80px;
+        font-size: 13px;
+        padding: 3px 6px;
+    }
+}
+
+@media (min-width: 992px) {
+    #simulationsTable .pagination-info {
+        gap: 8px;
+        margin: 0 15px;
+    }
+
+    #simulationsTable .page-text {
+        font-size: 14px;
+    }
+
+    #simulationsTable .page-input {
+        width: 50px;
+        padding: 4px 6px;
+        font-size: 14px;
+    }
+
+    #simulationsTable .page-size-select {
+        min-width: 90px;
+        font-size: 14px;
+        padding: 4px 8px;
+    }
 }
 
 /* Expansion button styling */
