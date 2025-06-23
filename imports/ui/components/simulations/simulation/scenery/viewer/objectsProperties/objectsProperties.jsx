@@ -30,8 +30,6 @@ export default (props) => {
   const [isObjectsPropertiesReady, setIsObjectsPropertiesReady] = useState(false)
   const [isReady, setIsReady] = useState(false)
 
-  console.log("I am here!")
-
   useTracker(() => {
     Meteor.subscribe("nonSolidObjects.list", props.sceneryId, {
       onStop: error => (error ? Alert.error("Error: " + getErrorMessage(error)) : null),
