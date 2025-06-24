@@ -120,26 +120,31 @@ export default class Simulations extends SimulationsBoth {
 
   static async post(simulationId, postOptions) {
     try {
-      HTTP.call("POST", postOptions.url, postOptions)
+      const response = await fetch(postOptions.url, {
+        method: 'POST',
+        headers: postOptions.headers,
+        body: JSON.stringify(postOptions.data)
+      })
+
+      if (!response.ok) {
+        const error = new Error(`HTTP ${response.status}`)
+        error.code = response.status
+        throw error
+      }
+
+      return await response.json()
     } catch (error) {
       const simulationLog = {
         owner: simulationId,
+        message: error.message
       }
-
-      const exception = {}
-
-      if (error.response) {
-        simulationLog.message = error.response.statusCode + " " + error.response.content
-        exception.code = error.response.statusCode
-        exception.message = error.response.content
-      } else {
-        simulationLog.message = error.message
-        exception.code = error.code
-        exception.message = error.message
-      }
+      
+      if (!error.code) error.code = 500
 
       await Logs.insertAsync(simulationLog)
-      //throw exception
+      await SimulationsBoth.setState(simulationId, "failed")
+
+      throw error
     }
   }
 }
