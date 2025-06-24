@@ -65,6 +65,24 @@ export default (props) => {
   const columnHelper = createColumnHelper()
 
   const columns = React.useMemo(() => [
+    columnHelper.display({
+      id: "expander",
+      header: () => null,
+      cell: ({ row }) => (
+        <button
+          className="expansion-btn"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            row.toggleExpanded()
+          }}
+          type="button"
+        >
+          {row.getIsExpanded() ? "▼" : "▶"}
+        </button>
+      ),
+      size: 30,
+    }),
     columnHelper.accessor("name", {
       header: "Name",
       cell: info => (
@@ -188,11 +206,14 @@ export default (props) => {
     getExpandedRowModel: getExpandedRowModel(),
     getRowCanExpand: () => true,
     enableExpanding: true,
+    enableColumnResizing: true, // Enable resizing
+    columnResizeMode: "onChange", // "onEnd" also supported
     initialState: {
       pagination: {
         pageSize: 5,
       },
       expanded: {},
+      columnSizing: {}, // optional: initial sizes
     },
   })
 
@@ -226,18 +247,30 @@ export default (props) => {
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
-                <th style={{ width: "30px" }}></th>
                 {headerGroup.headers.map(header => (
                   <th
                     key={header.id}
                     className={header.column.columnDef.meta?.className || ""}
+                    style={{
+                      position: "relative",
+                      width: header.getSize(), // Dynamic width
+                    }}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+
+                    {/* Resize handle */}
+                    {header.column.getCanResize() && (
+                      <div
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
+                      />
+                    )}
                   </th>
                 ))}
               </tr>
@@ -247,19 +280,6 @@ export default (props) => {
             {table.getRowModel().rows.map(row => (
               <React.Fragment key={row.id}>
                 <tr>
-                  <td style={{ width: "30px", textAlign: "center", verticalAlign: "middle" }}>
-                    <button
-                      className="expansion-btn"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        row.toggleExpanded()
-                      }}
-                      type="button"
-                    >
-                      {row.getIsExpanded() ? "▼" : "▶"}
-                    </button>
-                  </td>
                   {row.getVisibleCells().map(cell => (
                     <td
                       key={cell.id}

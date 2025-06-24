@@ -31,55 +31,46 @@
     width: 100%;
 }
 
-/* Column width adjustments - more flexible */
-#simulationsTable .table th:nth-child(2), /* Name */
-#simulationsTable .table td:nth-child(2) {
-    width: 20%;
-    min-width: 150px;
-    white-space: normal; /* Allow wrapping for name input */
+#simulationsTable .resizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 8px; /* Make it easier to grab */
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+    z-index: 1;
+    background-color: transparent; /* Ensure it's not blocking interaction */
 }
 
-#simulationsTable .table th:nth-child(3), /* State */
-#simulationsTable .table td:nth-child(3) {
-    width: 8%;
-    min-width: 60px;
+#simulationsTable .resizer:hover {
+    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
 }
 
-#simulationsTable .table th:nth-child(4), /* Progress */
-#simulationsTable .table td:nth-child(4) {
-    width: 18%;
-    min-width: 120px;
-    white-space: normal; /* Allow progress bar to display properly */
+#simulationsTable .resizer.isResizing {
+    background-color: rgba(0, 123, 255, 0.3);
 }
 
-#simulationsTable .table th:nth-child(5), /* ET */
-#simulationsTable .table td:nth-child(5) {
-    width: 10%;
-    min-width: 60px;
-}
-
-#simulationsTable .table th:nth-child(6), /* ETA */
-#simulationsTable .table td:nth-child(6) {
-    width: 10%;
-    min-width: 60px;
-}
-
-#simulationsTable .table th:nth-child(7), /* Created At */
-#simulationsTable .table td:nth-child(7) {
-    width: 15%;
-    min-width: 120px;
-}
-
-#simulationsTable .table th:nth-child(8), /* Details */
-#simulationsTable .table td:nth-child(8) {
-    width: 8%;
-    min-width: 70px;
+#simulationsTable .expansion-btn {
+    min-width: 24px;
+    padding: 2px 6px;
 }
 
 #simulationsTable .table thead th {
     border-bottom: 2px solid #dee2e6;
     background-color: #f8f9fa;
     font-weight: normal;
+}
+
+#simulationsTable .table th,
+#simulationsTable .table td {
+    border-right: 1px solid #dee2e6; /* Add right border */
+}
+
+#simulationsTable .table th:last-child,
+#simulationsTable .table td:last-child {
+    border-right: none; /* Avoid double border on last column */
 }
 
 /* Maintain striped appearance with light/darker gray - override global styles */
@@ -101,9 +92,7 @@
 
 /* Pagination controls styling - responsive design */
 #simulationsTable .pagination-wrapper {
-    margin-top: 1px; /* Minimal margin like original */
     background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
     border-top: none;
     padding: 8px 10px;
 }
