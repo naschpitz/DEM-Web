@@ -95,4 +95,19 @@
     text-align: center;
 }
 
+/* Empty row styling */
+.table-responsive .table tbody tr.empty-row {
+    background-color: transparent !important;
+    height: 45px; /* Maintain consistent row height */
+}
+
+.table-responsive .table tbody tr.empty-row:hover {
+    background-color: transparent !important; /* Prevent hover effect on empty rows */
+}
+
+.table-responsive .table tbody tr.empty-row td {
+    border-top: 1px solid #dee2e6;
+    border-bottom: none;
+}
+
 

@@ -1,12 +1,78 @@
-import React from "react"
+import React, { useMemo } from "react"
 import PropTypes from "prop-types"
 import { flexRender } from "@tanstack/react-table"
 
 import TablePagination from "./pagination/pagination"
+import { padTableData, isEmptyRow } from "./utils"
 
 import "./table.css"
 
-const Table = ({ table, expansionComponent, tableId }) => {
+const Table = ({ table, expansionComponent, tableId, padRows = false }) => {
+  // Get the current page size from the table state
+  const currentPageSize = table.getState().pagination.pageSize
+
+
+
+  // Get the rows to display, with padding if enabled
+  const displayRows = useMemo(() => {
+    const rows = table.getRowModel().rows
+
+    if (!padRows) return rows
+
+    // Use the utility function to pad the original data, then convert to rows
+    const originalData = rows.map(row => row.original)
+    const paddedData = padTableData(originalData, currentPageSize)
+
+    // If no padding was added, return original rows
+    if (paddedData.length === originalData.length) return rows
+
+    // Create rows for the padded data
+    const paddedRows = paddedData.map((data, index) => {
+      if (isEmptyRow(data)) {
+        // Create empty row objects that mimic the structure of real rows
+        const emptyRow = {
+          id: `empty-${index}`,
+          original: data,
+          getIsExpanded: () => false,
+          toggleExpanded: () => {}, // No-op for empty rows
+          getVisibleCells: () => table.getAllColumns().map(column => {
+            // Create a wrapped column definition that handles empty rows
+            const wrappedColumnDef = { ...column.columnDef }
+
+            // Wrap the cell renderer to return null for empty rows
+            if (column.columnDef.cell) {
+              const originalCell = column.columnDef.cell
+              wrappedColumnDef.cell = (props) => {
+                if (isEmptyRow(props.row.original)) {
+                  return null
+                }
+                return originalCell(props)
+              }
+            }
+
+            return {
+              id: `empty-${index}-${column.id}`,
+              column: { columnDef: wrappedColumnDef },
+              getContext: () => ({
+                row: emptyRow, // Reference to the complete row object
+                getValue: () => {
+                  // Return appropriate default values based on column type
+                  return null // Always return null for empty rows
+                }
+              })
+            }
+          }),
+        }
+        return emptyRow
+      } else {
+        // Return the original row for real data
+        return rows[index]
+      }
+    })
+
+    return paddedRows
+  }, [table, currentPageSize, padRows])
+  
   return (
     <>
       <div className="table-responsive">
@@ -44,9 +110,9 @@ const Table = ({ table, expansionComponent, tableId }) => {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map(row => (
+            {displayRows.map(row => (
               <React.Fragment key={row.id}>
-                <tr>
+                <tr className={isEmptyRow(row.original) ? "empty-row" : ""}>
                   {row.getVisibleCells().map(cell => (
                     <td
                       key={cell.id}
@@ -60,7 +126,7 @@ const Table = ({ table, expansionComponent, tableId }) => {
                 {row.getIsExpanded() && expansionComponent && (
                   <tr key={`${row.id}-expanded`}>
                     <td colSpan={row.getVisibleCells().length + 1} style={{ padding: "1rem" }}>
-                      {typeof expansionComponent === 'function' 
+                      {typeof expansionComponent === 'function'
                         ? expansionComponent(row.original)
                         : expansionComponent
                       }
@@ -85,6 +151,7 @@ Table.propTypes = {
     PropTypes.func,    // Function that takes row data and returns a React element
   ]), // Optional expansion component
   tableId: PropTypes.string, // Optional table ID for CSS scoping
+  padRows: PropTypes.bool, // Whether to pad rows to fill page size
 }
 
 export default Table

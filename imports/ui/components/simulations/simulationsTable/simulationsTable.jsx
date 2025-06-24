@@ -14,6 +14,8 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table"
 
+
+
 import Table from "../../table/table.jsx"
 
 import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
@@ -248,6 +250,7 @@ export default (props) => {
         table={table}
         expansionComponent={(rowData) => <SimulationControl simulationId={rowData._id} />}
         tableId="simulationsTable"
+        padRows={true}
       />
     </div>
   )

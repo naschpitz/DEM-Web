@@ -12,6 +12,7 @@ import {
 
 import Table from "../../../../table/table.jsx"
 
+
 import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 
 import AgentsClass from "../../../../../../api/agents/both/class"
@@ -274,6 +275,7 @@ export default (props) => {
       <Table
         table={table}
         tableId="agentsTable"
+        padRows={true}
       />
     </div>
   )
