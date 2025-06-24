@@ -76,7 +76,7 @@
     background-color: #dee2e6 !important;
 }
 
-/* Pagination controls styling - responsive design */
+/* Pagination controls styling - simple responsive design */
 #objectsProperties .pagination-wrapper {
     background-color: #fdfdfd;
     border-top: 1px solid #dee2e6;
@@ -88,10 +88,10 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevent wrapping */
 }
 
-/* Compact buttons for narrow containers */
+/* Compact buttons that can shrink */
 #objectsProperties .pagination-btn {
     background-color: #6c757d;
     border-color: #6c757d;
@@ -99,37 +99,12 @@
     padding: 4px 8px;
     font-size: 12px;
     border-radius: 4px;
-    min-width: 60px;
+    min-width: 50px;
+    flex-shrink: 1;
+    white-space: nowrap;
 }
 
-/* Responsive breakpoints for larger containers */
-@media (min-width: 768px) {
-    #objectsProperties .pagination-wrapper {
-        padding: 10px 15px;
-    }
 
-    #objectsProperties .pagination-controls {
-        gap: 8px;
-    }
-
-    #objectsProperties .pagination-btn {
-        padding: 5px 10px;
-        font-size: 13px;
-        min-width: 70px;
-    }
-}
-
-@media (min-width: 992px) {
-    #objectsProperties .pagination-controls {
-        gap: 10px;
-    }
-
-    #objectsProperties .pagination-btn {
-        padding: 6px 12px;
-        font-size: 14px;
-        min-width: 80px;
-    }
-}
 
 #objectsProperties .pagination-btn:hover:not(:disabled) {
     background-color: #5a6268;
@@ -144,17 +119,19 @@
     opacity: 0.65;
 }
 
-/* Compact pagination info for narrow containers */
+/* Compact pagination info */
 #objectsProperties .pagination-info {
     display: flex;
     align-items: center;
     gap: 4px;
     margin: 0 8px;
+    flex-shrink: 1;
 }
 
 #objectsProperties .page-text {
     color: #495057;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 #objectsProperties .page-input {
@@ -164,6 +141,7 @@
     border-radius: 4px;
     padding: 2px 4px;
     font-size: 12px;
+    flex-shrink: 0;
 }
 
 #objectsProperties .page-size-select {
@@ -172,54 +150,10 @@
     font-size: 12px;
     padding: 2px 4px;
     border-radius: 4px;
+    flex-shrink: 1;
 }
 
-/* Responsive pagination info for larger containers */
-@media (min-width: 768px) {
-    #objectsProperties .pagination-info {
-        gap: 6px;
-        margin: 0 12px;
-    }
 
-    #objectsProperties .page-text {
-        font-size: 13px;
-    }
-
-    #objectsProperties .page-input {
-        width: 45px;
-        padding: 3px 5px;
-        font-size: 13px;
-    }
-
-    #objectsProperties .page-size-select {
-        min-width: 80px;
-        font-size: 13px;
-        padding: 3px 6px;
-    }
-}
-
-@media (min-width: 992px) {
-    #objectsProperties .pagination-info {
-        gap: 8px;
-        margin: 0 15px;
-    }
-
-    #objectsProperties .page-text {
-        font-size: 14px;
-    }
-
-    #objectsProperties .page-input {
-        width: 50px;
-        padding: 4px 6px;
-        font-size: 14px;
-    }
-
-    #objectsProperties .page-size-select {
-        min-width: 90px;
-        font-size: 14px;
-        padding: 4px 8px;
-    }
-}
 
 /* Expansion button styling */
 #objectsProperties .expansion-btn {

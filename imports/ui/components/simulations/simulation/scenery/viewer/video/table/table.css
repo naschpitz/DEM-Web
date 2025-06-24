@@ -84,7 +84,7 @@
     background-color: #dee2e6 !important;
 }
 
-/* Pagination controls styling - responsive design */
+/* Pagination controls styling - simple responsive design */
 #videosTable .pagination-wrapper {
     background-color: #fdfdfd;
     border-top: 1px solid #dee2e6;
@@ -97,10 +97,10 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevent wrapping */
 }
 
-/* Compact buttons for narrow containers */
+/* Compact buttons that can shrink */
 #videosTable .pagination-btn {
     background-color: #6c757d;
     border-color: #6c757d;
@@ -108,7 +108,9 @@
     padding: 4px 8px;
     font-size: 12px;
     border-radius: 4px;
-    min-width: 60px;
+    min-width: 50px;
+    flex-shrink: 1;
+    white-space: nowrap;
 }
 
 #videosTable .pagination-btn:hover:not(:disabled) {
@@ -124,46 +126,21 @@
     opacity: 0.65;
 }
 
-/* Responsive breakpoints for larger containers */
-@media (min-width: 768px) {
-    #videosTable .pagination-wrapper {
-        padding: 10px 15px;
-    }
 
-    #videosTable .pagination-controls {
-        gap: 8px;
-    }
 
-    #videosTable .pagination-btn {
-        padding: 5px 10px;
-        font-size: 13px;
-        min-width: 70px;
-    }
-}
-
-@media (min-width: 992px) {
-    #videosTable .pagination-controls {
-        gap: 10px;
-    }
-
-    #videosTable .pagination-btn {
-        padding: 6px 12px;
-        font-size: 14px;
-        min-width: 80px;
-    }
-}
-
-/* Compact pagination info for narrow containers */
+/* Compact pagination info */
 #videosTable .pagination-info {
     display: flex;
     align-items: center;
     gap: 4px;
     margin: 0 8px;
+    flex-shrink: 1;
 }
 
 #videosTable .page-text {
     color: #495057;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 #videosTable .page-input {
@@ -173,6 +150,7 @@
     border-radius: 4px;
     padding: 2px 4px;
     font-size: 12px;
+    flex-shrink: 0;
 }
 
 #videosTable .page-size-select {
@@ -181,54 +159,10 @@
     font-size: 12px;
     padding: 2px 4px;
     border-radius: 4px;
+    flex-shrink: 1;
 }
 
-/* Responsive pagination info for larger containers */
-@media (min-width: 768px) {
-    #videosTable .pagination-info {
-        gap: 6px;
-        margin: 0 12px;
-    }
 
-    #videosTable .page-text {
-        font-size: 13px;
-    }
-
-    #videosTable .page-input {
-        width: 45px;
-        padding: 3px 5px;
-        font-size: 13px;
-    }
-
-    #videosTable .page-size-select {
-        min-width: 80px;
-        font-size: 13px;
-        padding: 3px 6px;
-    }
-}
-
-@media (min-width: 992px) {
-    #videosTable .pagination-info {
-        gap: 8px;
-        margin: 0 15px;
-    }
-
-    #videosTable .page-text {
-        font-size: 14px;
-    }
-
-    #videosTable .page-input {
-        width: 50px;
-        padding: 4px 6px;
-        font-size: 14px;
-    }
-
-    #videosTable .page-size-select {
-        min-width: 90px;
-        font-size: 14px;
-        padding: 4px 8px;
-    }
-}
 
 /* Loading and empty state styling */
 #videosTable .spinner-border {

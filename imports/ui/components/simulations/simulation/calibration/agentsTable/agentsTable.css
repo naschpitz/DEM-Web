@@ -90,7 +90,7 @@
     background-color: #dee2e6 !important;
 }
 
-/* Pagination controls styling - responsive design */
+/* Pagination controls styling - simple responsive design */
 #agentsTable .pagination-wrapper {
     background-color: #fdfdfd;
     border-top: 1px solid #dee2e6;
@@ -102,10 +102,10 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevent wrapping */
 }
 
-/* Compact buttons for narrow containers */
+/* Compact buttons that can shrink */
 #agentsTable .pagination-btn {
     background-color: #6c757d;
     border-color: #6c757d;
@@ -113,7 +113,9 @@
     padding: 4px 8px;
     font-size: 12px;
     border-radius: 4px;
-    min-width: 60px;
+    min-width: 50px;
+    flex-shrink: 1;
+    white-space: nowrap;
 }
 
 #agentsTable .pagination-btn:hover:not(:disabled) {
@@ -129,46 +131,21 @@
     opacity: 0.65;
 }
 
-/* Responsive breakpoints for larger containers */
-@media (min-width: 768px) {
-    #agentsTable .pagination-wrapper {
-        padding: 10px 15px;
-    }
 
-    #agentsTable .pagination-controls {
-        gap: 8px;
-    }
 
-    #agentsTable .pagination-btn {
-        padding: 5px 10px;
-        font-size: 13px;
-        min-width: 70px;
-    }
-}
-
-@media (min-width: 992px) {
-    #agentsTable .pagination-controls {
-        gap: 10px;
-    }
-
-    #agentsTable .pagination-btn {
-        padding: 6px 12px;
-        font-size: 14px;
-        min-width: 80px;
-    }
-}
-
-/* Compact pagination info for narrow containers */
+/* Compact pagination info */
 #agentsTable .pagination-info {
     display: flex;
     align-items: center;
     gap: 4px;
     margin: 0 8px;
+    flex-shrink: 1;
 }
 
 #agentsTable .page-text {
     color: #495057;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 #agentsTable .page-input {
@@ -178,6 +155,7 @@
     border-radius: 4px;
     padding: 2px 4px;
     font-size: 12px;
+    flex-shrink: 0;
 }
 
 #agentsTable .page-size-select {
@@ -186,53 +164,7 @@
     font-size: 12px;
     padding: 2px 4px;
     border-radius: 4px;
-}
-
-/* Responsive pagination info for larger containers */
-@media (min-width: 768px) {
-    #agentsTable .pagination-info {
-        gap: 6px;
-        margin: 0 12px;
-    }
-
-    #agentsTable .page-text {
-        font-size: 13px;
-    }
-
-    #agentsTable .page-input {
-        width: 45px;
-        padding: 3px 5px;
-        font-size: 13px;
-    }
-
-    #agentsTable .page-size-select {
-        min-width: 80px;
-        font-size: 13px;
-        padding: 3px 6px;
-    }
-}
-
-@media (min-width: 992px) {
-    #agentsTable .pagination-info {
-        gap: 8px;
-        margin: 0 15px;
-    }
-
-    #agentsTable .page-text {
-        font-size: 14px;
-    }
-
-    #agentsTable .page-input {
-        width: 50px;
-        padding: 4px 6px;
-        font-size: 14px;
-    }
-
-    #agentsTable .page-size-select {
-        min-width: 90px;
-        font-size: 14px;
-        padding: 4px 8px;
-    }
+    flex-shrink: 1;
 }
 
 /* Loading and empty state styling */
