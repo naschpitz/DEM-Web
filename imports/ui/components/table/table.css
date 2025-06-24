@@ -95,19 +95,4 @@
     text-align: center;
 }
 
-/* Table-specific styling overrides */
-/* Videos table specific styling */
-#videosTable .table-responsive {
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
-}
 
-#videosTable .pagination-wrapper {
-    border-bottom: 1px solid #dee2e6;
-}
-
-/* Simulations table specific styling */
-#simulationsTable .expansion-btn {
-    min-width: 24px;
-    padding: 2px 6px;
-}

@@ -1,8 +1,3 @@
-#videosTable {
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
-}
-
 #videosTable #btnDownload a {
     color: #FFFFFF;
     text-decoration: none;
@@ -12,7 +7,17 @@
     margin: 0px;
 }
 
-/* Table-specific styles are now handled by ResponsiveTable component */
+/* Table-specific styles are now handled by Table component */
+
+/* Videos table specific styling */
+#videosTable .table-responsive {
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+}
+
+#videosTable .pagination-wrapper {
+    border-bottom: 1px solid #dee2e6;
+}
 
 /* Loading and empty state styling */
 #videosTable .spinner-border {

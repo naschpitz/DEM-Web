@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { flexRender } from "@tanstack/react-table"
 
-import TablePagination from "./pagination.jsx"
+import TablePagination from "./pagination/pagination"
 
 import "./table.css"
 

@@ -7,7 +7,7 @@
     text-align: center;
 }
 
-/* Table-specific styles are now handled by ResponsiveTable component */
+/* Table-specific styles are now handled by Table component */
 
 /* Loading and empty state styling */
 #simulationsTable .spinner-border {
