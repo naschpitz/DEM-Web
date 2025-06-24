@@ -139,7 +139,7 @@ export default class Simulations extends SimulationsBoth {
       }
 
       await Logs.insertAsync(simulationLog)
-      throw exception
+      //throw exception
     }
   }
 }
