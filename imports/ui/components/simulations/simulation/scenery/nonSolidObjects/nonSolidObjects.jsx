@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
+import { FaChevronRight, FaChevronDown } from "react-icons/all"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
@@ -61,7 +62,7 @@ export default (props) => {
           }}
           type="button"
         >
-          {row.getIsExpanded() ? "▼" : "▶"}
+          {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
         </button>
       ),
       size: 30,
