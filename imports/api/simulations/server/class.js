@@ -125,8 +125,6 @@ export default class Simulations extends SimulationsBoth {
         body: JSON.stringify(postOptions.data)
       })
 
-      console.log(response)
-
       if (!response.ok) {
         const error = new Error(`HTTP ${response.status}`)
         error.code = response.status
@@ -138,34 +136,17 @@ export default class Simulations extends SimulationsBoth {
         return null
       }
 
-      // Check content type - if it's not JSON, that might be an error
-      const contentType = response.headers.get('content-type')
-      if (contentType && !contentType.includes('application/json') && !contentType.includes('text/plain')) {
-        throw new Error(`Server returned unexpected content type: ${contentType}`)
+      // Check the content-type of the response
+      if (response.headers.get('content-type')?.includes('application/json')) {
+        return await response.json()
+      } else {
+        return await response.text()
       }
-
-      // Get response text first to check if it's empty
-      const responseText = await response.text()
-
-      // If response is empty, return null (this is acceptable for control operations)
-      if (!responseText || responseText.trim() === '') {
-        return null
-      }
-
-      // Try to parse the JSON
-      try {
-        return JSON.parse(responseText)
-      } catch (jsonError) {
-        throw new Error(`Invalid JSON response: ${jsonError.message}. Response body: ${responseText.substring(0, 200)}`)
-      }
-
     } catch (error) {
       const simulationLog = {
         owner: simulationId,
         message: error.message
       }
-
-      console.log(error)
 
       if (!error.code) error.code = 500
 
