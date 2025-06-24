@@ -87,7 +87,7 @@
 /* Pagination controls styling - responsive design */
 #solidObjects .pagination-wrapper {
     background-color: #f8f9fa;
-    border-top: none;
+    border-top: 1px solid #dee2e6;
     padding: 8px 10px;
 }
 
