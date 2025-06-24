@@ -126,7 +126,7 @@ export default () => {
         <ButtonEnhanced
           buttonOptions={{
             regularText: "Remove",
-            data: info,
+            data: info.row.original,
             className: "btn btn-sm btn-danger ml-auto mr-auto",
             isAction: isRemoving,
             actionText: "Removing...",
@@ -174,9 +174,9 @@ export default () => {
 
     setIsRemoving(true)
 
-    const materialId = data.original._id
+    const serverId = data._id
 
-    Meteor.callAsync("servers.remove", materialId)
+    Meteor.callAsync("servers.remove", serverId)
       .then(() => {
         Alert.success("Server successfully removed.")
       })

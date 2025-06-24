@@ -110,7 +110,7 @@ export default (props) => {
         <ButtonEnhanced
           buttonOptions={{
             regularText: "Remove",
-            data: info,
+            data: info.row.original,
             className: "btn btn-sm btn-danger ml-auto mr-auto",
             isAction: isRemoving,
             actionText: "Removing...",
@@ -156,7 +156,7 @@ export default (props) => {
 
     setIsRemoving(true)
 
-    Meteor.callAsync("cameraFilters.remove", data.original._id)
+    Meteor.callAsync("cameraFilters.remove", data._id)
       .then(() => {
         Alert.success("Camera filter successfully removed.")
       })

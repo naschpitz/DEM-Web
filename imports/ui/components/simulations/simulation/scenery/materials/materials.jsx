@@ -91,7 +91,7 @@ export default (props) => {
         <ButtonEnhanced
           buttonOptions={{
             regularText: "Remove",
-            data: info,
+            data: info.row.original,
             className: "btn btn-sm btn-danger ml-auto mr-auto",
             isAction: isRemoving,
             actionText: "Removing...",
@@ -137,7 +137,7 @@ export default (props) => {
 
     setIsRemoving(true)
 
-    const materialId = data.original._id
+    const materialId = data._id
 
     Meteor.callAsync("materials.remove", materialId)
       .then(() => {
