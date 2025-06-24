@@ -7,86 +7,12 @@
     margin: 0px;
 }
 
-/* Custom styling for the new table */
-#servers .table {
-    margin-bottom: 0;
-}
-
-#servers .table th,
-#servers .table td {
-    border-top: 1px solid #dee2e6;
-    padding: 0.5rem;
-    vertical-align: middle;
-}
-
-/* Ensure table has proper layout */
-#servers .table {
-    table-layout: auto;
-    width: 100%;
-}
-
-#servers .resizer {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 8px; /* Make it easier to grab */
-    cursor: col-resize;
-    user-select: none;
-    touch-action: none;
-    z-index: 1;
-    background-color: transparent; /* Ensure it's not blocking interaction */
-}
-
-#servers .resizer:hover {
-    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
-}
-
-#servers .resizer.isResizing {
-    background-color: rgba(0, 123, 255, 0.3);
-}
-
-#servers .table thead th {
-    border-bottom: 2px solid #dee2e6;
-    background-color: #fdfdfd;
-    font-weight: normal;
-}
-
-#servers .table th,
-#servers .table td {
-    border-right: 1px solid #dee2e6; /* Add right border */
-}
-
-#servers .table th:last-child,
-#servers .table td:last-child {
-    border-right: none; /* Avoid double border on last column */
-}
-
-/* Maintain striped appearance with light/darker gray - override global styles */
-#servers .table-striped > tbody > tr:nth-child(odd) > td,
-#servers .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: #f8f9fa !important;
-}
-
-#servers .table-striped > tbody > tr:nth-child(even) > td,
-#servers .table-striped > tbody > tr:nth-child(even) > th {
-    background-color: #e9ecef !important;
-}
-
-/* Hover effect */
-#servers .table-hover tbody tr:hover td,
-#servers .table-hover tbody tr:hover th {
-    background-color: #dee2e6 !important;
-}
+/* Table-specific styles are now handled by ResponsiveTable component */
 
 /* Fix form input styling within table */
 #servers .table td #formInput {
     margin: 0;
 }
-
-
-
-
 
 /* Loading and empty state styling */
 #servers .spinner-border {

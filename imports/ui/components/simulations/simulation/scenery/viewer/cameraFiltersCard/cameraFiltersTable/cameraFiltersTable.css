@@ -1,81 +1,9 @@
-/* Custom styling for the new table */
-#cameraFiltersTable .table {
-    margin-bottom: 0;
-}
-
-#cameraFiltersTable .table th,
-#cameraFiltersTable .table td {
-    border-top: 1px solid #dee2e6;
-    padding: 0.5rem;
-    vertical-align: middle;
-}
-
-/* Ensure table has proper layout */
-#cameraFiltersTable .table {
-    table-layout: auto;
-    width: 100%;
-}
-
-#cameraFiltersTable .resizer {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 8px; /* Make it easier to grab */
-    cursor: col-resize;
-    user-select: none;
-    touch-action: none;
-    z-index: 1;
-    background-color: transparent; /* Ensure it's not blocking interaction */
-}
-
-#cameraFiltersTable .resizer:hover {
-    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
-}
-
-#cameraFiltersTable .resizer.isResizing {
-    background-color: rgba(0, 123, 255, 0.3);
-}
-
-#cameraFiltersTable .table thead th {
-    border-bottom: 2px solid #dee2e6;
-    background-color: #fdfdfd;
-    font-weight: normal;
-}
-
-#cameraFiltersTable .table th,
-#cameraFiltersTable .table td {
-    border-right: 1px solid #dee2e6; /* Add right border */
-}
-
-#cameraFiltersTable .table th:last-child,
-#cameraFiltersTable .table td:last-child {
-    border-right: none; /* Avoid double border on last column */
-}
-
-/* Maintain striped appearance with light/darker gray - override global styles */
-#cameraFiltersTable .table-striped > tbody > tr:nth-child(odd) > td,
-#cameraFiltersTable .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: #f8f9fa !important;
-}
-
-#cameraFiltersTable .table-striped > tbody > tr:nth-child(even) > td,
-#cameraFiltersTable .table-striped > tbody > tr:nth-child(even) > th {
-    background-color: #e9ecef !important;
-}
-
-/* Hover effect */
-#cameraFiltersTable .table-hover tbody tr:hover td,
-#cameraFiltersTable .table-hover tbody tr:hover th {
-    background-color: #dee2e6 !important;
-}
+/* Table-specific styles are now handled by ResponsiveTable component */
 
 /* Fix form input styling within table */
 #cameraFiltersTable .table td #formInput {
     margin: 0;
 }
-
-
 
 /* Loading and empty state styling */
 #cameraFiltersTable .spinner-border {

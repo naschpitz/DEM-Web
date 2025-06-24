@@ -11,11 +11,10 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getExpandedRowModel,
-  flexRender,
   createColumnHelper,
 } from "@tanstack/react-table"
 
-import TablePagination from "../../table/pagination.jsx"
+import Table from "../../table/table.jsx"
 
 import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
@@ -245,68 +244,11 @@ export default (props) => {
 
   return (
     <div id="simulationsTable">
-      <div className="table-responsive">
-        <table className="table table-striped table-hover">
-          <thead>
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <th
-                    key={header.id}
-                    className={header.column.columnDef.meta?.className || ""}
-                    style={{
-                      position: "relative",
-                      width: header.getSize(), // Dynamic width
-                    }}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-
-                    {/* Resize handle */}
-                    {header.column.getCanResize() && (
-                      <div
-                        onMouseDown={header.getResizeHandler()}
-                        onTouchStart={header.getResizeHandler()}
-                        className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
-                      />
-                    )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map(row => (
-              <React.Fragment key={row.id}>
-                <tr>
-                  {row.getVisibleCells().map(cell => (
-                    <td
-                      key={cell.id}
-                      className={cell.column.columnDef.meta?.className || ""}
-                      style={{ verticalAlign: "middle" }}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-                {row.getIsExpanded() && (
-                  <tr key={`${row.id}-expanded`}>
-                    <td colSpan={row.getVisibleCells().length + 1} style={{ padding: "1rem" }}>
-                      <SimulationControl simulationId={row.original._id} />
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <TablePagination table={table} />
+      <Table
+        table={table}
+        expansionComponent={(rowData) => <SimulationControl simulationId={rowData._id} />}
+        tableId="simulationsTable"
+      />
     </div>
   )
 }

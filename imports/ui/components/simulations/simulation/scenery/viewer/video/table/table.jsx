@@ -8,11 +8,10 @@ import {
   useReactTable,
   getCoreRowModel,
   getPaginationRowModel,
-  flexRender,
   createColumnHelper,
 } from "@tanstack/react-table"
 
-import TablePagination from "../../../../../../table/pagination.jsx"
+import Table from "../../../../../../table/table.jsx"
 
 import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
 import VideosClass from "../../../../../../../../api/videos/both/class.js"
@@ -248,59 +247,10 @@ export default ({ sceneryId }) => {
 
   return (
     <div id="videosTable">
-      <div className="table-responsive">
-        <table className="table table-striped table-hover">
-          <thead>
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <th
-                    key={header.id}
-                    className={header.column.columnDef.meta?.className || ""}
-                    style={{
-                      position: "relative",
-                      width: header.getSize(), // Dynamic width
-                    }}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-
-                    {/* Resize handle */}
-                    {header.column.getCanResize() && (
-                      <div
-                        onMouseDown={header.getResizeHandler()}
-                        onTouchStart={header.getResizeHandler()}
-                        className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
-                      />
-                    )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map(row => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map(cell => (
-                  <td
-                    key={cell.id}
-                    className={cell.column.columnDef.meta?.className || ""}
-                    style={{ verticalAlign: "middle" }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <TablePagination table={table} />
+      <Table
+        table={table}
+        tableId="videosTable"
+      />
     </div>
   )
 }

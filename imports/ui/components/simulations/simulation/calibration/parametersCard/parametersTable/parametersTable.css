@@ -1,74 +1,4 @@
-/* Custom styling for the new table */
-#parametersTable .table {
-    margin-bottom: 0;
-}
-
-#parametersTable .table th,
-#parametersTable .table td {
-    border-top: 1px solid #dee2e6;
-    padding: 0.5rem;
-    vertical-align: middle;
-}
-
-/* Ensure table has proper layout */
-#parametersTable .table {
-    table-layout: auto;
-    width: 100%;
-}
-
-#parametersTable .resizer {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 8px; /* Make it easier to grab */
-    cursor: col-resize;
-    user-select: none;
-    touch-action: none;
-    z-index: 1;
-    background-color: transparent; /* Ensure it's not blocking interaction */
-}
-
-#parametersTable .resizer:hover {
-    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
-}
-
-#parametersTable .resizer.isResizing {
-    background-color: rgba(0, 123, 255, 0.3);
-}
-
-#parametersTable .table thead th {
-    border-bottom: 2px solid #dee2e6;
-    background-color: #fdfdfd;
-    font-weight: normal;
-}
-
-#parametersTable .table th,
-#parametersTable .table td {
-    border-right: 1px solid #dee2e6; /* Add right border */
-}
-
-#parametersTable .table th:last-child,
-#parametersTable .table td:last-child {
-    border-right: none; /* Avoid double border on last column */
-}
-
-/* Maintain striped appearance with light/darker gray - override global styles */
-#parametersTable .table-striped > tbody > tr:nth-child(odd) > td,
-#parametersTable .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: #f8f9fa !important;
-}
-
-#parametersTable .table-striped > tbody > tr:nth-child(even) > td,
-#parametersTable .table-striped > tbody > tr:nth-child(even) > th {
-    background-color: #e9ecef !important;
-}
-
-/* Hover effect */
-#parametersTable .table-hover tbody tr:hover td,
-#parametersTable .table-hover tbody tr:hover th {
-    background-color: #dee2e6 !important;
-}
+/* Table-specific styles are now handled by ResponsiveTable component */
 
 /* Fix form input styling within table */
 #parametersTable .table td #formInput {
@@ -80,8 +10,6 @@
     justify-content: center;
     align-items: center;
 }
-
-/* Pagination controls styling - simple responsive design */
 
 /* Loading and empty state styling */
 #parametersTable .spinner-border {
