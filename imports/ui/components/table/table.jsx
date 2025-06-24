@@ -7,7 +7,7 @@ import { padTableData, isEmptyRow } from "./utils"
 
 import "./table.css"
 
-const Table = ({ table, expansionComponent, tableId, padRows = false }) => {
+const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText = null }) => {
   // Get the current page size from the table state
   const currentPageSize = table.getState().pagination.pageSize
 
@@ -65,6 +65,15 @@ const Table = ({ table, expansionComponent, tableId, padRows = false }) => {
   return (
     <>
       <div className="table-responsive">
+        {/* Show empty text when there's no data but padRows is enabled */}
+        {emptyText && padRows && rows.length === 0 && (
+          <div className="empty-table-message">
+            <div className="text-center text-muted p-4">
+              {emptyText}
+            </div>
+          </div>
+        )}
+
         <table className="table table-striped table-hover" id={tableId}>
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -141,6 +150,7 @@ Table.propTypes = {
   ]), // Optional expansion component
   tableId: PropTypes.string, // Optional table ID for CSS scoping
   padRows: PropTypes.bool, // Whether to pad rows to fill page size
+  emptyText: PropTypes.string, // Text to show when table is empty
 }
 
 export default Table

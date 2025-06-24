@@ -244,7 +244,7 @@ export default (props) => {
         pageSize: 10,
       },
       columnSizing: {}, // optional: initial sizes
-    },
+    }
   })
 
   if (!isReady) {
@@ -260,22 +260,13 @@ export default (props) => {
     )
   }
 
-  if (tableData.length === 0) {
-    return (
-      <div id="agentsTable">
-        <div className="text-center p-4">
-          <div className="text-muted">No agents found.</div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div id="agentsTable">
       <Table
         table={table}
         tableId="agentsTable"
         padRows={true}
+        emptyText="No agents found."
       />
     </div>
   )

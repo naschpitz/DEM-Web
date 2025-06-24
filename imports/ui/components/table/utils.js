@@ -14,11 +14,12 @@ export const padTableData = (data, pageSize) => {
   }
 
   const currentPageSize = data.length % pageSize
-  if (currentPageSize === 0) {
-    return data // Already full pages, no padding needed
+  // If we have data and it's already a full page, no padding needed
+  if (currentPageSize === 0 && data.length > 0) {
+    return data
   }
 
-  const emptyRowsNeeded = pageSize - currentPageSize
+  const emptyRowsNeeded = data.length === 0 ? pageSize : pageSize - currentPageSize
   const emptyRows = Array(emptyRowsNeeded).fill(null).map((_, index) => ({
     _isEmpty: true,
     _emptyId: `empty-${index}`,

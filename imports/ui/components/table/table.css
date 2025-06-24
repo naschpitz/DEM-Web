@@ -1,6 +1,10 @@
 /* Common table styling for Table component */
 
 /* Custom styling for the table */
+.table-responsive {
+    position: relative; /* For absolute positioning of empty message */
+}
+
 .table-responsive .table {
     margin-bottom: 0;
     table-layout: auto;
@@ -108,6 +112,19 @@
 .table-responsive .table tbody tr.empty-row td {
     border-top: 1px solid #dee2e6;
     border-bottom: none;
+}
+
+/* Empty table message styling */
+.table-responsive .empty-table-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
 }
 
 

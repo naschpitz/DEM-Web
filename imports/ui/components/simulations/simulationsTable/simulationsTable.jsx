@@ -234,16 +234,6 @@ export default (props) => {
     )
   }
 
-  if (simulations.length === 0) {
-    return (
-      <div id="simulationsTable">
-        <div className="text-center p-4">
-          <div className="text-muted">No simulations found.</div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div id="simulationsTable">
       <Table
@@ -251,6 +241,7 @@ export default (props) => {
         expansionComponent={(rowData) => <SimulationControl simulationId={rowData._id} />}
         tableId="simulationsTable"
         padRows={true}
+        emptyText="No simulations found."
       />
     </div>
   )
