@@ -80,7 +80,7 @@ export default class Simulations extends SimulationsDAO {
   }
 
   static async removeServer(serverId) {
-    await Simulations.updateSync(
+    await Simulations.updateAsync(
       {
         server: serverId,
         state: { $nin: ["setToRun", "running", "setToPause", "paused", "setToStop"] },
@@ -99,7 +99,7 @@ export default class Simulations extends SimulationsDAO {
   static async unsetGroup(simulationId, groupId) {
     const selector = simulationId ? { _id: simulationId } : { group: groupId }
 
-    await Simulations.updateSync(
+    await Simulations.updateAsync(
       selector,
       {
         $unset: {
