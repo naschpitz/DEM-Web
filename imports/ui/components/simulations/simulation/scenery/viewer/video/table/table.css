@@ -1,3 +1,8 @@
+#videosTable {
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+}
+
 #videosTable #btnDownload a {
     color: #FFFFFF;
     text-decoration: none;
@@ -83,6 +88,7 @@
 #videosTable .pagination-wrapper {
     background-color: #fdfdfd;
     border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
     padding: 8px 10px;
 }
 
