@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { flexRender } from "@tanstack/react-table"
 
@@ -11,67 +11,56 @@ const Table = ({ table, expansionComponent, tableId, padRows = false }) => {
   // Get the current page size from the table state
   const currentPageSize = table.getState().pagination.pageSize
 
-
-
   // Get the rows to display, with padding if enabled
-  const displayRows = useMemo(() => {
-    const rows = table.getRowModel().rows
+  const rows = table.getRowModel().rows
 
-    if (!padRows) return rows
+  let displayRows = rows
 
+  if (padRows) {
     // Use the utility function to pad the original data, then convert to rows
     const originalData = rows.map(row => row.original)
     const paddedData = padTableData(originalData, currentPageSize)
 
-    // If no padding was added, return original rows
-    if (paddedData.length === originalData.length) return rows
+    // If padding was added, create rows for the padded data
+    if (paddedData.length > originalData.length) {
+      displayRows = paddedData.map((data, index) => {
+        if (isEmptyRow(data)) {
+          // Create empty row objects that mimic the structure of real rows
+          const emptyRow = {
+            id: `empty-${index}`,
+            original: data,
+            getIsExpanded: () => false,
+            toggleExpanded: () => {}, // No-op for empty rows
+            getVisibleCells: () => table.getAllColumns().map(column => {
+              // Create a wrapped column definition that handles empty rows
+              const wrappedColumnDef = { ...column.columnDef }
 
-    // Create rows for the padded data
-    const paddedRows = paddedData.map((data, index) => {
-      if (isEmptyRow(data)) {
-        // Create empty row objects that mimic the structure of real rows
-        const emptyRow = {
-          id: `empty-${index}`,
-          original: data,
-          getIsExpanded: () => false,
-          toggleExpanded: () => {}, // No-op for empty rows
-          getVisibleCells: () => table.getAllColumns().map(column => {
-            // Create a wrapped column definition that handles empty rows
-            const wrappedColumnDef = { ...column.columnDef }
-
-            // Wrap the cell renderer to return null for empty rows
-            if (column.columnDef.cell) {
-              const originalCell = column.columnDef.cell
-              wrappedColumnDef.cell = (props) => {
-                if (isEmptyRow(props.row.original)) {
-                  return null
-                }
-                return originalCell(props)
+              // For empty rows, always return null regardless of original cell renderer
+              if (column.columnDef.cell) {
+                wrappedColumnDef.cell = () => null
               }
-            }
 
-            return {
-              id: `empty-${index}-${column.id}`,
-              column: { columnDef: wrappedColumnDef },
-              getContext: () => ({
-                row: emptyRow, // Reference to the complete row object
-                getValue: () => {
-                  // Return appropriate default values based on column type
-                  return null // Always return null for empty rows
-                }
-              })
-            }
-          }),
+              return {
+                id: `empty-${index}-${column.id}`,
+                column: { columnDef: wrappedColumnDef },
+                getContext: () => ({
+                  row: emptyRow, // Reference to the complete row object
+                  getValue: () => {
+                    // Return appropriate default values based on column type
+                    return null // Always return null for empty rows
+                  }
+                })
+              }
+            }),
+          }
+          return emptyRow
+        } else {
+          // Return the original row for real data
+          return rows[index]
         }
-        return emptyRow
-      } else {
-        // Return the original row for real data
-        return rows[index]
-      }
-    })
-
-    return paddedRows
-  }, [table, currentPageSize, padRows])
+      })
+    }
+  }
   
   return (
     <>
