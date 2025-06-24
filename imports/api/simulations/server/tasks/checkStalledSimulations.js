@@ -46,7 +46,7 @@ const task = Meteor.bindEnvironment(async () => {
     Simulations.setState(simulation._id, "failed")
   )
 
-  await Promise.all(setStatePromises)
+  await Promise.allSettled(setStatePromises)
 
   console.log("Done checking for stalled Simulations.")
 })

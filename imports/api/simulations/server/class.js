@@ -114,7 +114,7 @@ export default class Simulations extends SimulationsBoth {
 
     const promises = simulations.map(simulation => this.removeAsync(simulation._id))
 
-    await Promise.all(promises)
+    await Promise.allSettled(promises)
   }
 
   static async post(simulationId, postOptions) {

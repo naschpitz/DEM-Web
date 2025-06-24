@@ -51,7 +51,7 @@ export default class NonSolidObjects extends NonSolidObjectsDAO {
       await ObjectsProperties.removeByOwner(nonSolidObject._id)
     })
 
-    await Promise.all(promises)
+    await Promise.allSettled(promises)
     await NonSolidObjectsDAO.removeAsync({ owner: sceneryId })
   }
 

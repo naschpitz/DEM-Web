@@ -121,7 +121,7 @@ export default class Hypervisor {
         }
       })
 
-      await Promise.all(agentsToStartPromises)
+      await Promise.allSettled(agentsToStartPromises)
     }
   }
 

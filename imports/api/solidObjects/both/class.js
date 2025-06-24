@@ -54,7 +54,7 @@ export default class SolidObjects extends SolidObjectsDAO {
       await ObjectsProperties.removeByOwner(solidObject._id)
     })
 
-    await Promise.all(promises)
+    await Promise.allSettled(promises)
     await SolidObjectsDAO.removeAsync({ owner: sceneryId })
   }
 

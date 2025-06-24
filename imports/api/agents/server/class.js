@@ -59,12 +59,12 @@ export default class Agents extends AgentsBoth {
         await Simulations.removeAsync(agentHistory.best.simulation)
       })
 
-      await Promise.all(agentsHistoriesPromises)
+      await Promise.allSettled(agentsHistoriesPromises)
 
       await AgentsHistories.removeByOwner(agent._id)
     })
 
-    await Promise.all(agentsPromises)
+    await Promise.allSettled(agentsPromises)
 
     const agentIds = agents.map(agent => agent._id)
     await AgentsBoth.removeAsync({ _id: { $in: agentIds } })

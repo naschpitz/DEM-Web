@@ -29,7 +29,7 @@ export default class Sceneries extends SceneriesBoth {
     promises.push(Cameras.removeByOwner(sceneryId))
     promises.push(Videos.removeByOwner(sceneryId))
 
-    await Promise.all(promises)
+    await Promise.allSettled(promises)
 
     await SceneriesBoth.removeAsync(sceneryId)
   }
