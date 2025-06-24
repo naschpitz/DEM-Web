@@ -30,52 +30,88 @@
     margin-bottom: 15px;
 }
 
-/* Table styling */
+/* Custom styling for the new table */
 #materials .table {
     margin-bottom: 0;
 }
 
+#materials .table th,
 #materials .table td {
+    border-top: 1px solid #dee2e6;
+    padding: 0.5rem;
     vertical-align: middle;
 }
 
-#materials .table th {
+#materials .table td:first-child,
+#materials .table th:first-child {
+    width: 30px;
     text-align: center;
-    vertical-align: middle;
+}
+
+/* Ensure table has proper layout */
+#materials .table {
+    table-layout: auto;
+    width: 100%;
+}
+
+#materials .resizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 8px; /* Make it easier to grab */
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+    z-index: 1;
+    background-color: transparent; /* Ensure it's not blocking interaction */
+}
+
+#materials .resizer:hover {
+    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
+}
+
+#materials .resizer.isResizing {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+
+#materials .table thead th {
     border-bottom: 2px solid #dee2e6;
     background-color: #f8f9fa;
     font-weight: normal;
 }
 
-/* Fix form input styling within table */
-#materials .table td #formInput {
-    margin: 0;
+#materials .table th,
+#materials .table td {
+    border-right: 1px solid #dee2e6; /* Add right border */
 }
 
-/* Ensure proper table layout */
-#materials .table-responsive {
-    overflow-x: auto;
+#materials .table th:last-child,
+#materials .table td:last-child {
+    border-right: none; /* Avoid double border on last column */
 }
 
-#materials .expansion-btn {
-    background: none;
-    border: none;
-    font-size: 12px;
-    color: #6c757d;
-    cursor: pointer;
-    padding: 2px 4px;
+/* Maintain striped appearance with light/darker gray - override global styles */
+#materials .table-striped > tbody > tr:nth-child(odd) > td,
+#materials .table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #f8f9fa !important;
 }
 
-#materials .expansion-btn:hover {
-    color: #495057;
+#materials .table-striped > tbody > tr:nth-child(even) > td,
+#materials .table-striped > tbody > tr:nth-child(even) > th {
+    background-color: #e9ecef !important;
+}
+
+/* Hover effect */
+#materials .table-hover tbody tr:hover td,
+#materials .table-hover tbody tr:hover th {
+    background-color: #dee2e6 !important;
 }
 
 /* Pagination controls styling - responsive design */
 #materials .pagination-wrapper {
-    margin-top: 1px; /* Minimal margin like original */
     background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-top: none;
+    border-top: 1px solid #dee2e6;
     padding: 8px 10px;
 }
 
@@ -215,4 +251,32 @@
         font-size: 14px;
         padding: 4px 8px;
     }
+}
+
+/* Expansion button styling */
+#materials .expansion-btn {
+    border: none !important;
+    background: none !important;
+    font-size: 14px;
+    padding: 4px 8px;
+    color: #6c757d;
+    cursor: pointer;
+    line-height: 1;
+    min-width: 24px;
+}
+
+#materials .expansion-btn:hover {
+    color: #495057;
+    background-color: rgba(0,0,0,0.05) !important;
+}
+
+#materials .expansion-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+/* Loading and empty state styling */
+#materials .spinner-border {
+    width: 2rem;
+    height: 2rem;
 }
