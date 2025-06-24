@@ -14,6 +14,8 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table"
 
+import TablePagination from "../../../../../table/pagination.jsx"
+
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import NonSolidObjectsClass from "../../../../../../../api/nonSolidObjects/both/class.js"
 import ObjectsPropertiesClass from "../../../../../../../api/objectsProperties/both/class.js"
@@ -216,70 +218,7 @@ export default (props) => {
         </table>
       </div>
 
-      {/* Pagination Controls - styled to match original */}
-      <div className="pagination-wrapper">
-        <div className="pagination-controls">
-          <button
-            className="btn btn-secondary pagination-btn"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            {"<<"}
-          </button>
-          <button
-            className="btn btn-secondary pagination-btn"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </button>
-
-          <div className="pagination-info">
-            <span className="page-text">Page</span>
-            <input
-              type="number"
-              className="page-input"
-              value={table.getState().pagination.pageIndex + 1}
-              onChange={e => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0
-                table.setPageIndex(page)
-              }}
-              min="1"
-              max={table.getPageCount()}
-            />
-            <span className="page-text">of {table.getPageCount()}</span>
-          </div>
-
-          <select
-            className="form-control page-size-select"
-            value={table.getState().pagination.pageSize}
-            onChange={e => {
-              table.setPageSize(Number(e.target.value))
-            }}
-          >
-            {[5, 10, 20, 30, 40, 50].map(pageSize => (
-              <option key={pageSize} value={pageSize}>
-                {pageSize} rows
-              </option>
-            ))}
-          </select>
-
-          <button
-            className="btn btn-secondary pagination-btn"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </button>
-          <button
-            className="btn btn-secondary pagination-btn"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            {">>"}
-          </button>
-        </div>
-      </div>
+      <TablePagination table={table} />
     </div>
   )
 }
