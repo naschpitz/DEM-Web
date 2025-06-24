@@ -7,8 +7,7 @@
 
 .table-responsive .table {
     margin: 0 !important; /* Isolate from parent container margins */
-    table-layout: auto;
-    width: 100%;
+
 }
 
 .table-responsive .table th,
@@ -95,7 +94,6 @@
 /* First column styling for expansion buttons */
 .table-responsive .table td:first-child,
 .table-responsive .table th:first-child {
-    width: 30px;
     text-align: center;
 }
 
