@@ -68,6 +68,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("min", {
       header: "Min",
@@ -83,6 +84,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("max", {
       header: "Max",
@@ -98,6 +100,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.display({
       id: "remove",
@@ -169,10 +172,13 @@ export default (props) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    enableColumnResizing: true, // Enable resizing
+    columnResizeMode: "onChange", // "onEnd" also supported
     initialState: {
       pagination: {
         pageSize: 5,
       },
+      columnSizing: {}, // optional: initial sizes
     },
   })
 
@@ -210,13 +216,26 @@ export default (props) => {
                   <th
                     key={header.id}
                     className={header.column.columnDef.meta?.className || ""}
+                    style={{
+                      position: "relative",
+                      width: header.getSize(), // Dynamic width
+                    }}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+
+                    {/* Resize handle */}
+                    {header.column.getCanResize() && (
+                      <div
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
+                      />
+                    )}
                   </th>
                 ))}
               </tr>
