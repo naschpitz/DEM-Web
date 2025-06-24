@@ -73,7 +73,4 @@
     flex-shrink: 1;
 }
 
-/* Special case for videosTable that has border-bottom */
-#videosTable .pagination-wrapper {
-    border-bottom: 1px solid #dee2e6;
-}
+

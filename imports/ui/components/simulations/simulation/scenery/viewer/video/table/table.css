@@ -87,6 +87,11 @@
 
 
 
+/* Special pagination styling for videos table */
+#videosTable .pagination-wrapper {
+    border-bottom: 1px solid #dee2e6;
+}
+
 /* Loading and empty state styling */
 #videosTable .spinner-border {
     width: 2rem;
