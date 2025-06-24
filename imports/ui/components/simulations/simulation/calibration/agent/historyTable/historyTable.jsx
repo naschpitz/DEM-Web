@@ -3,6 +3,14 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { useNavigate } from "react-router-dom"
 
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  flexRender,
+  createColumnHelper,
+} from "@tanstack/react-table"
+
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 
 import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
@@ -10,7 +18,6 @@ import LogsClass from "../../../../../../../api/logs/both/class"
 
 import Alert from "../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
-import ReactTable from "react-table-v6"
 
 import "./historyTable.css"
 
@@ -50,88 +57,104 @@ export default (props) => {
     return LogsClass.find({ owner: { $in: simulationsIds } }).fetch()
   }, [agentHistories, isAgentHistoriesReady])
 
-  function getColumns() {
-    return [
+  // Create reactive data for the table - combine agentHistories with their logs
+  const data = React.useMemo(() => {
+    return agentHistories.map(agentHistory => {
+      const simulationLog = logs.find(log => log.owner === agentHistory.current.simulation)
+
+      return {
+        ...agentHistory,
+        log: simulationLog,
+        state: LogsClass.getState(simulationLog),
+        progress: LogsClass.getPercentage(simulationLog),
+      }
+    })
+  }, [agentHistories, logs])
+
+  const columnHelper = createColumnHelper()
+
+  const columns = React.useMemo(() => [
+    columnHelper.accessor(
+      row => row.iteration,
       {
-        Header: "Iteration",
         id: "iteration",
-        className: "text-center",
-        width: 75,
-        accessor: data => data.iteration,
-      },
+        header: "Iteration",
+        meta: { className: "text-center" },
+        size: 75,
+      }
+    ),
+    columnHelper.accessor(
+      row => (row.current.valid ? row.current.score : "Invalid"),
       {
-        Header: "Current Score",
         id: "currentScore",
-        className: "text-center",
-        width: 100,
-        accessor: data => (data.current.valid ? data.current.score : "Invalid"),
-      },
+        header: "Current Score",
+        meta: { className: "text-center" },
+        size: 100,
+      }
+    ),
+    columnHelper.accessor(
+      row => (row.best.valid ? row.best.score : "Invalid"),
       {
-        Header: "Best Score",
         id: "bestScore",
-        className: "text-center",
-        width: 100,
-        accessor: data => (data.best.valid ? data.best.score : "Invalid"),
-      },
+        header: "Best Score",
+        meta: { className: "text-center" },
+        size: 100,
+      }
+    ),
+    columnHelper.accessor(
+      row => (row.best.bestGlobal ? "Yes" : "No"),
       {
-        Header: "Was Best Global?",
         id: "wasBestGlobal",
-        className: "text-center",
-        width: 100,
-        accessor: data => (data.best.bestGlobal ? "Yes" : "No"),
-      },
-      {
-        Header: "State",
-        id: "state",
-        className: "text-center",
-        accessor: data => {
-          const simulationLog = logs.find(simulationLog => data.current.simulation === simulationLog.owner)
-
-          return LogsClass.getState(simulationLog)
-        },
-      },
-      {
-        Header: "Progress",
-        id: "progress",
-        className: "text-center",
-        accessor: data => {
-          const simulationLog = logs.find(simulationLog => data.current.simulation === simulationLog.owner)
-
-          return LogsClass.getPercentage(simulationLog)
-        },
-        Cell: cellInfo => (
+        header: "Was Best Global?",
+        meta: { className: "text-center" },
+        size: 100,
+      }
+    ),
+    columnHelper.accessor("state", {
+      id: "state",
+      header: "State",
+      meta: { className: "text-center" },
+    }),
+    columnHelper.accessor("progress", {
+      id: "progress",
+      header: "Progress",
+      cell: info => {
+        const progressData = info.getValue()
+        if (!progressData) return "N/A"
+        return (
           <div className="progress text-center">
             <div
-              className={getProgressBarClassName(cellInfo.original.current.simulation, cellInfo.value)}
+              className={getProgressBarClassName(info.row.original.current.simulation, progressData)}
               role="progressbar"
-              aria-valuenow={cellInfo.value.value}
+              aria-valuenow={progressData.value}
               aria-valuemin="0"
               aria-valuemax="100"
-              style={{ width: cellInfo.value.value + "%", color: "black" }}
+              style={{ width: progressData.value + "%", color: "black" }}
             >
-              {cellInfo.value.text}
+              {progressData.text}
             </div>
           </div>
-        ),
+        )
       },
-      {
-        Header: "Details",
-        id: "details",
-        className: "text-center",
-        Cell: cellInfo => (
-          <ButtonEnhanced
-            buttonOptions={{
-              regularText: "Details",
-              data: cellInfo,
-              onClick: onDetailsClick,
-              className: "btn btn-sm btn-info ml-auto mr-auto",
-              type: "button",
-            }}
-          />
-        ),
-      },
-    ]
-  }
+      meta: { className: "text-center" },
+    }),
+    columnHelper.display({
+      id: "details",
+      header: "Details",
+      cell: info => (
+        <ButtonEnhanced
+          buttonOptions={{
+            regularText: "Details",
+            data: info,
+            onClick: onDetailsClick,
+            className: "btn btn-sm btn-info ml-auto mr-auto",
+            type: "button",
+          }}
+        />
+      ),
+      meta: { className: "text-center" },
+    }),
+  ], [])
 
   function getProgressBarClassName(simulationId, percentage) {
     const simulationLog = logs.find(simulationLog => simulationId === simulationLog.owner)
@@ -153,23 +176,155 @@ export default (props) => {
   }
 
   function onDetailsClick(data) {
-    navigate("/simulations/" + data.original.current.simulation)
+    navigate("/simulations/" + data.row.original.current.simulation)
   }
 
   const isReady = isAgentHistoriesReady && isLogsReady
 
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 10,
+      },
+    },
+  })
+
+  if (!isReady) {
+    return (
+      <div id="historyTable">
+        <div className="text-center p-4">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading agent history list...</span>
+          </div>
+          <div className="mt-2">Loading agent history list...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (agentHistories.length === 0) {
+    return (
+      <div id="historyTable">
+        <div className="text-center p-4">
+          <div className="text-muted">No agent history found.</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div id="historyTable">
-      <ReactTable
-        data={agentHistories}
-        loading={!isReady}
-        loadingText="Loading agent history list..."
-        columns={getColumns()}
-        defaultPageSize={10}
-        collapseOnDataChange={false}
-        className="-striped -highlight"
-        getTdProps={() => ({ style: { display: "flex", flexDirection: "column", justifyContent: "center" } })}
-      />
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead>
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th
+                    key={header.id}
+                    className={header.column.columnDef.meta?.className || ""}
+                    style={{ width: header.column.columnDef.size ? `${header.column.columnDef.size}px` : 'auto' }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map(row => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map(cell => (
+                  <td
+                    key={cell.id}
+                    className={cell.column.columnDef.meta?.className || ""}
+                    style={{
+                      verticalAlign: "middle",
+                      width: cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : 'auto'
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Controls - responsive design */}
+      <div className="pagination-wrapper">
+        <div className="pagination-controls">
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </button>
+
+          <div className="pagination-info">
+            <span className="page-text">Page</span>
+            <input
+              type="number"
+              className="page-input"
+              value={table.getState().pagination.pageIndex + 1}
+              onChange={e => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              min="1"
+              max={table.getPageCount()}
+            />
+            <span className="page-text">of {table.getPageCount()}</span>
+          </div>
+
+          <select
+            className="form-control page-size-select"
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value))
+            }}
+          >
+            {[5, 10, 20, 30, 40, 50].map(pageSize => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize} rows
+              </option>
+            ))}
+          </select>
+
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </button>
+          <button
+            className="btn btn-secondary pagination-btn"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
