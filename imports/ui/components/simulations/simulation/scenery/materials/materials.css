@@ -77,7 +77,7 @@
 
 #materials .table thead th {
     border-bottom: 2px solid #dee2e6;
-    background-color: #f8f9fa;
+    background-color: #fdfdfd;
     font-weight: normal;
 }
 
@@ -110,7 +110,7 @@
 
 /* Pagination controls styling - responsive design */
 #materials .pagination-wrapper {
-    background-color: #f8f9fa;
+    background-color: #fdfdfd;
     border-top: 1px solid #dee2e6;
     padding: 8px 10px;
 }
