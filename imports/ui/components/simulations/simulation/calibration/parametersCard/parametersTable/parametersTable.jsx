@@ -68,6 +68,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("materialObject", {
       header: "Material / Object",
@@ -87,6 +88,7 @@ export default (props) => {
           }}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("coefficient", {
       header: "Coefficient",
@@ -106,6 +108,7 @@ export default (props) => {
           }}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("variation", {
       header: "Variation",
@@ -122,6 +125,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("c1", {
       header: "C1",
@@ -137,6 +141,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("c2", {
       header: "C2",
@@ -152,6 +157,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("perturbation", {
       header: "Perturbation",
@@ -168,6 +174,7 @@ export default (props) => {
           onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
         />
       ),
+      meta: { className: "text-center" },
     }),
     columnHelper.accessor("allowNegative", {
       header: "Allow Negative",
@@ -249,10 +256,13 @@ export default (props) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    enableColumnResizing: true, // Enable resizing
+    columnResizeMode: "onChange", // "onEnd" also supported
     initialState: {
       pagination: {
         pageSize: 5,
       },
+      columnSizing: {}, // optional: initial sizes
     },
   })
 
@@ -290,13 +300,26 @@ export default (props) => {
                   <th
                     key={header.id}
                     className={header.column.columnDef.meta?.className || ""}
+                    style={{
+                      position: "relative",
+                      width: header.getSize(), // Dynamic width
+                    }}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+
+                    {/* Resize handle */}
+                    {header.column.getCanResize() && (
+                      <div
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
+                      />
+                    )}
                   </th>
                 ))}
               </tr>

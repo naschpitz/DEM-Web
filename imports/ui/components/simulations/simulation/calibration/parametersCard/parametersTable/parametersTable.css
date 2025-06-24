@@ -1,18 +1,73 @@
-/* Table styling */
+/* Custom styling for the new table */
 #parametersTable .table {
     margin-bottom: 0;
 }
 
+#parametersTable .table th,
 #parametersTable .table td {
+    border-top: 1px solid #dee2e6;
+    padding: 0.5rem;
     vertical-align: middle;
 }
 
-#parametersTable .table th {
-    text-align: center;
-    vertical-align: middle;
+/* Ensure table has proper layout */
+#parametersTable .table {
+    table-layout: auto;
+    width: 100%;
+}
+
+#parametersTable .resizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 8px; /* Make it easier to grab */
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+    z-index: 1;
+    background-color: transparent; /* Ensure it's not blocking interaction */
+}
+
+#parametersTable .resizer:hover {
+    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
+}
+
+#parametersTable .resizer.isResizing {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+
+#parametersTable .table thead th {
     border-bottom: 2px solid #dee2e6;
     background-color: #f8f9fa;
     font-weight: normal;
+}
+
+#parametersTable .table th,
+#parametersTable .table td {
+    border-right: 1px solid #dee2e6; /* Add right border */
+}
+
+#parametersTable .table th:last-child,
+#parametersTable .table td:last-child {
+    border-right: none; /* Avoid double border on last column */
+}
+
+/* Maintain striped appearance with light/darker gray - override global styles */
+#parametersTable .table-striped > tbody > tr:nth-child(odd) > td,
+#parametersTable .table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #f8f9fa !important;
+}
+
+#parametersTable .table-striped > tbody > tr:nth-child(even) > td,
+#parametersTable .table-striped > tbody > tr:nth-child(even) > th {
+    background-color: #e9ecef !important;
+}
+
+/* Hover effect */
+#parametersTable .table-hover tbody tr:hover td,
+#parametersTable .table-hover tbody tr:hover th {
+    background-color: #dee2e6 !important;
 }
 
 /* Fix form input styling within table */
@@ -26,72 +81,10 @@
     align-items: center;
 }
 
-/* Column width adjustments */
-#parametersTable .table th:nth-child(1), /* Type */
-#parametersTable .table td:nth-child(1) {
-    width: 15%;
-    min-width: 120px;
-}
-
-#parametersTable .table th:nth-child(2), /* Material/Object */
-#parametersTable .table td:nth-child(2) {
-    width: 15%;
-    min-width: 150px;
-}
-
-#parametersTable .table th:nth-child(3), /* Coefficient */
-#parametersTable .table td:nth-child(3) {
-    width: 15%;
-    min-width: 120px;
-}
-
-#parametersTable .table th:nth-child(4), /* Variation */
-#parametersTable .table td:nth-child(4) {
-    width: 8%;
-    min-width: 80px;
-}
-
-#parametersTable .table th:nth-child(5), /* C1 */
-#parametersTable .table td:nth-child(5) {
-    width: 8%;
-    min-width: 80px;
-}
-
-#parametersTable .table th:nth-child(6), /* C2 */
-#parametersTable .table td:nth-child(6) {
-    width: 8%;
-    min-width: 80px;
-}
-
-#parametersTable .table th:nth-child(7), /* Perturbation */
-#parametersTable .table td:nth-child(7) {
-    width: 8%;
-    min-width: 80px;
-}
-
-#parametersTable .table th:nth-child(8), /* Allow Negative */
-#parametersTable .table td:nth-child(8) {
-    width: 10%;
-    min-width: 100px;
-}
-
-#parametersTable .table th:nth-child(9), /* Remove */
-#parametersTable .table td:nth-child(9) {
-    width: 8%;
-    min-width: 80px;
-}
-
-/* Ensure proper table layout */
-#parametersTable .table-responsive {
-    overflow-x: auto;
-}
-
 /* Pagination controls styling - responsive design */
 #parametersTable .pagination-wrapper {
-    margin-top: 1px; /* Minimal margin like original */
     background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-top: none;
+    border-top: 1px solid #dee2e6;
     padding: 8px 10px;
 }
 
@@ -231,4 +224,10 @@
         font-size: 14px;
         padding: 4px 8px;
     }
+}
+
+/* Loading and empty state styling */
+#parametersTable .spinner-border {
+    width: 2rem;
+    height: 2rem;
 }
