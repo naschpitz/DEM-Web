@@ -6,10 +6,9 @@
 }
 
 .table-responsive .table {
-    margin-bottom: 0;
+    margin: 0 !important; /* Isolate from parent container margins */
     table-layout: auto;
     width: 100%;
-    margin: 0 !important; /* Isolate from parent container margins */
 }
 
 .table-responsive .table th,
