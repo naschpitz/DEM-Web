@@ -235,10 +235,13 @@ export default (props) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    enableColumnResizing: true, // Enable resizing
+    columnResizeMode: "onChange", // "onEnd" also supported
     initialState: {
       pagination: {
         pageSize: 10,
       },
+      columnSizing: {}, // optional: initial sizes
     },
   })
 
@@ -276,14 +279,26 @@ export default (props) => {
                   <th
                     key={header.id}
                     className={header.column.columnDef.meta?.className || ""}
-                    style={{ width: header.column.columnDef.size ? `${header.column.columnDef.size}px` : 'auto' }}
+                    style={{
+                      position: "relative",
+                      width: header.getSize(), // Dynamic width
+                    }}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+
+                    {/* Resize handle */}
+                    {header.column.getCanResize() && (
+                      <div
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
+                      />
+                    )}
                   </th>
                 ))}
               </tr>
@@ -296,10 +311,7 @@ export default (props) => {
                   <td
                     key={cell.id}
                     className={cell.column.columnDef.meta?.className || ""}
-                    style={{
-                      verticalAlign: "middle",
-                      width: cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : 'auto'
-                    }}
+                    style={{ verticalAlign: "middle" }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

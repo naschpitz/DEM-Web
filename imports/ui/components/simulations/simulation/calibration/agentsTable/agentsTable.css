@@ -18,34 +18,82 @@
     text-align: center;
 }
 
-/* Table styling */
+/* Custom styling for the new table */
 #agentsTable .table {
     margin-bottom: 0;
 }
 
+#agentsTable .table th,
 #agentsTable .table td {
+    border-top: 1px solid #dee2e6;
+    padding: 0.5rem;
     vertical-align: middle;
 }
 
-#agentsTable .table th {
-    text-align: center;
-    vertical-align: middle;
+/* Ensure table has proper layout */
+#agentsTable .table {
+    table-layout: auto;
+    width: 100%;
+}
+
+#agentsTable .resizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 8px; /* Make it easier to grab */
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+    z-index: 1;
+    background-color: transparent; /* Ensure it's not blocking interaction */
+}
+
+#agentsTable .resizer:hover {
+    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
+}
+
+#agentsTable .resizer.isResizing {
+    background-color: rgba(0, 123, 255, 0.3);
+}
+
+#agentsTable .table thead th {
     border-bottom: 2px solid #dee2e6;
     background-color: #f8f9fa;
     font-weight: normal;
 }
 
-/* Ensure proper table layout */
-#agentsTable .table-responsive {
-    overflow-x: auto;
+#agentsTable .table th,
+#agentsTable .table td {
+    border-right: 1px solid #dee2e6; /* Add right border */
+}
+
+#agentsTable .table th:last-child,
+#agentsTable .table td:last-child {
+    border-right: none; /* Avoid double border on last column */
+}
+
+/* Maintain striped appearance with light/darker gray - override global styles */
+#agentsTable .table-striped > tbody > tr:nth-child(odd) > td,
+#agentsTable .table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #f8f9fa !important;
+}
+
+#agentsTable .table-striped > tbody > tr:nth-child(even) > td,
+#agentsTable .table-striped > tbody > tr:nth-child(even) > th {
+    background-color: #e9ecef !important;
+}
+
+/* Hover effect */
+#agentsTable .table-hover tbody tr:hover td,
+#agentsTable .table-hover tbody tr:hover th {
+    background-color: #dee2e6 !important;
 }
 
 /* Pagination controls styling - responsive design */
 #agentsTable .pagination-wrapper {
-    margin-top: 1px; /* Minimal margin like original */
     background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-top: none;
+    border-top: 1px solid #dee2e6;
     padding: 8px 10px;
 }
 
@@ -185,4 +233,10 @@
         font-size: 14px;
         padding: 4px 8px;
     }
+}
+
+/* Loading and empty state styling */
+#agentsTable .spinner-border {
+    width: 2rem;
+    height: 2rem;
 }
