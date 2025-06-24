@@ -79,7 +79,7 @@
 #simulationsTable .table thead th {
     border-bottom: 2px solid #dee2e6;
     background-color: #f8f9fa;
-    font-weight: 600;
+    font-weight: normal;
 }
 
 /* Maintain striped appearance with light/darker gray - override global styles */
