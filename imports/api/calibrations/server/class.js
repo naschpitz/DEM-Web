@@ -33,7 +33,7 @@ export default class Calibrations extends CalibrationsBoth {
       if (state === "running") await Agents.pause(agent._id)
     })
 
-    await Promise.all(agentsPromises)
+    await Promise.allSettled(agentsPromises)
   }
 
   static async stop(calibrationId) {
@@ -51,7 +51,7 @@ export default class Calibrations extends CalibrationsBoth {
       if (state === "running" || state === "paused") await Agents.stop(agent._id)
     })
 
-    await Promise.all(agentsPromises)
+    await Promise.allSettled(agentsPromises)
   }
 
   static async reset(calibrationId) {
