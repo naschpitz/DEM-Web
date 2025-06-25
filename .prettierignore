@@ -3,3 +3,50 @@
 results
 screenshots
 videos
+
+# Node modules
+node_modules
+
+# Build outputs
+build
+dist
+.build
+
+# Meteor specific
+.meteor/local
+.meteor/meteorite
+
+# Package files
+package-lock.json
+yarn.lock
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage
+.nyc_output
+
+# Logs
+*.log
+logs
+
+# Temporary files
+*.tmp
+*.temp
+
+# Cypress
+cypress/videos
+cypress/screenshots
+cypress/downloads
+
+# Private/sensitive files
+private/mup/*/settings.json
+private/mup/*/mup.js

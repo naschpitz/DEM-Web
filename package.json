@@ -9,7 +9,12 @@
     "test": "start-server-and-test start-test http://localhost:4000 cypress:open",
     "ci": "start-server-and-test start-test http://localhost:4000 cypress:run",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "visualize": "meteor --production --extra-packages bundle-visualizer"
+    "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,scss,json,html}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,css,scss,json,html}\"",
+    "format:staged": "node scripts/format-staged.js",
+    "setup-hooks": "node scripts/setup-git-hooks.js",
+    "remove-hooks": "node scripts/setup-git-hooks.js remove"
   },
   "cssModules": {
     "extensions": [
@@ -71,12 +76,20 @@
     "testModule": "tests/main.js"
   },
   "prettier": {
-    "trailingComma": "es5",
-    "semi": false,
-    "max-len": 120,
     "printWidth": 120,
     "tabWidth": 2,
-    "arrowParens": "avoid"
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": false,
+    "quoteProps": "as-needed",
+    "jsxSingleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "avoid",
+    "endOfLine": "lf",
+    "embeddedLanguageFormatting": "auto",
+    "singleAttributePerLine": false
   },
   "overrides": {
     "pbkdf2": "3.1.3",
