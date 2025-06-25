@@ -9,7 +9,6 @@ import SceneriesClass from "../../../../../api/sceneries/both/class.js"
 import { FaPlus } from "react-icons/fa"
 import Alert from "../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
-import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"
 
 import Charts from "./charts/charts.jsx"
@@ -271,7 +270,9 @@ export default props => {
   } else {
     return (
       <div className="container-fluid text-center" id="scenery">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading scenery...</span>
+        </div>
       </div>
     )
   }

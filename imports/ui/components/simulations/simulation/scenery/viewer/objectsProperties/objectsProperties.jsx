@@ -21,7 +21,6 @@ import ObjectsPropertiesClass from "../../../../../../../api/objectsProperties/b
 import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.js"
 
 import Alert from "../../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 import Properties from "./properties/properties.jsx"
 
 import "./objectsProperties.css"
@@ -142,7 +141,9 @@ export default props => {
     return (
       <div id="objectsProperties">
         <div className="text-center p-4">
-          <ClipLoader size={50} color={"#DDD"} loading={true} />
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading objects properties...</span>
+          </div>
           <div className="mt-2">Loading objects properties...</div>
         </div>
       </div>

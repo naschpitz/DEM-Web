@@ -6,7 +6,6 @@ import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
 import CalibrationClass from "../../../../../api/calibrations/both/class.js"
 
 import Alert from "../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 
 import AgentsTable from "./agentsTable/agentsTable.jsx"
 import CalibrationControl from "../../calibrationControl/calibrationControl.jsx"
@@ -79,7 +78,9 @@ export default props => {
   } else {
     return (
       <div className="container-fluid text-center" id="calibration">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading calibration...</span>
+        </div>
       </div>
     )
   }

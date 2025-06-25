@@ -10,7 +10,6 @@ import LogsClass from "../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../api/simulations/both/class"
 
 import Alert from "../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"
 
 import "./log.css"
@@ -187,7 +186,9 @@ export default props => {
   } else {
     return (
       <div className="text-center" id="log">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading log...</span>
+        </div>
       </div>
     )
   }

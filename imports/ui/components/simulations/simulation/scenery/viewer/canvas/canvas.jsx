@@ -1,7 +1,5 @@
 import React from "react"
 
-import ClipLoader from "react-spinners/ClipLoader"
-
 import "./canvas.css"
 
 export default props => {
@@ -15,7 +13,9 @@ export default props => {
     return (
       <div id="canvas">
         <div id="rendering" className="text-center">
-          <ClipLoader size={50} color={"#DDD"} loading={true} />
+          <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="sr-only">Rendering frame...</span>
+          </div>
           <p>Rendering frame...</p>
         </div>
       </div>

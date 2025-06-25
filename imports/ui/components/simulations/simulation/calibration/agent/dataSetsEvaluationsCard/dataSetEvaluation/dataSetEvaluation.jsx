@@ -6,7 +6,6 @@ import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.j
 import DataSetsClass from "../../../../../../../../api/dataSets/both/class.js"
 
 import Alert from "../../../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 
 import Chart from "./chart/chart.jsx"
 import DataDisplay from "./dataDisplay/dataDisplay.jsx"
@@ -46,7 +45,9 @@ export default props => {
   if (!isDataSetReady)
     return (
       <div className="container-fluid text-center" id="scenery">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading data set evaluation...</span>
+        </div>
       </div>
     )
 

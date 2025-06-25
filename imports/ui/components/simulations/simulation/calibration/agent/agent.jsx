@@ -8,7 +8,6 @@ import Agents from "../../../../../../api/agents/both/class"
 import Simulations from "../../../../../../api/simulations/both/class"
 
 import Alert from "../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 
 import DataSetsEvaluationsCard from "./dataSetsEvaluationsCard/dataSetsEvaluationsCard"
 import HistoryTable from "./historyTable/historyTable"
@@ -92,7 +91,9 @@ export default () => {
   } else {
     return (
       <div className="container-fluid text-center" id="agent">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading agent...</span>
+        </div>
       </div>
     )
   }

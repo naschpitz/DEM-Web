@@ -7,7 +7,6 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import AgentsHistories from "../../../../../../../api/agentsHistories/both/class"
 
 import Alert from "../../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"
 
 import DataSetEvaluation from "./dataSetEvaluation/dataSetEvaluation.jsx"
@@ -68,7 +67,9 @@ export default props => {
   if (!isAgentHistoriesReady)
     return (
       <div className="container-fluid text-center" id="scenery">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading data sets evaluations...</span>
+        </div>
       </div>
     )
 

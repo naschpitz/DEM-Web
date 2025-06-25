@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 
 import Alert from "../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./storage.css"
@@ -77,7 +76,9 @@ export default ({ scenery }) => {
   } else {
     return (
       <div className="container-fluid text-center" id="storage">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading storage...</span>
+        </div>
       </div>
     )
   }

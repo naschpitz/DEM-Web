@@ -7,7 +7,6 @@ import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
 
 import Alert from "../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaPlus } from "react-icons/fa"
 
@@ -87,7 +86,9 @@ export default props => {
   } else {
     return (
       <div className="container-fluid text-center" id="scenery">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading data sets...</span>
+        </div>
       </div>
     )
   }

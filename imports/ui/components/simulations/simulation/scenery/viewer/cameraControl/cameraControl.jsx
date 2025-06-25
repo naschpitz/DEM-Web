@@ -8,7 +8,6 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import CamerasClass from "../../../../../../../api/cameras/both/class.js"
 
 import Alert from "../../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 import FormInput from "@naschpitz/form-input"
 
 import "./cameraControl.css"
@@ -136,7 +135,9 @@ export default props => {
         </div>
       ) : (
         <div className="text-center">
-          <ClipLoader size={50} color={"#DDD"} loading={true} />
+          <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="sr-only">Loading camera...</span>
+          </div>
         </div>
       )}
     </div>

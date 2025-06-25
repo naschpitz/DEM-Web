@@ -8,7 +8,6 @@ import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
 import Alert from "../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader"
 
 import Calibration from "./calibration/calibration.jsx"
 import Main from "./main/main.jsx"
@@ -106,7 +105,9 @@ export default () => {
   } else {
     return (
       <div className="container-fluid text-center" id="simulation">
-        <ClipLoader size={50} color={"#DDD"} loading={true} />
+        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
+          <span className="sr-only">Loading simulation...</span>
+        </div>
       </div>
     )
   }
