@@ -66,7 +66,6 @@ export default (props) => {
           {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
         </button>
       ),
-      size: 30,
     }),
     columnHelper.accessor("name", {
       header: "Name",
@@ -117,8 +116,6 @@ export default (props) => {
     }),
   ], [isRemoving])
 
-
-
   function onEvent(event, data, name, value) {
     const material = { _id: data._id }
 
@@ -166,7 +163,11 @@ export default (props) => {
         pageSize: 5,
       },
       expanded: {},
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        expander: 20,
+        name: 1000,
+        remove: 200,
+      }, // optional: initial sizes
     },
   })
 

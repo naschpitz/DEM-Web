@@ -7,7 +7,6 @@
 
 .table-responsive .table {
     margin: 0 !important; /* Isolate from parent container margins */
-
 }
 
 .table-responsive .table th,
@@ -61,7 +60,6 @@
     color: #6c757d;
     cursor: pointer;
     line-height: 1;
-    min-width: 24px;
 }
 
 .table-responsive .expansion-btn:hover {

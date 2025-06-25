@@ -63,82 +63,80 @@ const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText 
   }
   
   return (
-    <>
-      <div className="table-responsive">
-        {/* Show empty text when there's no data but padRows is enabled */}
-        {emptyText && padRows && rows.length === 0 && (
-          <div className="empty-table-message">
-            <div className="text-center text-muted p-4">
-              {emptyText}
-            </div>
+    <div className="table-responsive">
+      {/* Show empty text when there's no data but padRows is enabled */}
+      {emptyText && padRows && rows.length === 0 && (
+        <div className="empty-table-message">
+          <div className="text-center text-muted p-4">
+            {emptyText}
           </div>
-        )}
+        </div>
+      )}
 
-        <table className="table table-striped table-hover" id={tableId}>
-          <thead>
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <th
-                    key={header.id}
-                    className={header.column.columnDef.meta?.className || ""}
-                    style={{
-                      position: "relative",
-                      width: header.getSize(), // Dynamic width
-                    }}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-
-                    {/* Resize handle */}
-                    {header.column.getCanResize() && (
-                      <div
-                        onMouseDown={header.getResizeHandler()}
-                        onTouchStart={header.getResizeHandler()}
-                        className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
-                      />
+      <table className="table table-striped table-hover" id={tableId}>
+        <thead>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => (
+                <th
+                  key={header.id}
+                  className={header.column.columnDef.meta?.className || ""}
+                  style={{
+                    position: "relative",
+                    width: header.getSize(), // Dynamic width
+                  }}
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
                     )}
-                  </th>
+
+                  {/* Resize handle */}
+                  {header.column.getCanResize() && (
+                    <div
+                      onMouseDown={header.getResizeHandler()}
+                      onTouchStart={header.getResizeHandler()}
+                      className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""}`}
+                    />
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {displayRows.map(row => (
+            <React.Fragment key={row.id}>
+              <tr className={isEmptyRow(row.original) ? "empty-row" : ""}>
+                {row.getVisibleCells().map(cell => (
+                  <td
+                    key={cell.id}
+                    className={cell.column.columnDef.meta?.className || ""}
+                    style={{ verticalAlign: "middle" }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
                 ))}
               </tr>
-            ))}
-          </thead>
-          <tbody>
-            {displayRows.map(row => (
-              <React.Fragment key={row.id}>
-                <tr className={isEmptyRow(row.original) ? "empty-row" : ""}>
-                  {row.getVisibleCells().map(cell => (
-                    <td
-                      key={cell.id}
-                      className={cell.column.columnDef.meta?.className || ""}
-                      style={{ verticalAlign: "middle" }}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
+              {row.getIsExpanded() && expansionComponent && (
+                <tr key={`${row.id}-expanded`}>
+                  <td colSpan={row.getVisibleCells().length + 1} style={{ padding: "1rem" }}>
+                    {typeof expansionComponent === 'function'
+                      ? expansionComponent(row.original)
+                      : expansionComponent
+                    }
+                  </td>
                 </tr>
-                {row.getIsExpanded() && expansionComponent && (
-                  <tr key={`${row.id}-expanded`}>
-                    <td colSpan={row.getVisibleCells().length + 1} style={{ padding: "1rem" }}>
-                      {typeof expansionComponent === 'function'
-                        ? expansionComponent(row.original)
-                        : expansionComponent
-                      }
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              )}
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
 
       <TablePagination table={table} />
-    </>
+    </div>
   )
 }
 
