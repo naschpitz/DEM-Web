@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
@@ -40,7 +40,7 @@ export default () => {
   }, [])
 
   // Create reactive data for the table
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return servers.map(server => ({
       ...server,
     }))
@@ -61,7 +61,7 @@ export default () => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = React.useMemo(() => [
+  const columns = useMemo(() => [
     columnHelper.accessor("name", {
       header: "Name",
       cell: info => (

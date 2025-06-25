@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { FaChevronRight, FaChevronDown } from "react-icons/all"
@@ -41,7 +41,7 @@ export default (props) => {
   }, [props.sceneryId])
 
   // Create reactive data for the table
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return materials.map(material => ({
       ...material,
     }))
@@ -49,7 +49,7 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = React.useMemo(() => [
+  const columns = useMemo(() => [
     columnHelper.display({
       id: "expander",
       header: () => null,

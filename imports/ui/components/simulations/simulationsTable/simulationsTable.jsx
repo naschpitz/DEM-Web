@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
@@ -52,7 +52,7 @@ export default (props) => {
     return LogsClass.find({ progress: { $exists: true } }, { sort: { createdAt: -1 } }).fetch()
   }, [props.simulationsIds])
 
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return simulations.map(simulation => {
       const log = logs.find(log => log.owner === simulation._id)
 
@@ -68,7 +68,7 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = React.useMemo(() => [
+  const columns = useMemo(() => [
     columnHelper.display({
       id: "expander",
       header: () => null,

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 import _ from "lodash"
@@ -38,7 +38,7 @@ export default (props) => {
   }, [props.sceneryId])
 
   // Create reactive data for the table
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return cameraFilters.map(cameraFilter => ({
       ...cameraFilter,
     }))
@@ -53,7 +53,7 @@ export default (props) => {
     { value: "z", text: "Z" },
   ]
 
-  const columns = React.useMemo(() => [
+  const columns = useMemo(() => [
     columnHelper.accessor("axis", {
       header: "Axis",
       cell: info => (

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { useNavigate } from "react-router-dom"
@@ -59,7 +59,7 @@ export default (props) => {
   }, [agentHistories, isAgentHistoriesReady])
 
   // Create reactive data for the table - combine agentHistories with their logs
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return agentHistories.map(agentHistory => {
       const simulationLog = logs.find(log => log.owner === agentHistory.current.simulation)
 
@@ -74,7 +74,7 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = React.useMemo(() => [
+  const columns = useMemo(() => [
     columnHelper.accessor(
       row => row.iteration,
       {

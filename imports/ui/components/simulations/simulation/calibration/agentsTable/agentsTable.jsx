@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
@@ -11,7 +11,6 @@ import {
 } from "@tanstack/react-table"
 
 import Table from "../../../../table/table.jsx"
-
 
 import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
 
@@ -85,7 +84,7 @@ export default (props) => {
   }, [isLogsReady, isSimulationsReady, agents])
 
   // Create reactive data for the table
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return tableData.map(item => ({
       ...item,
     }))
@@ -93,7 +92,7 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = React.useMemo(() => [
+  const columns = useMemo(() => [
     columnHelper.accessor(
       row => "#" + row.agent.index,
       {

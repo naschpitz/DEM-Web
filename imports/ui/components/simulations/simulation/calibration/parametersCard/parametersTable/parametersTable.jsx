@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
@@ -38,7 +38,7 @@ export default (props) => {
   }, [props.calibrationId])
 
   // Create reactive data for the table
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return parameters.map(parameter => ({
       ...parameter,
     }))
@@ -53,7 +53,7 @@ export default (props) => {
     { value: "solidObject", text: "Solid Object" },
   ]
 
-  const columns = React.useMemo(() => [
+  const columns = useMemo(() => [
     columnHelper.accessor("type", {
       header: "Type",
       cell: info => (
