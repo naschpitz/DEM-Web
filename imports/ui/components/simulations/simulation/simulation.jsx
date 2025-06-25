@@ -8,6 +8,7 @@ import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
 import Alert from "../../../utils/alert.js"
+import Spinner from "../../spinner/spinner.jsx"
 
 import Calibration from "./calibration/calibration.jsx"
 import Main from "./main/main.jsx"
@@ -104,10 +105,8 @@ export default () => {
     )
   } else {
     return (
-      <div className="container-fluid text-center" id="simulation">
-        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-          <span className="sr-only">Loading simulation...</span>
-        </div>
+      <div className="container-fluid" id="simulation">
+        <Spinner message="Loading simulation..." />
       </div>
     )
   }

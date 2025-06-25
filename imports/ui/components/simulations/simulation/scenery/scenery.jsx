@@ -10,6 +10,7 @@ import { FaPlus } from "react-icons/fa"
 import Alert from "../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
+import Spinner from "../../../spinner/spinner.jsx"
 
 import Charts from "./charts/charts.jsx"
 import Materials from "./materials/materials.jsx"
@@ -269,10 +270,8 @@ export default props => {
     )
   } else {
     return (
-      <div className="container-fluid text-center" id="scenery">
-        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-          <span className="sr-only">Loading scenery...</span>
-        </div>
+      <div className="container-fluid" id="scenery">
+        <Spinner message="Loading scenery..." />
       </div>
     )
   }

@@ -8,6 +8,7 @@ import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
 
 import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
+import Spinner from "../../../../spinner/spinner.jsx"
 import { FaPlus } from "react-icons/fa"
 
 import DataSet from "./dataSet/dataSet.jsx"
@@ -85,10 +86,8 @@ export default props => {
     )
   } else {
     return (
-      <div className="container-fluid text-center" id="scenery">
-        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-          <span className="sr-only">Loading data sets...</span>
-        </div>
+      <div className="container-fluid" id="scenery">
+        <Spinner message="Loading data sets..." />
       </div>
     )
   }

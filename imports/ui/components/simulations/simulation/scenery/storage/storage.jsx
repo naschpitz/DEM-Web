@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor"
 
 import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
+import Spinner from "../../../../spinner/spinner.jsx"
 
 import "./storage.css"
 
@@ -75,10 +76,8 @@ export default ({ scenery }) => {
     )
   } else {
     return (
-      <div className="container-fluid text-center" id="storage">
-        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-          <span className="sr-only">Loading storage...</span>
-        </div>
+      <div className="container-fluid" id="storage">
+        <Spinner message="Loading storage..." />
       </div>
     )
   }

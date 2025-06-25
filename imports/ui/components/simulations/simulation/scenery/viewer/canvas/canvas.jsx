@@ -1,5 +1,7 @@
 import React from "react"
 
+import Spinner from "../../../../../spinner/spinner.jsx"
+
 import "./canvas.css"
 
 export default props => {
@@ -12,11 +14,8 @@ export default props => {
   if (props.isRendering) {
     return (
       <div id="canvas">
-        <div id="rendering" className="text-center">
-          <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-            <span className="sr-only">Rendering frame...</span>
-          </div>
-          <p>Rendering frame...</p>
+        <div id="rendering">
+          <Spinner message="Rendering frame..." />
         </div>
       </div>
     )

@@ -9,6 +9,7 @@ import CamerasClass from "../../../../../../../api/cameras/both/class.js"
 
 import Alert from "../../../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
+import Spinner from "../../../../../spinner/spinner.jsx"
 
 import "./cameraControl.css"
 
@@ -134,11 +135,7 @@ export default props => {
           </div>
         </div>
       ) : (
-        <div className="text-center">
-          <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-            <span className="sr-only">Loading camera...</span>
-          </div>
-        </div>
+        <Spinner message="Loading camera..." />
       )}
     </div>
   )

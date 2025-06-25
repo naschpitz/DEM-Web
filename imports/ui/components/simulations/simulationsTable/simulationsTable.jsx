@@ -23,6 +23,7 @@ import LogsClass from "../../../../api/logs/both/class.js"
 import Alert from "../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
+import Spinner from "../../spinner/spinner.jsx"
 
 import SimulationControl from "../simulationControl/simulationControl.jsx"
 
@@ -228,12 +229,7 @@ export default props => {
   if (!isReady) {
     return (
       <div id="simulationsTable">
-        <div className="text-center p-4">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading simulations list...</span>
-          </div>
-          <div className="mt-2">Loading simulations list...</div>
-        </div>
+        <Spinner message="Loading simulations list..." />
       </div>
     )
   }

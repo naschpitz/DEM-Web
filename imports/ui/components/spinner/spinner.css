@@ -1,0 +1,23 @@
+/* Spinner component styles */
+
+/* Optional: Custom spinner colors or animations can be added here */
+.spinner-container {
+  /* Any additional container styling if needed */
+}
+
+/* Optional: Custom spinner border colors */
+.spinner-border.spinner-primary {
+  border-color: #007bff transparent transparent transparent;
+}
+
+.spinner-border.spinner-success {
+  border-color: #28a745 transparent transparent transparent;
+}
+
+.spinner-border.spinner-warning {
+  border-color: #ffc107 transparent transparent transparent;
+}
+
+.spinner-border.spinner-danger {
+  border-color: #dc3545 transparent transparent transparent;
+}

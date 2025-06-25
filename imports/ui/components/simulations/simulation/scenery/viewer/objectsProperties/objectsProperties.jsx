@@ -22,6 +22,7 @@ import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.
 
 import Alert from "../../../../../../utils/alert.js"
 import Properties from "./properties/properties.jsx"
+import Spinner from "../../../../../spinner/spinner.jsx"
 
 import "./objectsProperties.css"
 
@@ -140,12 +141,7 @@ export default props => {
   if (!isReady) {
     return (
       <div id="objectsProperties">
-        <div className="text-center p-4">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading objects properties...</span>
-          </div>
-          <div className="mt-2">Loading objects properties...</div>
-        </div>
+        <Spinner message="Loading objects properties..." />
       </div>
     )
   }

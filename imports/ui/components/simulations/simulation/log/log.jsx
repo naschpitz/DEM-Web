@@ -11,6 +11,7 @@ import SimulationsClass from "../../../../../api/simulations/both/class"
 
 import Alert from "../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
+import Spinner from "../../../spinner/spinner.jsx"
 
 import "./log.css"
 
@@ -185,10 +186,8 @@ export default props => {
     )
   } else {
     return (
-      <div className="text-center" id="log">
-        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-          <span className="sr-only">Loading log...</span>
-        </div>
+      <div id="log">
+        <Spinner message="Loading log..." />
       </div>
     )
   }

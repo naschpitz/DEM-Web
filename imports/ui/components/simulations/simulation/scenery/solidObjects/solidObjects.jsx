@@ -20,6 +20,7 @@ import SolidObjectsClass from "../../../../../../api/solidObjects/both/class.js"
 
 import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
+import Spinner from "../../../../spinner/spinner.jsx"
 import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"
 
@@ -175,12 +176,7 @@ export default props => {
   if (!isReady) {
     return (
       <div id="solidObjects">
-        <div className="text-center p-4">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading solid objects...</span>
-          </div>
-          <div className="mt-2">Loading solid objects...</div>
-        </div>
+        <Spinner message="Loading solid objects..." />
       </div>
     )
   }

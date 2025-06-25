@@ -8,6 +8,7 @@ import Agents from "../../../../../../api/agents/both/class"
 import Simulations from "../../../../../../api/simulations/both/class"
 
 import Alert from "../../../../../utils/alert.js"
+import Spinner from "../../../../spinner/spinner.jsx"
 
 import DataSetsEvaluationsCard from "./dataSetsEvaluationsCard/dataSetsEvaluationsCard"
 import HistoryTable from "./historyTable/historyTable"
@@ -90,10 +91,8 @@ export default () => {
     }
   } else {
     return (
-      <div className="container-fluid text-center" id="agent">
-        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-          <span className="sr-only">Loading agent...</span>
-        </div>
+      <div className="container-fluid" id="agent">
+        <Spinner message="Loading agent..." />
       </div>
     )
   }

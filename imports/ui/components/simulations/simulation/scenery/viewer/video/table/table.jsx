@@ -13,6 +13,7 @@ import VideosClass from "../../../../../../../../api/videos/both/class.js"
 
 import Alert from "../../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
+import Spinner from "../../../../../../spinner/spinner.jsx"
 import FormInput from "@naschpitz/form-input"
 
 import "./table.css"
@@ -222,12 +223,7 @@ export default ({ sceneryId }) => {
   if (!isReady) {
     return (
       <div id="videosTable">
-        <div className="text-center p-4">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading videos list...</span>
-          </div>
-          <div className="mt-2">Loading videos list...</div>
-        </div>
+        <Spinner message="Loading videos list..." />
       </div>
     )
   }

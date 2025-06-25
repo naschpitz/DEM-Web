@@ -8,6 +8,7 @@ import AgentsHistories from "../../../../../../../api/agentsHistories/both/class
 
 import Alert from "../../../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
+import Spinner from "../../../../../spinner/spinner.jsx"
 
 import DataSetEvaluation from "./dataSetEvaluation/dataSetEvaluation.jsx"
 
@@ -66,10 +67,8 @@ export default props => {
 
   if (!isAgentHistoriesReady)
     return (
-      <div className="container-fluid text-center" id="scenery">
-        <div className="spinner-border" role="status" style={{ width: "3rem", height: "3rem" }}>
-          <span className="sr-only">Loading data sets evaluations...</span>
-        </div>
+      <div className="container-fluid" id="scenery">
+        <Spinner message="Loading data sets evaluations..." />
       </div>
     )
 
