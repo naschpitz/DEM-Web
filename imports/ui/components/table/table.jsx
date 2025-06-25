@@ -7,12 +7,40 @@ import { padTableData, isEmptyRow } from "./utils"
 
 import "./table.css"
 
+// Internal component for empty table message
+const EmptyMessage = ({ text, isOverlay = false }) => {
+  const messageContent = (
+    <div className="text-center text-muted p-4">
+      {text}
+    </div>
+  )
+
+  if (isOverlay) {
+    return (
+      <div className="empty-table-message-overlay">
+        {messageContent}
+      </div>
+    )
+  }
+
+  return messageContent
+}
+
 const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText = null }) => {
   // Get the current page size from the table state
   const currentPageSize = table.getState().pagination.pageSize
 
   // Get the rows to display, with padding if enabled
   const rows = table.getRowModel().rows
+
+  // When padRows is false and emptyText is provided and there's no data, show only the empty message
+  if (!padRows && emptyText && rows.length === 0) {
+    return (
+      <div className="table-container">
+        <EmptyMessage text={emptyText} />
+      </div>
+    )
+  }
 
   let displayRows = rows
 
@@ -61,16 +89,12 @@ const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText 
       })
     }
   }
-  
+
   return (
-    <div className="table-responsive">
+    <div className="table-container">
       {/* Show empty text when there's no data but padRows is enabled */}
       {emptyText && padRows && rows.length === 0 && (
-        <div className="empty-table-message">
-          <div className="text-center text-muted p-4">
-            {emptyText}
-          </div>
-        </div>
+        <EmptyMessage text={emptyText} isOverlay={true} />
       )}
 
       <table className="table table-striped table-hover" id={tableId}>

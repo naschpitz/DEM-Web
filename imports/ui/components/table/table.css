@@ -1,36 +1,36 @@
 /* Common table styling for Table component */
 
 /* Custom styling for the table */
-.table-responsive {
+.table-container {
     position: relative; /* For absolute positioning of empty message */
 }
 
-.table-responsive .table {
+.table-container .table {
     margin: 0 !important; /* Isolate from parent container margins */
 }
 
-.table-responsive .table th,
-.table-responsive .table td {
+.table-container .table th,
+.table-container .table td {
     border-top: 1px solid #dee2e6;
     padding: 0.5rem;
     vertical-align: middle;
     border-right: 1px solid #dee2e6; /* Add right border */
 }
 
-.table-responsive .table th:last-child,
-.table-responsive .table td:last-child {
+.table-container .table th:last-child,
+.table-container .table td:last-child {
     border-right: none; /* Avoid double border on last column */
 }
 
 /* Table header styling */
-.table-responsive .table thead th {
+.table-container .table thead th {
     border-bottom: 2px solid #dee2e6;
     background-color: #fdfdfd;
     font-weight: normal;
 }
 
 /* Column resizer styling */
-.table-responsive .resizer {
+.table-container .resizer {
     position: absolute;
     right: 0;
     top: 0;
@@ -43,16 +43,16 @@
     background-color: transparent; /* Ensure it's not blocking interaction */
 }
 
-.table-responsive .resizer:hover {
+.table-container .resizer:hover {
     background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
 }
 
-.table-responsive .resizer.isResizing {
+.table-container .resizer.isResizing {
     background-color: rgba(0, 123, 255, 0.3);
 }
 
 /* Expansion button styling */
-.table-responsive .expansion-btn {
+.table-container .expansion-btn {
     border: none !important;
     background: none !important;
     font-size: 14px;
@@ -62,56 +62,56 @@
     line-height: 1;
 }
 
-.table-responsive .expansion-btn:hover {
+.table-container .expansion-btn:hover {
     color: #495057;
     background-color: rgba(0,0,0,0.05) !important;
 }
 
-.table-responsive .expansion-btn:focus {
+.table-container .expansion-btn:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0,123,255,.25);
 }
 
 /* Maintain striped appearance with light/darker gray - override global styles */
-.table-responsive .table-striped > tbody > tr:nth-child(odd) > td,
-.table-responsive .table-striped > tbody > tr:nth-child(odd) > th {
+.table-container .table-striped > tbody > tr:nth-child(odd) > td,
+.table-container .table-striped > tbody > tr:nth-child(odd) > th {
     background-color: #f8f9fa !important;
 }
 
-.table-responsive .table-striped > tbody > tr:nth-child(even) > td,
-.table-responsive .table-striped > tbody > tr:nth-child(even) > th {
+.table-container .table-striped > tbody > tr:nth-child(even) > td,
+.table-container .table-striped > tbody > tr:nth-child(even) > th {
     background-color: #e9ecef !important;
 }
 
 /* Hover effect */
-.table-responsive .table-hover tbody tr:hover td,
-.table-responsive .table-hover tbody tr:hover th {
+.table-container .table-hover tbody tr:hover td,
+.table-container .table-hover tbody tr:hover th {
     background-color: #dee2e6 !important;
 }
 
 /* First column styling for expansion buttons */
-.table-responsive .table td:first-child,
-.table-responsive .table th:first-child {
+.table-container .table td:first-child,
+.table-container .table th:first-child {
     text-align: center;
 }
 
 /* Empty row styling */
-.table-responsive .table tbody tr.empty-row {
+.table-container .table tbody tr.empty-row {
     background-color: transparent !important;
     height: 45px; /* Maintain consistent row height */
 }
 
-.table-responsive .table tbody tr.empty-row:hover {
+.table-container .table tbody tr.empty-row:hover {
     background-color: transparent !important; /* Prevent hover effect on empty rows */
 }
 
-.table-responsive .table tbody tr.empty-row td {
+.table-container .table tbody tr.empty-row td {
     border-top: 1px solid #dee2e6;
     border-bottom: none;
 }
 
 /* Empty table message styling */
-.table-responsive .empty-table-message {
+.table-container .empty-table-message-overlay {
     position: absolute;
     top: 50%;
     left: 50%;

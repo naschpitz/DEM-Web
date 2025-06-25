@@ -10,7 +10,7 @@
 /* Table-specific styles are now handled by Table component */
 
 /* Videos table specific styling */
-#videosTable .table-responsive {
+#videosTable .table-container {
     border-left: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
 }
