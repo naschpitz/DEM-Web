@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor"
 
 import Alert from "../../ui/utils/alert.js"
 
-import getErrorMessage from "../../api/utils/getErrorMessage";
+import getErrorMessage from "../../api/utils/getErrorMessage"
 
 Accounts.onEmailVerificationLink(function (token) {
   Accounts.verifyEmail(token, verifyCallback)

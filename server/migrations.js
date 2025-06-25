@@ -100,10 +100,18 @@ Migrations.add({
   version: 6,
   name: "Add 'numIterations' and 'minPercentage' property to Calibration",
   up: async () => {
-    await Calibrations.updateAsync({}, { $set: { numIterations: 3, minPercentage: 0.01 } }, { validate: false, multi: true })
+    await Calibrations.updateAsync(
+      {},
+      { $set: { numIterations: 3, minPercentage: 0.01 } },
+      { validate: false, multi: true }
+    )
   },
   down: async () => {
-    await Calibrations.updateAsync({}, { $unset: { numIterations: "", minPercentage: "" } }, { validate: false, multi: true })
+    await Calibrations.updateAsync(
+      {},
+      { $unset: { numIterations: "", minPercentage: "" } },
+      { validate: false, multi: true }
+    )
   },
 })
 
@@ -143,7 +151,7 @@ Migrations.add({
     // For Each Agent
     await Agents.find().forEachAsync(async agent => {
       // Find the Agent's histories
-      const agentHistories = await AgentsHistories.find({ owner: agent._id }, { sort: { iteration : 1 }}).fetchAsync()
+      const agentHistories = await AgentsHistories.find({ owner: agent._id }, { sort: { iteration: 1 } }).fetchAsync()
 
       // Build the history array from the AgentHistories
       const history = agentHistories.map(agentHistory => {
@@ -160,5 +168,5 @@ Migrations.add({
 
     // Remove the AgentHistories collection
     AgentsHistories.rawCollection().drop()
-  }
+  },
 })

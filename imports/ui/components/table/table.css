@@ -2,125 +2,123 @@
 
 /* Custom styling for the table */
 .table-container {
-    position: relative; /* For absolute positioning of empty message */
+  position: relative; /* For absolute positioning of empty message */
 }
 
 .table-container .table {
-    margin: 0 !important; /* Isolate from parent container margins */
+  margin: 0 !important; /* Isolate from parent container margins */
 }
 
 .table-container .table th,
 .table-container .table td {
-    border-top: 1px solid #dee2e6;
-    padding: 0.5rem;
-    vertical-align: middle;
-    border-right: 1px solid #dee2e6; /* Add right border */
+  border-top: 1px solid #dee2e6;
+  padding: 0.5rem;
+  vertical-align: middle;
+  border-right: 1px solid #dee2e6; /* Add right border */
 }
 
 .table-container .table th:last-child,
 .table-container .table td:last-child {
-    border-right: none; /* Avoid double border on last column */
+  border-right: none; /* Avoid double border on last column */
 }
 
 /* Table header styling */
 .table-container .table thead th {
-    border-bottom: 2px solid #dee2e6;
-    background-color: #fdfdfd;
-    font-weight: normal;
+  border-bottom: 2px solid #dee2e6;
+  background-color: #fdfdfd;
+  font-weight: normal;
 }
 
 /* Column resizer styling */
 .table-container .resizer {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 8px; /* Make it easier to grab */
-    cursor: col-resize;
-    user-select: none;
-    touch-action: none;
-    z-index: 1;
-    background-color: transparent; /* Ensure it's not blocking interaction */
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 8px; /* Make it easier to grab */
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+  z-index: 1;
+  background-color: transparent; /* Ensure it's not blocking interaction */
 }
 
 .table-container .resizer:hover {
-    background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
+  background-color: rgba(0, 123, 255, 0.15); /* Visual cue */
 }
 
 .table-container .resizer.isResizing {
-    background-color: rgba(0, 123, 255, 0.3);
+  background-color: rgba(0, 123, 255, 0.3);
 }
 
 /* Expansion button styling */
 .table-container .expansion-btn {
-    border: none !important;
-    background: none !important;
-    font-size: 14px;
-    padding: 4px 8px;
-    color: #6c757d;
-    cursor: pointer;
-    line-height: 1;
+  border: none !important;
+  background: none !important;
+  font-size: 14px;
+  padding: 4px 8px;
+  color: #6c757d;
+  cursor: pointer;
+  line-height: 1;
 }
 
 .table-container .expansion-btn:hover {
-    color: #495057;
-    background-color: rgba(0,0,0,0.05) !important;
+  color: #495057;
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 .table-container .expansion-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 /* Maintain striped appearance with light/darker gray - override global styles */
 .table-container .table-striped > tbody > tr:nth-child(odd) > td,
 .table-container .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: #f8f9fa !important;
+  background-color: #f8f9fa !important;
 }
 
 .table-container .table-striped > tbody > tr:nth-child(even) > td,
 .table-container .table-striped > tbody > tr:nth-child(even) > th {
-    background-color: #e9ecef !important;
+  background-color: #e9ecef !important;
 }
 
 /* Hover effect */
 .table-container .table-hover tbody tr:hover td,
 .table-container .table-hover tbody tr:hover th {
-    background-color: #dee2e6 !important;
+  background-color: #dee2e6 !important;
 }
 
 /* First column styling for expansion buttons */
 .table-container .table td:first-child,
 .table-container .table th:first-child {
-    text-align: center;
+  text-align: center;
 }
 
 /* Empty row styling */
 .table-container .table tbody tr.empty-row {
-    background-color: transparent !important;
-    height: 45px; /* Maintain consistent row height */
+  background-color: transparent !important;
+  height: 45px; /* Maintain consistent row height */
 }
 
 .table-container .table tbody tr.empty-row:hover {
-    background-color: transparent !important; /* Prevent hover effect on empty rows */
+  background-color: transparent !important; /* Prevent hover effect on empty rows */
 }
 
 .table-container .table tbody tr.empty-row td {
-    border-top: 1px solid #dee2e6;
-    border-bottom: none;
+  border-top: 1px solid #dee2e6;
+  border-bottom: none;
 }
 
 /* Empty table message styling */
 .table-container .empty-table-message-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    min-width: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
 }
-
-

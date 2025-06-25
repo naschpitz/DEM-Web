@@ -2,11 +2,11 @@
 
 /* Fix form input styling within table */
 #cameraFiltersTable .table td #formInput {
-    margin: 0;
+  margin: 0;
 }
 
 /* Loading and empty state styling */
 #cameraFiltersTable .spinner-border {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }

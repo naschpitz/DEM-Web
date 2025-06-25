@@ -1,14 +1,14 @@
 import { Mongo } from "meteor/mongo"
-import 'meteor/aldeed:collection2/static'
-import SimpleSchema from 'meteor/aldeed:simple-schema'
+import "meteor/aldeed:collection2/static"
+import SimpleSchema from "meteor/aldeed:simple-schema"
 
-import AgentsDAO from "../../agents/both/dao";
-import CalibrationsDAO from "../../agents/both/dao";
-import SimulationsDAO from "../../simulations/both/dao";
+import AgentsDAO from "../../agents/both/dao"
+import CalibrationsDAO from "../../agents/both/dao"
+import SimulationsDAO from "../../simulations/both/dao"
 
-import SimulationScore from "./schemas/simulationScore";
+import SimulationScore from "./schemas/simulationScore"
 
-const AgentsHistories = new Mongo.Collection("agentsHistories");
+const AgentsHistories = new Mongo.Collection("agentsHistories")
 
 AgentsHistories.schema = new SimpleSchema({
   owner: {

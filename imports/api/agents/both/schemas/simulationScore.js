@@ -1,6 +1,6 @@
-import 'meteor/aldeed:collection2/static'
-import SimpleSchema from 'meteor/aldeed:simple-schema'
-import DataSetEvaluation from "../../../agentsHistories/both/schemas/dataSetEvaluation";
+import "meteor/aldeed:collection2/static"
+import SimpleSchema from "meteor/aldeed:simple-schema"
+import DataSetEvaluation from "../../../agentsHistories/both/schemas/dataSetEvaluation"
 
 export default new SimpleSchema({
   score: {

@@ -1,25 +1,25 @@
 #log .row [class*="col-"]:not(:last-child) #formInput {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #log .progress {
-    margin: 0px 0px 10px;
-    height: 31px;
-    text-align: center;
+  margin: 0px 0px 10px;
+  height: 31px;
+  text-align: center;
 
-    background-color: #ced4da;
+  background-color: #ced4da;
 }
 
 #log .progress-bar {
-    padding-top: 6px;
-    padding-bottom: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 #log .massive-font {
-    font-size: 15px;
-    text-align: center;
+  font-size: 15px;
+  text-align: center;
 }
 
 #log #data {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }

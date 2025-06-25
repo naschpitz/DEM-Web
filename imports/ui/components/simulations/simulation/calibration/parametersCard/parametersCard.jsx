@@ -9,7 +9,7 @@ import ParametersTable from "./parametersTable/parametersTable"
 
 import "./parametersCard.css"
 
-export default (props) => {
+export default props => {
   const [isCreatingParameter, setIsCreatingParameter] = useState(false)
 
   function onCreateParameterDone(result) {
@@ -21,7 +21,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Parameter successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating parameters: " + error.reason)
       })
       .finally(() => {

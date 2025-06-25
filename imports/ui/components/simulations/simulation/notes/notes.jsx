@@ -10,11 +10,11 @@ import FormInput from "@naschpitz/form-input"
 
 import "./notes.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
   const [timerId, setTimerId] = useState(null)
 
-  const simulationId = props.simulationId;
+  const simulationId = props.simulationId
 
   useTracker(() => {
     setIsReady(false)
@@ -54,7 +54,7 @@ export default (props) => {
         .then(() => {
           Alert.success("Notes saved.", { timeout: 2000 })
         })
-        .catch((error) => {
+        .catch(error => {
           Alert.error("Error saving notes: " + error.reason)
         })
     }

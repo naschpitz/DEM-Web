@@ -1,24 +1,24 @@
 #agentsTable .alert {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 #agentsTable .progress {
-    margin: 0px;
-    height: 31px;
-    text-align: center;
+  margin: 0px;
+  height: 31px;
+  text-align: center;
 
-    background-color: #ced4da;
+  background-color: #ced4da;
 }
 
 #agentsTable .massive-font {
-    font-size: 15px;
-    text-align: center;
+  font-size: 15px;
+  text-align: center;
 }
 
 /* Table-specific styles are now handled by ResponsiveTable component */
 
 /* Loading and empty state styling */
 #agentsTable .spinner-border {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }

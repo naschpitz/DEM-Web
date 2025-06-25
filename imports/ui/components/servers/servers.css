@@ -1,21 +1,21 @@
 #servers {
-    margin-top: 20px;
-    margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #servers #formInput {
-    margin: 0px;
+  margin: 0px;
 }
 
 /* Table-specific styles are now handled by ResponsiveTable component */
 
 /* Fix form input styling within table */
 #servers .table td #formInput {
-    margin: 0;
+  margin: 0;
 }
 
 /* Loading and empty state styling */
 #servers .spinner-border {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }

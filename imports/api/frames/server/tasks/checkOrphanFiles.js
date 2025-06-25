@@ -55,7 +55,7 @@ const bound = Meteor.bindEnvironment(async () => {
   console.log(`Removed ${s3FilesToRemove.length} orphan files from S3 storage.`)
 })
 
-const task = (ready) => {
+const task = ready => {
   bound()
   ready()
 }

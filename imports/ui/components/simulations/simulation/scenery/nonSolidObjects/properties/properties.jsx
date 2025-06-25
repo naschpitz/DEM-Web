@@ -12,7 +12,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./properties.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -32,10 +32,9 @@ export default (props) => {
     _.set(object, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "fixed" || name === "material"))) {
-      Meteor.callAsync("nonSolidObjects.update", object)
-        .catch((error) => {
-          Alert.error("Error saving non-solid object: " + error.reason)
-        })
+      Meteor.callAsync("nonSolidObjects.update", object).catch(error => {
+        Alert.error("Error saving non-solid object: " + error.reason)
+      })
     }
   }
 

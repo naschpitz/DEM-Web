@@ -7,7 +7,7 @@ import { getDragForcesCoefficientsOptions, getForcesCoefficientsOptions } from "
 import Alert from "../../../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
 
-export default (props) => {
+export default props => {
   const [options, setOptions] = useState([])
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default (props) => {
     switch (props.type) {
       case "material": {
         Meteor.callAsync("materials.getById", props.materialObjectId)
-          .then((result) => {
+          .then(result => {
             const coefficients = getForcesCoefficientsOptions(result.forceType)
             const dragCoefficients = getDragForcesCoefficientsOptions(result.dragForceType)
 
@@ -28,7 +28,7 @@ export default (props) => {
               ...dragCoefficients,
             ])
           })
-          .catch((error) => {
+          .catch(error => {
             Alert.error("Error: " + getErrorMessage(error))
           })
 

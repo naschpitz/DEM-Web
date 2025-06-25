@@ -13,7 +13,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./dataSelector.css"
 
-export default (props) => {
+export default props => {
   const [isNonSolidObjectsReady, setIsNonSolidObjectsReady] = useState(false)
   const [isSolidObjectsReady, setIsSolidObjectsReady] = useState(false)
 
@@ -40,7 +40,14 @@ export default (props) => {
   const objects = _.concat(nonSolidObjects, solidObjects)
 
   function onEvent(event, name, value) {
-    if (!(event === "onBlur" || (event === "onChange" && (name === "dataName" || name === "objectId" || name === "startCondition" || name === "enabled")))) return
+    if (
+      !(
+        event === "onBlur" ||
+        (event === "onChange" &&
+          (name === "dataName" || name === "objectId" || name === "startCondition" || name === "enabled"))
+      )
+    )
+      return
 
     const newData = { [name]: value }
 

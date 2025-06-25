@@ -3,7 +3,7 @@ import { Random } from "meteor/random"
 import _ from "lodash"
 
 import { cpus } from "os"
-import { writeFileSync, readFileSync, unlinkSync } from "fs";
+import { writeFileSync, readFileSync, unlinkSync } from "fs"
 import { spawn } from "child_process"
 
 import Cameras from "../../cameras/both/class.js"
@@ -32,16 +32,16 @@ export default class FramesImages {
 
     let script = ""
 
-    script += await getBackgroudScript() + "\n\n"
-    script += await getCameraScript(camera) + "\n\n"
-    script += await getLightScript(camera) + "\n\n"
+    script += (await getBackgroudScript()) + "\n\n"
+    script += (await getCameraScript(camera)) + "\n\n"
+    script += (await getLightScript(camera)) + "\n\n"
 
     for (const nonSolidObject of nonSolidObjects) {
-      script += await getNonSolidObjectScript(nonSolidObject) + "\n\n"
+      script += (await getNonSolidObjectScript(nonSolidObject)) + "\n\n"
     }
 
     for (const solidObject of solidObjects) {
-      script += await getSolidObjectScript(solidObject) + "\n\n"
+      script += (await getSolidObjectScript(solidObject)) + "\n\n"
     }
 
     const random = Random.id(6)
@@ -163,8 +163,7 @@ export default class FramesImages {
 
       for (const particle of nonSolidObject.particles) {
         // Do not add the particle to the script if it is outside the camera filter
-        if (!CameraFilters.isWithinLimits(particle.currentPosition, cameraFilters))
-          continue
+        if (!CameraFilters.isWithinLimits(particle.currentPosition, cameraFilters)) continue
 
         script += await getParticleScript(particle, pigmentScript)
         script += "\n"
@@ -270,7 +269,7 @@ export default class FramesImages {
 
     const frames = await Frames.find(selector, { sort: { step: 1 } }).fetchAsync()
 
-    const renderSequentially = async (frames) => {
+    const renderSequentially = async frames => {
       const results = []
       let index = 0
 

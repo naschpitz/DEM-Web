@@ -2,7 +2,7 @@ import _ from "lodash"
 
 import AgentsDAO from "./dao"
 
-import AgentsHistories from "../../agentsHistories/both/class";
+import AgentsHistories from "../../agentsHistories/both/class"
 import Calibrations from "../../calibrations/both/class"
 import Materials from "../../materials/both/class"
 import NonSolidObjects from "../../nonSolidObjects/both/class"
@@ -39,7 +39,7 @@ export default class Agents extends AgentsDAO {
 
     // Updates the objects coefficients with the boundaries
     async function initializeCoefficients(calibrationId, simulationId) {
-      const promises = await Parameters.find({ owner: calibrationId }).mapAsync(async (parameter) => {
+      const promises = await Parameters.find({ owner: calibrationId }).mapAsync(async parameter => {
         const parameterId = parameter._id
 
         await Agents.updateMaterialObject(parameterId, simulationId)
@@ -82,7 +82,10 @@ export default class Agents extends AgentsDAO {
       }
       case "solidObject": {
         const originalSolidObject = await SolidObjects.findOneAsync(parameter.materialObject)
-        const solidObject = await SolidObjects.findOneAsync({ owner: scenery._id, callSign: originalSolidObject.callSign })
+        const solidObject = await SolidObjects.findOneAsync({
+          owner: scenery._id,
+          callSign: originalSolidObject.callSign,
+        })
 
         const value = getValue(solidObject, parameter)
         _.set(solidObject, parameter.coefficient, value)

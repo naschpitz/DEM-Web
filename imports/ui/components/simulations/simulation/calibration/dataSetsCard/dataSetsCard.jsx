@@ -15,7 +15,7 @@ import DataSet from "./dataSet/dataSet.jsx"
 
 import "./dataSetsCard.css"
 
-export default (props) => {
+export default props => {
   const [isDataSetsReady, setIsDataSetsReady] = useState(false)
   const [isCreatingDataSet, setIsCreatingDataSet] = useState(false)
 
@@ -39,7 +39,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Data set successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating data set: " + error.reason)
       })
       .finally(() => {

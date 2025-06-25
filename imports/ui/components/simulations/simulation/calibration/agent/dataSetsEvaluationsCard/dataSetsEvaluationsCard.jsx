@@ -4,17 +4,17 @@ import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
-import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
+import AgentsHistories from "../../../../../../../api/agentsHistories/both/class"
 
 import Alert from "../../../../../../utils/alert.js"
 import ClipLoader from "react-spinners/ClipLoader"
-import FormInput from "@naschpitz/form-input";
+import FormInput from "@naschpitz/form-input"
 
 import DataSetEvaluation from "./dataSetEvaluation/dataSetEvaluation.jsx"
 
 import "./dataSetsEvaluationsCard.css"
 
-export default (props) => {
+export default props => {
   const [isAgentHistoriesReady, setIsAgentHistoriesReady] = useState(false)
   const [selectedIteration, setSelectedIteration] = useState(null)
   const [selectedDataSetsEvaluations, setSelectedDataSetsEvaluations] = useState(null)
@@ -27,7 +27,7 @@ export default (props) => {
   }, [props.agentId])
 
   const dataSetsEvaluationsHistory = useTracker(() => {
-    const agentHistories = AgentsHistories.find({ owner: props.agentId }, { sort: { iteration: 1 }}).fetch()
+    const agentHistories = AgentsHistories.find({ owner: props.agentId }, { sort: { iteration: 1 } }).fetch()
 
     return agentHistories.map(agentHistory => {
       return {
@@ -38,7 +38,7 @@ export default (props) => {
   }, [props.agentId])
 
   useEffect(() => {
-    if(!selectedIteration && dataSetsEvaluationsHistory.length > 0) {
+    if (!selectedIteration && dataSetsEvaluationsHistory.length > 0) {
       const lastIteration = dataSetsEvaluationsHistory[dataSetsEvaluationsHistory.length - 1].iteration
 
       setSelectedIteration(lastIteration)
@@ -51,14 +51,15 @@ export default (props) => {
     const dataSetsEvaluations = history?.dataSetsEvaluations || []
 
     setSelectedDataSetsEvaluations(dataSetsEvaluations)
-  }, [selectedIteration]);
+  }, [selectedIteration])
 
-  const options = dataSetsEvaluationsHistory?.map(dataSetsEvaluation => {
-    return {
-      value: dataSetsEvaluation.iteration,
-      text: dataSetsEvaluation.iteration,
-    }
-  }) || []
+  const options =
+    dataSetsEvaluationsHistory?.map(dataSetsEvaluation => {
+      return {
+        value: dataSetsEvaluation.iteration,
+        text: dataSetsEvaluation.iteration,
+      }
+    }) || []
 
   function onEvent(event, name, value) {
     setSelectedIteration(value)
@@ -74,9 +75,7 @@ export default (props) => {
   return (
     <div id="dataSetsEvaluationsCard" className="card">
       <div className="card-header d-flex align-items-center">
-        <div>
-          Data Sets Evaluations
-        </div>
+        <div>Data Sets Evaluations</div>
 
         <div id="iterationSelector" className="ml-auto">
           <FormInput
@@ -100,9 +99,9 @@ export default (props) => {
             There are no data sets evaluations to be displayed for the selected iteration.
           </div>
         ) : (
-          selectedDataSetsEvaluations.map(dataSetEvaluation =>
+          selectedDataSetsEvaluations.map(dataSetEvaluation => (
             <DataSetEvaluation key={dataSetEvaluation.dataSet} dataSetEvaluation={dataSetEvaluation} />
-          )
+          ))
         )}
       </div>
     </div>

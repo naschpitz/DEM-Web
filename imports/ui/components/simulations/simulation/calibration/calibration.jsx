@@ -16,7 +16,7 @@ import ParametersCard from "./parametersCard/parametersCard.jsx"
 
 import "./calibration.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -37,9 +37,7 @@ export default (props) => {
       return (
         <div id="calibration">
           <div className="card addMargin">
-            <div className="card-header">
-              Control
-            </div>
+            <div className="card-header">Control</div>
 
             <div className="card-body">
               <CalibrationControl calibrationId={calibration._id} showFields={true} />
@@ -47,9 +45,7 @@ export default (props) => {
           </div>
 
           <div className="card addMargin">
-            <div className="card-header">
-              Log
-            </div>
+            <div className="card-header">Log</div>
 
             <div className="card-body">
               <Log type="calibration" id={calibration._id} />
@@ -65,9 +61,7 @@ export default (props) => {
           </div>
 
           <div id="agentsCard" className="card addMargin">
-            <div className="card-header">
-              Agents
-            </div>
+            <div className="card-header">Agents</div>
 
             <div className="card-body">
               <AgentsTable calibrationId={calibration._id} />

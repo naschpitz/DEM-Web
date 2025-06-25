@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
-import 'meteor/aldeed:collection2/static'
-import SimpleSchema from 'meteor/aldeed:simple-schema'
+import "meteor/aldeed:collection2/static"
+import SimpleSchema from "meteor/aldeed:simple-schema"
 
 const Parameters = new Mongo.Collection("parameters")
 
@@ -33,31 +33,31 @@ Parameters.schema = new SimpleSchema({
     type: Number,
     label: "Variation",
     optional: true,
-    defaultValue: 0.05
+    defaultValue: 0.05,
   },
   c1: {
     type: Number,
     label: "C1",
     optional: true,
-    defaultValue: 1.5
+    defaultValue: 1.5,
   },
   c2: {
     type: Number,
     label: "C2",
     optional: true,
-    defaultValue: 2.0
+    defaultValue: 2.0,
   },
   perturbation: {
     type: Number,
     label: "Perturbation",
     optional: true,
-    defaultValue: 0.01
+    defaultValue: 0.01,
   },
   allowNegative: {
     type: Boolean,
     label: "Allow negative",
     optional: true,
-    defaultValue: false
+    defaultValue: false,
   },
   createdAt: {
     type: Date,

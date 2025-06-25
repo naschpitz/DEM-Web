@@ -14,8 +14,7 @@ export default class Groups extends GroupsBoth {
     }
 
     // Remove all simulations from this group
-    if (removeContents)
-      await Simulations.removeByGroup(groupId)
+    if (removeContents) await Simulations.removeByGroup(groupId)
 
     // Remove the group, unsetting the group from all simulations that belong to it
     await Simulations.unsetGroup(null, groupId)

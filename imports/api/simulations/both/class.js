@@ -138,7 +138,7 @@ export default class Simulations extends SimulationsDAO {
   static async setInstance(simulationId, instance) {
     await SimulationsDAO.updateObjAsync({
       _id: simulationId,
-      instance: instance
-    });
+      instance: instance,
+    })
   }
 }

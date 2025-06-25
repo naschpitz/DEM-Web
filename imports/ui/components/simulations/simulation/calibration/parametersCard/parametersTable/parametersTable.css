@@ -2,17 +2,17 @@
 
 /* Fix form input styling within table */
 #parametersTable .table td #formInput {
-    margin: 0;
+  margin: 0;
 }
 
 /* Center the checkbox in Allow Negative column */
 #parametersTable .table td .d-flex {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Loading and empty state styling */
 #parametersTable .spinner-border {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }

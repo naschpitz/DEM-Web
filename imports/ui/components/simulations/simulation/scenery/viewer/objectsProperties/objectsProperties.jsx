@@ -26,7 +26,7 @@ import Properties from "./properties/properties.jsx"
 
 import "./objectsProperties.css"
 
-export default (props) => {
+export default props => {
   const [isNonSolidObjectsReady, setIsNonSolidObjectsReady] = useState(false)
   const [isSolidObjectsReady, setIsSolidObjectsReady] = useState(false)
   const [isObjectsPropertiesReady, setIsObjectsPropertiesReady] = useState(false)
@@ -54,8 +54,7 @@ export default (props) => {
 
   const objects = useMemo(() => {
     return _.concat(nonSolidObjects, solidObjects)
-    }, [nonSolidObjects, solidObjects]
-  )
+  }, [nonSolidObjects, solidObjects])
 
   useTracker(() => {
     Meteor.subscribe("objectsProperties", props.sceneryId, {
@@ -85,30 +84,33 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = useMemo(() => [
-    columnHelper.display({
-      id: "expander",
-      header: () => null,
-      cell: ({ row }) => (
-        <button
-          className="expansion-btn"
-          onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            row.toggleExpanded()
-          }}
-          type="button"
-        >
-          {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
-        </button>
-      ),
-      size: 30,
-    }),
-    columnHelper.accessor("name", {
-      header: "Name",
-      meta: { className: "text-center" },
-    }),
-  ], [])
+  const columns = useMemo(
+    () => [
+      columnHelper.display({
+        id: "expander",
+        header: () => null,
+        cell: ({ row }) => (
+          <button
+            className="expansion-btn"
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation()
+              row.toggleExpanded()
+            }}
+            type="button"
+          >
+            {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
+          </button>
+        ),
+        size: 30,
+      }),
+      columnHelper.accessor("name", {
+        header: "Name",
+        meta: { className: "text-center" },
+      }),
+    ],
+    []
+  )
 
   function getObjectProperty(owner) {
     return _.find(objectsProperties, { owner: owner })
@@ -161,7 +163,7 @@ export default (props) => {
     <div id="objectsProperties">
       <Table
         table={table}
-        expansionComponent={(rowData) => <Properties objectProperty={rowData.objectProperty} onChange={props.onChange} />}
+        expansionComponent={rowData => <Properties objectProperty={rowData.objectProperty} onChange={props.onChange} />}
         tableId="objectsProperties"
       />
     </div>

@@ -1,19 +1,19 @@
 #scenery #gravity #formInput:not(:last-child) {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #scenery #nonSolidObjects .card-body {
-    padding: 0px;
+  padding: 0px;
 }
 
 #scenery #solidObjects .card-body {
-    padding: 0px;
+  padding: 0px;
 }
 
 #scenery #materials .card-body {
-    padding: 0px;
+  padding: 0px;
 }
 
 #scenery > .row > [class*="col-"] {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }

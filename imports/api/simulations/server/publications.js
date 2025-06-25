@@ -26,10 +26,9 @@ if (Meteor.isServer) {
   Meteor.publish("simulations.byGroup", function (groupId) {
     if (!this.userId) return this.error(new Meteor.Error("401", "Unauthorized", "User not logged in."))
 
-    if (groupId)
-      return Simulations.find({ owner: this.userId, group: groupId, primary: true })
+    if (groupId) return Simulations.find({ owner: this.userId, group: groupId, primary: true })
 
     // If groupId is not defined, return only the primary simulations not in a group
-    return Simulations.find({ owner: this.userId, group: { $exists: false }, primary: true})
+    return Simulations.find({ owner: this.userId, group: { $exists: false }, primary: true })
   })
 }

@@ -9,7 +9,7 @@ import ERD from "element-resize-detector"
 
 import Canvas from "./canvas/canvas.jsx"
 import CameraControl from "./cameraControl/cameraControl.jsx"
-import CameraFiltersCard from "./cameraFiltersCard/cameraFiltersCard";
+import CameraFiltersCard from "./cameraFiltersCard/cameraFiltersCard"
 import FrameControl from "./frameControl/frameControl.jsx"
 import ObjectsProperties from "./objectsProperties/objectsProperties.jsx"
 import Video from "./video/video.jsx"
@@ -139,7 +139,7 @@ export default ({ sceneryId }) => {
           </div>
         </div>
 
-        <CameraFiltersCard sceneryId={sceneryId}/>
+        <CameraFiltersCard sceneryId={sceneryId} />
       </div>
     </div>
   )

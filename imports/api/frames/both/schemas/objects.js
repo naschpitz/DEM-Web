@@ -1,5 +1,5 @@
-import 'meteor/aldeed:collection2/static'
-import SimpleSchema from 'meteor/aldeed:simple-schema'
+import "meteor/aldeed:collection2/static"
+import SimpleSchema from "meteor/aldeed:simple-schema"
 
 import NonSolidObject from "./nonSolidObject.js"
 import SolidObject from "./solidObject.js"

@@ -120,9 +120,9 @@ export default class Simulations extends SimulationsBoth {
   static async post(simulationId, postOptions) {
     try {
       const response = await fetch(postOptions.url, {
-        method: 'POST',
+        method: "POST",
         headers: postOptions.headers,
-        body: JSON.stringify(postOptions.data)
+        body: JSON.stringify(postOptions.data),
       })
 
       if (!response.ok) {
@@ -137,7 +137,7 @@ export default class Simulations extends SimulationsBoth {
       }
 
       // Check the content-type of the response
-      if (response.headers.get('content-type')?.includes('application/json')) {
+      if (response.headers.get("content-type")?.includes("application/json")) {
         return await response.json()
       } else {
         return await response.text()
@@ -145,7 +145,7 @@ export default class Simulations extends SimulationsBoth {
     } catch (error) {
       const simulationLog = {
         owner: simulationId,
-        message: error.message
+        message: error.message,
       }
 
       if (!error.code) error.code = 500

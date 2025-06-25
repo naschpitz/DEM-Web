@@ -13,29 +13,29 @@ const CustomToaster = () => {
       toastOptions={{
         duration: 7500,
         style: {
-          maxWidth: '500px',
+          maxWidth: "500px",
         },
       }}
     >
-      {(t) => (
+      {t => (
         <ToastBar toast={t}>
           {({ icon, message }) => (
             <>
               {icon}
               {message}
-              {t.type !== 'loading' && (
+              {t.type !== "loading" && (
                 <button
                   onClick={() => toast.dismiss(t.id)}
                   style={{
-                    marginLeft: '8px',
-                    background: 'none',
-                    border: 'none',
-                    fontSize: '16px',
-                    cursor: 'pointer',
-                    color: 'inherit',
+                    marginLeft: "8px",
+                    background: "none",
+                    border: "none",
+                    fontSize: "16px",
+                    cursor: "pointer",
+                    color: "inherit",
                     opacity: 0.7,
-                    padding: '0',
-                    lineHeight: '1'
+                    padding: "0",
+                    lineHeight: "1",
                   }}
                   title="Close"
                 >

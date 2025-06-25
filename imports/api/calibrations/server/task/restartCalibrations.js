@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor"
 
 import Calibrations from "../../both/class"
-import HypervisorManager from "../hypervisorManager";
+import HypervisorManager from "../hypervisorManager"
 
 // Find Calibrations in progress and re-initialize them
 const task = Meteor.bindEnvironment(async () => {

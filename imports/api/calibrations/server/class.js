@@ -2,9 +2,9 @@ import Agents from "../../agents/server/class"
 import CalibrationsBoth from "../both/class"
 import HypervisorManager from "./hypervisorManager"
 import Logs from "../../logs/both/class"
-import CalibrationsDAO from "../both/dao";
-import DataSets from "../../dataSets/both/class";
-import Parameters from "../../parameters/both/class";
+import CalibrationsDAO from "../both/dao"
+import DataSets from "../../dataSets/both/class"
+import Parameters from "../../parameters/both/class"
 
 export default class Calibrations extends CalibrationsBoth {
   static async start(calibrationId) {
@@ -27,7 +27,7 @@ export default class Calibrations extends CalibrationsBoth {
 
     await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "paused" })
 
-    const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async (agent) => {
+    const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async agent => {
       const state = await Agents.getState(agent._id)
 
       if (state === "running") await Agents.pause(agent._id)
@@ -45,7 +45,7 @@ export default class Calibrations extends CalibrationsBoth {
 
     await CalibrationsBoth.updateObjAsync({ _id: calibrationId, state: "stopped" })
 
-    const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async (agent) => {
+    const agentsPromises = await Agents.find({ owner: calibrationId }).mapAsync(async agent => {
       const state = await Agents.getState(agent._id)
 
       if (state === "running" || state === "paused") await Agents.stop(agent._id)
@@ -112,18 +112,21 @@ export default class Calibrations extends CalibrationsBoth {
     const stopConditionMet = await Calibrations.checkStopCondition(calibrationId)
     const bestScores = await Agents.getBestScores(calibrationId)
 
-    stopConditionMet ?
-      await Calibrations.log(calibrationId, "Stop condition met.") :
-      await Calibrations.log(calibrationId, "Stop condition not met.")
+    stopConditionMet
+      ? await Calibrations.log(calibrationId, "Stop condition met.")
+      : await Calibrations.log(calibrationId, "Stop condition not met.")
 
     await Calibrations.log(calibrationId, `Best scores: ${bestScores.map(score => score.toFixed(8)).join(", ")}`)
 
-    if ((calibration.currentIteration < calibration.maxIterations - 1) && !stopConditionMet) {
+    if (calibration.currentIteration < calibration.maxIterations - 1 && !stopConditionMet) {
       await Calibrations.log(calibrationId, "Advancing all agents to the next iteration.")
       await Agents.nextAllIterations(calibrationId)
 
       await Calibrations.log(calibrationId, "Advancing calibration to the next iteration.")
-      await CalibrationsBoth.updateObjAsync({ _id: calibration._id, currentIteration: calibration.currentIteration + 1 })
+      await CalibrationsBoth.updateObjAsync({
+        _id: calibration._id,
+        currentIteration: calibration.currentIteration + 1,
+      })
     } else {
       await Calibrations.log(calibrationId, "Calibration done.")
       await Calibrations.setState(calibrationId, "done")
@@ -156,7 +159,7 @@ export default class Calibrations extends CalibrationsBoth {
 
   static async observeAsync(calibrationId, callback) {
     return await CalibrationsBoth.find({ _id: calibrationId }).observeAsync({
-      changed: ((newCalibration, oldCalibration) => callback(newCalibration, oldCalibration))
+      changed: (newCalibration, oldCalibration) => callback(newCalibration, oldCalibration),
     })
   }
 

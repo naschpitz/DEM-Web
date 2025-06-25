@@ -50,7 +50,7 @@ export default class SolidObjects extends SolidObjectsDAO {
   static async removeByOwner(sceneryId) {
     const solidObjects = await SolidObjectsDAO.find({ owner: sceneryId }).fetchAsync()
 
-    const promises = solidObjects.map(async (solidObject) => {
+    const promises = solidObjects.map(async solidObject => {
       await ObjectsProperties.removeByOwner(solidObject._id)
     })
 

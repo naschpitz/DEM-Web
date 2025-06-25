@@ -8,57 +8,57 @@ import connectRoute from "connect-route"
 import Frames from "../../frames/server/class.js"
 import Simulations from "../../simulations/server/class.js"
 import Logs from "../../logs/both/class.js"
-import Sceneries from "../../sceneries/both/class";
+import Sceneries from "../../sceneries/both/class"
 
 WebApp.connectHandlers.use(
   connectRoute(function (router) {
     router.post("/api/frames", function (req, res, next) {
-      const body = [];
+      const body = []
 
-      req.on("data", (chunk) => body.push(chunk));
+      req.on("data", chunk => body.push(chunk))
       req.on(
         "end",
         Meteor.bindEnvironment(async () => {
-          const deflatedData = Buffer.concat(body);
+          const deflatedData = Buffer.concat(body)
 
           try {
-            const inflatedData = await inflateWithPigz(deflatedData);
+            const inflatedData = await inflateWithPigz(deflatedData)
 
             try {
-              const frame = EJSON.parse(inflatedData.toString());
+              const frame = EJSON.parse(inflatedData.toString())
 
-              const scenery = await Sceneries.findOneAsync(frame.owner);
+              const scenery = await Sceneries.findOneAsync(frame.owner)
               if (!scenery) {
-                console.log("/api/frames: scenery not found");
-                return;
+                console.log("/api/frames: scenery not found")
+                return
               }
 
-              const simulation = await Simulations.findOneAsync(scenery.owner);
+              const simulation = await Simulations.findOneAsync(scenery.owner)
               if (!simulation) {
-                console.log("/api/frames: simulation not found");
-                return;
+                console.log("/api/frames: simulation not found")
+                return
               }
 
               if (frame.instance === simulation.instance) {
-                await Frames.insertAsync(frame);
+                await Frames.insertAsync(frame)
               }
             } catch (error) {
-              console.log("/api/frames, error inserting frame: ", error);
+              console.log("/api/frames, error inserting frame: ", error)
             }
 
-            res.end("OK");
+            res.end("OK")
           } catch (error) {
-            console.log("/api/frames, error inflating frame: ", error);
-            res.writeHead(400, "Decompression failed");
-            res.end();
+            console.log("/api/frames, error inflating frame: ", error)
+            res.writeHead(400, "Decompression failed")
+            res.end()
           }
         })
       )
 
-      req.on("error", (error) => {
-        res.writeHead(400, "Error receiving frame");
-        res.end();
-      });
+      req.on("error", error => {
+        res.writeHead(400, "Error receiving frame")
+        res.end()
+      })
     })
   })
 )

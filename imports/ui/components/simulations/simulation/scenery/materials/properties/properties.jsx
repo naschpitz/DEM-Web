@@ -19,7 +19,7 @@ import {
 
 import "./properties.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -40,10 +40,9 @@ export default (props) => {
 
     _.set(material, name, value)
 
-    Meteor.callAsync("materials.update", material)
-      .catch((error) => {
-        Alert.error("Error saving material: " + error.reason)
-      })
+    Meteor.callAsync("materials.update", material).catch(error => {
+      Alert.error("Error saving material: " + error.reason)
+    })
   }
 
   function getCoefficientsInputs(type, material) {

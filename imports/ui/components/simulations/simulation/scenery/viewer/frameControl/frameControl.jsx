@@ -13,7 +13,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./frameControl.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
   const [currentFrameIndex, setCurrentFrameIndex] = useState(0)
 

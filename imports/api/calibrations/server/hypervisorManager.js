@@ -1,8 +1,8 @@
-import Hypervisor from "./hypervisor";
+import Hypervisor from "./hypervisor"
 
 /**
  * HypervisorManager - Singleton manager to track Hypervisor instances
- * 
+ *
  * This class ensures that only one Hypervisor instance exists per calibration ID,
  * preventing duplicate instances and resource conflicts.
  */
@@ -20,7 +20,7 @@ class HypervisorManager {
     if (this.instances.has(calibrationId)) {
       return this.instances.get(calibrationId)
     }
-    
+
     const hypervisor = new Hypervisor(calibrationId)
     this.instances.set(calibrationId, hypervisor)
     return hypervisor

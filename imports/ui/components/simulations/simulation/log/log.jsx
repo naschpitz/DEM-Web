@@ -15,7 +15,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./log.css"
 
-export default (props) => {
+export default props => {
   const [isObjectReady, setIsObjectReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
   const [isReady, setIsReady] = useState(false)

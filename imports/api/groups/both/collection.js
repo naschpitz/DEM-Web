@@ -1,9 +1,9 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
-import 'meteor/aldeed:collection2/static'
-import SimpleSchema from 'meteor/aldeed:simple-schema'
+import "meteor/aldeed:collection2/static"
+import SimpleSchema from "meteor/aldeed:simple-schema"
 
-import Simulations from "../../simulations/both/collection";
+import Simulations from "../../simulations/both/collection"
 
 const Groups = new Mongo.Collection("groups")
 

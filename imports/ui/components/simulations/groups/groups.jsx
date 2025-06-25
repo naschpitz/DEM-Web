@@ -34,7 +34,7 @@ export default () => {
       .then(() => {
         Alert.success("Group successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating group: " + error.reason)
       })
   }
@@ -61,9 +61,9 @@ export default () => {
           }}
         />
       </h2>
-      {
-        groups.map(group => <Group key={group._id} group={group} />)
-      }
+      {groups.map(group => (
+        <Group key={group._id} group={group} />
+      ))}
     </div>
   )
 }

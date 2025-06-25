@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-import Agents from "../../agents/both/class";
+import Agents from "../../agents/both/class"
 import CalibrationsDAO from "./dao.js"
 import DataSets from "../../dataSets/both/class.js"
 import Parameters from "../../parameters/both/class"
@@ -39,7 +39,10 @@ export default class Calibrations extends CalibrationsDAO {
   }
 
   static async usesServer(serverId) {
-    const calibrationFound = await CalibrationsDAO.findOneAsync({ server: serverId, state: { $in: ["paused", "running"] } })
+    const calibrationFound = await CalibrationsDAO.findOneAsync({
+      server: serverId,
+      state: { $in: ["paused", "running"] },
+    })
 
     return !!calibrationFound
   }
@@ -79,13 +82,13 @@ export default class Calibrations extends CalibrationsDAO {
 
         // Check if the score is smaller than the previous one by minPercentage
         // If it is smaller, return true, which means that the calibration is improving
-        return score < (lastScores[index - 1] * (1 - calibration.minPercentage))
+        return score < lastScores[index - 1] * (1 - calibration.minPercentage)
       })
 
       // If it is not improving, return true, which means that the calibration has met the stop condition
-      return !isImproving;
+      return !isImproving
     }
 
-    return false;
+    return false
   }
 }

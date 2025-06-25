@@ -57,5 +57,5 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error("500", error.message)
     }
-  }
+  },
 })

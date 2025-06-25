@@ -4,40 +4,40 @@ import FramesDAO from "./dao.js"
 
 export default class Frames extends FramesDAO {
   static async clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap) {
-    const rawCollection = FramesDAO.rawCollection();
-    const cursor = rawCollection.find({ owner: oldSceneryId });
+    const rawCollection = FramesDAO.rawCollection()
+    const cursor = rawCollection.find({ owner: oldSceneryId })
 
-    const batchSize = 1000;
-    let batch = [];
+    const batchSize = 1000
+    let batch = []
 
     while (await cursor.hasNext()) {
-      const frame = await cursor.next();
-      const { _id, ...rest } = frame;
+      const frame = await cursor.next()
+      const { _id, ...rest } = frame
 
       // Update the owner
-      rest.owner = newSceneryId;
+      rest.owner = newSceneryId
 
       // Update object IDs
-      const nonSolidObjects = rest.scenery?.objects?.nonSolidObjects ?? [];
+      const nonSolidObjects = rest.scenery?.objects?.nonSolidObjects ?? []
       nonSolidObjects.forEach(nonSolidObject => {
-        nonSolidObject._id = nonSolidObjectsMap[nonSolidObject._id];
-      });
-
-      const solidObjects = rest.scenery?.objects?.solidObjects ?? [];
-      solidObjects.forEach(solidObject => {
-        solidObject._id = solidObjectsMap[solidObject._id];
+        nonSolidObject._id = nonSolidObjectsMap[nonSolidObject._id]
       })
 
-      batch.push(rest);
+      const solidObjects = rest.scenery?.objects?.solidObjects ?? []
+      solidObjects.forEach(solidObject => {
+        solidObject._id = solidObjectsMap[solidObject._id]
+      })
+
+      batch.push(rest)
 
       if (batch.length === batchSize) {
-        await rawCollection.insertMany(batch, { ordered: false });
-        batch = [];
+        await rawCollection.insertMany(batch, { ordered: false })
+        batch = []
       }
     }
 
     if (batch.length > 0) {
-      await rawCollection.insertMany(batch, { ordered: false });
+      await rawCollection.insertMany(batch, { ordered: false })
     }
   }
 
@@ -49,7 +49,7 @@ export default class Frames extends FramesDAO {
 
     const selector = {
       owner: sceneryId,
-      $or: [{ "scenery.objects.nonSolidObjects._id": objectId }, { "scenery.objects.solidObjects._id": objectId }]
+      $or: [{ "scenery.objects.nonSolidObjects._id": objectId }, { "scenery.objects.solidObjects._id": objectId }],
     }
 
     if (minInterval || maxInterval) selector.$and = filter

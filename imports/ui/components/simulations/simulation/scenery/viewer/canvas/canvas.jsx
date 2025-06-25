@@ -4,7 +4,7 @@ import ClipLoader from "react-spinners/ClipLoader"
 
 import "./canvas.css"
 
-export default (props) => {
+export default props => {
   function getFrameImageSrc() {
     if (props.frameImage) return "data:image/png;base64," + props.frameImage
 

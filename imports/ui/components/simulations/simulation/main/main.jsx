@@ -7,7 +7,7 @@ import SimulationControl from "../../simulationControl/simulationControl.jsx"
 
 import "./main.css"
 
-export default (props) => {
+export default props => {
   const simulationId = props.simulationId
 
   // If the simulation is primary, show the viewer.
@@ -18,9 +18,7 @@ export default (props) => {
   return (
     <div id="main">
       <div className="card">
-        <div className="card-header">
-          Control
-        </div>
+        <div className="card-header">Control</div>
 
         <div className="card-body">
           <SimulationControl simulationId={simulationId} showFields={true} />
@@ -28,9 +26,7 @@ export default (props) => {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          Log
-        </div>
+        <div className="card-header">Log</div>
 
         <div className="card-body">
           <Log type="simulation" id={simulationId} />
@@ -38,9 +34,7 @@ export default (props) => {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          Notes
-        </div>
+        <div className="card-header">Notes</div>
 
         <div className="card-body">
           <Notes simulationId={simulationId} />
@@ -48,9 +42,7 @@ export default (props) => {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          Scenery
-        </div>
+        <div className="card-header">Scenery</div>
 
         <div className="card-body">
           <Scenery simulationId={simulationId} showViewer={showViewer} />

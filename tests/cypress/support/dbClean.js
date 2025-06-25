@@ -1,5 +1,3 @@
 const collectionsNames = db.getCollectionNames()
 
-collectionsNames.forEach(collectionName => {
-
-})
+collectionsNames.forEach(collectionName => {})

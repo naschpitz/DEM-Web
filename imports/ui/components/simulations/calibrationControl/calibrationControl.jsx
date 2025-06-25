@@ -14,7 +14,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./calibrationControl.css"
 
-export default (props) => {
+export default props => {
   const [isStarting, setIsStarting] = useState(false)
   const [isPausing, setIsPausing] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
@@ -59,10 +59,9 @@ export default (props) => {
     _.set(newCalibration, name, value)
 
     if (event === "onBlur" || (event === "onChange" && name === "server")) {
-      Meteor.callAsync("calibrations.update", newCalibration)
-        .catch((error) => {
-          Alert.error("Error updating server: " + getErrorMessage(error))
-        })
+      Meteor.callAsync("calibrations.update", newCalibration).catch(error => {
+        Alert.error("Error updating server: " + getErrorMessage(error))
+      })
     }
   }
 
@@ -75,7 +74,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Run order successfully issued.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error running calibration: " + error.reason)
       })
       .finally(() => {
@@ -92,7 +91,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Pause order successfully issued.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error pausing calibration: " + error.reason)
       })
       .finally(() => {
@@ -109,7 +108,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Stop order successfully issued.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error stopping calibration: " + error.reason)
       })
       .finally(() => {
@@ -126,7 +125,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Calibration successfully reset.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error resetting calibration: " + error.reason)
       })
       .finally(() => {
@@ -357,7 +356,7 @@ export default (props) => {
                     </div>
                   </div>
 
-                  < hr />
+                  <hr />
 
                   {/*<div className="row mb-3">*/}
                   {/*  <div className="col-sm-12 col-md-12 col-lg-12">*/}

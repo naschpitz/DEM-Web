@@ -1,4 +1,4 @@
-import getDecimalSeparator from "./getDecimalSeparator";
+import getDecimalSeparator from "./getDecimalSeparator"
 
 export default function () {
   switch (getDecimalSeparator()) {

@@ -21,7 +21,7 @@ import Viewer from "./viewer/viewer.jsx"
 
 import "./scenery.css"
 
-export default (props) => {
+export default props => {
   const [isCreatingMaterial, setIsCreatingMaterial] = useState(false)
   const [isCreatingNSO, setIsCreatingNSO] = useState(false)
   const [isCreatingSO, setIsCreatingSO] = useState(false)
@@ -43,10 +43,9 @@ export default (props) => {
 
     _.set(newScenery, name, value)
 
-    Meteor.callAsync("sceneries.update", newScenery)
-      .catch((error) => {
-        Alert.error("Error saving scenery: " + error.reason)
-      })
+    Meteor.callAsync("sceneries.update", newScenery).catch(error => {
+      Alert.error("Error saving scenery: " + error.reason)
+    })
   }
 
   function onCreateNSODone(result) {
@@ -58,7 +57,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Non-solid object successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating non-solid object: " + error.reason)
       })
       .finally(() => {
@@ -75,7 +74,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Solid object successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating solid object: " + error.reason)
       })
       .finally(() => {
@@ -92,7 +91,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Material successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating material: " + error.reason)
       })
       .finally(() => {

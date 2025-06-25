@@ -3,12 +3,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  createColumnHelper,
-} from "@tanstack/react-table"
+import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
 import Table from "../../../../table/table.jsx"
 
@@ -23,7 +18,7 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./agentsTable.css"
 
-export default (props) => {
+export default props => {
   const [isAgentsReady, setIsAgentsReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
@@ -92,64 +87,45 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = useMemo(() => [
-    columnHelper.accessor(
-      row => "#" + row.agent.index,
-      {
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor(row => "#" + row.agent.index, {
         id: "index",
         header: "Index",
         meta: { className: "text-center" },
         size: 75,
-      }
-    ),
-    columnHelper.accessor(
-      row => row.agent.iteration,
-      {
+      }),
+      columnHelper.accessor(row => row.agent.iteration, {
         id: "iteration",
         header: "Iteration",
         meta: { className: "text-center" },
         size: 75,
-      }
-    ),
-    columnHelper.accessor(
-      row => (row.agent.current.valid ? row.agent.current.score : "Invalid"),
-      {
+      }),
+      columnHelper.accessor(row => (row.agent.current.valid ? row.agent.current.score : "Invalid"), {
         id: "currentScore",
         header: "Current Score",
         meta: { className: "text-center" },
         size: 100,
-      }
-    ),
-    columnHelper.accessor(
-      row => (row.agent.best.valid ? row.agent.best.score : "Invalid"),
-      {
+      }),
+      columnHelper.accessor(row => (row.agent.best.valid ? row.agent.best.score : "Invalid"), {
         id: "bestScore",
         header: "Best Score",
         meta: { className: "text-center" },
         size: 100,
-      }
-    ),
-    columnHelper.accessor(
-      row => (row.agent.best.bestGlobal ? "Yes" : "No"),
-      {
+      }),
+      columnHelper.accessor(row => (row.agent.best.bestGlobal ? "Yes" : "No"), {
         id: "isBest",
         header: "Is the Best Global?",
         meta: { className: "text-center" },
         size: 100,
-      }
-    ),
-    columnHelper.accessor(
-      row => SimulationsClass.getState(row.simulation),
-      {
+      }),
+      columnHelper.accessor(row => SimulationsClass.getState(row.simulation), {
         id: "state",
         header: "State",
         meta: { className: "text-center" },
         size: 150,
-      }
-    ),
-    columnHelper.accessor(
-      row => LogsClass.getPercentage(row.log),
-      {
+      }),
+      columnHelper.accessor(row => LogsClass.getPercentage(row.log), {
         id: "progress",
         header: "Progress",
         cell: info => {
@@ -170,44 +146,39 @@ export default (props) => {
           )
         },
         meta: { className: "text-center" },
-      }
-    ),
-    columnHelper.accessor(
-      row => LogsClass.getEt(row.log),
-      {
+      }),
+      columnHelper.accessor(row => LogsClass.getEt(row.log), {
         id: "et",
         header: "ET",
         meta: { className: "text-center" },
         size: 200,
-      }
-    ),
-    columnHelper.accessor(
-      row => LogsClass.getEta(row.log),
-      {
+      }),
+      columnHelper.accessor(row => LogsClass.getEta(row.log), {
         id: "eta",
         header: "ETA",
         meta: { className: "text-center" },
         size: 200,
-      }
-    ),
-    columnHelper.display({
-      id: "details",
-      header: "Details",
-      cell: info => (
-        <ButtonEnhanced
-          buttonOptions={{
-            regularText: "Details",
-            data: info,
-            onClick: onDetailsClick,
-            className: "btn btn-sm btn-info ml-auto mr-auto",
-            type: "button",
-          }}
-        />
-      ),
-      meta: { className: "text-center" },
-      size: 150,
-    }),
-  ], [])
+      }),
+      columnHelper.display({
+        id: "details",
+        header: "Details",
+        cell: info => (
+          <ButtonEnhanced
+            buttonOptions={{
+              regularText: "Details",
+              data: info,
+              onClick: onDetailsClick,
+              className: "btn btn-sm btn-info ml-auto mr-auto",
+              type: "button",
+            }}
+          />
+        ),
+        meta: { className: "text-center" },
+        size: 150,
+      }),
+    ],
+    []
+  )
 
   function getProgressBarClassName(state, percentage) {
     let className = "progress-bar massive-font "
@@ -254,7 +225,7 @@ export default (props) => {
         eta: 150,
         details: 100,
       },
-    }
+    },
   })
 
   if (!isReady) {
@@ -272,12 +243,7 @@ export default (props) => {
 
   return (
     <div id="agentsTable">
-      <Table
-        table={table}
-        tableId="agentsTable"
-        padRows={true}
-        emptyText="No agents found."
-      />
+      <Table table={table} tableId="agentsTable" padRows={true} emptyText="No agents found." />
     </div>
   )
 }

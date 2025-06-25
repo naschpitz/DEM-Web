@@ -1,7 +1,7 @@
 import dot from "dot-object"
 import _ from "lodash"
 
-import getArraysPaths from "../../utils/getArrayPaths";
+import getArraysPaths from "../../utils/getArrayPaths"
 
 import SolidObjectsCol from "./collection.js"
 import createDAO from "../../baseDAO/createDAO.js"

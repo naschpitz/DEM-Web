@@ -45,9 +45,9 @@ export default class Hypervisor {
     const agents = await Agents.find({ owner: this.calibrationId }).fetchAsync()
 
     await this.log("Initializing agents observers.")
-    const agentsObserversPromises = agents.map(async (agent) => (
-      await Agents.observeAsync(agent._id, this.agentHandler.bind(this))
-    ))
+    const agentsObserversPromises = agents.map(
+      async agent => await Agents.observeAsync(agent._id, this.agentHandler.bind(this))
+    )
     this.agentsObservers = await Promise.all(agentsObserversPromises)
     await this.log("Agents observers initialized.")
   }
@@ -87,13 +87,12 @@ export default class Hypervisor {
     if (numMissingAgents <= 0) return
 
     const agents = await Agents.find({ owner: calibration._id }).fetchAsync()
-    const eligibleAgentsPromises = agents.map(async (agent) => {
+    const eligibleAgentsPromises = agents.map(async agent => {
       const state = await Agents.getState(agent._id)
 
       // "new" and "paused" agents are eligible to be started
       // "failed" agents are eligible to be retried
-      if (["new", "paused", "failed"].includes(state) && agent.iteration === calibration.currentIteration)
-        return agent
+      if (["new", "paused", "failed"].includes(state) && agent.iteration === calibration.currentIteration) return agent
 
       return null
     })
@@ -110,7 +109,7 @@ export default class Hypervisor {
       await this.log("Dispatching agents.")
       const agentsToStart = _.take(eligibleAgents, numMissingAgents)
 
-      const agentsToStartPromises = agentsToStart.map(async (agent) => {
+      const agentsToStartPromises = agentsToStart.map(async agent => {
         try {
           const state = await Agents.getState(agent._id)
 
@@ -190,7 +189,7 @@ export default class Hypervisor {
       const simulationOld = objectOld
 
       // If the simulation state has not changed, do nothing
-      if (simulationNew.state === simulationOld.state) return;
+      if (simulationNew.state === simulationOld.state) return
 
       if (simulationNew.state === "stopped" || simulationNew.state === "done") {
         await this.log(`Agent #${agent.index} simulation has stopped.`)
@@ -238,7 +237,7 @@ export default class Hypervisor {
     const step = currentIteration * numAgents + numAgents - numAgentsToRun
     const totalSteps = numAgents * maxIterations
 
-    const eta = step !== 0 ? et * (totalSteps - step) / step : undefined
+    const eta = step !== 0 ? (et * (totalSteps - step)) / step : undefined
 
     return {
       step: step,

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 import { Meteor } from "meteor/meteor"
 
-import getErrorMessage from "../../../../api/utils/getErrorMessage";
+import getErrorMessage from "../../../../api/utils/getErrorMessage"
 
 import { FaTimes } from "react-icons/fa"
 import MessageDisplay from "../../messageDisplay/messageDisplay.jsx"
@@ -11,7 +11,7 @@ import "./register.css"
 
 let registerMsgId, existsMsgId, passwordMsgId
 
-export default (props) => {
+export default props => {
   const [isRegistering, setIsRegistering] = useState(false)
   const [password, setPassword] = useState(false)
   const [usernameExists, setUsernameExists] = useState(false)
@@ -43,7 +43,7 @@ export default (props) => {
         )
         Meteor.loginWithPassword(email, password)
       })
-      .catch((error) => {
+      .catch(error => {
         registerMsgId = messageDisplay.show("error", "Error registering user: " + getErrorMessage(error), registerMsgId)
       })
       .finally(() => {
@@ -58,7 +58,7 @@ export default (props) => {
     messageDisplay.hide(existsMsgId)
 
     Meteor.callAsync("users.getUserByEmail", email)
-      .then((result) => {
+      .then(result => {
         if (result) {
           setUsernameExists(true)
           existsMsgId = messageDisplay.show(
@@ -71,7 +71,7 @@ export default (props) => {
           messageDisplay.hide(existsMsgId)
         }
       })
-      .catch((error) => {
+      .catch(error => {
         // Handle error if needed
         setUsernameExists(false)
         messageDisplay.hide(existsMsgId)

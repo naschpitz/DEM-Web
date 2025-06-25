@@ -26,9 +26,9 @@ export default () => {
   }, [])
 
   const simulationsIds = useTracker(() => {
-    return SimulationsClass
-      .find({ primary: true, group: { $exists: false } }, { sort: { createdAt: -1 } })
-      .map(simulation => simulation._id)
+    return SimulationsClass.find({ primary: true, group: { $exists: false } }, { sort: { createdAt: -1 } }).map(
+      simulation => simulation._id
+    )
   })
 
   function onCreateDone(result, data) {
@@ -40,7 +40,7 @@ export default () => {
       .then(() => {
         Alert.success("Simulation successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating simulation: " + error.reason)
       })
       .finally(() => {
@@ -72,15 +72,13 @@ export default () => {
       </h2>
 
       <div id="group" className="card">
-        <div className="card-header d-flex">
-          Ungrouped Simulations
-        </div>
+        <div className="card-header d-flex">Ungrouped Simulations</div>
 
         <div className="card-body">
-          <SimulationsTable simulationsIds={simulationsIds}/>
+          <SimulationsTable simulationsIds={simulationsIds} />
         </div>
       </div>
-      <hr/>
+      <hr />
       <Groups />
     </div>
   )

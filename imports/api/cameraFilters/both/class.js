@@ -28,12 +28,12 @@ export default class CameraFilters extends CameraFiltersDAO {
       positions = [positions]
     }
 
-    return positions.every((position) => {
+    return positions.every(position => {
       const x = position[0]
       const y = position[1]
       const z = position[2]
 
-      return cameraFilters.every((cameraFilter) => {
+      return cameraFilters.every(cameraFilter => {
         let { axis, min, max } = cameraFilter
 
         min = min !== undefined ? min : -Infinity

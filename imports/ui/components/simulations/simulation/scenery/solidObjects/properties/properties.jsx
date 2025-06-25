@@ -11,7 +11,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./properties.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -31,10 +31,9 @@ export default (props) => {
     _.set(object, name, value)
 
     if (event === "onBlur" || (event === "onChange" && (name === "fixed" || name === "material"))) {
-      Meteor.callAsync("solidObjects.update", object)
-        .catch((error) => {
-          Alert.error("Error saving solid object: " + error.reason)
-        })
+      Meteor.callAsync("solidObjects.update", object).catch(error => {
+        Alert.error("Error saving solid object: " + error.reason)
+      })
     }
   }
 

@@ -16,7 +16,7 @@ import DataSelector from "./dataSelector/dataSelector.jsx"
 
 import "./dataSet.css"
 
-export default (props) => {
+export default props => {
   const [isCalibrationReady, setIsCalibrationReady] = useState(false)
   const [isSceneryReady, setIsSceneryReady] = useState(false)
   const [isRemovingDataSet, setIsRemovingDataSet] = useState(false)
@@ -60,10 +60,9 @@ export default (props) => {
       ...dataSelector,
     }
 
-    Meteor.callAsync("dataSets.update", dataSet)
-      .catch((error) => {
-        Alert.error("Error: " + getErrorMessage(error))
-      })
+    Meteor.callAsync("dataSets.update", dataSet).catch(error => {
+      Alert.error("Error: " + getErrorMessage(error))
+    })
   }
 
   function onDataImporter(dataSet) {
@@ -72,10 +71,9 @@ export default (props) => {
       data: dataSet.data?.map(data => ({ time: data[0], value: data[1] })),
     }
 
-    Meteor.callAsync("dataSets.update", newDataSet)
-      .catch((error) => {
-        Alert.error("Error: " + getErrorMessage(error))
-      })
+    Meteor.callAsync("dataSets.update", newDataSet).catch(error => {
+      Alert.error("Error: " + getErrorMessage(error))
+    })
   }
 
   function onRemoveDataSetDone(result, data) {
@@ -87,7 +85,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Data set successfully removed.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error: " + getErrorMessage(error))
       })
       .finally(() => {

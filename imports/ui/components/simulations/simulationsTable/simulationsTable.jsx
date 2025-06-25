@@ -14,8 +14,6 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table"
 
-
-
 import Table from "../../table/table.jsx"
 
 import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
@@ -30,7 +28,7 @@ import SimulationControl from "../simulationControl/simulationControl.jsx"
 
 import "./simulationsTable.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
 
   const navigate = useNavigate()
@@ -45,7 +43,8 @@ export default (props) => {
   const simulations = useTracker(() => {
     return SimulationsClass.find(
       { _id: { $in: props.simulationsIds }, primary: true },
-      { sort: { createdAt: -1 } }).fetch()
+      { sort: { createdAt: -1 } }
+    ).fetch()
   }, [props.simulationsIds])
 
   const logs = useTracker(() => {
@@ -68,106 +67,104 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = useMemo(() => [
-    columnHelper.display({
-      id: "expander",
-      header: () => null,
-      cell: ({ row }) => (
-        <button
-          className="expansion-btn"
-          onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            row.toggleExpanded()
-          }}
-          type="button"
-        >
-          {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
-        </button>
-      ),
-      size: 30,
-    }),
-    columnHelper.accessor("name", {
-      header: "Name",
-      cell: info => (
-        <FormInput
-          name="name"
-          value={info.getValue()}
-          type="field"
-          subtype="string"
-          autoComplete={false}
-          size="small"
-          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-          onEvent={(event, name, value) =>
-            onEvent(event, info.row.original, name, value)
-          }
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor(
-      row => SimulationsClass.getState(row),
-      {
+  const columns = useMemo(
+    () => [
+      columnHelper.display({
+        id: "expander",
+        header: () => null,
+        cell: ({ row }) => (
+          <button
+            className="expansion-btn"
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation()
+              row.toggleExpanded()
+            }}
+            type="button"
+          >
+            {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
+          </button>
+        ),
+        size: 30,
+      }),
+      columnHelper.accessor("name", {
+        header: "Name",
+        cell: info => (
+          <FormInput
+            name="name"
+            value={info.getValue()}
+            type="field"
+            subtype="string"
+            autoComplete={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor(row => SimulationsClass.getState(row), {
         id: "state",
         header: "State",
         meta: { className: "text-center" },
-      }
-    ),
-    columnHelper.accessor("progress", {
-      id: "progress",
-      header: "Progress",
-      cell: info => {
-        const progressData = info.getValue()
-        if (!progressData) return "N/A"
-        return (
-          <div className="progress text-center">
-            <div
-              className={getProgressBarClassName(info.row.original.state, progressData)}
-              role="progressbar"
-              aria-valuenow={progressData.value || 0}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style={{ width: (progressData.value || 0) + "%", color: "black" }}
-            >
-              {progressData.text || ""}
+      }),
+      columnHelper.accessor("progress", {
+        id: "progress",
+        header: "Progress",
+        cell: info => {
+          const progressData = info.getValue()
+          if (!progressData) return "N/A"
+          return (
+            <div className="progress text-center">
+              <div
+                className={getProgressBarClassName(info.row.original.state, progressData)}
+                role="progressbar"
+                aria-valuenow={progressData.value || 0}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style={{ width: (progressData.value || 0) + "%", color: "black" }}
+              >
+                {progressData.text || ""}
+              </div>
             </div>
-          </div>
-        )
-      },
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor("et", {
-      id: "et",
-      header: "ET",
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor("eta", {
-      id: "eta",
-      header: "ETA",
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor("createdAt", {
-      header: "Created At",
-      cell: info => moment(info.getValue()).format("L HH:mm:ss"),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.display({
-      id: "details",
-      header: "Details",
-      cell: info => (
-        <ButtonEnhanced
-          buttonOptions={{
-            regularText: "Details",
-            data: info,
-            onClick: onDetailsClick,
-            className: "btn btn-sm btn-info ml-auto mr-auto",
-            type: "button",
-          }}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-  ], [])
+          )
+        },
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor("et", {
+        id: "et",
+        header: "ET",
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor("eta", {
+        id: "eta",
+        header: "ETA",
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor("createdAt", {
+        header: "Created At",
+        cell: info => moment(info.getValue()).format("L HH:mm:ss"),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.display({
+        id: "details",
+        header: "Details",
+        cell: info => (
+          <ButtonEnhanced
+            buttonOptions={{
+              regularText: "Details",
+              data: info,
+              onClick: onDetailsClick,
+              className: "btn btn-sm btn-info ml-auto mr-auto",
+              type: "button",
+            }}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+    ],
+    []
+  )
 
   function getProgressBarClassName(state, percentage) {
     let className = "progress-bar massive-font "
@@ -195,10 +192,9 @@ export default (props) => {
     _.set(simulation, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("simulations.update", simulation)
-        .catch((error) => {
-          Alert.error("Error updating simulation: " + getErrorMessage(error))
-        })
+      Meteor.callAsync("simulations.update", simulation).catch(error => {
+        Alert.error("Error updating simulation: " + getErrorMessage(error))
+      })
     }
   }
 
@@ -246,7 +242,7 @@ export default (props) => {
     <div id="simulationsTable">
       <Table
         table={table}
-        expansionComponent={(rowData) => <SimulationControl simulationId={rowData._id} />}
+        expansionComponent={rowData => <SimulationControl simulationId={rowData._id} />}
         tableId="simulationsTable"
         padRows={true}
         emptyText="No simulations found."

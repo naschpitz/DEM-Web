@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
@@ -9,13 +9,13 @@ import Alert from "../../../../utils/alert.js"
 
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaTrashAlt, FaEdit, FaCheck, FaTimes } from "react-icons/fa"
-import FormInput from "@naschpitz/form-input";
+import FormInput from "@naschpitz/form-input"
 
 import SimulationsTable from "../../simulationsTable/simulationsTable.jsx"
 
 import "./group.css"
 
-export default (props) => {
+export default props => {
   const [isRemovingGroup, setIsRemovingGroup] = useState(false)
   const [isSimulationsReady, setIsSimulationsReady] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -31,14 +31,14 @@ export default (props) => {
   }, [])
 
   const simulationsIds = useTracker(() => {
-    return SimulationsClass
-      .find({ primary: true, group: group._id }, { sort: { createdAt: -1 } })
-      .map(simulation => simulation._id)
+    return SimulationsClass.find({ primary: true, group: group._id }, { sort: { createdAt: -1 } }).map(
+      simulation => simulation._id
+    )
   }, [group])
 
   useEffect(() => {
     setName(group.name)
-  }, [group]);
+  }, [group])
 
   function onRemoveGroupDone(result, data) {
     if (!result) return
@@ -49,7 +49,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Group successfully removed.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error removing group: " + error.reason)
       })
       .finally(() => {
@@ -77,7 +77,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Group name successfully updated.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error updating group: " + error.reason)
       })
   }
@@ -91,7 +91,7 @@ export default (props) => {
     <div id="group" className="card">
       <div className="card-header d-flex">
         <div className="d-flex align-items-center">
-          { isEditing ?
+          {isEditing ? (
             <>
               <FormInput
                 name="name"
@@ -109,7 +109,7 @@ export default (props) => {
                     regularText: <FaCheck className="align-middle" />,
                     className: "btn btn-sm btn-success mr-2",
                     type: "button",
-                    onClick: () => onSaveClick()
+                    onClick: () => onSaveClick(),
                   }}
                 />
                 <ButtonEnhanced
@@ -117,11 +117,12 @@ export default (props) => {
                     regularText: <FaTimes className="align-middle" />,
                     className: "btn btn-sm btn-danger",
                     type: "button",
-                    onClick: () => onCancelClick()
+                    onClick: () => onCancelClick(),
                   }}
                 />
               </div>
-            </> :
+            </>
+          ) : (
             <>
               {group.name} &nbsp;
               <ButtonEnhanced
@@ -129,11 +130,11 @@ export default (props) => {
                   regularText: <FaEdit className="align-middle" />,
                   className: "btn btn-sm btn-primary",
                   type: "button",
-                  onClick: onEditClick
+                  onClick: onEditClick,
                 }}
               />
             </>
-          }
+          )}
         </div>
 
         <div className="ml-auto align-self-center">
@@ -144,7 +145,7 @@ export default (props) => {
               data: group._id,
               isAction: isRemovingGroup,
               actionText: <div className="loaderSpinner loader-small" />,
-              type: "button"
+              type: "button",
             }}
             confirmationOptions={{
               title: "Confirm data set removal",
@@ -152,7 +153,7 @@ export default (props) => {
               confirmButtonText: "Remove",
               confirmButtonAction: "Removing...",
               cancelButtonText: "Cancel",
-              onDone: onRemoveGroupDone
+              onDone: onRemoveGroupDone,
             }}
           />
         </div>

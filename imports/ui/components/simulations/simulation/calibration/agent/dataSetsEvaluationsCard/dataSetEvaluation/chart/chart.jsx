@@ -4,7 +4,7 @@ import { ResponsiveContainer, ComposedChart, Area, Line, Bar, CartesianGrid, XAx
 
 import { Wrapper } from "./chart.styles"
 
-export default (props) => {
+export default props => {
   const [data, setData] = useState([])
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default (props) => {
         x: time,
         yReference: referenceValue,
         ySimulation: simulationValue,
-        yError: errorValue
+        yError: errorValue,
       }
     })
 
@@ -38,8 +38,14 @@ export default (props) => {
               <stop offset="95%" stopColor="#21426E" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="x" tickFormatter={value => value.toExponential(3)} domain={['auto', 'auto']} scale="linear" type="number" />
-          <YAxis orientation="left" yAxisId="left"/>
+          <XAxis
+            dataKey="x"
+            tickFormatter={value => value.toExponential(3)}
+            domain={["auto", "auto"]}
+            scale="linear"
+            type="number"
+          />
+          <YAxis orientation="left" yAxisId="left" />
           <YAxis orientation="right" yAxisId="right" />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
@@ -59,13 +65,7 @@ export default (props) => {
             dot={{ stroke: "#00AA33", strokeWidth: 3 }}
             yAxisId="left"
           />
-          <Bar
-            dataKey="yError"
-            yAxisId="right"
-            barSize={20}
-            fill="#AA0000"
-            fillOpacity={0.5}
-          />
+          <Bar dataKey="yError" yAxisId="right" barSize={20} fill="#AA0000" fillOpacity={0.5} />
         </ComposedChart>
       </ResponsiveContainer>
     </Wrapper>

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 import { Meteor } from "meteor/meteor"
 
-import getErrorMessage from "../../../../api/utils/getErrorMessage";
+import getErrorMessage from "../../../../api/utils/getErrorMessage"
 
 import { FaTimes } from "react-icons/fa"
 import MessageDisplay from "../../messageDisplay/messageDisplay.jsx"
@@ -10,7 +10,7 @@ import "./login.css"
 
 let loginMsgId, forgotMsgId
 
-export default (props) => {
+export default props => {
   const [isSendingRecovery, setIsSendingRecovery] = useState(false)
 
   const emailRef = useRef(null)

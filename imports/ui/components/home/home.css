@@ -1,18 +1,18 @@
 #home {
-    margin-top: 20px;
-    margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #home h4 {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 #home p {
-    margin-bottom: 10px;
-    text-align: justify;
+  margin-bottom: 10px;
+  text-align: justify;
 }
 
 #home #videoPlayer {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }

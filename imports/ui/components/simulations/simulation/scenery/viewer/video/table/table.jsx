@@ -4,12 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  createColumnHelper,
-} from "@tanstack/react-table"
+import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
 import Table from "../../../../../../table/table.jsx"
 
@@ -56,93 +51,90 @@ export default ({ sceneryId }) => {
     return state === "rendering" || state === "encoding"
   }
 
-  const columns = useMemo(() => [
-    columnHelper.accessor("name", {
-      header: "Name",
-      cell: info => (
-        <FormInput
-          name="name"
-          value={info.getValue()}
-          type="field"
-          subtype="string"
-          autoComplete={false}
-          size="small"
-          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor(
-      row => row.meta.state,
-      {
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("name", {
+        header: "Name",
+        cell: info => (
+          <FormInput
+            name="name"
+            value={info.getValue()}
+            type="field"
+            subtype="string"
+            autoComplete={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor(row => row.meta.state, {
         id: "state",
         header: "State",
         cell: info => getState(info.getValue()),
         meta: { className: "text-center" },
-      }
-    ),
-    columnHelper.accessor(
-      row => row.meta.createdAt,
-      {
+      }),
+      columnHelper.accessor(row => row.meta.createdAt, {
         id: "createdAt",
         header: "Created At",
         cell: info => moment(info.getValue()).format("L HH:mm:ss"),
         meta: { className: "text-center" },
-      }
-    ),
-    columnHelper.display({
-      id: "download",
-      header: "Download",
-      cell: info => (
-        <ButtonEnhanced
-          buttonOptions={{
-            id: "btnDownload",
-            disabled: isDownloadDisabled(info.row.original),
-            regularText: (
-              <a href={getUrl(info.row.original._id)} download={info.row.original.name} target="_parent">
-                Download
-              </a>
-            ),
-            data: info,
-            className: "btn btn-sm btn-info ml-auto mr-auto",
-            type: "button",
-          }}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.display({
-      id: "remove",
-      header: "Remove",
-      cell: info => (
-        <ButtonEnhanced
-          buttonOptions={{
-            regularText: "Remove",
-            disabled: isRemoveDisabled(info.row.original),
-            data: info,
-            className: "btn btn-sm btn-danger ml-auto mr-auto",
-            isAction: getRemoving(info.row.original._id),
-            actionText: "Removing...",
-            type: "button",
-          }}
-          confirmationOptions={{
-            title: "Confirm video removal",
-            text: (
-              <span>
-                Do you really want to remove the video <strong>{info.row.original.name}</strong> ?
-              </span>
-            ),
-            confirmButtonText: "Remove",
-            confirmButtonAction: "Removing...",
-            cancelButtonText: "Cancel",
-            onDone: onRemoveDone,
-          }}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-  ], [isRemoving])
+      }),
+      columnHelper.display({
+        id: "download",
+        header: "Download",
+        cell: info => (
+          <ButtonEnhanced
+            buttonOptions={{
+              id: "btnDownload",
+              disabled: isDownloadDisabled(info.row.original),
+              regularText: (
+                <a href={getUrl(info.row.original._id)} download={info.row.original.name} target="_parent">
+                  Download
+                </a>
+              ),
+              data: info,
+              className: "btn btn-sm btn-info ml-auto mr-auto",
+              type: "button",
+            }}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.display({
+        id: "remove",
+        header: "Remove",
+        cell: info => (
+          <ButtonEnhanced
+            buttonOptions={{
+              regularText: "Remove",
+              disabled: isRemoveDisabled(info.row.original),
+              data: info,
+              className: "btn btn-sm btn-danger ml-auto mr-auto",
+              isAction: getRemoving(info.row.original._id),
+              actionText: "Removing...",
+              type: "button",
+            }}
+            confirmationOptions={{
+              title: "Confirm video removal",
+              text: (
+                <span>
+                  Do you really want to remove the video <strong>{info.row.original.name}</strong> ?
+                </span>
+              ),
+              confirmButtonText: "Remove",
+              confirmButtonAction: "Removing...",
+              cancelButtonText: "Cancel",
+              onDone: onRemoveDone,
+            }}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+    ],
+    [isRemoving]
+  )
 
   function getState(state) {
     switch (state) {
@@ -171,10 +163,9 @@ export default ({ sceneryId }) => {
     _.set(video, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("videos.update", video)
-        .catch((error) => {
-          Alert.error("Error updating video: " + getErrorMessage(error))
-        })
+      Meteor.callAsync("videos.update", video).catch(error => {
+        Alert.error("Error updating video: " + getErrorMessage(error))
+      })
     }
   }
 
@@ -188,7 +179,7 @@ export default ({ sceneryId }) => {
       .then(() => {
         Alert.success("Video successfully removed.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error removing video: " + error.reason)
       })
       .finally(() => {
@@ -253,10 +244,7 @@ export default ({ sceneryId }) => {
 
   return (
     <div id="videosTable">
-      <Table
-        table={table}
-        tableId="videosTable"
-      />
+      <Table table={table} tableId="videosTable" />
     </div>
   )
 }

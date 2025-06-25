@@ -7,7 +7,7 @@ import DataSelector from "./dataSelector/dataSelector.jsx"
 
 import "./charts.css"
 
-export default (props) => {
+export default props => {
   const [selectedData, setSelectedData] = useState(null)
 
   function onChange(selectedData) {

@@ -13,7 +13,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./cameraControl.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
 
   useTracker(() => {
@@ -37,7 +37,7 @@ export default (props) => {
         .then(() => {
           if (props.onChange) props.onChange()
         })
-        .catch((error) => {
+        .catch(error => {
           Alert.error("Error saving camera: " + error.reason)
         })
     }

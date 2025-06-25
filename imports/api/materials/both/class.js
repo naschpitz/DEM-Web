@@ -38,7 +38,9 @@ export default class Materials extends MaterialsDAO {
   }
 
   static async usesMaterial(materialId) {
-    const materialFound = await MaterialsDAO.findOneAsync({ $or: [{ material1: materialId }, { material2: materialId }] })
+    const materialFound = await MaterialsDAO.findOneAsync({
+      $or: [{ material1: materialId }, { material2: materialId }],
+    })
 
     return !!materialFound
   }

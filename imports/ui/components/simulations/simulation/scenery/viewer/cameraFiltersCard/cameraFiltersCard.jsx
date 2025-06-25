@@ -2,15 +2,15 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 
-import Alert from "../../../../../../utils/alert.js";
-import { ButtonEnhanced } from "@naschpitz/button-enhanced";
-import { FaPlus } from "react-icons/fa";
+import Alert from "../../../../../../utils/alert.js"
+import { ButtonEnhanced } from "@naschpitz/button-enhanced"
+import { FaPlus } from "react-icons/fa"
 
 import CameraFilterTable from "./cameraFiltersTable/cameraFiltersTable.jsx"
 
 import "./cameraFiltersCard.css"
 
-export default (props) => {
+export default props => {
   const [isCreatingCameraFilter, setIsCreatingCameraFilter] = useState(false)
 
   const sceneryId = props.sceneryId
@@ -24,7 +24,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Camera filter successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating camera filter: " + error.reason)
       })
       .finally(() => {
@@ -59,7 +59,7 @@ export default (props) => {
       </div>
 
       <div className="card-body">
-        <CameraFilterTable sceneryId={sceneryId}/>
+        <CameraFilterTable sceneryId={sceneryId} />
       </div>
     </div>
   )

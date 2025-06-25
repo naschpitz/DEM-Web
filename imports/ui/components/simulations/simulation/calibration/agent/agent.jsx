@@ -10,7 +10,7 @@ import Simulations from "../../../../../../api/simulations/both/class"
 import Alert from "../../../../../utils/alert.js"
 import ClipLoader from "react-spinners/ClipLoader"
 
-import DataSetsEvaluationsCard from "./dataSetsEvaluationsCard/dataSetsEvaluationsCard";
+import DataSetsEvaluationsCard from "./dataSetsEvaluationsCard/dataSetsEvaluationsCard"
 import HistoryTable from "./historyTable/historyTable"
 import Main from "../../main/main"
 
@@ -62,9 +62,7 @@ export default () => {
           </h2>
 
           <div id="currentSimulationCard" className="card addMargin">
-            <div className="card-header">
-              Current Simulation
-            </div>
+            <div className="card-header">Current Simulation</div>
 
             <div className="card-body">
               <Main name="main" simulationId={agent.current.simulation} primary={false} />
@@ -72,9 +70,7 @@ export default () => {
           </div>
 
           <div id="historyCard" className="card addMargin">
-            <div className="card-header">
-              History
-            </div>
+            <div className="card-header">History</div>
 
             <div className="card-body">
               <HistoryTable agentId={agentId} />

@@ -3,18 +3,13 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { useNavigate } from "react-router-dom"
 
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  createColumnHelper,
-} from "@tanstack/react-table"
+import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
 import Table from "../../../../../table/table.jsx"
 
 import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 
-import AgentsHistories from "../../../../../../../api/agentsHistories/both/class";
+import AgentsHistories from "../../../../../../../api/agentsHistories/both/class"
 import LogsClass from "../../../../../../../api/logs/both/class"
 
 import Alert from "../../../../../../utils/alert.js"
@@ -22,7 +17,7 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./historyTable.css"
 
-export default (props) => {
+export default props => {
   const [isAgentHistoriesReady, setIsAgentHistoriesReady] = useState(false)
   const [isLogsReady, setIsLogsReady] = useState(false)
 
@@ -38,7 +33,7 @@ export default (props) => {
   }, [props.agentId])
 
   const agentHistories = useTracker(() => {
-    return AgentsHistories.find({ owner: props.agentId }, { sort: { iteration: 1 }}).fetch()
+    return AgentsHistories.find({ owner: props.agentId }, { sort: { iteration: 1 } }).fetch()
   }, [props.agentId])
 
   useTracker(() => {
@@ -74,88 +69,79 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = useMemo(() => [
-    columnHelper.accessor(
-      row => row.iteration,
-      {
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor(row => row.iteration, {
         id: "iteration",
         header: "Iteration",
         meta: { className: "text-center" },
         size: 75,
-      }
-    ),
-    columnHelper.accessor(
-      row => (row.current.valid ? row.current.score : "Invalid"),
-      {
+      }),
+      columnHelper.accessor(row => (row.current.valid ? row.current.score : "Invalid"), {
         id: "currentScore",
         header: "Current Score",
         meta: { className: "text-center" },
         size: 100,
-      }
-    ),
-    columnHelper.accessor(
-      row => (row.best.valid ? row.best.score : "Invalid"),
-      {
+      }),
+      columnHelper.accessor(row => (row.best.valid ? row.best.score : "Invalid"), {
         id: "bestScore",
         header: "Best Score",
         meta: { className: "text-center" },
         size: 100,
-      }
-    ),
-    columnHelper.accessor(
-      row => (row.best.bestGlobal ? "Yes" : "No"),
-      {
+      }),
+      columnHelper.accessor(row => (row.best.bestGlobal ? "Yes" : "No"), {
         id: "wasBestGlobal",
         header: "Was Best Global?",
         meta: { className: "text-center" },
         size: 100,
-      }
-    ),
-    columnHelper.accessor("state", {
-      id: "state",
-      header: "State",
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor("progress", {
-      id: "progress",
-      header: "Progress",
-      cell: info => {
-        const progressData = info.getValue()
-        if (!progressData) return "N/A"
-        return (
-          <div className="progress text-center">
-            <div
-              className={getProgressBarClassName(info.row.original.current.simulation, progressData)}
-              role="progressbar"
-              aria-valuenow={progressData.value}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style={{ width: progressData.value + "%", color: "black" }}
-            >
-              {progressData.text}
+      }),
+      columnHelper.accessor("state", {
+        id: "state",
+        header: "State",
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor("progress", {
+        id: "progress",
+        header: "Progress",
+        cell: info => {
+          const progressData = info.getValue()
+          if (!progressData) return "N/A"
+          return (
+            <div className="progress text-center">
+              <div
+                className={getProgressBarClassName(info.row.original.current.simulation, progressData)}
+                role="progressbar"
+                aria-valuenow={progressData.value}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style={{ width: progressData.value + "%", color: "black" }}
+              >
+                {progressData.text}
+              </div>
             </div>
-          </div>
-        )
-      },
-      meta: { className: "text-center" },
-    }),
-    columnHelper.display({
-      id: "details",
-      header: "Details",
-      cell: info => (
-        <ButtonEnhanced
-          buttonOptions={{
-            regularText: "Details",
-            data: info,
-            onClick: onDetailsClick,
-            className: "btn btn-sm btn-info ml-auto mr-auto",
-            type: "button",
-          }}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-  ], [])
+          )
+        },
+        meta: { className: "text-center" },
+      }),
+      columnHelper.display({
+        id: "details",
+        header: "Details",
+        cell: info => (
+          <ButtonEnhanced
+            buttonOptions={{
+              regularText: "Details",
+              data: info,
+              onClick: onDetailsClick,
+              className: "btn btn-sm btn-info ml-auto mr-auto",
+              type: "button",
+            }}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+    ],
+    []
+  )
 
   function getProgressBarClassName(simulationId, percentage) {
     const simulationLog = logs.find(simulationLog => simulationId === simulationLog.owner)
@@ -230,10 +216,7 @@ export default (props) => {
 
   return (
     <div id="historyTable">
-      <Table
-        table={table}
-        tableId="historyTable"
-      />
+      <Table table={table} tableId="historyTable" />
     </div>
   )
 }

@@ -8,7 +8,7 @@ import Alert from "../../../../../../../utils/alert.js"
 
 import "./properties.css"
 
-export default (props) => {
+export default props => {
   const objectProperty = props.objectProperty
 
   function onColorChange(color) {
@@ -20,7 +20,7 @@ export default (props) => {
       .then(() => {
         if (props.onChange) props.onChange()
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error saving object property: " + error.reason)
       })
   }

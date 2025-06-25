@@ -13,7 +13,7 @@ const bound = Meteor.bindEnvironment(async () => {
   console.log(`Removed ${count} orphan frames.`)
 })
 
-const task = (ready) => {
+const task = ready => {
   bound()
   ready()
 }

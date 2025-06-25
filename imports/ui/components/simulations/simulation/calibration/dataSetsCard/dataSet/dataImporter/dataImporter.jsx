@@ -5,7 +5,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./dataImporter.css"
 
-export default (props) => {
+export default props => {
   const [csv, setCsv] = useState("")
 
   useEffect(() => {

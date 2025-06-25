@@ -11,19 +11,23 @@ export default class DataSets extends DataSetsDAO {
   static async clone(oldCalibrationId, newCalibrationId) {
     const oldDataSets = DataSetsDAO.find({ owner: oldCalibrationId })
 
-    const dataSetIdsPromises = await oldDataSets.mapAsync(async (oldDataSet) => {
+    const dataSetIdsPromises = await oldDataSets.mapAsync(async oldDataSet => {
       const newDataSet = _.cloneDeep(oldDataSet)
       delete newDataSet._id
 
       newDataSet.owner = newCalibrationId
 
-      const oldObject = await NonSolidObjects.findOneAsync(oldDataSet.object) || await SolidObjects.findOneAsync(oldDataSet.object)
+      const oldObject =
+        (await NonSolidObjects.findOneAsync(oldDataSet.object)) || (await SolidObjects.findOneAsync(oldDataSet.object))
 
       const newCalibration = await Calibrations.findOneAsync(newCalibrationId)
       const newSimulation = await Simulations.findOneAsync(newCalibration.owner)
       const newScenery = await Sceneries.findOneAsync({ owner: newSimulation._id })
 
-      const newNonSolidObject = await NonSolidObjects.findOneAsync({ owner: newScenery._id, callSign: oldObject.callSign })
+      const newNonSolidObject = await NonSolidObjects.findOneAsync({
+        owner: newScenery._id,
+        callSign: oldObject.callSign,
+      })
       const newSolidObject = await SolidObjects.findOneAsync({ owner: newScenery._id, callSign: oldObject.callSign })
 
       const newObject = newNonSolidObject || newSolidObject

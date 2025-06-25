@@ -7,7 +7,7 @@ import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
 import Alert from "../../../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
 
-export default (props) => {
+export default props => {
   const [materialsObjects, setMaterialsObjects] = useState([])
 
   useTracker(() => {
@@ -16,10 +16,10 @@ export default (props) => {
     switch (props.type) {
       case "material": {
         Meteor.callAsync("materials.getByCalibration", props.calibrationId)
-          .then((result) => {
+          .then(result => {
             setMaterialsObjects(result)
           })
-          .catch((error) => {
+          .catch(error => {
             Alert.error("Error: " + getErrorMessage(error))
           })
 
@@ -28,10 +28,10 @@ export default (props) => {
 
       case "nonSolidObject": {
         Meteor.callAsync("nonSolidObjects.getByCalibration", props.calibrationId)
-          .then((result) => {
+          .then(result => {
             setMaterialsObjects(result)
           })
-          .catch((error) => {
+          .catch(error => {
             Alert.error("Error: " + getErrorMessage(error))
           })
 
@@ -40,10 +40,10 @@ export default (props) => {
 
       case "solidObject": {
         Meteor.callAsync("solidObjects.getByCalibration", props.calibrationId)
-          .then((result) => {
+          .then(result => {
             setMaterialsObjects(result)
           })
-          .catch((error) => {
+          .catch(error => {
             Alert.error("Error: " + getErrorMessage(error))
           })
 

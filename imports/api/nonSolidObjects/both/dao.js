@@ -1,10 +1,10 @@
 import dot from "dot-object"
 import _ from "lodash"
 
-import getArraysPaths from "../../utils/getArrayPaths";
+import getArraysPaths from "../../utils/getArrayPaths"
 
 import NonSolidObjectsCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO";
+import createDAO from "../../baseDAO/createDAO"
 
 export default class NonSolidObjectsDAO extends createDAO(NonSolidObjectsCol) {
   static async updateObjAsync(nonSolidObject) {

@@ -22,10 +22,10 @@ const stalledSimulationsInterval = setInterval(() => {
 }, 10 * 1000) // 10 seconds
 
 // Clean up interval on server shutdown (optional)
-process.on('SIGTERM', () => {
+process.on("SIGTERM", () => {
   clearInterval(stalledSimulationsInterval)
 })
 
-process.on('SIGINT', () => {
+process.on("SIGINT", () => {
   clearInterval(stalledSimulationsInterval)
 })

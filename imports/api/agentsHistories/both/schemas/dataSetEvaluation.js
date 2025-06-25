@@ -1,5 +1,5 @@
-import 'meteor/aldeed:collection2/static'
-import SimpleSchema from 'meteor/aldeed:simple-schema'
+import "meteor/aldeed:collection2/static"
+import SimpleSchema from "meteor/aldeed:simple-schema"
 
 import Data from "../../../agents/both/schemas/data.js"
 
@@ -37,6 +37,6 @@ export default new SimpleSchema({
     optional: false,
   },
   "errorData.$": {
-    type: Data
+    type: Data,
   },
 })

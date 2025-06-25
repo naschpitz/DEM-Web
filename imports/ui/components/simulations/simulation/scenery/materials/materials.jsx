@@ -25,7 +25,7 @@ import Properties from "./properties/properties.jsx"
 
 import "./materials.css"
 
-export default (props) => {
+export default props => {
   const [isReady, setIsReady] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -49,72 +49,75 @@ export default (props) => {
 
   const columnHelper = createColumnHelper()
 
-  const columns = useMemo(() => [
-    columnHelper.display({
-      id: "expander",
-      header: () => null,
-      cell: ({ row }) => (
-        <button
-          className="expansion-btn"
-          onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            row.toggleExpanded()
-          }}
-          type="button"
-        >
-          {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
-        </button>
-      ),
-    }),
-    columnHelper.accessor("name", {
-      header: "Name",
-      cell: info => (
-        <FormInput
-          name="name"
-          value={info.getValue()}
-          type="field"
-          subtype="string"
-          autoComplete={false}
-          size="small"
-          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.display({
-      id: "remove",
-      header: "Remove",
-      cell: info => (
-        <ButtonEnhanced
-          buttonOptions={{
-            regularText: "Remove",
-            data: info.row.original,
-            className: "btn btn-sm btn-danger ml-auto mr-auto",
-            isAction: isRemoving,
-            actionText: "Removing...",
-            type: "button",
-          }}
-          confirmationOptions={{
-            title: "Confirm material removal",
-            text: (
-              <span>
-                Do you really want to remove the material <strong>{info.row.original.name}</strong> ?
-              </span>
-            ),
-            confirmButtonText: "Remove",
-            confirmButtonAction: "Removing...",
-            cancelButtonText: "Cancel",
-            onDone: onRemoveDone,
-          }}
-        />
-      ),
-      meta: {
-        className: "text-center",
-      },
-    }),
-  ], [isRemoving])
+  const columns = useMemo(
+    () => [
+      columnHelper.display({
+        id: "expander",
+        header: () => null,
+        cell: ({ row }) => (
+          <button
+            className="expansion-btn"
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation()
+              row.toggleExpanded()
+            }}
+            type="button"
+          >
+            {row.getIsExpanded() ? <FaChevronDown /> : <FaChevronRight />}
+          </button>
+        ),
+      }),
+      columnHelper.accessor("name", {
+        header: "Name",
+        cell: info => (
+          <FormInput
+            name="name"
+            value={info.getValue()}
+            type="field"
+            subtype="string"
+            autoComplete={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.display({
+        id: "remove",
+        header: "Remove",
+        cell: info => (
+          <ButtonEnhanced
+            buttonOptions={{
+              regularText: "Remove",
+              data: info.row.original,
+              className: "btn btn-sm btn-danger ml-auto mr-auto",
+              isAction: isRemoving,
+              actionText: "Removing...",
+              type: "button",
+            }}
+            confirmationOptions={{
+              title: "Confirm material removal",
+              text: (
+                <span>
+                  Do you really want to remove the material <strong>{info.row.original.name}</strong> ?
+                </span>
+              ),
+              confirmButtonText: "Remove",
+              confirmButtonAction: "Removing...",
+              cancelButtonText: "Cancel",
+              onDone: onRemoveDone,
+            }}
+          />
+        ),
+        meta: {
+          className: "text-center",
+        },
+      }),
+    ],
+    [isRemoving]
+  )
 
   function onEvent(event, data, name, value) {
     const material = { _id: data._id }
@@ -122,10 +125,9 @@ export default (props) => {
     _.set(material, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("materials.update", material)
-        .catch((error) => {
-          Alert.error("Error updating material: " + getErrorMessage(error))
-        })
+      Meteor.callAsync("materials.update", material).catch(error => {
+        Alert.error("Error updating material: " + getErrorMessage(error))
+      })
     }
   }
 
@@ -140,7 +142,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Material successfully removed.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error removing material: " + error.reason)
       })
       .finally(() => {
@@ -167,7 +169,7 @@ export default (props) => {
         expander: 20,
         name: 1000,
         remove: 200,
-      }
+      },
     },
   })
 
@@ -196,11 +198,7 @@ export default (props) => {
 
   return (
     <div id="materials">
-      <Table
-        table={table}
-        expansionComponent={(rowData) => <Properties material={rowData} />}
-        tableId="materials"
-      />
+      <Table table={table} expansionComponent={rowData => <Properties material={rowData} />} tableId="materials" />
     </div>
   )
 }

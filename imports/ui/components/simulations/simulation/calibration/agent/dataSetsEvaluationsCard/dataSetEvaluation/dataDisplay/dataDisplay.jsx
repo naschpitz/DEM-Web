@@ -12,7 +12,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./dataDisplay.css"
 
-export default (props) => {
+export default props => {
   const [isNonSolidObjectsReady, setIsNonSolidObjectsReady] = useState(false)
   const [isSolidObjectsReady, setIsSolidObjectsReady] = useState(false)
 
@@ -50,9 +50,9 @@ export default (props) => {
       "force[0]": "Force X",
       "force[1]": "Force Y",
       "force[2]": "Force Z",
-      "kineticEnergyTotal": "Total Kinetic Energy",
-      "kineticEnergyExternal": "Kinetic Energy External",
-      "kineticEnergyInternal": "Kinetic Energy Internal"
+      kineticEnergyTotal: "Total Kinetic Energy",
+      kineticEnergyExternal: "Kinetic Energy External",
+      kineticEnergyInternal: "Kinetic Energy Internal",
     }
 
     return (

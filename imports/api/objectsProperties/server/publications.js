@@ -6,7 +6,7 @@ import SolidObjects from "../../solidObjects/both/class.js"
 import ObjectsProperties from "../both/class.js"
 
 if (Meteor.isServer) {
-  publishComposite('objectsProperties', function (sceneryId) {
+  publishComposite("objectsProperties", function (sceneryId) {
     if (!this.userId) {
       throw new Meteor.Error("401", "Unauthorized", "User not logged in.")
     }
@@ -20,9 +20,9 @@ if (Meteor.isServer) {
           {
             find(object) {
               return ObjectsProperties.find({ owner: object._id })
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       {
         find() {
@@ -32,10 +32,10 @@ if (Meteor.isServer) {
           {
             find(object) {
               return ObjectsProperties.find({ owner: object._id })
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     ]
   })
 }

@@ -4,12 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import moment from "moment"
 import _ from "lodash"
 
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  createColumnHelper,
-} from "@tanstack/react-table"
+import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
 import Table from "../table/table.jsx"
 
@@ -52,105 +47,102 @@ export default () => {
     _.set(server, name, value)
 
     if (event === "onBlur") {
-      Meteor.callAsync("servers.update", server)
-        .catch((error) => {
-          Alert.error("Error updating server: " + getErrorMessage(error))
-        })
+      Meteor.callAsync("servers.update", server).catch(error => {
+        Alert.error("Error updating server: " + getErrorMessage(error))
+      })
     }
   }
 
   const columnHelper = createColumnHelper()
 
-  const columns = useMemo(() => [
-    columnHelper.accessor("name", {
-      header: "Name",
-      cell: info => (
-        <FormInput
-          name="name"
-          value={info.getValue()}
-          type="field"
-          subtype="string"
-          autoComplete={false}
-          size="small"
-          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor("url", {
-      header: "URL",
-      cell: info => (
-        <FormInput
-          name="url"
-          value={info.getValue()}
-          type="field"
-          subtype="string"
-          autoComplete={false}
-          size="small"
-          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor("port", {
-      header: "Port",
-      cell: info => (
-        <FormInput
-          name="port"
-          value={info.getValue()}
-          type="field"
-          subtype="number"
-          autoComplete={false}
-          size="small"
-          inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
-          onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-    columnHelper.accessor(
-      row => row.createdAt,
-      {
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("name", {
+        header: "Name",
+        cell: info => (
+          <FormInput
+            name="name"
+            value={info.getValue()}
+            type="field"
+            subtype="string"
+            autoComplete={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor("url", {
+        header: "URL",
+        cell: info => (
+          <FormInput
+            name="url"
+            value={info.getValue()}
+            type="field"
+            subtype="string"
+            autoComplete={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor("port", {
+        header: "Port",
+        cell: info => (
+          <FormInput
+            name="port"
+            value={info.getValue()}
+            type="field"
+            subtype="number"
+            autoComplete={false}
+            size="small"
+            inputSizes={{ sm: 12, md: 12, lg: 12, xl: 12 }}
+            onEvent={(event, name, value) => onEvent(event, info.row.original, name, value)}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+      columnHelper.accessor(row => row.createdAt, {
         id: "createdAt",
         header: "Created At",
         cell: info => moment(info.getValue()).format("L HH:mm:ss"),
         meta: { className: "text-center" },
-      }
-    ),
-    columnHelper.display({
-      id: "remove",
-      header: "Remove",
-      cell: info => (
-        <ButtonEnhanced
-          buttonOptions={{
-            regularText: "Remove",
-            data: info.row.original,
-            className: "btn btn-sm btn-danger ml-auto mr-auto",
-            isAction: isRemoving,
-            actionText: "Removing...",
-            type: "button",
-          }}
-          confirmationOptions={{
-            title: "Confirm server removal",
-            text: (
-              <span>
-                Do you really want to remove the server <strong>{info.row.original.name}</strong> ?
-              </span>
-            ),
-            confirmButtonText: "Remove",
-            confirmButtonAction: "Removing...",
-            cancelButtonText: "Cancel",
-            onDone: onRemoveDone,
-          }}
-        />
-      ),
-      meta: { className: "text-center" },
-    }),
-  ], [isRemoving])
-
-
+      }),
+      columnHelper.display({
+        id: "remove",
+        header: "Remove",
+        cell: info => (
+          <ButtonEnhanced
+            buttonOptions={{
+              regularText: "Remove",
+              data: info.row.original,
+              className: "btn btn-sm btn-danger ml-auto mr-auto",
+              isAction: isRemoving,
+              actionText: "Removing...",
+              type: "button",
+            }}
+            confirmationOptions={{
+              title: "Confirm server removal",
+              text: (
+                <span>
+                  Do you really want to remove the server <strong>{info.row.original.name}</strong> ?
+                </span>
+              ),
+              confirmButtonText: "Remove",
+              confirmButtonAction: "Removing...",
+              cancelButtonText: "Cancel",
+              onDone: onRemoveDone,
+            }}
+          />
+        ),
+        meta: { className: "text-center" },
+      }),
+    ],
+    [isRemoving]
+  )
 
   function onCreateDone(result) {
     if (!result) return
@@ -161,7 +153,7 @@ export default () => {
       .then(() => {
         Alert.success("Server successfully created.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error creating server: " + error.reason)
       })
       .finally(() => {
@@ -180,7 +172,7 @@ export default () => {
       .then(() => {
         Alert.success("Server successfully removed.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error removing server: " + error.reason)
       })
       .finally(() => {
@@ -270,10 +262,7 @@ export default () => {
           <div className="text-muted">No servers found. Create your first server!</div>
         </div>
       ) : (
-        <Table
-          table={table}
-          tableId="servers"
-        />
+        <Table table={table} tableId="servers" />
       )}
     </div>
   )

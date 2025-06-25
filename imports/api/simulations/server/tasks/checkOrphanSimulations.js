@@ -5,11 +5,9 @@ import Simulations from "../../both/class"
 // Find stalled Simulations and set its state to 'failed'
 const bound = Meteor.bindEnvironment(() => {
   const simulations = Simulations.find({})
-
-
 })
 
-const task = (ready) => {
+const task = ready => {
   bound()
   ready()
 }

@@ -6,14 +6,14 @@ import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.j
 import DataSetsClass from "../../../../../../../../api/dataSets/both/class.js"
 
 import Alert from "../../../../../../../utils/alert.js"
-import ClipLoader from "react-spinners/ClipLoader";
+import ClipLoader from "react-spinners/ClipLoader"
 
 import Chart from "./chart/chart.jsx"
 import DataDisplay from "./dataDisplay/dataDisplay.jsx"
 
 import "./dataSetEvaluation.css"
 
-export default (props) => {
+export default props => {
   const [isDataSetReady, setDataSetReady] = useState(false)
 
   const dataSetId = props.dataSetEvaluation?.dataSet
@@ -53,17 +53,10 @@ export default (props) => {
   return (
     <div id="dataSetEvaluation">
       <div className="card">
-        <div className="card-header d-flex align-items-center">
-          Data Set Evaluation
-        </div>
+        <div className="card-header d-flex align-items-center">Data Set Evaluation</div>
 
         <div className="card-body">
-          <DataDisplay
-            name={name}
-            objectId={objectId}
-            dataName={dataName}
-            score={score}
-          />
+          <DataDisplay name={name} objectId={objectId} dataName={dataName} score={score} />
 
           <Chart data={chartData} />
         </div>

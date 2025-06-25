@@ -5,7 +5,7 @@ import _ from "lodash"
 
 import { unlink, unlinkSync, writeFileSync, readFileSync, readdirSync, copyFileSync } from "fs"
 
-import { deflateWithPigz, inflateWithPigz } from "../../utils/pigz";
+import { deflateWithPigz, inflateWithPigz } from "../../utils/pigz"
 
 import FramesBoth from "../both/class.js"
 import Sceneries from "../../sceneries/both/class.js"
@@ -23,12 +23,10 @@ export default class Frames extends FramesBoth {
 
   static async insertAsync(frame) {
     const scenery = await Sceneries.findOneAsync(frame.owner)
-    if (!scenery)
-      throw { message: "Frames.insertAsync(): scenery not found" }
+    if (!scenery) throw { message: "Frames.insertAsync(): scenery not found" }
 
     const simulation = await Simulations.findOneAsync(scenery.owner)
-    if (!simulation)
-      throw { message: "Frames.insertAsync(): simulation not found" }
+    if (!simulation) throw { message: "Frames.insertAsync(): simulation not found" }
 
     // Refuses the frame if the simulation has been stopped.
     if (simulation.state === "stopped") return
@@ -98,7 +96,7 @@ export default class Frames extends FramesBoth {
 
     const currentStoragePath = Frames.getStoragePath(scenery.storage)
 
-    const nonSolidObjectsPromises = nonSolidObjects.map(async (nonSolidObject) => {
+    const nonSolidObjectsPromises = nonSolidObjects.map(async nonSolidObject => {
       try {
         const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + nonSolidObject._id
 
@@ -111,7 +109,7 @@ export default class Frames extends FramesBoth {
       }
     })
 
-    const solidObjectsPromises = solidObjects.map(async (solidObject) => {
+    const solidObjectsPromises = solidObjects.map(async solidObject => {
       try {
         const fileName = currentStoragePath + "/" + frame.owner + "-" + frameId + "-" + solidObject._id
 
@@ -150,8 +148,7 @@ export default class Frames extends FramesBoth {
     })
 
     files.forEach(file => {
-      if (scenery.storage === "s3")
-        unlinkSync(currentStoragePath + "/" + file)
+      if (scenery.storage === "s3") unlinkSync(currentStoragePath + "/" + file)
 
       if (scenery.storage === "local")
         unlink(currentStoragePath + "/" + file, error => {
@@ -187,9 +184,7 @@ export default class Frames extends FramesBoth {
         } catch (error) {
           /* Do nothing */
         }
-      }
-
-      else {
+      } else {
         unlink(src, error => {
           /* Do nothing */
         })

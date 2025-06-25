@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor"
 import { Mongo } from "meteor/mongo"
-import 'meteor/aldeed:collection2/static'
-import SimpleSchema from 'meteor/aldeed:simple-schema'
+import "meteor/aldeed:collection2/static"
+import SimpleSchema from "meteor/aldeed:simple-schema"
 
 import Data from "./schemas/data.js"
 
@@ -74,23 +74,23 @@ DataSets.schema = new SimpleSchema({
     type: String,
     label: "Start condition",
     allowedValues: ["lt", "lte", "eq", "gte", "gt"],
-    optional: true
+    optional: true,
   },
   startThreshold: {
     type: Number,
     label: "Start threshold",
-    optional: true
+    optional: true,
   },
   weight: {
     type: Number,
     label: "Weight",
-    defaultValue: 1
+    defaultValue: 1,
   },
   enabled: {
     type: Boolean,
     label: "Enabled",
     optional: true,
-    defaultValue: true
+    defaultValue: true,
   },
   createdAt: {
     type: Date,

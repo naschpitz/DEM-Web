@@ -48,13 +48,13 @@ export default class Agents extends AgentsBoth {
   static async removeByOwner(owner) {
     const agents = await AgentsBoth.find({ owner: owner }).fetchAsync()
 
-    const agentsPromises = agents.map(async (agent) => {
+    const agentsPromises = agents.map(async agent => {
       await Simulations.removeAsync(agent.current.simulation)
       await Simulations.removeAsync(agent.best.simulation)
 
       const agentsHistories = await AgentsHistories.find({ owner: agent._id }).fetchAsync()
 
-      const agentsHistoriesPromises = agentsHistories.map(async (agentHistory) => {
+      const agentsHistoriesPromises = agentsHistories.map(async agentHistory => {
         await Simulations.removeAsync(agentHistory.current.simulation)
         await Simulations.removeAsync(agentHistory.best.simulation)
       })
@@ -186,7 +186,7 @@ export default class Agents extends AgentsBoth {
 
       for (const dataSet of dataSets) {
         const objectId = dataSet.object
-        const object = await NonSolidObjects.findOneAsync(objectId) || await SolidObjects.findOneAsync(objectId)
+        const object = (await NonSolidObjects.findOneAsync(objectId)) || (await SolidObjects.findOneAsync(objectId))
 
         const objectCallSign = object.callSign
         const dataName = dataSet.dataName
@@ -277,7 +277,7 @@ export default class Agents extends AgentsBoth {
         }
 
         // Calculate the score of the dataSet by dividing the dataSetScore by the number of frames
-        const proportionalScore = numFrames ? (dataSetScore / numFrames) : 0
+        const proportionalScore = numFrames ? dataSetScore / numFrames : 0
 
         // Add the dataSetEvaluations object to the dataSetsEvaluations array
         dataSetsEvaluations.push({
@@ -296,8 +296,8 @@ export default class Agents extends AgentsBoth {
         current: {
           score: currentScore,
           dataSetsEvaluations: dataSetsEvaluations,
-          valid: true
-        }
+          valid: true,
+        },
       })
     }
 
@@ -395,9 +395,18 @@ export default class Agents extends AgentsBoth {
       switch (parameter.type) {
         case "material": {
           const referenceMaterial = await Materials.findOneAsync(parameter.materialObject)
-          const currentMaterial = await Materials.findOneAsync({ owner: scenery._id, callSign: referenceMaterial.callSign })
-          const bestMaterial = await Materials.findOneAsync({ owner: bestScenery._id, callSign: referenceMaterial.callSign })
-          const bestGMaterial = await Materials.findOneAsync({ owner: bestGScenery._id, callSign: referenceMaterial.callSign })
+          const currentMaterial = await Materials.findOneAsync({
+            owner: scenery._id,
+            callSign: referenceMaterial.callSign,
+          })
+          const bestMaterial = await Materials.findOneAsync({
+            owner: bestScenery._id,
+            callSign: referenceMaterial.callSign,
+          })
+          const bestGMaterial = await Materials.findOneAsync({
+            owner: bestGScenery._id,
+            callSign: referenceMaterial.callSign,
+          })
 
           const coefficient = parameter.coefficient
 
@@ -419,8 +428,14 @@ export default class Agents extends AgentsBoth {
         case "nonSolidObject": {
           const referenceNSO = await NonSolidObjects.findOneAsync(parameter.materialObject)
           const currentNSO = await NonSolidObjects.findOneAsync({ owner: scenery._id, callSign: referenceNSO.callSign })
-          const bestNSO = await NonSolidObjects.findOneAsync({ owner: bestScenery._id, callSign: referenceNSO.callSign })
-          const bestGNSO = await NonSolidObjects.findOneAsync({ owner: bestGScenery._id, callSign: referenceNSO.callSign })
+          const bestNSO = await NonSolidObjects.findOneAsync({
+            owner: bestScenery._id,
+            callSign: referenceNSO.callSign,
+          })
+          const bestGNSO = await NonSolidObjects.findOneAsync({
+            owner: bestGScenery._id,
+            callSign: referenceNSO.callSign,
+          })
 
           const coefficient = parameter.coefficient
           const value = calculateCoefficient(
@@ -463,7 +478,15 @@ export default class Agents extends AgentsBoth {
       }
     }
 
-    function calculateCoefficient(coefficient, bestCoefficient, bestGlobalCoefficient, c1, c2, perturbation, allowNegative) {
+    function calculateCoefficient(
+      coefficient,
+      bestCoefficient,
+      bestGlobalCoefficient,
+      c1,
+      c2,
+      perturbation,
+      allowNegative
+    ) {
       // Tries to find a valid coefficient 1000 times.
       for (let i = 0; i < 1000; i++) {
         const newValue = sortCoefficient()
@@ -481,15 +504,13 @@ export default class Agents extends AgentsBoth {
 
         let bestVelocity = bestCoefficient - coefficient
 
-        if (bestVelocity === 0)
-          bestVelocity = (Math.random() - 0.5)
+        if (bestVelocity === 0) bestVelocity = Math.random() - 0.5
 
         bestVelocity *= perturbation * coefficient
 
         let bestGlobalVelocity = bestGlobalCoefficient - coefficient
 
-        if (bestGlobalVelocity === 0)
-          bestGlobalVelocity = (Math.random() - 0.5)
+        if (bestGlobalVelocity === 0) bestGlobalVelocity = Math.random() - 0.5
 
         bestGlobalVelocity *= perturbation * coefficient
 

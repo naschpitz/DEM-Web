@@ -1,12 +1,13 @@
-html, body {
-    height: 100%;
-    margin: 0;
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
 
 #box {
-    min-height: 100vh;
+  min-height: 100vh;
 }
 
 #formInput {
-    margin: 0;
+  margin: 0;
 }

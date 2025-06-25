@@ -1,10 +1,10 @@
 import dot from "dot-object"
 import _ from "lodash"
 
-import getArraysPaths from "../../utils/getArrayPaths";
+import getArraysPaths from "../../utils/getArrayPaths"
 
 import MaterialsCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO";
+import createDAO from "../../baseDAO/createDAO"
 
 export default class MaterialsDAO extends createDAO(MaterialsCol) {
   static async updateObjAsync(material) {

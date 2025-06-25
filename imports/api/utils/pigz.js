@@ -1,10 +1,10 @@
 import { spawn } from "child_process"
 
-const deflateWithPigz = async (inputBuffer) => {
+const deflateWithPigz = async inputBuffer => {
   return runPigz(inputBuffer, ["-c", "-k", "-9"])
 }
 
-const inflateWithPigz = async (inputBuffer) => {
+const inflateWithPigz = async inputBuffer => {
   return runPigz(inputBuffer, ["-d", "-c"])
 }
 

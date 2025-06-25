@@ -9,18 +9,10 @@ import "./table.css"
 
 // Internal component for empty table message
 const EmptyMessage = ({ text, isOverlay = false }) => {
-  const messageContent = (
-    <div className="text-center text-muted p-4">
-      {text}
-    </div>
-  )
+  const messageContent = <div className="text-center text-muted p-4">{text}</div>
 
   if (isOverlay) {
-    return (
-      <div className="empty-table-message-overlay">
-        {messageContent}
-      </div>
-    )
+    return <div className="empty-table-message-overlay">{messageContent}</div>
   }
 
   return messageContent
@@ -59,27 +51,28 @@ const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText 
             original: data,
             getIsExpanded: () => false,
             toggleExpanded: () => {}, // No-op for empty rows
-            getVisibleCells: () => table.getAllColumns().map(column => {
-              // Create a wrapped column definition that handles empty rows
-              const wrappedColumnDef = { ...column.columnDef }
+            getVisibleCells: () =>
+              table.getAllColumns().map(column => {
+                // Create a wrapped column definition that handles empty rows
+                const wrappedColumnDef = { ...column.columnDef }
 
-              // For empty rows, always return null regardless of original cell renderer
-              if (column.columnDef.cell) {
-                wrappedColumnDef.cell = () => null
-              }
+                // For empty rows, always return null regardless of original cell renderer
+                if (column.columnDef.cell) {
+                  wrappedColumnDef.cell = () => null
+                }
 
-              return {
-                id: `empty-${index}-${column.id}`,
-                column: { columnDef: wrappedColumnDef },
-                getContext: () => ({
-                  row: emptyRow, // Reference to the complete row object
-                  getValue: () => {
-                    // Return appropriate default values based on column type
-                    return null // Always return null for empty rows
-                  }
-                })
-              }
-            }),
+                return {
+                  id: `empty-${index}-${column.id}`,
+                  column: { columnDef: wrappedColumnDef },
+                  getContext: () => ({
+                    row: emptyRow, // Reference to the complete row object
+                    getValue: () => {
+                      // Return appropriate default values based on column type
+                      return null // Always return null for empty rows
+                    },
+                  }),
+                }
+              }),
           }
           return emptyRow
         } else {
@@ -93,9 +86,7 @@ const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText 
   return (
     <div className="table-container">
       {/* Show empty text when there's no data but padRows is enabled */}
-      {emptyText && padRows && rows.length === 0 && (
-        <EmptyMessage text={emptyText} isOverlay={true} />
-      )}
+      {emptyText && padRows && rows.length === 0 && <EmptyMessage text={emptyText} isOverlay={true} />}
 
       <table className="table table-striped table-hover" id={tableId}>
         <thead>
@@ -110,12 +101,7 @@ const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText 
                     width: header.getSize(), // Dynamic width
                   }}
                 >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
 
                   {/* Resize handle */}
                   {header.column.getCanResize() && (
@@ -147,10 +133,7 @@ const Table = ({ table, expansionComponent, tableId, padRows = false, emptyText 
               {row.getIsExpanded() && expansionComponent && (
                 <tr key={`${row.id}-expanded`}>
                   <td colSpan={row.getVisibleCells().length + 1} style={{ padding: "1rem" }}>
-                    {typeof expansionComponent === 'function'
-                      ? expansionComponent(row.original)
-                      : expansionComponent
-                    }
+                    {typeof expansionComponent === "function" ? expansionComponent(row.original) : expansionComponent}
                   </td>
                 </tr>
               )}
@@ -168,7 +151,7 @@ Table.propTypes = {
   table: PropTypes.object.isRequired,
   expansionComponent: PropTypes.oneOfType([
     PropTypes.element, // React element (for tables without dynamic props)
-    PropTypes.func,    // Function that takes row data and returns a React element
+    PropTypes.func, // Function that takes row data and returns a React element
   ]), // Optional expansion component
   tableId: PropTypes.string, // Optional table ID for CSS scoping
   padRows: PropTypes.bool, // Whether to pad rows to fill page size

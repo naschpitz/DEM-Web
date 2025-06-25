@@ -1,29 +1,29 @@
 #historyTable .card-body {
-    padding-bottom: 0px;
+  padding-bottom: 0px;
 }
 
 #historyTable .progress {
-    margin: 0px;
-    height: 31px;
-    text-align: center;
+  margin: 0px;
+  height: 31px;
+  text-align: center;
 
-    background-color: #ced4da;
+  background-color: #ced4da;
 }
 
 #historyTable .progress-bar {
-    padding-top: 6px;
-    padding-bottom: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 #historyTable .massive-font {
-    font-size: 15px;
-    text-align: center;
+  font-size: 15px;
+  text-align: center;
 }
 
 /* Table-specific styles are now handled by ResponsiveTable component */
 
 /* Loading and empty state styling */
 #historyTable .spinner-border {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }

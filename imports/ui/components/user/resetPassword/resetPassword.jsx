@@ -8,7 +8,7 @@ import "./resetPassword.css"
 
 let resetMsgId, passwordMsgId
 
-export default (props) => {
+export default props => {
   const [isResettingPassword, setIsResettingPassword] = useState(false)
   const [password, setPassword] = useState("")
 

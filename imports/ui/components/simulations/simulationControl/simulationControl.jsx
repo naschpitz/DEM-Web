@@ -4,7 +4,7 @@ import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
 import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
-import Groups from "../../../../api/groups/both/class";
+import Groups from "../../../../api/groups/both/class"
 import ServersClass from "../../../../api/servers/both/class.js"
 import SimulationsClass from "../../../../api/simulations/both/class.js"
 
@@ -15,7 +15,7 @@ import FormInput from "@naschpitz/form-input"
 
 import "./simulationControl.css"
 
-export default (props) => {
+export default props => {
   const [isStarting, setIsStarting] = useState(false)
   const [isPausing, setIsPausing] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
@@ -71,11 +71,13 @@ export default (props) => {
 
     _.set(newSimulation, name, value)
 
-    if (event === "onBlur" || (event === "onChange" && (name === "group" || name === "server" || name === "multiGPU" || name === "calcNeigh"))) {
-      Meteor.callAsync("simulations.update", newSimulation)
-        .catch((error) => {
-          Alert.error("Error updating server: " + getErrorMessage(error))
-        })
+    if (
+      event === "onBlur" ||
+      (event === "onChange" && (name === "group" || name === "server" || name === "multiGPU" || name === "calcNeigh"))
+    ) {
+      Meteor.callAsync("simulations.update", newSimulation).catch(error => {
+        Alert.error("Error updating server: " + getErrorMessage(error))
+      })
     }
   }
 
@@ -88,7 +90,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Run order successfully issued.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error running simulation: " + error.reason)
       })
       .finally(() => {
@@ -105,7 +107,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Pause order successfully issued.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error pausing simulation: " + error.reason)
       })
       .finally(() => {
@@ -122,7 +124,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Stop order successfully issued.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error stopping simulation: " + error.reason)
       })
       .finally(() => {
@@ -139,7 +141,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Simulation successfully reset.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error resetting simulation: " + error.reason)
       })
       .finally(() => {
@@ -156,7 +158,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Simulation successfully cloned.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error cloning simulation: " + error.reason)
       })
       .finally(() => {
@@ -173,7 +175,7 @@ export default (props) => {
       .then(() => {
         Alert.success("Simulation successfully removed.")
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.error("Error removing simulation: " + error.reason)
       })
       .finally(() => {

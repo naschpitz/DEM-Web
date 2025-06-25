@@ -1,10 +1,10 @@
 import dot from "dot-object"
 import _ from "lodash"
 
-import getArraysPaths from "../../utils/getArrayPaths";
+import getArraysPaths from "../../utils/getArrayPaths"
 
 import SceneriesCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO";
+import createDAO from "../../baseDAO/createDAO"
 
 export default class SceneriesDAO extends createDAO(SceneriesCol) {
   static async updateObjAsync(scenery) {
