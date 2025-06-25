@@ -243,7 +243,18 @@ export default (props) => {
       pagination: {
         pageSize: 10,
       },
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        index: 50,
+        iteration: 50,
+        currentScore: 150,
+        bestScore: 150,
+        isBest: 120,
+        state: 150,
+        progress: 200,
+        et: 150,
+        eta: 150,
+        details: 100,
+      },
     }
   })
 

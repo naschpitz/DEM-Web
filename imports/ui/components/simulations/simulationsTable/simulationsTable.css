@@ -4,7 +4,10 @@
 
 #simulationsTable .progress {
     margin: 0px;
+    height: 31px;
     text-align: center;
+
+    background-color: #ced4da;
 }
 
 /* Table-specific styles are now handled by Table component */

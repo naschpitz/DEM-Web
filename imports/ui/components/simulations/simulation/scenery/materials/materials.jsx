@@ -167,7 +167,7 @@ export default (props) => {
         expander: 20,
         name: 1000,
         remove: 200,
-      }, // optional: initial sizes
+      }
     },
   })
 

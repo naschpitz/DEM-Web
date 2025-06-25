@@ -263,7 +263,17 @@ export default (props) => {
       pagination: {
         pageSize: 5,
       },
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        type: 300,
+        materialObject: 400,
+        coefficient: 300,
+        variation: 150,
+        c1: 150,
+        c2: 150,
+        perturbation: 150,
+        allowNegative: 150,
+        remove: 100,
+      },
     },
   })
 

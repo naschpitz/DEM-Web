@@ -129,7 +129,10 @@ export default (props) => {
         pageSize: 5,
       },
       expanded: {},
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        expander: 20,
+        name: 1000,
+      },
     },
   })
 

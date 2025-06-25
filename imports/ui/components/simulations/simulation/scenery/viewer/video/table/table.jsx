@@ -218,7 +218,13 @@ export default ({ sceneryId }) => {
       pagination: {
         pageSize: 5,
       },
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        name: 600,
+        state: 200,
+        createdAt: 300,
+        download: 200,
+        remove: 200,
+      },
     },
   })
 

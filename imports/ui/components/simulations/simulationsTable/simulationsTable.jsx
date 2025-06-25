@@ -217,7 +217,15 @@ export default (props) => {
         pageSize: 5,
       },
       expanded: {},
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        expander: 20,
+        name: 800,
+        progress: 400,
+        et: 300,
+        eta: 300,
+        createdAt: 300,
+        details: 100,
+      },
     },
   })
 

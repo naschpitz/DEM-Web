@@ -199,7 +199,13 @@ export default () => {
       pagination: {
         pageSize: 5,
       },
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        name: 400,
+        url: 600,
+        port: 150,
+        createdAt: 300,
+        remove: 200,
+      },
     },
   })
 

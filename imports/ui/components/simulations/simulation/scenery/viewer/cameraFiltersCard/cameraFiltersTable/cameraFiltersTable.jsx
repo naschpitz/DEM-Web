@@ -179,7 +179,12 @@ export default (props) => {
       pagination: {
         pageSize: 5,
       },
-      columnSizing: {}, // optional: initial sizes
+      columnSizing: {
+        axis: 200,
+        min: 200,
+        max: 200,
+        remove: 200,
+      },
     },
   })
 
