@@ -15,7 +15,7 @@ import Alert from "../../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import Spinner from "../../../../../../spinner/spinner.jsx"
 import FormInput from "@naschpitz/form-input"
-import useIsState from "../../../../../../hooks/useIsState.js"
+import useIsState from "../../../../../../../hooks/useIsState.js"
 
 import "./table.css"
 

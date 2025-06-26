@@ -14,7 +14,7 @@ import Alert from "../../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import { useTracker } from "meteor/react-meteor-data"
-import useIsState from "../../../../../../hooks/useIsState.js"
+import useIsState from "../../../../../../../hooks/useIsState.js"
 
 import "./cameraFiltersTable.css"
 

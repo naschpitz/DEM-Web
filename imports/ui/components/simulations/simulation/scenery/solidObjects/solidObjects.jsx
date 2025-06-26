@@ -23,7 +23,7 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import Spinner from "../../../../spinner/spinner.jsx"
 import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"
-import useIsState from "../../../../hooks/useIsState.js"
+import useIsState from "../../../../../hooks/useIsState.js"
 
 import "./solidObjects.css"
 

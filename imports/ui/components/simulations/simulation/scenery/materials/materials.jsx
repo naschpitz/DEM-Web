@@ -22,7 +22,7 @@ import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"
-import useIsState from "../../../../hooks/useIsState.js"
+import useIsState from "../../../../../hooks/useIsState.js"
 
 import "./materials.css"
 
