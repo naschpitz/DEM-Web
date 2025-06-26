@@ -111,7 +111,7 @@ export default ({ sceneryId }) => {
             buttonOptions={{
               regularText: "Remove",
               disabled: isRemoveDisabled(info.row.original),
-              data: info,
+              data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
               isAction: getRemoving(info.row.original._id),
               actionText: "Removing...",
@@ -171,7 +171,7 @@ export default ({ sceneryId }) => {
   function onRemoveDone(result, data) {
     if (!result) return
 
-    const videoId = data.original._id
+    const videoId = data._id
     setRemoving(videoId, true)
 
     Meteor.callAsync("videos.remove", videoId)
