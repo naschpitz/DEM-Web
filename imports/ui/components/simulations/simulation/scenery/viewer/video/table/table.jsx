@@ -30,7 +30,7 @@ export default ({ sceneryId }) => {
   }, [sceneryId])
 
   const videos = useTracker(() => {
-    return VideosClass.find({ "meta.owner": sceneryId }, { sort: { createdAt: -1 } }).fetch()
+    return VideosClass.find({ owner: sceneryId }, { sort: { createdAt: -1 } }).fetch()
   }, [sceneryId])
 
   // Create reactive data for the table
@@ -44,11 +44,11 @@ export default ({ sceneryId }) => {
 
   // Helper functions for column logic
   function isDownloadDisabled(video) {
-    return video.meta.state !== "done"
+    return video.state !== "done"
   }
 
   function isRemoveDisabled(video) {
-    const state = video.meta.state
+    const state = video.state
     return state === "rendering" || state === "encoding"
   }
 
@@ -70,13 +70,13 @@ export default ({ sceneryId }) => {
         ),
         meta: { className: "text-center" },
       }),
-      columnHelper.accessor(row => row.meta.state, {
+      columnHelper.accessor(row => row.state, {
         id: "state",
         header: "State",
         cell: info => getState(info.getValue()),
         meta: { className: "text-center" },
       }),
-      columnHelper.accessor(row => row.meta.createdAt, {
+      columnHelper.accessor(row => row.createdAt, {
         id: "createdAt",
         header: "Created At",
         cell: info => moment(info.getValue()).format("L HH:mm:ss"),
@@ -153,9 +153,7 @@ export default ({ sceneryId }) => {
   }
 
   function getUrl(videoId) {
-    const videoCursor = VideosClass.findOne(videoId)
-
-    return videoCursor.link() + "?xmtok=" + Meteor.userId()
+    return `/files/download/${videoId}?xmtok=${Meteor.userId()}`
   }
 
   function onEvent(event, data, name, value) {

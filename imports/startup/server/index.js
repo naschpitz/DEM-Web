@@ -52,3 +52,5 @@ import "../../api/users/server/methods.js"
 
 import "../../api/videos/server/methods.js"
 import "../../api/videos/server/publications.js"
+import "../../api/files/server/publications.js"
+import "../../api/files/server/fileServer.js"

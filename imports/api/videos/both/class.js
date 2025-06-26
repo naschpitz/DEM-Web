@@ -1,19 +1,13 @@
-import VideosDAO from "./dao.js";
+import Files from "../../files/both/class.js";
 
-export default class Videos extends VideosDAO {
+export default class Videos extends Files {
   static async setState(videoId, state, error) {
-    const video = {
-      _id: videoId,
-      meta: {
-        state: state,
-        error: error
-      }
-    };
-
-    await VideosDAO.updateObjAsync(video);
+    await super.setState(videoId, state, error);
   }
 
   static async removeByOwner(sceneryId) {
-    await VideosDAO.removeAsync({ "meta.owner": sceneryId });
+    await super.removeAsync({ "owner": sceneryId, "isVideo": true });
   }
+
+
 }

@@ -18,7 +18,6 @@ import "../../api/sceneries/both/methods.js"
 import "../../api/servers/both/methods.js"
 import "../../api/simulations/both/methods.js"
 import "../../api/solidObjects/both/methods.js"
-import "../../api/videos/both/methods.js"
 
 const original_get = _.get
 

@@ -8,9 +8,9 @@ import waitOn from "wait-on";
 import FramesImages from "../../framesImages/server/class.js";
 import Sceneries from "../../sceneries/both/class.js";
 import Simulations from "../../simulations/both/class.js";
-import VideosBoth from "../both/class.js";
+import Files from "../../files/both/class.js";
 
-export default class Videos extends VideosBoth {
+export default class Videos extends Files {
   static async render(userId, sceneryId, settings) {
     const scenery = await Sceneries.findOneAsync(sceneryId);
     const simulationId = scenery.owner;
@@ -21,22 +21,27 @@ export default class Videos extends VideosBoth {
 
     const videoFilePath = Meteor.settings.s3Path + "/" + videoId + ".mp4";
 
-    const opts = {
-      fileId: videoId,
-      fileName: simulation.name + ".mp4",
-      userId: userId,
-      type: "video/mp4",
-      size: 0,
-      meta: {
-        owner: sceneryId,
-        state: "rendering"
-      }
-    };
-
     // Create empty file.
     closeSync(openSync(videoFilePath, "w"));
 
-    await VideosBoth.addFile(videoFilePath, opts);
+    // Create video file document
+    const videoDoc = {
+      _id: videoId,
+      name: simulation.name + ".mp4",
+      path: videoFilePath,
+      size: 0,
+      type: "video/mp4",
+      isVideo: true,
+      isAudio: false,
+      isImage: false,
+      isText: false,
+      isJSON: false,
+      isPDF: false,
+      owner: sceneryId,
+      state: "rendering"
+    };
+
+    await Files.insertAsync(videoDoc);
 
     const imagesPath = Meteor.settings.tmpPath + "/" + sceneryId + "_" + Random.id(6);
 
@@ -47,7 +52,7 @@ export default class Videos extends VideosBoth {
     } catch (error) {
       console.log("Error rendering images: ", error);
       rmdirSync(imagesPath, { recursive: true });
-      await VideosBoth.setState(videoId, "errorRendering", error);
+      await Files.setState(videoId, "errorRendering", error);
       return;
     }
 
@@ -83,7 +88,7 @@ export default class Videos extends VideosBoth {
     // Output file path.
     args.push(videoFilePath);
 
-    await VideosBoth.setState(videoId, "encoding");
+    await Files.setState(videoId, "encoding");
 
     try {
       await new Promise((resolve, reject) => {
@@ -106,7 +111,7 @@ export default class Videos extends VideosBoth {
         });
       });
     } catch (error) {
-      await VideosBoth.setState(videoId, "errorEncoding", error);
+      await Files.setState(videoId, "errorEncoding", error);
       return;
     } finally {
       rmdirSync(imagesPath, { recursive: true });
@@ -116,12 +121,12 @@ export default class Videos extends VideosBoth {
 
     const stats = statSync(videoFilePath);
 
-    await VideosBoth.updateAsync(
+    await Files.updateAsync(
       videoId,
       {
         $set: {
           size: stats.size,
-          "meta.state": "done"
+          state: "done"
         }
       },
       {
@@ -131,14 +136,14 @@ export default class Videos extends VideosBoth {
   }
 
   static async removeAsync(videoId) {
-    const file = await VideosBoth.findOneAsync(videoId);
+    const file = await Files.findOneAsync(videoId);
 
-    if (file.meta.state === "rendering" || file.meta.state === "encoding")
+    if (file.state === "rendering" || file.state === "encoding")
       throw { message: "Videos in 'rendering' or 'encoding' states cannot be removed." };
 
     unlink(file.path, (error) => { /* Do nothing */
     });
 
-    await VideosBoth.removeAsync(videoId);
+    await Files.removeAsync(videoId);
   }
 }

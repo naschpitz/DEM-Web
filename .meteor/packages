@@ -23,7 +23,6 @@ accounts-base@3.1.1
 accounts-password@3.2.0
 jquery
 session@1.2.2
-ostrio:files
 aldeed:collection2@4.1.2
 reywood:publish-composite
 percolate:migrations

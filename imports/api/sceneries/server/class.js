@@ -4,7 +4,7 @@ import Materials from "../../materials/both/class.js"
 import NonSolidObjects from "../../nonSolidObjects/both/class.js"
 import SceneriesBoth from "../../sceneries/both/class.js"
 import SolidObjects from "../../solidObjects/both/class.js"
-import Videos from "../../videos/both/class"
+import Videos from "../../videos/both/class.js"
 
 export default class Sceneries extends SceneriesBoth {
   static async resetByOwner(simulationId) {

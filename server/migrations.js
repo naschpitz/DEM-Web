@@ -1,9 +1,11 @@
 import { Random } from "meteor/random"
+import { MongoInternals } from "meteor/mongo"
 
 import Agents from "../imports/api/agents/both/collection"
 import AgentsHistories from "../imports/api/agentsHistories/both/collection"
 import Calibrations from "../imports/api/calibrations/both/collection"
 import DataSets from "../imports/api/dataSets/both/collection"
+import Files from "../imports/api/files/both/collection"
 import Logs from "../imports/api/logs/both/collection"
 import Materials from "../imports/api/materials/both/collection"
 import NonSolidObjects from "../imports/api/nonSolidObjects/both/collection"
@@ -168,5 +170,106 @@ Migrations.add({
 
     // Remove the AgentHistories collection
     AgentsHistories.rawCollection().drop()
+  },
+})
+
+Migrations.add({
+  version: 9,
+  name: "Migrate videos collection to generic files collection",
+  up: async () => {
+    // Use raw MongoDB driver to avoid collection name conflicts
+    const db = MongoInternals.defaultRemoteCollectionDriver().mongo.db
+    const videosCollection = db.collection("videos")
+    const filesCollection = db.collection("files")
+
+    // Check if there are any documents in the videos collection
+    const videosCount = await videosCollection.countDocuments()
+
+    if (videosCount > 0) {
+      console.log(`Found ${videosCount} videos to migrate to files collection`)
+
+      // Get all videos
+      const videos = await videosCollection.find({}).toArray()
+
+      for (const video of videos) {
+        // Transform the video document to the new files structure
+        const fileDoc = {
+          _id: video._id,
+          owner: video.meta?.owner || video.owner,
+          name: video.name,
+          path: video.path,
+          size: video.size,
+          type: video.type || "video/mp4",
+          isVideo: true,
+          isAudio: false,
+          isImage: false,
+          isText: false,
+          isJSON: false,
+          isPDF: false,
+          state: video.meta?.state || video.state,
+          error: video.meta?.error || video.error,
+          notes: video.meta?.notes || video.notes,
+          createdAt: video.meta?.createdAt || video.createdAt || new Date(),
+          updatedAt: video.updatedAt || new Date(),
+        }
+
+        // Insert into files collection
+        try {
+          await filesCollection.insertOne(fileDoc)
+          console.log(`Migrated video ${video._id} to files collection`)
+        } catch (error) {
+          if (error.code === 11000) {
+            // Document already exists, skip
+            console.log(`Video ${video._id} already exists in files collection, skipping`)
+          } else {
+            console.error(`Error migrating video ${video._id}:`, error)
+          }
+        }
+      }
+
+      console.log("Video to files migration completed")
+    } else {
+      console.log("No videos found to migrate")
+    }
+  },
+  down: async () => {
+    // Use raw MongoDB driver
+    const db = MongoInternals.defaultRemoteCollectionDriver().mongo.db
+    const videosCollection = db.collection("videos")
+    const filesCollection = db.collection("files")
+
+    // Find all video files in the files collection
+    const videoFiles = await filesCollection.find({ isVideo: true }).toArray()
+
+    for (const file of videoFiles) {
+      // Transform back to the old videos structure
+      const videoDoc = {
+        _id: file._id,
+        name: file.name,
+        path: file.path,
+        size: file.size,
+        type: file.type,
+        meta: {
+          owner: file.owner,
+          state: file.state,
+          error: file.error,
+          notes: file.notes,
+          createdAt: file.createdAt,
+        },
+        updatedAt: file.updatedAt,
+      }
+
+      // Insert back into videos collection
+      try {
+        await videosCollection.insertOne(videoDoc)
+        console.log(`Restored video ${file._id} to videos collection`)
+      } catch (error) {
+        console.error(`Error restoring video ${file._id}:`, error)
+      }
+    }
+
+    // Remove video files from files collection
+    await filesCollection.deleteMany({ isVideo: true })
+    console.log("Video files removed from files collection")
   },
 })
