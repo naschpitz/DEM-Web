@@ -14,12 +14,13 @@ import Alert from "../../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import { useTracker } from "meteor/react-meteor-data"
+import useIsState from "../../../../../../hooks/useIsState.js"
 
 import "./cameraFiltersTable.css"
 
 export default props => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(new Set())
+  const isRemoving = useIsState()
 
   useTracker(() => {
     Meteor.subscribe("cameraFilters.list", props.sceneryId, {
@@ -108,7 +109,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: getRemoving(info.row.original._id),
+              isAction: isRemoving.getState(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -127,7 +128,7 @@ export default props => {
         },
       }),
     ],
-    [isRemoving, axisOptions]
+    [isRemoving.isState, axisOptions]
   )
 
   function onEvent(event, data, name, value) {
@@ -146,7 +147,7 @@ export default props => {
     if (!result) return
 
     const cameraFilterId = data._id
-    setRemoving(cameraFilterId, true)
+    isRemoving.setState(cameraFilterId, true)
 
     Meteor.callAsync("cameraFilters.remove", data._id)
       .then(() => {
@@ -156,24 +157,8 @@ export default props => {
         Alert.error("Error removing camera filter object: " + error.reason)
       })
       .finally(() => {
-        setRemoving(cameraFilterId, false)
+        isRemoving.setState(cameraFilterId, false)
       })
-  }
-
-  function getRemoving(cameraFilterId) {
-    return isRemoving.has(cameraFilterId)
-  }
-
-  function setRemoving(cameraFilterId, value) {
-    const newIsRemoving = new Set(isRemoving)
-
-    if (value) {
-      newIsRemoving.add(cameraFilterId)
-    } else {
-      newIsRemoving.delete(cameraFilterId)
-    }
-
-    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({

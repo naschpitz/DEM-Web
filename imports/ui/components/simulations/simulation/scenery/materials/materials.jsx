@@ -22,12 +22,13 @@ import Alert from "../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"
+import useIsState from "../../../../hooks/useIsState.js"
 
 import "./materials.css"
 
 export default props => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(new Set())
+  const isRemoving = useIsState()
 
   useTracker(() => {
     Meteor.subscribe("materials.list", props.sceneryId, {
@@ -93,7 +94,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: getRemoving(info.row.original._id),
+              isAction: isRemoving.getState(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -116,7 +117,7 @@ export default props => {
         },
       }),
     ],
-    [isRemoving]
+    [isRemoving.isState]
   )
 
   function onEvent(event, data, name, value) {
@@ -135,7 +136,7 @@ export default props => {
     if (!result) return
 
     const materialId = data._id
-    setRemoving(materialId, true)
+    isRemoving.setState(materialId, true)
 
     Meteor.callAsync("materials.remove", materialId)
       .then(() => {
@@ -145,24 +146,8 @@ export default props => {
         Alert.error("Error removing material: " + error.reason)
       })
       .finally(() => {
-        setRemoving(materialId, false)
+        isRemoving.setState(materialId, false)
       })
-  }
-
-  function getRemoving(materialId) {
-    return isRemoving.has(materialId)
-  }
-
-  function setRemoving(materialId, value) {
-    const newIsRemoving = new Set(isRemoving)
-
-    if (value) {
-      newIsRemoving.add(materialId)
-    } else {
-      newIsRemoving.delete(materialId)
-    }
-
-    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({

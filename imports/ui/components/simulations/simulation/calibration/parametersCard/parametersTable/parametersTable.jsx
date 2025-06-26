@@ -16,12 +16,13 @@ import FormInput from "@naschpitz/form-input"
 
 import CoefficientSelect from "../coefficientSelect/coefficientSelect.jsx"
 import MaterialObjectSelect from "../materialObjectSelect/materialObjectSelect.jsx"
+import useIsState from "../../../../../../hooks/useIsState.js"
 
 import "./parametersTable.css"
 
 export default props => {
   const [isParametersReady, setIsParametersReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(new Set())
+  const isRemoving = useIsState()
 
   const parameters = useTracker(() => {
     Meteor.subscribe("parameters.list", props.calibrationId, {
@@ -198,7 +199,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: getRemoving(info.row.original._id),
+              isAction: isRemoving.getState(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -215,7 +216,7 @@ export default props => {
         meta: { className: "text-center" },
       }),
     ],
-    [isRemoving, typeOptions, props.calibrationId]
+    [isRemoving.isState, typeOptions, props.calibrationId]
   )
 
   function onEvent(event, data, name, value) {
@@ -234,7 +235,7 @@ export default props => {
     if (!result) return
 
     const parameterId = data._id
-    setRemoving(parameterId, true)
+    isRemoving.setState(parameterId, true)
 
     Meteor.callAsync("parameters.remove", parameterId)
       .then(() => {
@@ -244,24 +245,8 @@ export default props => {
         Alert.error("Error removing parameter: " + error.reason)
       })
       .finally(() => {
-        setRemoving(parameterId, false)
+        isRemoving.setState(parameterId, false)
       })
-  }
-
-  function getRemoving(parameterId) {
-    return isRemoving.has(parameterId)
-  }
-
-  function setRemoving(parameterId, value) {
-    const newIsRemoving = new Set(isRemoving)
-
-    if (value) {
-      newIsRemoving.add(parameterId)
-    } else {
-      newIsRemoving.delete(parameterId)
-    }
-
-    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({

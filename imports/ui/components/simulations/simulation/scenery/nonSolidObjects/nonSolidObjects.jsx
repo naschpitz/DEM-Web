@@ -23,12 +23,13 @@ import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import Spinner from "../../../../spinner/spinner.jsx"
 import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"
+import useIsState from "../../../../hooks/useIsState.js"
 
 import "./nonSolidObjects.css"
 
 export default props => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(new Set())
+  const isRemoving = useIsState()
 
   useTracker(() => {
     Meteor.subscribe("nonSolidObjects.list", props.sceneryId, {
@@ -95,7 +96,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: getRemoving(info.row.original._id),
+              isAction: isRemoving.getState(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -118,7 +119,7 @@ export default props => {
         },
       }),
     ],
-    [isRemoving]
+    [isRemoving.isState]
   )
 
   function onEvent(event, data, name, value) {
@@ -137,7 +138,7 @@ export default props => {
     if (!result) return
 
     const nonSolidObjectId = data._id
-    setRemoving(nonSolidObjectId, true)
+    isRemoving.setState(nonSolidObjectId, true)
 
     Meteor.callAsync("nonSolidObjects.remove", data._id)
       .then(() => {
@@ -147,24 +148,8 @@ export default props => {
         Alert.error("Error removing non-solid object: " + error.reason)
       })
       .finally(() => {
-        setRemoving(nonSolidObjectId, false)
+        isRemoving.setState(nonSolidObjectId, false)
       })
-  }
-
-  function getRemoving(nonSolidObjectId) {
-    return isRemoving.has(nonSolidObjectId)
-  }
-
-  function setRemoving(nonSolidObjectId, value) {
-    const newIsRemoving = new Set(isRemoving)
-
-    if (value) {
-      newIsRemoving.add(nonSolidObjectId)
-    } else {
-      newIsRemoving.delete(nonSolidObjectId)
-    }
-
-    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({

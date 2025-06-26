@@ -15,12 +15,13 @@ import Alert from "../../../../../../../utils/alert.js"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import Spinner from "../../../../../../spinner/spinner.jsx"
 import FormInput from "@naschpitz/form-input"
+import useIsState from "../../../../../../hooks/useIsState.js"
 
 import "./table.css"
 
 export default ({ sceneryId }) => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(new Set())
+  const isRemoving = useIsState()
 
   useTracker(() => {
     Meteor.subscribe("videos", sceneryId, {
@@ -113,7 +114,7 @@ export default ({ sceneryId }) => {
               disabled: isRemoveDisabled(info.row.original),
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: getRemoving(info.row.original._id),
+              isAction: isRemoving.getState(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -134,7 +135,7 @@ export default ({ sceneryId }) => {
         meta: { className: "text-center" },
       }),
     ],
-    [isRemoving]
+    [isRemoving.isState]
   )
 
   function getState(state) {
@@ -172,7 +173,7 @@ export default ({ sceneryId }) => {
     if (!result) return
 
     const videoId = data._id
-    setRemoving(videoId, true)
+    isRemoving.setState(videoId, true)
 
     Meteor.callAsync("videos.remove", videoId)
       .then(() => {
@@ -182,24 +183,8 @@ export default ({ sceneryId }) => {
         Alert.error("Error removing video: " + error.reason)
       })
       .finally(() => {
-        setRemoving(videoId, false)
+        isRemoving.setState(videoId, false)
       })
-  }
-
-  function getRemoving(videoId) {
-    return isRemoving.has(videoId)
-  }
-
-  function setRemoving(videoId, value) {
-    const newIsRemoving = new Set(isRemoving)
-
-    if (value) {
-      newIsRemoving.add(videoId)
-    } else {
-      newIsRemoving.delete(videoId)
-    }
-
-    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({
