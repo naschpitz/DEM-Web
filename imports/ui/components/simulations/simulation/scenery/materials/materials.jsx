@@ -27,7 +27,7 @@ import "./materials.css"
 
 export default props => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(new Set())
 
   useTracker(() => {
     Meteor.subscribe("materials.list", props.sceneryId, {
@@ -93,7 +93,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: isRemoving,
+              isAction: getRemoving(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -134,9 +134,8 @@ export default props => {
   function onRemoveDone(result, data) {
     if (!result) return
 
-    setIsRemoving(true)
-
     const materialId = data._id
+    setRemoving(materialId, true)
 
     Meteor.callAsync("materials.remove", materialId)
       .then(() => {
@@ -146,8 +145,24 @@ export default props => {
         Alert.error("Error removing material: " + error.reason)
       })
       .finally(() => {
-        setIsRemoving(false)
+        setRemoving(materialId, false)
       })
+  }
+
+  function getRemoving(materialId) {
+    return isRemoving.has(materialId)
+  }
+
+  function setRemoving(materialId, value) {
+    const newIsRemoving = new Set(isRemoving)
+
+    if (value) {
+      newIsRemoving.add(materialId)
+    } else {
+      newIsRemoving.delete(materialId)
+    }
+
+    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({

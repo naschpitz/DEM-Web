@@ -28,7 +28,7 @@ import "./nonSolidObjects.css"
 
 export default props => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(new Set())
 
   useTracker(() => {
     Meteor.subscribe("nonSolidObjects.list", props.sceneryId, {
@@ -95,7 +95,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: isRemoving,
+              isAction: getRemoving(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -136,7 +136,8 @@ export default props => {
   function onRemoveDone(result, data) {
     if (!result) return
 
-    setIsRemoving(true)
+    const nonSolidObjectId = data._id
+    setRemoving(nonSolidObjectId, true)
 
     Meteor.callAsync("nonSolidObjects.remove", data._id)
       .then(() => {
@@ -146,8 +147,24 @@ export default props => {
         Alert.error("Error removing non-solid object: " + error.reason)
       })
       .finally(() => {
-        setIsRemoving(false)
+        setRemoving(nonSolidObjectId, false)
       })
+  }
+
+  function getRemoving(nonSolidObjectId) {
+    return isRemoving.has(nonSolidObjectId)
+  }
+
+  function setRemoving(nonSolidObjectId, value) {
+    const newIsRemoving = new Set(isRemoving)
+
+    if (value) {
+      newIsRemoving.add(nonSolidObjectId)
+    } else {
+      newIsRemoving.delete(nonSolidObjectId)
+    }
+
+    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({

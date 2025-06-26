@@ -20,7 +20,7 @@ import "./table.css"
 
 export default ({ sceneryId }) => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(new Map())
+  const [isRemoving, setIsRemoving] = useState(new Set())
 
   useTracker(() => {
     Meteor.subscribe("videos", sceneryId, {
@@ -187,12 +187,17 @@ export default ({ sceneryId }) => {
   }
 
   function getRemoving(videoId) {
-    return isRemoving.get(videoId)
+    return isRemoving.has(videoId)
   }
 
   function setRemoving(videoId, value) {
-    const newIsRemoving = _.cloneDeep(isRemoving)
-    newIsRemoving.set(videoId, value)
+    const newIsRemoving = new Set(isRemoving)
+
+    if (value) {
+      newIsRemoving.add(videoId)
+    } else {
+      newIsRemoving.delete(videoId)
+    }
 
     setIsRemoving(newIsRemoving)
   }

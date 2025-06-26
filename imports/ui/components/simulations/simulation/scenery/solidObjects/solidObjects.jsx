@@ -28,7 +28,7 @@ import "./solidObjects.css"
 
 export default props => {
   const [isReady, setIsReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(new Set())
 
   useTracker(() => {
     Meteor.subscribe("solidObjects.list", props.sceneryId, {
@@ -95,7 +95,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: isRemoving,
+              isAction: getRemoving(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -136,7 +136,8 @@ export default props => {
   function onRemoveDone(result, data) {
     if (!result) return
 
-    setIsRemoving(true)
+    const solidObjectId = data._id
+    setRemoving(solidObjectId, true)
 
     Meteor.callAsync("solidObjects.remove", data._id)
       .then(() => {
@@ -146,8 +147,24 @@ export default props => {
         Alert.error("Error removing solid object: " + error.reason)
       })
       .finally(() => {
-        setIsRemoving(false)
+        setRemoving(solidObjectId, false)
       })
+  }
+
+  function getRemoving(solidObjectId) {
+    return isRemoving.has(solidObjectId)
+  }
+
+  function setRemoving(solidObjectId, value) {
+    const newIsRemoving = new Set(isRemoving)
+
+    if (value) {
+      newIsRemoving.add(solidObjectId)
+    } else {
+      newIsRemoving.delete(solidObjectId)
+    }
+
+    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({

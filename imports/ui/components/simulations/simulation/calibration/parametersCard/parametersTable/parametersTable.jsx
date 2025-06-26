@@ -21,7 +21,7 @@ import "./parametersTable.css"
 
 export default props => {
   const [isParametersReady, setIsParametersReady] = useState(false)
-  const [isRemoving, setIsRemoving] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(new Set())
 
   const parameters = useTracker(() => {
     Meteor.subscribe("parameters.list", props.calibrationId, {
@@ -198,7 +198,7 @@ export default props => {
               regularText: "Remove",
               data: info.row.original,
               className: "btn btn-sm btn-danger ml-auto mr-auto",
-              isAction: isRemoving,
+              isAction: getRemoving(info.row.original._id),
               actionText: "Removing...",
               type: "button",
             }}
@@ -233,9 +233,8 @@ export default props => {
   function onRemoveDone(result, data) {
     if (!result) return
 
-    setIsRemoving(true)
-
     const parameterId = data._id
+    setRemoving(parameterId, true)
 
     Meteor.callAsync("parameters.remove", parameterId)
       .then(() => {
@@ -245,8 +244,24 @@ export default props => {
         Alert.error("Error removing parameter: " + error.reason)
       })
       .finally(() => {
-        setIsRemoving(false)
+        setRemoving(parameterId, false)
       })
+  }
+
+  function getRemoving(parameterId) {
+    return isRemoving.has(parameterId)
+  }
+
+  function setRemoving(parameterId, value) {
+    const newIsRemoving = new Set(isRemoving)
+
+    if (value) {
+      newIsRemoving.add(parameterId)
+    } else {
+      newIsRemoving.delete(parameterId)
+    }
+
+    setIsRemoving(newIsRemoving)
   }
 
   const table = useReactTable({
