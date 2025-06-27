@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
-import moment from "moment"
 import _ from "lodash"
 
 import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
@@ -12,6 +11,7 @@ import SimulationsClass from "../../../../../api/simulations/both/class"
 import Alert from "../../../../utils/alert.js"
 import FormInput from "@naschpitz/form-input"
 import Spinner from "../../../spinner/spinner.jsx"
+import LogTable from "./table/table.jsx"
 
 import "./log.css"
 
@@ -55,8 +55,8 @@ export default props => {
     return LogsClass.find({ owner: props.id, progress: { $exists: true } }, { sort: { createdAt: -1 } }).fetch()
   })
 
-  const logsReverse = useTracker(() => {
-    return LogsClass.find({ owner: props.id }, { sort: { createdAt: 1 } }).fetch()
+  const allLogs = useTracker(() => {
+    return LogsClass.find({ owner: props.id }, { sort: { createdAt: -1 } }).fetch()
   })
 
   function getObjectClass() {
@@ -87,21 +87,6 @@ export default props => {
     return className
   }
 
-  function getLogMessages() {
-    let logMessages = ""
-
-    logsReverse.forEach(log => {
-      const date = log.createdAt
-      const message = log.message
-
-      if (message) {
-        logMessages += moment(date).format("L HH:mm:ss") + " - " + message + "\n"
-      }
-    })
-
-    return logMessages
-  }
-
   const log = _.head(logs)
 
   const state = getObjectClass().getState(object)
@@ -109,7 +94,6 @@ export default props => {
   const progressBarClassName = getProgressBarClassName(log)
   const et = LogsClass.getEt(log)
   const eta = LogsClass.getEta(log)
-  const logMessages = getLogMessages()
 
   const { showLogMessages = true } = props
 
@@ -178,7 +162,7 @@ export default props => {
         {showLogMessages ? (
           <div id="messages" className="row">
             <div className="col-sm-12">
-              <textarea rows={10} style={{ width: "100%" }} value={logMessages} readOnly={true} />
+              <LogTable logs={allLogs} />
             </div>
           </div>
         ) : null}

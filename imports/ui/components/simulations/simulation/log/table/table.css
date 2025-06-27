@@ -1,0 +1,50 @@
+/* LogTable specific styling */
+
+#logTable {
+  margin-top: 10px;
+}
+
+#logTable .table-container {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+#logTable .table {
+  margin-bottom: 0;
+  min-width: 100%;
+  width: auto;
+}
+
+/* Message cell styling for better text display */
+#logTable .log-message-cell {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* Ensure proper spacing for log table */
+#logTable .table th,
+#logTable .table td {
+  padding: 0.5rem 0.75rem;
+  vertical-align: middle;
+}
+
+/* All data cells should use monospace font for consistency */
+#logTable .table td {
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #logTable .table th,
+  #logTable .table td {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.9em;
+  }
+}
