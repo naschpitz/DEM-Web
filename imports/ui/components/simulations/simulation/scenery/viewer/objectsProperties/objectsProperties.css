@@ -1,5 +1,11 @@
 /* Table-specific styles are now handled by ResponsiveTable component */
 
+/* Center the checkbox in Display column */
+#objectsProperties .table td .d-flex {
+  justify-content: center;
+  align-items: center;
+}
+
 /* Loading and empty state styling */
 #objectsProperties .spinner-border {
   width: 2rem;

@@ -177,7 +177,7 @@ export default props => {
       columnHelper.accessor("allowNegative", {
         header: "Allow Negative",
         cell: info => (
-          <div className="d-flex ml-auto mr-auto">
+          <div className="d-flex">
             <FormInput
               name="allowNegative"
               value={info.getValue()}

@@ -117,7 +117,7 @@ export default props => {
           const displayValue = _.get(objectProperty, "display", true)
 
           return (
-            <div className="d-flex ml-auto mr-auto">
+            <div className="d-flex">
               <FormInput
                 name="display"
                 value={displayValue}
