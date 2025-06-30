@@ -21,6 +21,7 @@ import ObjectsPropertiesClass from "../../../../../../../api/objectsProperties/b
 import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.js"
 
 import Alert from "../../../../../../utils/alert.js"
+import FormInput from "@naschpitz/form-input"
 import Properties from "./properties/properties.jsx"
 import Spinner from "../../../../../spinner/spinner.jsx"
 
@@ -108,8 +109,43 @@ export default props => {
         header: "Name",
         meta: { className: "text-center" },
       }),
+      columnHelper.display({
+        id: "display",
+        header: "Display",
+        cell: ({ row }) => {
+          const objectProperty = row.original.objectProperty
+          const displayValue = _.get(objectProperty, "display", true)
+
+          return (
+            <div className="d-flex ml-auto mr-auto">
+              <FormInput
+                name="display"
+                value={displayValue}
+                type="checkbox"
+                size="small"
+                onEvent={(event, name, value) => {
+                  if (event === "onChange") {
+                    const newObjectProperty = _.cloneDeep(objectProperty)
+                    _.set(newObjectProperty, "display", value)
+
+                    Meteor.callAsync("objectsProperties.update", newObjectProperty)
+                      .then(() => {
+                        if (props.onChange) props.onChange()
+                      })
+                      .catch(error => {
+                        Alert.error("Error updating display property: " + error.reason)
+                      })
+                  }
+                }}
+              />
+            </div>
+          )
+        },
+        meta: { className: "text-center" },
+        size: 80,
+      }),
     ],
-    []
+    [objectsProperties, props.onChange]
   )
 
   function getObjectProperty(owner) {
@@ -133,7 +169,8 @@ export default props => {
       expanded: {},
       columnSizing: {
         expander: 20,
-        name: 1000,
+        name: 800,
+        display: 80,
       },
     },
   })

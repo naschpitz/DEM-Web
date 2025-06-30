@@ -9,6 +9,7 @@ import Files from "../imports/api/files/both/collection"
 import Logs from "../imports/api/logs/both/collection"
 import Materials from "../imports/api/materials/both/collection"
 import NonSolidObjects from "../imports/api/nonSolidObjects/both/collection"
+import ObjectsProperties from "../imports/api/objectsProperties/both/collection"
 import Simulations from "../imports/api/simulations/both/collection"
 import SolidObjects from "../imports/api/solidObjects/both/collection"
 
@@ -271,5 +272,16 @@ Migrations.add({
     // Remove video files from files collection
     await filesCollection.deleteMany({ isVideo: true })
     console.log("Video files removed from files collection")
+  },
+})
+
+Migrations.add({
+  version: 10,
+  name: "Add 'display' property to ObjectsProperties",
+  up: async () => {
+    await ObjectsProperties.updateAsync({}, { $set: { display: true } }, { validate: false, multi: true })
+  },
+  down: async () => {
+    await ObjectsProperties.updateAsync({}, { $unset: { display: "" } }, { validate: false, multi: true })
   },
 })

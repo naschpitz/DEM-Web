@@ -27,8 +27,19 @@ export default class FramesImages {
     const camera = await Cameras.findOneAsync({ owner: frame.owner })
     const cameraFilters = await CameraFilters.find({ owner: frame.owner }).fetchAsync()
 
-    const nonSolidObjects = _.get(scenery, "objects.nonSolidObjects", [])
-    const solidObjects = _.get(scenery, "objects.solidObjects", [])
+    const allNonSolidObjects = _.get(scenery, "objects.nonSolidObjects", [])
+    const allSolidObjects = _.get(scenery, "objects.solidObjects", [])
+
+    // Filter objects based on display property
+    const allObjectIds = [...allNonSolidObjects.map(obj => obj._id), ...allSolidObjects.map(obj => obj._id)]
+    const objectsProperties = await ObjectsProperties.find({
+      owner: { $in: allObjectIds },
+      display: true,
+    }).fetchAsync()
+    const displayedObjectIds = new Set(objectsProperties.map(prop => prop.owner))
+
+    const nonSolidObjects = allNonSolidObjects.filter(obj => displayedObjectIds.has(obj._id))
+    const solidObjects = allSolidObjects.filter(obj => displayedObjectIds.has(obj._id))
 
     let script = ""
 

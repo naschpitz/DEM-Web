@@ -25,6 +25,11 @@ ObjectsProperties.schema = new SimpleSchema({
     label: "Wireframe",
     defaultValue: false,
   },
+  display: {
+    type: Boolean,
+    label: "Display",
+    defaultValue: true,
+  },
   createdAt: {
     type: Date,
     label: "Created at",
