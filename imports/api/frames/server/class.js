@@ -41,53 +41,61 @@ export default class Frames extends FramesBoth {
 
     const currentStoragePath = Frames.getStoragePath(scenery.storage)
 
-    for (const nonSolidObject of nonSolidObjects) {
-      const particles = nonSolidObject.particles
+    // If the frame is detailed, save the particles and faces data to files.
+    if (frame.detailed) {
+      for (const nonSolidObject of nonSolidObjects) {
+        const particles = nonSolidObject.particles
 
-      // If there are no particles, there is no need to save the file.
-      // That means this frame belongs to a simulation that was probably ran during a calibration, which will not
-      // contain detailed information about the particles position, velocity, forces, etc.
-      if (!particles) continue
+        // If there are no particles, there is no need to save the file.
+        // That means this frame belongs to a simulation that was probably ran during a calibration, which will not
+        // contain detailed information about the particles position, velocity, forces, etc.
+        if (!particles) continue
 
-      const data = EJSON.stringify(particles)
+        const data = EJSON.stringify(particles)
 
-      try {
-        const deflatedData = await deflateWithPigz(data.toString())
-        const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id
+        try {
+          const deflatedData = await deflateWithPigz(data.toString())
+          const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + nonSolidObject._id
 
-        writeFileSync(fileName, deflatedData)
-      } catch (error) {
-        console.log("Error deflating nonSolidObject: ", error)
+          writeFileSync(fileName, deflatedData)
+        } catch (error) {
+          console.log("Error deflating nonSolidObject: ", error)
+        }
       }
-    }
 
-    for (const solidObject of solidObjects) {
-      const faces = solidObject.faces
+      for (const solidObject of solidObjects) {
+        const faces = solidObject.faces
 
-      // If there are no faces, there is no need to save the file.
-      // That means this frame belongs to a simulation that was probably ran during a calibration, which will not
-      // contain detailed information about the faces position, velocity, forces, etc.
-      if (!faces) continue
+        // If there are no faces, there is no need to save the file.
+        // That means this frame belongs to a simulation that was probably ran during a calibration, which will not
+        // contain detailed information about the faces position, velocity, forces, etc.
+        if (!faces) continue
 
-      const data = EJSON.stringify(faces)
+        const data = EJSON.stringify(faces)
 
-      try {
-        const deflatedData = await deflateWithPigz(data.toString())
-        const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id
+        try {
+          const deflatedData = await deflateWithPigz(data.toString())
+          const fileName = currentStoragePath + "/" + frame.owner + "-" + frame._id + "-" + solidObject._id
 
-        writeFileSync(fileName, deflatedData)
-      } catch (error) {
-        console.log("Error deflating solidObject: ", error)
+          writeFileSync(fileName, deflatedData)
+        } catch (error) {
+          console.log("Error deflating solidObject: ", error)
+        }
       }
     }
 
     await FramesBoth.insertAsync(frame)
   }
 
-  static async getFullFrame(frameId) {
+  static async getDetailedFrame(frameId) {
     const frame = await FramesBoth.findOneAsync(frameId)
 
-    if (!frame) return
+    // Check is the frame is detailed, if not, throw an error
+    if (!frame?.detailed) {
+      throw {
+        message: "Error getting detailed frame: the frame does not exist or is not detailed, it won't be rendered",
+      }
+    }
 
     const scenery = await Sceneries.findOneAsync(frame.owner)
 

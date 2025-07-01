@@ -58,6 +58,13 @@ Simulations.schema = new SimpleSchema({
     defaultValue: 5,
     optional: true,
   },
+  detailedFramesDiv: {
+    type: Number,
+    label: "Detailed Frames Divider",
+    defaultValue: 1,
+    min: 1,
+    optional: true,
+  },
   calcNeighTimeInt: {
     type: Number,
     label: "Calculate neighborhood time interval",

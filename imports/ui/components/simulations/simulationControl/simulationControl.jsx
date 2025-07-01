@@ -466,6 +466,21 @@ export default props => {
                         onEvent={onEvent}
                       />
                     </div>
+
+                    <div className="col-sm-12 col-md-6">
+                      <FormInput
+                        label="Detailed Frames Divider"
+                        name="detailedFramesDiv"
+                        value={_.get(simulation, "detailedFramesDiv")}
+                        type="field"
+                        subtype="number"
+                        size="small"
+                        labelSizes={{ sm: 5, md: 5, lg: 6 }}
+                        inputSizes={{ sm: 7, md: 7, lg: 6 }}
+                        alignment="no-gap"
+                        onEvent={onEvent}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

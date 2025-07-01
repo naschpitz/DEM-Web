@@ -25,7 +25,7 @@ export default props => {
   }, [props.sceneryId])
 
   const frames = useTracker(() => {
-    return FramesClass.find({ owner: props.sceneryId }, { sort: { step: 1 } }).fetch()
+    return FramesClass.find({ owner: props.sceneryId, detailed: true }, { sort: { step: 1 } }).fetch()
   })
 
   useEffect(() => {

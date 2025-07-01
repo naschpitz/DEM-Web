@@ -1,15 +1,20 @@
 import { Random } from "meteor/random"
 import { MongoInternals } from "meteor/mongo"
 
+import { existsSync, readdirSync } from "fs"
+
 import Agents from "../imports/api/agents/both/collection"
 import AgentsHistories from "../imports/api/agentsHistories/both/collection"
 import Calibrations from "../imports/api/calibrations/both/collection"
 import DataSets from "../imports/api/dataSets/both/collection"
 import Files from "../imports/api/files/both/collection"
+import Frames from "../imports/api/frames/both/collection"
+import FramesServer from "../imports/api/frames/server/class"
 import Logs from "../imports/api/logs/both/collection"
 import Materials from "../imports/api/materials/both/collection"
 import NonSolidObjects from "../imports/api/nonSolidObjects/both/collection"
 import ObjectsProperties from "../imports/api/objectsProperties/both/collection"
+import Sceneries from "../imports/api/sceneries/both/collection"
 import Simulations from "../imports/api/simulations/both/collection"
 import SolidObjects from "../imports/api/solidObjects/both/collection"
 
@@ -283,5 +288,47 @@ Migrations.add({
   },
   down: async () => {
     await ObjectsProperties.updateAsync({}, { $unset: { display: "" } }, { validate: false, multi: true })
+  },
+})
+
+Migrations.add({
+  version: 11,
+  name: "Add 'detailedFramesDiv' property to Simulations and 'detailed' property to Frames",
+  up: async () => {
+    // Add detailedFramesDiv to Simulations
+    await Simulations.updateAsync({}, { $set: { detailedFramesDiv: 1 } }, { validate: false, multi: true })
+
+    // Add detailed property to Frames
+    // Process each frame to determine if it's detailed
+    await Frames.find().forEachAsync(async frame => {
+      let isDetailed = false
+
+      try {
+        // Get the scenery to determine storage path
+        const scenery = await Sceneries.findOneAsync(frame.owner)
+        if (!scenery) return
+
+        const currentStoragePath = FramesServer.getStoragePath(scenery.storage)
+        if (!currentStoragePath || !existsSync(currentStoragePath)) return
+
+        // Check if any files exist for this frame
+        // File pattern: {sceneryId}-{frameId}-{objectId}
+        const frameFilePattern = frame.owner + "-" + frame._id + "-"
+
+        const files = readdirSync(currentStoragePath)
+        isDetailed = files.some(file => file.startsWith(frameFilePattern))
+      } catch (error) {
+        console.log(`Error checking frame ${frame._id} for detailed files:`, error)
+        // Default to false if we can't determine
+        isDetailed = false
+      }
+
+      // Update the frame with the detailed flag
+      await Frames.updateAsync(frame._id, { $set: { detailed: isDetailed } }, { validate: false })
+    })
+  },
+  down: async () => {
+    await Simulations.updateAsync({}, { $unset: { detailedFramesDiv: "" } }, { validate: false, multi: true })
+    await Frames.updateAsync({}, { $unset: { detailed: "" } }, { validate: false, multi: true })
   },
 })

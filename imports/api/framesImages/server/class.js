@@ -13,9 +13,7 @@ import ObjectsProperties from "../../objectsProperties/both/class.js"
 
 export default class FramesImages {
   static async render(frameId, dimensions, keepImageFile, path, imageName) {
-    const frame = await Frames.getFullFrame(frameId)
-
-    if (!frame) return
+    const frame = await Frames.getDetailedFrame(frameId)
 
     // Check if the frame has invalid data
     if (Frames.hasInvalidData(frame)) {
@@ -250,6 +248,7 @@ export default class FramesImages {
   static async renderAll(sceneryId, dimensions, keepImageFile, path, initialFrame, finalFrame) {
     const selector = {
       owner: sceneryId,
+      detailed: true,
     }
 
     if (initialFrame || finalFrame) {

@@ -23,6 +23,12 @@ Frames.schema = new SimpleSchema({
     label: "Step",
     optional: true,
   },
+  detailed: {
+    type: Boolean,
+    label: "Detailed",
+    defaultValue: false,
+    optional: true,
+  },
   scenery: {
     type: Scenery,
     label: "Scenery",

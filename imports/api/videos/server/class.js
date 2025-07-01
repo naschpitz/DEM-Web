@@ -50,10 +50,9 @@ export default class Videos extends Files {
     try {
       await FramesImages.renderAll(sceneryId, settings.dimensions, true, imagesPath, settings.initialFrame, settings.finalFrame);
     } catch (error) {
-      console.log("Error rendering images: ", error);
       rmdirSync(imagesPath, { recursive: true });
       await Files.setState(fileId, "errorRendering", error);
-      return;
+      throw error;
     }
 
     const command = "ffmpeg";
