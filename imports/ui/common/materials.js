@@ -34,7 +34,7 @@ function getForcesCoefficientsOptions(forceType) {
     case "morse": {
       return [
         { value: "coefficients[0]", text: "De" },
-        { value: "coefficients[0]", text: "Ke" },
+        { value: "coefficients[1]", text: "Ke" },
       ]
     }
     case "lennard_jones": {

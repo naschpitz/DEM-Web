@@ -65,11 +65,10 @@ export default props => {
   }, [props.sceneryId])
 
   const objectsProperties = useTracker(() => {
-    const objects = _.concat(nonSolidObjects, solidObjects)
     const objectsIds = objects.map(object => object._id)
 
     return ObjectsPropertiesClass.find({ owner: { $in: objectsIds } }).fetch()
-  }, [nonSolidObjects, solidObjects])
+  }, [objects])
 
   // Create reactive data for the table
   const data = useMemo(() => {
@@ -162,6 +161,8 @@ export default props => {
     enableExpanding: true,
     enableColumnResizing: true, // Enable resizing
     columnResizeMode: "onChange", // "onEnd" also supported
+    autoResetPageIndex: false,
+    autoResetExpanded: false,
     initialState: {
       pagination: {
         pageSize: 5,

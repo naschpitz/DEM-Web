@@ -160,6 +160,8 @@ export default props => {
     enableExpanding: true,
     enableColumnResizing: true, // Enable resizing
     columnResizeMode: "onChange", // "onEnd" also supported
+    autoResetPageIndex: false,
+    autoResetExpanded: false,
     initialState: {
       pagination: {
         pageSize: 5,

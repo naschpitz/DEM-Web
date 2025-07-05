@@ -77,6 +77,7 @@ export default function LogTable({ logs }) {
     getPaginationRowModel: getPaginationRowModel(),
     enableColumnResizing: true,
     columnResizeMode: "onChange",
+    autoResetPageIndex: false,
     initialState: {
       pagination: {
         pageSize: 10,

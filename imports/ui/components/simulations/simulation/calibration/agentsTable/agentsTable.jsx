@@ -209,6 +209,7 @@ export default props => {
     getPaginationRowModel: getPaginationRowModel(),
     enableColumnResizing: true, // Enable resizing
     columnResizeMode: "onChange", // "onEnd" also supported
+    autoResetPageIndex: false,
     initialState: {
       pagination: {
         pageSize: 10,
