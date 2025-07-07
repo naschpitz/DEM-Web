@@ -42,12 +42,15 @@ export default props => {
 
   const columnHelper = createColumnHelper()
 
-  const typeOptions = [
-    { value: "", text: "-- Select Type --" },
-    { value: "material", text: "Material" },
-    { value: "nonSolidObject", text: "Non-Solid Object" },
-    { value: "solidObject", text: "Solid Object" },
-  ]
+  const typeOptions = useMemo(
+    () => [
+      { value: "", text: "-- Select Type --" },
+      { value: "material", text: "Material" },
+      { value: "nonSolidObject", text: "Non-Solid Object" },
+      { value: "solidObject", text: "Solid Object" },
+    ],
+    []
+  )
 
   const columns = useMemo(
     () => [

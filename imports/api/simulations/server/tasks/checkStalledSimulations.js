@@ -20,6 +20,9 @@ const task = Meteor.bindEnvironment(async () => {
     async simulation => {
       const latestLog = await Logs.findOneAsync({ owner: simulation._id }, { sort: { createdAt: -1 } })
 
+      // If the current state of the simulation is not "running", then it is not stalled.
+      if (simulation.state !== "running") return null
+
       const thirtyTimesLogTimeAgo = moment()
         .subtract(30 * simulation.logTime, "seconds")
         .toDate()

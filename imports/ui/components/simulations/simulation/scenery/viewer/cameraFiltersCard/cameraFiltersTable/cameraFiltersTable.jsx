@@ -42,12 +42,15 @@ export default props => {
 
   const columnHelper = createColumnHelper()
 
-  const axisOptions = [
-    { value: "", text: "-- Select Type --" },
-    { value: "x", text: "X" },
-    { value: "y", text: "Y" },
-    { value: "z", text: "Z" },
-  ]
+  const axisOptions = useMemo(
+    () => [
+      { value: "", text: "-- Select Type --" },
+      { value: "x", text: "X" },
+      { value: "y", text: "Y" },
+      { value: "z", text: "Z" },
+    ],
+    []
+  )
 
   const columns = useMemo(
     () => [

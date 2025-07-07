@@ -58,7 +58,12 @@ export default class Simulations extends SimulationsDAO {
     }
 
     // If the simulation is being set as running, check if it is ordered to pause or stop. If so, do not set it as running.
-    if ((simulation.state === "setToPause" || simulation.state === "setToStop") && state === "running") {
+    if (["setToPause", "setToStop"].includes(simulation.state) && state === "running") {
+      return
+    }
+
+    // Do the same for the states "stopped", "done" and "failed".
+    if (["stopped", "done", "failed"].includes(simulation.state) && state === "running") {
       return
     }
 
