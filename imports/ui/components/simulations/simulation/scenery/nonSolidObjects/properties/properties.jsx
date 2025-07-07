@@ -4,10 +4,10 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
-import MaterialsClass from "../../../../../../../api/materials/both/class.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
+import MaterialsClass from "../../../../../../../api/materials/both/class"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import FormInput from "@naschpitz/form-input"
 
 import "./properties.css"

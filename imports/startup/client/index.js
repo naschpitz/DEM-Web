@@ -1,4 +1,4 @@
-import "./accounts.js"
+import "./accounts"
 
 import moment from "moment"
 import "moment/locale/de.js"

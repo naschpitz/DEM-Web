@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react"
 
 import { FaTimes } from "react-icons/fa"
-import MessageDisplay from "../../messageDisplay/messageDisplay.jsx"
-import PasswordFields from "../passwordsFields/passwordsFields.jsx"
+import MessageDisplay from "../../messageDisplay/messageDisplay"
+import PasswordFields from "../passwordsFields/passwordsFields"
 
 import "./resetPassword.css"
 

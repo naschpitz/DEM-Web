@@ -14,18 +14,18 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table"
 
-import Table from "../../table/table.jsx"
+import Table from "../../table/table"
 
-import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
-import SimulationsClass from "../../../../api/simulations/both/class.js"
-import LogsClass from "../../../../api/logs/both/class.js"
+import getErrorMessage from "../../../../api/utils/getErrorMessage"
+import SimulationsClass from "../../../../api/simulations/both/class"
+import LogsClass from "../../../../api/logs/both/class"
 
-import Alert from "../../../utils/alert.js"
+import Alert from "../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
-import Spinner from "../../spinner/spinner.jsx"
+import Spinner from "../../spinner/spinner"
 
-import SimulationControl from "../simulationControl/simulationControl.jsx"
+import SimulationControl from "../simulationControl/simulationControl"
 
 import "./simulationsTable.css"
 

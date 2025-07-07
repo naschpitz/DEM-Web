@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Logs from "./class.js"
+import Logs from "./class"
 
 Meteor.methods({
   async "logs.insert"(log) {

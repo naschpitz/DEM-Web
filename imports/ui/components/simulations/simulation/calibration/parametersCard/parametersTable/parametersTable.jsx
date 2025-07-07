@@ -5,18 +5,18 @@ import _ from "lodash"
 
 import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
-import Table from "../../../../../table/table.jsx"
+import Table from "../../../../../table/table"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
 import Parameters from "../../../../../../../api/parameters/both/class"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 
-import CoefficientSelect from "../coefficientSelect/coefficientSelect.jsx"
-import MaterialObjectSelect from "../materialObjectSelect/materialObjectSelect.jsx"
-import useIsState from "../../../../../../hooks/useIsState.js"
+import CoefficientSelect from "../coefficientSelect/coefficientSelect"
+import MaterialObjectSelect from "../materialObjectSelect/materialObjectSelect"
+import useIsState from "../../../../../../hooks/useIsState"
 
 import "./parametersTable.css"
 

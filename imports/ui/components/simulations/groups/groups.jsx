@@ -2,14 +2,14 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
-import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
-import GroupsClass from "../../../../api/groups/both/class.js"
+import getErrorMessage from "../../../../api/utils/getErrorMessage"
+import GroupsClass from "../../../../api/groups/both/class"
 
 import { FaPlus } from "react-icons/fa"
-import Alert from "../../../utils/alert.js"
+import Alert from "../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
-import Group from "./group/group.jsx"
+import Group from "./group/group"
 
 import "./groups.css"
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 
-import Alert from "../../../../../utils/alert.js"
+import Alert from "../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
-import Spinner from "../../../../spinner/spinner.jsx"
+import Spinner from "../../../../spinner/spinner"
 
 import "./storage.css"
 

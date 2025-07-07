@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-import ParametersDAO from "./dao.js"
+import ParametersDAO from "./dao"
 
 export default class Parameters extends ParametersDAO {
   static async clone(oldCalibrationId, newCalibrationId, materialsMap, nonSolidObjectsMap, solidObjectsMap) {

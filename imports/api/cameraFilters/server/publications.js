@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import CameraFiltersDAO from "../both/dao.js"
+import CameraFiltersDAO from "../both/dao"
 
 if (Meteor.isServer) {
   Meteor.publish("cameraFilters.list", function (sceneryId) {

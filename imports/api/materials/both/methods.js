@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Materials from "./class.js"
+import Materials from "./class"
 
 Meteor.methods({
   async "materials.create"(owner) {

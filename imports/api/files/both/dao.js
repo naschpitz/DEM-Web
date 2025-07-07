@@ -1,8 +1,8 @@
 import dot from "dot-object"
 import _ from "lodash"
 
-import FilesCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import FilesCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class FilesDAO extends createDAO(FilesCol) {
   static async updateObjAsync(file) {

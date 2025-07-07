@@ -2,8 +2,8 @@ import React, { useMemo } from "react"
 import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 import moment from "moment"
 
-import Table from "../../../../table/table.jsx"
-import LogsClass from "../../../../../../api/logs/both/class.js"
+import Table from "../../../../table/table"
+import LogsClass from "../../../../../../api/logs/both/class"
 
 import "./table.css"
 

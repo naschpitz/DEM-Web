@@ -13,16 +13,16 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table"
 
-import Table from "../../../../table/table.jsx"
+import Table from "../../../../table/table"
 
-import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
-import MaterialsClass from "../../../../../../api/materials/both/class.js"
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage"
+import MaterialsClass from "../../../../../../api/materials/both/class"
 
-import Alert from "../../../../../utils/alert.js"
+import Alert from "../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
-import Properties from "./properties/properties.jsx"
-import useIsState from "../../../../../hooks/useIsState.js"
+import Properties from "./properties/properties"
+import useIsState from "../../../../../hooks/useIsState"
 
 import "./materials.css"
 

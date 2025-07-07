@@ -1,13 +1,13 @@
 import _ from "lodash"
 
 import Calibrations from "../../calibrations/both/class"
-import Cameras from "../../cameras/both/class.js"
-import CameraFilters from "../../cameraFilters/both/class.js"
+import Cameras from "../../cameras/both/class"
+import CameraFilters from "../../cameraFilters/both/class"
 import Frames from "../../frames/both/class"
-import Materials from "../../materials/both/class.js"
-import NonSolidObjects from "../../nonSolidObjects/both/class.js"
-import SceneriesDAO from "./dao.js"
-import SolidObjects from "../../solidObjects/both/class.js"
+import Materials from "../../materials/both/class"
+import NonSolidObjects from "../../nonSolidObjects/both/class"
+import SceneriesDAO from "./dao"
+import SolidObjects from "../../solidObjects/both/class"
 
 export default class Sceneries extends SceneriesDAO {
   static async clone(oldSimulationId, newSimulationId, frames = false) {

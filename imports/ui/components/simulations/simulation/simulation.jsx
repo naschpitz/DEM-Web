@@ -4,14 +4,14 @@ import { useTracker } from "meteor/react-meteor-data"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import _ from "lodash"
 
-import getErrorMessage from "../../../../api/utils/getErrorMessage.js"
-import SimulationsClass from "../../../../api/simulations/both/class.js"
+import getErrorMessage from "../../../../api/utils/getErrorMessage"
+import SimulationsClass from "../../../../api/simulations/both/class"
 
-import Alert from "../../../utils/alert.js"
-import Spinner from "../../spinner/spinner.jsx"
+import Alert from "../../../utils/alert"
+import Spinner from "../../spinner/spinner"
 
-import Calibration from "./calibration/calibration.jsx"
-import Main from "./main/main.jsx"
+import Calibration from "./calibration/calibration"
+import Main from "./main/main"
 
 import "./simulation.css"
 

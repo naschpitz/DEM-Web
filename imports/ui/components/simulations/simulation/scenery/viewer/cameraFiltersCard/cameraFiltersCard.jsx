@@ -2,11 +2,11 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaPlus } from "react-icons/fa"
 
-import CameraFilterTable from "./cameraFiltersTable/cameraFiltersTable.jsx"
+import CameraFilterTable from "./cameraFiltersTable/cameraFiltersTable"
 
 import "./cameraFiltersCard.css"
 

@@ -3,8 +3,8 @@ import _ from "lodash"
 
 import getArraysPaths from "../../utils/getArrayPaths"
 
-import SolidObjectsCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import SolidObjectsCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class SolidObjectsDAO extends createDAO(SolidObjectsCol) {
   static async updateObjAsync(solidObject) {

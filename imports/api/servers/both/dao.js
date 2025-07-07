@@ -1,4 +1,4 @@
-import ServersCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import ServersCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class ServersDAO extends createDAO(ServersCol) {}

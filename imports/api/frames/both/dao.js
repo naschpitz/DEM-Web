@@ -1,7 +1,7 @@
 import _ from "lodash"
 
-import FramesCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import FramesCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class FramesDAO extends createDAO(FramesCol) {
   static async insertAsync(frame) {

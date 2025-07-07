@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Groups from "../both/collection.js"
+import Groups from "../both/collection"
 
 if (Meteor.isServer) {
   Meteor.publish("groups.list", function () {

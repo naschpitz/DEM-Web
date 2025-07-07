@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 
-import Videos from "./class.js";
+import Videos from "./class";
 
 Meteor.methods({
   async "videos.render"(sceneryId, settings) {

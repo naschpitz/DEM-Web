@@ -3,12 +3,12 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import { useParams } from "react-router-dom"
 
-import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage"
 import Agents from "../../../../../../api/agents/both/class"
 import Simulations from "../../../../../../api/simulations/both/class"
 
-import Alert from "../../../../../utils/alert.js"
-import Spinner from "../../../../spinner/spinner.jsx"
+import Alert from "../../../../../utils/alert"
+import Spinner from "../../../../spinner/spinner"
 
 import DataSetsEvaluationsCard from "./dataSetsEvaluationsCard/dataSetsEvaluationsCard"
 import HistoryTable from "./historyTable/historyTable"

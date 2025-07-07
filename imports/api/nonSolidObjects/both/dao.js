@@ -3,7 +3,7 @@ import _ from "lodash"
 
 import getArraysPaths from "../../utils/getArrayPaths"
 
-import NonSolidObjectsCol from "./collection.js"
+import NonSolidObjectsCol from "./collection"
 import createDAO from "../../baseDAO/createDAO"
 
 export default class NonSolidObjectsDAO extends createDAO(NonSolidObjectsCol) {

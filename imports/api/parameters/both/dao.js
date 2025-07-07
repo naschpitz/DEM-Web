@@ -1,4 +1,4 @@
-import ParametersCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import ParametersCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class ParametersDAO extends createDAO(ParametersCol) {}

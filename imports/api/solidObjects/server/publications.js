@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import SolidObjects from "../both/collection.js"
+import SolidObjects from "../both/collection"
 
 if (Meteor.isServer) {
   Meteor.publish("solidObjects.list", function (sceneryId) {

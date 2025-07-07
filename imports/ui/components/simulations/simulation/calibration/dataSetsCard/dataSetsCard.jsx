@@ -3,15 +3,15 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
-import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
-import DataSetsClass from "../../../../../../api/dataSets/both/class.js"
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage"
+import DataSetsClass from "../../../../../../api/dataSets/both/class"
 
-import Alert from "../../../../../utils/alert.js"
+import Alert from "../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
-import Spinner from "../../../../spinner/spinner.jsx"
+import Spinner from "../../../../spinner/spinner"
 import { FaPlus } from "react-icons/fa"
 
-import DataSet from "./dataSet/dataSet.jsx"
+import DataSet from "./dataSet/dataSet"
 
 import "./dataSetsCard.css"
 

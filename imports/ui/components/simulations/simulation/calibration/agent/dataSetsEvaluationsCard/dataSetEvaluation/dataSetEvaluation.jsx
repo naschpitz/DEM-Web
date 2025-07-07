@@ -2,14 +2,14 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
-import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
-import DataSetsClass from "../../../../../../../../api/dataSets/both/class.js"
+import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage"
+import DataSetsClass from "../../../../../../../../api/dataSets/both/class"
 
-import Alert from "../../../../../../../utils/alert.js"
-import Spinner from "../../../../../../spinner/spinner.jsx"
+import Alert from "../../../../../../../utils/alert"
+import Spinner from "../../../../../../spinner/spinner"
 
-import Chart from "./chart/chart.jsx"
-import DataDisplay from "./dataDisplay/dataDisplay.jsx"
+import Chart from "./chart/chart"
+import DataDisplay from "./dataDisplay/dataDisplay"
 
 import "./dataSetEvaluation.css"
 

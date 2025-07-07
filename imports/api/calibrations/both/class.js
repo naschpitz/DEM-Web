@@ -1,8 +1,8 @@
 import _ from "lodash"
 
 import Agents from "../../agents/both/class"
-import CalibrationsDAO from "./dao.js"
-import DataSets from "../../dataSets/both/class.js"
+import CalibrationsDAO from "./dao"
+import DataSets from "../../dataSets/both/class"
 import Parameters from "../../parameters/both/class"
 
 export default class Calibrations extends CalibrationsDAO {

@@ -1,6 +1,6 @@
 import moment from "moment"
 
-import LogsDAO from "./dao.js"
+import LogsDAO from "./dao"
 import Simulations from "../../simulations/both/class";
 
 export default class Logs extends LogsDAO {

@@ -1,4 +1,4 @@
-import Files from "../../files/both/class.js";
+import Files from "../../files/both/class";
 
 export default class Videos extends Files {
   static async setState(fileId, state, error) {

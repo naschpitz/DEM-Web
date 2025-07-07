@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { Meteor } from "meteor/meteor"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
 import { getDragForcesCoefficientsOptions, getForcesCoefficientsOptions } from "../../../../../../common/materials"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import FormInput from "@naschpitz/form-input"
 
 export default props => {

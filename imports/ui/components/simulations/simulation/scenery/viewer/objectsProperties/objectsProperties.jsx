@@ -13,17 +13,17 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table"
 
-import Table from "../../../../../table/table.jsx"
+import Table from "../../../../../table/table"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
-import NonSolidObjectsClass from "../../../../../../../api/nonSolidObjects/both/class.js"
-import ObjectsPropertiesClass from "../../../../../../../api/objectsProperties/both/class.js"
-import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
+import NonSolidObjectsClass from "../../../../../../../api/nonSolidObjects/both/class"
+import ObjectsPropertiesClass from "../../../../../../../api/objectsProperties/both/class"
+import SolidObjectsClass from "../../../../../../../api/solidObjects/both/class"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import FormInput from "@naschpitz/form-input"
-import Properties from "./properties/properties.jsx"
-import Spinner from "../../../../../spinner/spinner.jsx"
+import Properties from "./properties/properties"
+import Spinner from "../../../../../spinner/spinner"
 
 import "./objectsProperties.css"
 

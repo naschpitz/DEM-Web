@@ -3,7 +3,7 @@ import _ from "lodash"
 
 import getArraysPaths from "../../utils/getArrayPaths"
 
-import MaterialsCol from "./collection.js"
+import MaterialsCol from "./collection"
 import createDAO from "../../baseDAO/createDAO"
 
 export default class MaterialsDAO extends createDAO(MaterialsCol) {

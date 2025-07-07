@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Servers from "./class.js"
+import Servers from "./class"
 
 Meteor.methods({
   async "servers.create"() {

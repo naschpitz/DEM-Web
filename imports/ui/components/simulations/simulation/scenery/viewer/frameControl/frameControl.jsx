@@ -3,11 +3,11 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
-import FramesClass from "../../../../../../../api/frames/both/class.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
+import FramesClass from "../../../../../../../api/frames/both/class"
 
 import { FaFastBackward, FaStepBackward, FaStepForward, FaFastForward } from "react-icons/fa"
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 

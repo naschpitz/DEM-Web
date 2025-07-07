@@ -3,7 +3,7 @@ import { Mongo } from "meteor/mongo"
 import "meteor/aldeed:collection2/static"
 import SimpleSchema from "meteor/aldeed:simple-schema"
 
-import Data from "./schemas/data.js"
+import Data from "./schemas/data"
 
 const DataSets = new Mongo.Collection("dataSets")
 

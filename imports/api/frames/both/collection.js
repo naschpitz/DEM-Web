@@ -3,7 +3,7 @@ import { Mongo } from "meteor/mongo"
 import "meteor/aldeed:collection2/static"
 import SimpleSchema from "meteor/aldeed:simple-schema"
 
-import Scenery from "./schemas/scenery.js"
+import Scenery from "./schemas/scenery"
 
 const Frames = new Mongo.Collection("frames")
 

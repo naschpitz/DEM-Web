@@ -1,4 +1,4 @@
-import AgentsHistoriesCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import AgentsHistoriesCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class AgentsHistoriesDAO extends createDAO(AgentsHistoriesCol) {}

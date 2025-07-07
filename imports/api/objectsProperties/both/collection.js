@@ -3,7 +3,7 @@ import { Mongo } from "meteor/mongo"
 import "meteor/aldeed:collection2/static"
 import SimpleSchema from "meteor/aldeed:simple-schema"
 
-import Color from "./schemas/color.js"
+import Color from "./schemas/color"
 
 const ObjectsProperties = new Mongo.Collection("objectsProperties")
 

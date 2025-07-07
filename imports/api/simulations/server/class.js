@@ -1,14 +1,14 @@
 import { Meteor } from "meteor/meteor"
 import { Random } from "meteor/random"
 
-import Calibrations from "../../calibrations/server/class.js"
-import Materials from "../../materials/both/class.js"
-import NonSolidObjects from "../../nonSolidObjects/both/class.js"
-import Sceneries from "../../sceneries/server/class.js"
-import Servers from "../../servers/both/class.js"
-import SimulationsBoth from "../both/class.js"
-import Logs from "../../logs/both/class.js"
-import SolidObjects from "../../solidObjects/both/class.js"
+import Calibrations from "../../calibrations/server/class"
+import Materials from "../../materials/both/class"
+import NonSolidObjects from "../../nonSolidObjects/both/class"
+import Sceneries from "../../sceneries/server/class"
+import Servers from "../../servers/both/class"
+import SimulationsBoth from "../both/class"
+import Logs from "../../logs/both/class"
+import SolidObjects from "../../solidObjects/both/class"
 
 export default class Simulations extends SimulationsBoth {
   static async start(simulationId) {

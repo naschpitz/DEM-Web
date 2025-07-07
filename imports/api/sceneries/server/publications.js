@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Sceneries from "../both/collection.js"
+import Sceneries from "../both/collection"
 
 if (Meteor.isServer) {
   Meteor.publish("sceneries.list", function (simulationId) {

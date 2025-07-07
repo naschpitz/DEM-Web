@@ -4,12 +4,12 @@ import { useTracker } from "meteor/react-meteor-data"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
-import CamerasClass from "../../../../../../../api/cameras/both/class.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
+import CamerasClass from "../../../../../../../api/cameras/both/class"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import FormInput from "@naschpitz/form-input"
-import Spinner from "../../../../../spinner/spinner.jsx"
+import Spinner from "../../../../../spinner/spinner"
 
 import "./cameraControl.css"
 

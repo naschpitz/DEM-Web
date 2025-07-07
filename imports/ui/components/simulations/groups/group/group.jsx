@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
-import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../api/utils/getErrorMessage"
 import SimulationsClass from "../../../../../api/simulations/both/class"
 
-import Alert from "../../../../utils/alert.js"
+import Alert from "../../../../utils/alert"
 
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaTrashAlt, FaEdit, FaCheck, FaTimes } from "react-icons/fa"
 import FormInput from "@naschpitz/form-input"
 
-import SimulationsTable from "../../simulationsTable/simulationsTable.jsx"
+import SimulationsTable from "../../simulationsTable/simulationsTable"
 
 import "./group.css"
 

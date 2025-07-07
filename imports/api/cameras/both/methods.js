@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Cameras from "./class.js"
+import Cameras from "./class"
 
 Meteor.methods({
   async "cameras.create"(sceneryId) {

@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 
-import Videos from "../both/class.js";
+import Videos from "../both/class";
 
 if (Meteor.isServer) {
   // Video-specific publication

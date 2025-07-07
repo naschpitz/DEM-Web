@@ -1,5 +1,5 @@
 import { useState } from "react"
-import bsSize from "../../../api/utils/bsSize.js"
+import bsSize from "../../../api/utils/bsSize"
 
 export default () => {
   const [screenSize, setScreenSize] = useState(bsSize())

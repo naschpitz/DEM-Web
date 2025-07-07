@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import _ from "lodash"
 
-import Chart from "./chart/chart.jsx"
-import DataExporter from "./dataExporter/dataExporter.jsx"
-import DataSelector from "./dataSelector/dataSelector.jsx"
+import Chart from "./chart/chart"
+import DataExporter from "./dataExporter/dataExporter"
+import DataSelector from "./dataSelector/dataSelector"
 
 import "./charts.css"
 

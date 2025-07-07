@@ -1,4 +1,4 @@
-import FilesDAO from "./dao.js"
+import FilesDAO from "./dao"
 
 export default class Files extends FilesDAO {
   static async setState(fileId, state, error) {

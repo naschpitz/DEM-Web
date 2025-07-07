@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import FramesImages from "./class.js"
+import FramesImages from "./class"
 
 Meteor.methods({
   async "framesImages.render"(frameId, dimensions) {

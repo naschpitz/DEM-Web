@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Users from "../both/class.js"
+import Users from "../both/class"
 
 if (Meteor.isServer) {
   Meteor.methods({

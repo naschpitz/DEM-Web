@@ -4,8 +4,8 @@ import { Meteor } from "meteor/meteor"
 import getErrorMessage from "../../../../api/utils/getErrorMessage"
 
 import { FaTimes } from "react-icons/fa"
-import MessageDisplay from "../../messageDisplay/messageDisplay.jsx"
-import PasswordFields from "../passwordsFields/passwordsFields.jsx"
+import MessageDisplay from "../../messageDisplay/messageDisplay"
+import PasswordFields from "../passwordsFields/passwordsFields"
 
 import "./register.css"
 

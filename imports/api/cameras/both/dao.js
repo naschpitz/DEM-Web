@@ -3,7 +3,7 @@ import _ from "lodash"
 
 import getArraysPaths from "../../utils/getArrayPaths"
 
-import CamerasCol from "./collection.js"
+import CamerasCol from "./collection"
 import createDAO from "../../baseDAO/createDAO"
 
 export default class CamerasDAO extends createDAO(CamerasCol) {

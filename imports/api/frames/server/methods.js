@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Frames from "./class.js"
+import Frames from "./class"
 
 Meteor.methods({
   async "frames.insert"(frame) {

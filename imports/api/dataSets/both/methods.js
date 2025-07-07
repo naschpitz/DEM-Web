@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import DataSets from "./class.js"
+import DataSets from "./class"
 
 Meteor.methods({
   async "dataSets.create"(calibrationId) {

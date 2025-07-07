@@ -10,16 +10,16 @@ const applyReactSuspense = component => {
   return <React.Suspense fallback={<>...</>}>{component}</React.Suspense>
 }
 
-const Agent = React.lazy(() => import("../../components/simulations/simulation/calibration/agent/agent.jsx"))
-const Disclaimer = React.lazy(() => import("../../components/disclaimer/disclaimer.jsx"))
-const Footer = React.lazy(() => import("../../components/footer/footer.jsx"))
-const Home = React.lazy(() => import("../../components/home/home.jsx"))
-const Navbar = React.lazy(() => import("../../components/navbar/navbar.jsx"))
-const Privacy = React.lazy(() => import("../../components/privacy/privacy.jsx"))
-const Servers = React.lazy(() => import("../../components/servers/servers.jsx"))
-const Simulation = React.lazy(() => import("../../components/simulations/simulation/simulation.jsx"))
-const Simulations = React.lazy(() => import("../../components/simulations/simulations.jsx"))
-const Terms = React.lazy(() => import("../../components/terms/terms.jsx"))
+const Agent = React.lazy(() => import("../../components/simulations/simulation/calibration/agent/agent"))
+const Disclaimer = React.lazy(() => import("../../components/disclaimer/disclaimer"))
+const Footer = React.lazy(() => import("../../components/footer/footer"))
+const Home = React.lazy(() => import("../../components/home/home"))
+const Navbar = React.lazy(() => import("../../components/navbar/navbar"))
+const Privacy = React.lazy(() => import("../../components/privacy/privacy"))
+const Servers = React.lazy(() => import("../../components/servers/servers"))
+const Simulation = React.lazy(() => import("../../components/simulations/simulation/simulation"))
+const Simulations = React.lazy(() => import("../../components/simulations/simulations"))
+const Terms = React.lazy(() => import("../../components/terms/terms"))
 
 const routes = [
   {

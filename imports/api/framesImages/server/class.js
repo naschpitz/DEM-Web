@@ -6,10 +6,10 @@ import { cpus } from "os"
 import { writeFileSync, readFileSync, unlinkSync } from "fs"
 import { spawn } from "child_process"
 
-import Cameras from "../../cameras/both/class.js"
-import CameraFilters from "../../cameraFilters/both/class.js"
-import Frames from "../../frames/server/class.js"
-import ObjectsProperties from "../../objectsProperties/both/class.js"
+import Cameras from "../../cameras/both/class"
+import CameraFilters from "../../cameraFilters/both/class"
+import Frames from "../../frames/server/class"
+import ObjectsProperties from "../../objectsProperties/both/class"
 
 export default class FramesImages {
   static async render(frameId, dimensions, keepImageFile, path, imageName) {

@@ -2,16 +2,16 @@ import { Meteor } from "meteor/meteor"
 import React from "react"
 import { useTracker } from "meteor/react-meteor-data"
 
-import Users from "../../../api/users/both/class.js"
+import Users from "../../../api/users/both/class"
 
-import Alert from "../../utils/alert.js"
+import Alert from "../../utils/alert"
 import { Link } from "react-router-dom"
 import { UniqueModalController } from "@naschpitz/unique-modal"
 
-import ChangePassword from "../user/changePassword/changePassword.jsx"
-import Login from "../user/login/login.jsx"
-import Register from "../user/register/register.jsx"
-import ResetPassword from "../user/resetPassword/resetPassword.jsx"
+import ChangePassword from "../user/changePassword/changePassword"
+import Login from "../user/login/login"
+import Register from "../user/register/register"
+import ResetPassword from "../user/resetPassword/resetPassword"
 
 import { FaSignInAlt, FaPlus, FaSignOutAlt, FaSyncAlt, FaKey, FaDesktop, FaServer } from "react-icons/fa"
 

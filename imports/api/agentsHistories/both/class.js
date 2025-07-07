@@ -1,4 +1,4 @@
-import AgentsHistoriesDAO from "./dao.js"
+import AgentsHistoriesDAO from "./dao"
 
 export default class AgentsHistories extends AgentsHistoriesDAO {
   static async removeByOwner(agentId) {

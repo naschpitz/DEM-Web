@@ -4,7 +4,7 @@ import { Random } from "meteor/random"
 import "meteor/aldeed:collection2/static"
 import SimpleSchema from "meteor/aldeed:simple-schema"
 
-import Dimensions from "../../sharedSchemas/dimensions.js"
+import Dimensions from "../../sharedSchemas/dimensions"
 
 const NonSolidObjects = new Mongo.Collection("nonSolidObjects")
 

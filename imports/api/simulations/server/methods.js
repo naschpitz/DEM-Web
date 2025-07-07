@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Simulations from "./class.js"
+import Simulations from "./class"
 
 Meteor.methods({
   async "simulations.start"(simulationId) {

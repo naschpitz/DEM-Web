@@ -1,9 +1,9 @@
 import React from "react"
 
-import Log from "../log/log.jsx"
+import Log from "../log/log"
 import Notes from "../notes/notes"
-import Scenery from "../scenery/scenery.jsx"
-import SimulationControl from "../../simulationControl/simulationControl.jsx"
+import Scenery from "../scenery/scenery"
+import SimulationControl from "../../simulationControl/simulationControl"
 
 import "./main.css"
 

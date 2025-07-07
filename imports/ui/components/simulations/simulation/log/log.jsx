@@ -3,15 +3,15 @@ import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 import _ from "lodash"
 
-import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../api/utils/getErrorMessage"
 import CalibrationsClass from "../../../../../api/calibrations/both/class"
 import LogsClass from "../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../api/simulations/both/class"
 
-import Alert from "../../../../utils/alert.js"
+import Alert from "../../../../utils/alert"
 import FormInput from "@naschpitz/form-input"
-import Spinner from "../../../spinner/spinner.jsx"
-import LogTable from "./table/table.jsx"
+import Spinner from "../../../spinner/spinner"
+import LogTable from "./table/table"
 
 import "./log.css"
 

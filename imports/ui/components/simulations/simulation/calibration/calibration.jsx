@@ -2,17 +2,17 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
-import getErrorMessage from "../../../../../api/utils/getErrorMessage.js"
-import CalibrationClass from "../../../../../api/calibrations/both/class.js"
+import getErrorMessage from "../../../../../api/utils/getErrorMessage"
+import CalibrationClass from "../../../../../api/calibrations/both/class"
 
-import Alert from "../../../../utils/alert.js"
-import Spinner from "../../../spinner/spinner.jsx"
+import Alert from "../../../../utils/alert"
+import Spinner from "../../../spinner/spinner"
 
-import AgentsTable from "./agentsTable/agentsTable.jsx"
-import CalibrationControl from "../../calibrationControl/calibrationControl.jsx"
-import DataSetsCard from "./dataSetsCard/dataSetsCard.jsx"
-import Log from "../log/log.jsx"
-import ParametersCard from "./parametersCard/parametersCard.jsx"
+import AgentsTable from "./agentsTable/agentsTable"
+import CalibrationControl from "../../calibrationControl/calibrationControl"
+import DataSetsCard from "./dataSetsCard/dataSetsCard"
+import Log from "../log/log"
+import ParametersCard from "./parametersCard/parametersCard"
 
 import "./calibration.css"
 

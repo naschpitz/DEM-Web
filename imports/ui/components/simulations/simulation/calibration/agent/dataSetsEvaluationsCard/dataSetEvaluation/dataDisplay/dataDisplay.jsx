@@ -2,12 +2,12 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
-import getErrorMessage from "../../../../../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../../../../../api/utils/getErrorMessage"
 
-import NonSolidObjectsClass from "../../../../../../../../../api/nonSolidObjects/both/class.js"
-import SolidObjectsClass from "../../../../../../../../../api/solidObjects/both/class.js"
+import NonSolidObjectsClass from "../../../../../../../../../api/nonSolidObjects/both/class"
+import SolidObjectsClass from "../../../../../../../../../api/solidObjects/both/class"
 
-import Alert from "../../../../../../../../utils/alert.js"
+import Alert from "../../../../../../../../utils/alert"
 import FormInput from "@naschpitz/form-input"
 
 import "./dataDisplay.css"

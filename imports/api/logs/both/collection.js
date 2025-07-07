@@ -3,7 +3,7 @@ import { Mongo } from "meteor/mongo"
 import 'meteor/aldeed:collection2/static'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
 
-import Progress from "./schemas/progress.js"
+import Progress from "./schemas/progress"
 
 const Logs = new Mongo.Collection("logs")
 

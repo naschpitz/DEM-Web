@@ -5,9 +5,9 @@ import zlib from "zlib"
 
 import connectRoute from "connect-route"
 
-import Frames from "../../frames/server/class.js"
-import Simulations from "../../simulations/server/class.js"
-import Logs from "../../logs/both/class.js"
+import Frames from "../../frames/server/class"
+import Simulations from "../../simulations/server/class"
+import Logs from "../../logs/both/class"
 import Sceneries from "../../sceneries/both/class"
 
 WebApp.connectHandlers.use(

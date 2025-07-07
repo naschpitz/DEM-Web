@@ -1,4 +1,4 @@
-import GroupsCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import GroupsCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class GroupsDAO extends createDAO(GroupsCol) {}

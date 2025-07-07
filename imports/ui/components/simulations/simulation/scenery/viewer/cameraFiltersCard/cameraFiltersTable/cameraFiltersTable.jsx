@@ -5,16 +5,16 @@ import _ from "lodash"
 
 import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
-import Table from "../../../../../../table/table.jsx"
+import Table from "../../../../../../table/table"
 
-import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage.js"
-import CameraFiltersClass from "../../../../../../../../api/cameraFilters/both/class.js"
+import getErrorMessage from "../../../../../../../../api/utils/getErrorMessage"
+import CameraFiltersClass from "../../../../../../../../api/cameraFilters/both/class"
 
-import Alert from "../../../../../../../utils/alert.js"
+import Alert from "../../../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 import { useTracker } from "meteor/react-meteor-data"
-import useIsState from "../../../../../../../hooks/useIsState.js"
+import useIsState from "../../../../../../../hooks/useIsState"
 
 import "./cameraFiltersTable.css"
 

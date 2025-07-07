@@ -1,4 +1,4 @@
-import CalibrationsCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import CalibrationsCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class CalibrationsDAO extends createDAO(CalibrationsCol) {}

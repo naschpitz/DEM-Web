@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import SolidObjects from "./class.js"
+import SolidObjects from "./class"
 
 Meteor.methods({
   async "solidObjects.create"(sceneryId) {

@@ -5,15 +5,15 @@ import { useTracker } from "meteor/react-meteor-data"
 
 import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
-import Table from "../../../../table/table.jsx"
+import Table from "../../../../table/table"
 
-import getErrorMessage from "../../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../../api/utils/getErrorMessage"
 
 import AgentsClass from "../../../../../../api/agents/both/class"
 import LogsClass from "../../../../../../api/logs/both/class"
 import SimulationsClass from "../../../../../../api/simulations/both/class"
 
-import Alert from "../../../../../utils/alert.js"
+import Alert from "../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./agentsTable.css"

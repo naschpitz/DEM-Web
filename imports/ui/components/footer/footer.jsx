@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import useScreenSize from "../screenSize/useScreenSize.jsx"
+import useScreenSize from "../screenSize/useScreenSize"
 
 import "./footer.css"
 

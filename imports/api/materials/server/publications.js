@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Materials from "../both/class.js"
+import Materials from "../both/class"
 
 if (Meteor.isServer) {
   Meteor.publish("materials.list", function (sceneryId) {

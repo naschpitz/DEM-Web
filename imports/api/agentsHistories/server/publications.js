@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import AgentsHistoriesDAO from "../both/dao.js"
+import AgentsHistoriesDAO from "../both/dao"
 
 if (Meteor.isServer) {
   Meteor.publish("agentsHistories.byOwner", function (agentId) {

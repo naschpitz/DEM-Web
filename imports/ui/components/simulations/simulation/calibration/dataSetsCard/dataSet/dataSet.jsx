@@ -2,17 +2,17 @@ import React, { useState } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
-import CalibrationsClass from "../../../../../../../api/calibrations/both/class.js"
-import SceneriesClass from "../../../../../../../api/sceneries/both/class.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
+import CalibrationsClass from "../../../../../../../api/calibrations/both/class"
+import SceneriesClass from "../../../../../../../api/sceneries/both/class"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import { FaTrashAlt } from "react-icons/fa"
 
-import Chart from "./chart/chart.jsx"
-import DataImporter from "./dataImporter/dataImporter.jsx"
-import DataSelector from "./dataSelector/dataSelector.jsx"
+import Chart from "./chart/chart"
+import DataImporter from "./dataImporter/dataImporter"
+import DataSelector from "./dataSelector/dataSelector"
 
 import "./dataSet.css"
 

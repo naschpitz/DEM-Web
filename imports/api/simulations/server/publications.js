@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor"
-import Simulations from "../both/collection.js"
+import Simulations from "../both/collection"
 
 if (Meteor.isServer) {
   Meteor.publish("simulations.list", function () {

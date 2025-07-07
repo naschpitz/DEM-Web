@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import NonSolidObjects from "../both/collection.js"
+import NonSolidObjects from "../both/collection"
 
 if (Meteor.isServer) {
   Meteor.publish("nonSolidObjects.list", function (sceneryId) {

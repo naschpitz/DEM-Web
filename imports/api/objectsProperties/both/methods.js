@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import ObjectProperties from "./class.js"
+import ObjectProperties from "./class"
 
 Meteor.methods({
   async "objectsProperties.create"(objectId) {

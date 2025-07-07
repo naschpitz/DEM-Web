@@ -1,8 +1,8 @@
 import "meteor/aldeed:collection2/static"
 import SimpleSchema from "meteor/aldeed:simple-schema"
 
-import NonSolidObject from "./nonSolidObject.js"
-import SolidObject from "./solidObject.js"
+import NonSolidObject from "./nonSolidObject"
+import SolidObject from "./solidObject"
 
 export default new SimpleSchema({
   nonSolidObjects: {

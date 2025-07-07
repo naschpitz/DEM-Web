@@ -17,7 +17,7 @@ import "@naschpitz/unique-modal/dist/index.css"
 import "../imports/startup/both"
 import "../imports/startup/client"
 
-import App from "../imports/ui/layouts/main/main.jsx"
+import App from "../imports/ui/layouts/main/main"
 
 Meteor.startup(() => {
   const domNode = document.getElementById("render-target")

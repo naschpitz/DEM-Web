@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Frames from "../both/collection.js"
+import Frames from "../both/collection"
 
 if (Meteor.isServer) {
   Meteor.publish("frames", function (sceneryId) {

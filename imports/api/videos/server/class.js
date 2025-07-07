@@ -5,10 +5,10 @@ import { closeSync, mkdirSync, openSync, rmdirSync, statSync, unlink } from "fs"
 import { spawn } from "child_process"
 import waitOn from "wait-on";
 
-import FramesImages from "../../framesImages/server/class.js";
-import Sceneries from "../../sceneries/both/class.js";
-import Simulations from "../../simulations/both/class.js";
-import Files from "../../files/both/class.js";
+import FramesImages from "../../framesImages/server/class";
+import Sceneries from "../../sceneries/both/class";
+import Simulations from "../../simulations/both/class";
+import Files from "../../files/both/class";
 
 export default class Videos extends Files {
   static async render(userId, sceneryId, settings) {

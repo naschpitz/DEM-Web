@@ -1,5 +1,5 @@
-import ServersDAO from "./dao.js"
-import Simulations from "../../simulations/both/class.js"
+import ServersDAO from "./dao"
+import Simulations from "../../simulations/both/class"
 
 export default class Servers extends ServersDAO {
   static async create() {

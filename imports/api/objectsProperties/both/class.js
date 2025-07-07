@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-import ObjectsPropertiesDAO from "./dao.js"
+import ObjectsPropertiesDAO from "./dao"
 
 export default class ObjectsProperties extends ObjectsPropertiesDAO {
   static async clone(oldObjectId, newObjectId) {

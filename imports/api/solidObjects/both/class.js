@@ -1,7 +1,7 @@
 import _ from "lodash"
 
-import ObjectsProperties from "../../objectsProperties/both/class.js"
-import SolidObjectsDAO from "./dao.js"
+import ObjectsProperties from "../../objectsProperties/both/class"
+import SolidObjectsDAO from "./dao"
 import Sceneries from "../../sceneries/both/class"
 import Parameters from "../../parameters/both/class"
 

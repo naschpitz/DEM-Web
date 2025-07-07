@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Files from "../both/class.js"
+import Files from "../both/class"
 
 if (Meteor.isServer) {
   Meteor.publish("files", function (owner) {

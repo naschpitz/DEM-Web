@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-import CameraFiltersDAO from "./dao.js"
+import CameraFiltersDAO from "./dao"
 
 export default class CameraFilters extends CameraFiltersDAO {
   static async clone(oldSceneryId, newSceneryId) {

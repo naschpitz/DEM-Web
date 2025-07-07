@@ -4,15 +4,15 @@ import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
-import Alert from "../../../../../utils/alert.js"
+import Alert from "../../../../../utils/alert"
 import ERD from "element-resize-detector"
 
-import Canvas from "./canvas/canvas.jsx"
-import CameraControl from "./cameraControl/cameraControl.jsx"
+import Canvas from "./canvas/canvas"
+import CameraControl from "./cameraControl/cameraControl"
 import CameraFiltersCard from "./cameraFiltersCard/cameraFiltersCard"
-import FrameControl from "./frameControl/frameControl.jsx"
-import ObjectsProperties from "./objectsProperties/objectsProperties.jsx"
-import Video from "./video/video.jsx"
+import FrameControl from "./frameControl/frameControl"
+import ObjectsProperties from "./objectsProperties/objectsProperties"
+import Video from "./video/video"
 
 import "./viewer.css"
 

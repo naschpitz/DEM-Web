@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import CameraFilters from "./class.js"
+import CameraFilters from "./class"
 
 Meteor.methods({
   async "cameraFilters.create"(sceneryId) {

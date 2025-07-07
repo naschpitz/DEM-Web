@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import _ from "lodash"
 
 import { SketchPicker } from "react-color"
-import Alert from "../../../../../../../utils/alert.js"
+import Alert from "../../../../../../../utils/alert"
 
 import "./properties.css"
 

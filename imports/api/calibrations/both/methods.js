@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Calibrations from "./class.js"
+import Calibrations from "./class"
 
 Meteor.methods({
   async "calibrations.create"() {

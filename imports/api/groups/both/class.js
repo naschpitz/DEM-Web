@@ -1,4 +1,4 @@
-import GroupsDAO from "./dao.js"
+import GroupsDAO from "./dao"
 
 export default class Groups extends GroupsDAO {
   static async create() {

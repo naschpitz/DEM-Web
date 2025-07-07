@@ -6,13 +6,13 @@ import _ from "lodash"
 
 import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
-import Table from "../table/table.jsx"
+import Table from "../table/table"
 
 import getErrorMessage from "../../../api/utils/getErrorMessage"
-import ServersClass from "../../../api/servers/both/class.js"
+import ServersClass from "../../../api/servers/both/class"
 
 import { FaPlus } from "react-icons/fa"
-import Alert from "../../utils/alert.js"
+import Alert from "../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
 

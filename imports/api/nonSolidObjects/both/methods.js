@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import NonSolidObjects from "./class.js"
+import NonSolidObjects from "./class"
 
 Meteor.methods({
   async "nonSolidObjects.create"(owner) {

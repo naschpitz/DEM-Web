@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom"
 
 import { useReactTable, getCoreRowModel, getPaginationRowModel, createColumnHelper } from "@tanstack/react-table"
 
-import Table from "../../../../../table/table.jsx"
+import Table from "../../../../../table/table"
 
-import getErrorMessage from "../../../../../../../api/utils/getErrorMessage.js"
+import getErrorMessage from "../../../../../../../api/utils/getErrorMessage"
 
 import AgentsHistories from "../../../../../../../api/agentsHistories/both/class"
 import LogsClass from "../../../../../../../api/logs/both/class"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 
 import "./historyTable.css"

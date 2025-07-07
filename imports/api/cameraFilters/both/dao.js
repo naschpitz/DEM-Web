@@ -1,4 +1,4 @@
-import CameraFiltersCol from "./collection.js"
-import createDAO from "../../baseDAO/createDAO.js"
+import CameraFiltersCol from "./collection"
+import createDAO from "../../baseDAO/createDAO"
 
 export default class CameraFiltersDAO extends createDAO(CameraFiltersCol) {}

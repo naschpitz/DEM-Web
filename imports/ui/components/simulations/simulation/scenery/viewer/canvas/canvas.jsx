@@ -1,6 +1,6 @@
 import React from "react"
 
-import Spinner from "../../../../../spinner/spinner.jsx"
+import Spinner from "../../../../../spinner/spinner"
 
 import "./canvas.css"
 

@@ -1,9 +1,9 @@
 import _ from "lodash"
 
-import Calibrations from "../../calibrations/both/class.js"
-import Logs from "../../logs/both/class.js"
-import Sceneries from "../../sceneries/both/class.js"
-import SimulationsDAO from "./dao.js"
+import Calibrations from "../../calibrations/both/class"
+import Logs from "../../logs/both/class"
+import Sceneries from "../../sceneries/both/class"
+import SimulationsDAO from "./dao"
 
 export default class Simulations extends SimulationsDAO {
   static async clone(simulationId, primary = true, logs = false, frames = false) {

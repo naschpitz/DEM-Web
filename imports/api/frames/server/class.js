@@ -7,9 +7,9 @@ import { unlink, unlinkSync, writeFileSync, readFileSync, readdirSync, copyFileS
 
 import { deflateWithPigz, inflateWithPigz } from "../../utils/pigz"
 
-import FramesBoth from "../both/class.js"
-import Sceneries from "../../sceneries/both/class.js"
-import Simulations from "../../simulations/both/class.js"
+import FramesBoth from "../both/class"
+import Sceneries from "../../sceneries/both/class"
+import Simulations from "../../simulations/both/class"
 
 export default class Frames extends FramesBoth {
   static getStoragePath(storage) {

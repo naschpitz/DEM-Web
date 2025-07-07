@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor"
 
-import Servers from "../both/collection.js"
+import Servers from "../both/collection"
 
 if (Meteor.isServer) {
   Meteor.publish("servers.list", function () {

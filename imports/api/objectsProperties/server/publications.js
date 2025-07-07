@@ -1,9 +1,9 @@
 import { Meteor } from "meteor/meteor"
 import { publishComposite } from "meteor/reywood:publish-composite"
 
-import NonSolidObjects from "../../nonSolidObjects/both/class.js"
-import SolidObjects from "../../solidObjects/both/class.js"
-import ObjectsProperties from "../both/class.js"
+import NonSolidObjects from "../../nonSolidObjects/both/class"
+import SolidObjects from "../../solidObjects/both/class"
+import ObjectsProperties from "../both/class"
 
 if (Meteor.isServer) {
   publishComposite("objectsProperties", function (sceneryId) {

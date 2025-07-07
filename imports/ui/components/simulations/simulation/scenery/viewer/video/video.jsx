@@ -3,10 +3,10 @@ import { Meteor } from "meteor/meteor"
 import PropTypes from "prop-types"
 import _ from "lodash"
 
-import Alert from "../../../../../../utils/alert.js"
+import Alert from "../../../../../../utils/alert"
 import { ButtonEnhanced } from "@naschpitz/button-enhanced"
 import FormInput from "@naschpitz/form-input"
-import Table from "./table/table.jsx"
+import Table from "./table/table"
 
 import "./video.css"
 

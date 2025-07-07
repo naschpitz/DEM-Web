@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-import FramesDAO from "./dao.js"
+import FramesDAO from "./dao"
 
 export default class Frames extends FramesDAO {
   static async clone(oldSceneryId, newSceneryId, nonSolidObjectsMap, solidObjectsMap) {

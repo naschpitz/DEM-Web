@@ -4,9 +4,9 @@ import { createReadStream, statSync, existsSync } from "fs"
 import { join, extname } from "path"
 import { lookup } from "mime-types"
 
-import Sceneries from "../../sceneries/both/class.js"
-import Simulations from "../../simulations/both/class.js"
-import Files from "../both/class.js"
+import Sceneries from "../../sceneries/both/class"
+import Simulations from "../../simulations/both/class"
+import Files from "../both/class"
 
 // Custom file serving route
 WebApp.connectHandlers.use("/files/download", async (req, res, next) => {
