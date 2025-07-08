@@ -79,7 +79,7 @@ export default class Frames extends FramesDAO {
 
     const objects = nonSolidObjects.concat(solidObjects)
 
-    const energies = objects.map(object => object.kineticEnergyTotal)
+    const energies = objects.map(object => object.kineticEnergyTotal).filter(energy => energy != null)
 
     return Math.max(...energies)
   }
