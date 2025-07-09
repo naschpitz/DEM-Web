@@ -250,15 +250,9 @@ export default class Agents extends AgentsBoth {
           // Evaluate the spline at the current time to get the reference value.
           const refValue = spline.at(currentTime)
 
-          // Initialize the error to 0
-          let error = 0
-
-          // If the reference value is not 0, then the error is calculated as the difference between
-          // the value and the reference value divided by the reference value, multiplied by 100, so it is a percentage,
-          // and then squared, to penalize errors larger than 1%.
-          if (refValue !== 0) {
-            error = (((value - refValue) / refValue) * 100) ** 2
-          }
+          // The error is calculated as the squared difference between the simulation value and the reference value.
+          // This penalizes larger absolute differences more heavily than smaller ones.
+          const error = (value - refValue) ** 2
 
           // Increment the number of evaluated frames
           numFrames++
