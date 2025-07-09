@@ -158,27 +158,28 @@ export default class Hypervisor {
 
     if (type === "frame") {
       const frame = objectNew
+      let stopFlag = false
 
       if (Frames.getHighestEnergy(frame) > calibration.maxEnergy) {
         await this.log(
           `Agent #${agent.index} total kinetic energy has exceeded the maximum value set by the calibration, stopping it.`
         )
 
-        try {
-          await Agents.stop(agentId)
-        } catch (error) {
-          await this.log(`Agent #${agent.index} simulation has failed to stop.`)
-        }
+        stopFlag = true
       }
 
       if (Frames.hasInvalidData(frame)) {
         await this.log(`Agent #${agent.index} has invalid data, stopping it.`)
 
-        try {
-          await Agents.stop(agentId)
-        } catch (error) {
-          await this.log(`Agent #${agent.index} simulation has failed to stop.`)
-        }
+        stopFlag = true
+      }
+
+      if (stopFlag) {
+        // Check if the agent's simulation is still running
+        const state = await Agents.getState(agentId)
+        if (state !== "running") return
+
+        await Agents.stop(agentId)
       }
 
       this.runCheck = true
@@ -191,12 +192,16 @@ export default class Hypervisor {
       // If the simulation state has not changed, do nothing
       if (simulationNew.state === simulationOld.state) return
 
-      if (simulationNew.state === "stopped" || simulationNew.state === "done") {
+      if (simulationNew.state === "failed") {
+        await this.log(`Agent #${agent.index} simulation has failed.`)
+      }
+
+      if (simulationNew.state === "stopped") {
         await this.log(`Agent #${agent.index} simulation has stopped.`)
       }
 
-      if (simulationNew.state === "failed") {
-        await this.log(`Agent #${agent.index} simulation has failed.`)
+      if (simulationNew.state === "done") {
+        await this.log(`Agent #${agent.index} simulation has finished.`)
       }
 
       this.runCheck = true

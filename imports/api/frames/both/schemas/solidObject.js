@@ -39,7 +39,6 @@ export default new SimpleSchema({
   "force.$": {
     type: Number,
   },
-
   position: {
     type: Array,
     minCount: 1,
