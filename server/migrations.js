@@ -332,3 +332,116 @@ Migrations.add({
     await Frames.updateAsync({}, { $unset: { detailed: "" } }, { validate: false, multi: true })
   },
 })
+
+Migrations.add({
+  version: 12,
+  name: "Rename 'currentPosition' to 'position' in compressed JSON files",
+  up: async () => {
+    console.log("Starting migration to rename 'currentPosition' to 'position' in compressed JSON files...")
+
+    // Import required modules
+    const { readFileSync, writeFileSync } = await import("fs")
+    const { EJSON } = await import("meteor/ejson")
+    const { inflateWithPigz, deflateWithPigz } = await import("../imports/api/utils/pigz")
+
+    let processedFiles = 0
+    let errorFiles = 0
+
+    // Function to recursively replace currentPosition with position in an object
+    function replaceCurrentPosition(obj) {
+      if (obj === null || typeof obj !== "object") {
+        return obj
+      }
+
+      if (Array.isArray(obj)) {
+        return obj.map(replaceCurrentPosition)
+      }
+
+      const newObj = {}
+      for (const [key, value] of Object.entries(obj)) {
+        const newKey = key === "currentPosition" ? "position" : key
+        newObj[newKey] = replaceCurrentPosition(value)
+      }
+      return newObj
+    }
+
+    // Function to process a single compressed file
+    async function processFile(filePath, fileName) {
+      try {
+        console.log(`Processing file: ${fileName}`)
+
+        // Read and decompress the file
+        const deflatedData = readFileSync(filePath)
+        const inflatedData = await inflateWithPigz(deflatedData)
+
+        // Parse the JSON data
+        const jsonData = EJSON.parse(inflatedData.toString())
+
+        // Replace currentPosition with position
+        const updatedData = replaceCurrentPosition(jsonData)
+
+        // Re-stringify and compress the data
+        const newJsonString = EJSON.stringify(updatedData)
+        const newDeflatedData = await deflateWithPigz(newJsonString)
+
+        // Write the updated file back
+        writeFileSync(filePath, newDeflatedData)
+
+        processedFiles++
+        console.log(`Successfully processed: ${fileName}`)
+      } catch (error) {
+        errorFiles++
+        console.log(`Error processing file ${fileName}:`, error.message)
+      }
+    }
+
+    // Get all sceneries to determine storage paths
+    const sceneries = await Sceneries.find().fetchAsync()
+    const storagePaths = new Set()
+
+    sceneries.forEach(scenery => {
+      const storagePath = FramesServer.getStoragePath(scenery.storage)
+      if (storagePath && existsSync(storagePath)) {
+        storagePaths.add(storagePath)
+      }
+    })
+
+    console.log(`Found ${storagePaths.size} storage paths to process`)
+
+    // Process files in each storage path
+    for (const storagePath of storagePaths) {
+      console.log(`Processing storage path: ${storagePath}`)
+
+      try {
+        const files = readdirSync(storagePath)
+
+        // Filter files that match the frame file pattern (sceneryId-frameId-objectId)
+        // These files don't have extensions and contain compressed JSON data
+        const frameFiles = files.filter(file => {
+          // Frame files follow pattern: sceneryId-frameId-objectId
+          // They are files without extensions that contain hyphens
+          return file.includes("-") && !file.includes(".")
+        })
+
+        console.log(`Found ${frameFiles.length} frame files in ${storagePath}`)
+
+        // Process each frame file
+        for (const fileName of frameFiles) {
+          const filePath = `${storagePath}/${fileName}`
+          await processFile(filePath, fileName)
+        }
+      } catch (error) {
+        console.log(`Error reading storage path ${storagePath}:`, error.message)
+      }
+    }
+
+    console.log(`Migration completed. Processed: ${processedFiles} files, Errors: ${errorFiles} files`)
+  },
+  down: async () => {
+    console.log("WARNING: This migration cannot be automatically reversed.")
+    console.log(
+      "To reverse, you would need to rename 'position' back to 'currentPosition' in all compressed JSON files."
+    )
+    console.log("This would require running a similar migration with the field names swapped.")
+  },
+})

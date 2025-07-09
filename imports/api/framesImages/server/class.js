@@ -172,7 +172,7 @@ export default class FramesImages {
 
       for (const particle of nonSolidObject.particles) {
         // Do not add the particle to the script if it is outside the camera filter
-        if (!CameraFilters.isWithinLimits(particle.currentPosition, cameraFilters)) continue
+        if (!CameraFilters.isWithinLimits(particle.position, cameraFilters)) continue
 
         script += await getParticleScript(particle, pigmentScript)
         script += "\n"
@@ -197,7 +197,7 @@ export default class FramesImages {
     async function getParticleScript(particle, pigmentScript) {
       let script = ""
       script += "sphere { <"
-      script += particle.currentPosition[0] + "," + particle.currentPosition[2] + "," + particle.currentPosition[1]
+      script += particle.position[0] + "," + particle.position[2] + "," + particle.position[1]
       script += ">, " + particle.radius
       script += " texture { "
       script += pigmentScript
@@ -211,8 +211,7 @@ export default class FramesImages {
       script += "triangle { "
 
       face.vertexes.forEach((vertex, index) => {
-        script +=
-          "<" + vertex.currentPosition[0] + "," + vertex.currentPosition[2] + "," + vertex.currentPosition[1] + ">"
+        script += "<" + vertex.position[0] + "," + vertex.position[2] + "," + vertex.position[1] + ">"
 
         if (index !== 2) script += ","
       })
