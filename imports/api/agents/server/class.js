@@ -488,9 +488,9 @@ export default class Agents extends AgentsBoth {
         if (allowNegative || newValue >= 0) return newValue
       }
 
-      // If we reach this point, it means that we couldn't find a valid coefficient after 1000 tries.
-      // This should never happen, but just in case, we return the coefficient as 0 if it is negative and !allowNegative.
-      return allowNegative ? coefficient : 0
+      // If it couldn't find a valid coefficient, it returns a random value, with a variation of at most 50%
+      // of the original value.
+      return coefficient + (Math.random() - 0.5) * coefficient
 
       function sortCoefficient() {
         const random1 = Math.random()
@@ -498,15 +498,21 @@ export default class Agents extends AgentsBoth {
 
         let bestVelocity = bestCoefficient - coefficient
 
-        if (bestVelocity === 0) bestVelocity = Math.random() - 0.5
-
-        bestVelocity *= perturbation * coefficient
+        // If the best velocity is 0, it means that the best coefficient is the same as the current coefficient.
+        // In this case, we generate a random velocity.
+        if (bestVelocity === 0) {
+          bestVelocity = allowNegative ? Math.random() - 0.5 : Math.random()
+          bestVelocity *= perturbation * coefficient
+        }
 
         let bestGlobalVelocity = bestGlobalCoefficient - coefficient
 
-        if (bestGlobalVelocity === 0) bestGlobalVelocity = Math.random() - 0.5
-
-        bestGlobalVelocity *= perturbation * coefficient
+        // If the best global velocity is 0, it means that the best global coefficient is the same as the current coefficient.
+        // In this case, we generate a random velocity.
+        if (bestGlobalVelocity === 0) {
+          bestGlobalVelocity = allowNegative ? Math.random() - 0.5 : Math.random()
+          bestGlobalVelocity *= perturbation * coefficient
+        }
 
         return coefficient + c1 * random1 * bestVelocity + c2 * random2 * bestGlobalVelocity
       }

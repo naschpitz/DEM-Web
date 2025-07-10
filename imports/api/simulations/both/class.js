@@ -53,6 +53,7 @@ export default class Simulations extends SimulationsDAO {
 
   static async setState(simulationId, state) {
     const simulation = await Simulations.findOneAsync(simulationId)
+
     if (!simulation) {
       throw { message: "Simulations.setState(): simulation not found" }
     }
