@@ -306,7 +306,7 @@ export default class Agents extends AgentsBoth {
         // Clones the current simulation (thus, scenery and materials).
         const newBestSimulationId = await Simulations.clone(agent.current.simulation, false)
 
-        // Removes the old best simulation, no need to await for it.
+        // Removes the old best simulation.
         await Simulations.removeAsync(agent.best.simulation)
 
         // Updates the best object with the new best simulation id and its score.

@@ -106,17 +106,17 @@ export default class Calibrations extends CalibrationsBoth {
     await Agents.saveAllAgentsHistories(calibrationId)
 
     const calibration = await CalibrationsBoth.findOneAsync(calibrationId)
+    const bestScores = await Agents.getBestScores(calibrationId)
+
+    await Calibrations.log(calibrationId, `Best scores: ${bestScores.map(score => score.toFixed(8)).join(", ")}`)
 
     // After saving the history, we can check the stop condition
     await Calibrations.log(calibrationId, "Checking stop condition.")
     const stopConditionMet = await Calibrations.checkStopCondition(calibrationId)
-    const bestScores = await Agents.getBestScores(calibrationId)
 
     stopConditionMet
       ? await Calibrations.log(calibrationId, "Stop condition met.")
       : await Calibrations.log(calibrationId, "Stop condition not met.")
-
-    await Calibrations.log(calibrationId, `Best scores: ${bestScores.map(score => score.toFixed(8)).join(", ")}`)
 
     if (calibration.currentIteration < calibration.maxIterations - 1 && !stopConditionMet) {
       await Calibrations.log(calibrationId, "Advancing all agents to the next iteration.")
