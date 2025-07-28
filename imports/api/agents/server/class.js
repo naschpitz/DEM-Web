@@ -357,9 +357,7 @@ export default class Agents extends AgentsBoth {
     const agents = await Agents.find({ owner: calibrationId }).fetchAsync()
     const bestGAgent = await Agents.getBestGlobal(calibrationId)
 
-    // TODO: What if there is no bestGAgent, because no agent has a valid best score?
-
-    const nextIterationsPromises = agents.map(agent => Agents.nextIteration(agent._id, bestGAgent._id))
+    const nextIterationsPromises = agents.map(agent => Agents.nextIteration(agent._id, bestGAgent?._id))
     await Promise.all(nextIterationsPromises)
   }
 
@@ -369,7 +367,10 @@ export default class Agents extends AgentsBoth {
 
     await Simulations.reset(agent.current.simulation)
 
-    await updateCoefficients(agent, bestGAgent)
+    // If there is no bestGAgent, then it means all agents have invalid best scores. In this case, we just initialize the
+    // coefficients with random values again.
+    if (bestGAgent) await updateCoefficients(agent, bestGAgent)
+    else await Agents.initializeCoefficients(agent.owner, agent.current.simulation)
 
     await Agents.updateObjAsync({ _id: agentId, iteration: agent.iteration + 1 })
 

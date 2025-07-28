@@ -24,7 +24,7 @@ export default class Agents extends AgentsDAO {
     })
 
     // Updates the materials and objects for the cloned simulation's scenery
-    await initializeCoefficients(calibrationId, currentSimulationId)
+    await Agents.initializeCoefficients(calibrationId, currentSimulationId)
 
     // The best simulation will be a clone of the original simulation, because it has to be kept while the current
     // simulation is being constantly altered by the agent.
@@ -36,17 +36,17 @@ export default class Agents extends AgentsDAO {
       best: { simulation: bestSimulationId },
       index: index,
     })
+  }
 
-    // Updates the objects coefficients with the boundaries
-    async function initializeCoefficients(calibrationId, simulationId) {
-      const promises = await Parameters.find({ owner: calibrationId }).mapAsync(async parameter => {
-        const parameterId = parameter._id
+  // Updates the objects coefficients with the boundaries
+  static async initializeCoefficients(calibrationId, simulationId) {
+    const promises = await Parameters.find({ owner: calibrationId }).mapAsync(async parameter => {
+      const parameterId = parameter._id
 
-        await Agents.updateMaterialObject(parameterId, simulationId)
-      })
+      await Agents.updateMaterialObject(parameterId, simulationId)
+    })
 
-      await Promise.all(promises)
-    }
+    await Promise.all(promises)
   }
 
   static async updateMaterialObject(parameterId, simulationId) {
