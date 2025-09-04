@@ -21,7 +21,7 @@ const runPigz = async (inputBuffer, options) => {
       if (code === 0) {
         resolve(Buffer.concat(output))
       } else {
-        reject(new Error(`pigz failed: ${Buffer.concat(error).toString()}`))
+        reject(new Error(`pigz failed with exit code: ${code}`))
       }
     })
 
