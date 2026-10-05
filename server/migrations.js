@@ -63,11 +63,32 @@ Migrations.add({
 Migrations.add({
   version: 3,
   name: "Rename 'simulationsLogs' collection to 'log'",
-  up: () => {
-    Logs.rawCollection().rename("logs")
+  up: async () => {
+    const rawLogs = Logs.rawCollection()
+    const targetName = "logs"
+
+    // Logs is bound to "logs" (imports/api/logs/both/collection.js:8) since commit c68aaa9,
+    // so this rename targets itself: MongoDB rejects it with code 20 (IllegalOperation).
+    if (rawLogs.collectionName === targetName) return
+
+    // Renaming a missing source namespace fails with code 26 (NamespaceNotFound).
+    const db = MongoInternals.defaultRemoteCollectionDriver().mongo.db
+    const collectionNames = (await db.listCollections().toArray()).map(collection => collection.name)
+    if (!collectionNames.includes(rawLogs.collectionName)) return
+
+    await rawLogs.rename(targetName)
   },
-  down: () => {
-    Logs.rawCollection().rename("simulationsLogs")
+  down: async () => {
+    const rawLogs = Logs.rawCollection()
+    const targetName = "simulationsLogs"
+
+    if (rawLogs.collectionName === targetName) return
+
+    const db = MongoInternals.defaultRemoteCollectionDriver().mongo.db
+    const collectionNames = (await db.listCollections().toArray()).map(collection => collection.name)
+    if (!collectionNames.includes(rawLogs.collectionName)) return
+
+    await rawLogs.rename(targetName)
   },
 })
 
