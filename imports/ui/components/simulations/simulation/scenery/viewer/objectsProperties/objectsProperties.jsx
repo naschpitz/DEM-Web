@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
-import { FaChevronRight, FaChevronDown } from "react-icons/all"
+import { FaChevronRight, FaChevronDown } from "react-icons/fa"
 import PropTypes from "prop-types"
 import _ from "lodash"
 

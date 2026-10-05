@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from "meteor/react-meteor-data"
-import { FaChevronRight, FaChevronDown } from "react-icons/all"
+import { FaChevronRight, FaChevronDown } from "react-icons/fa"
 import moment from "moment"
 import _ from "lodash"
 
