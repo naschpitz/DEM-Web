@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Pre-commit hook to automatically format staged files with Prettier
+# This ensures all committed code follows consistent formatting
+
+echo "🔍 Running Prettier on staged files..."
+
+# Run the format:staged script
+npm run format:staged
+
+# Check if the formatting script succeeded
+if [ $? -ne 0 ]; then
+    echo "❌ Prettier formatting failed. Commit aborted."
+    exit 1
+fi
+
+echo "✅ Code formatting complete. Proceeding with commit..."
