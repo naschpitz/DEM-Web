@@ -50,3 +50,7 @@ cypress/downloads
 # Private/sensitive files
 private/mup/*/settings.json
 private/mup/*/mup.js
+
+# Tooling state (bd/dolt rewrites these without trailing newlines; not app code)
+.beads/
+.claude/
