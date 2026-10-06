@@ -147,11 +147,11 @@ Migrations.add({
 Migrations.add({
   version: 7,
   name: "Change Calibrations property name 'numIterations' to 'numIntervals'",
-  up: () => {
-    Calibrations.rawCollection().updateMany({}, { $rename: { numIterations: "numIntervals" } })
+  up: async () => {
+    await Calibrations.rawCollection().updateMany({}, { $rename: { numIterations: "numIntervals" } })
   },
-  down: () => {
-    Calibrations.rawCollection().updateMany({}, { $rename: { numIntervals: "numIterations" } })
+  down: async () => {
+    await Calibrations.rawCollection().updateMany({}, { $rename: { numIntervals: "numIterations" } })
   },
 })
 
@@ -196,7 +196,14 @@ Migrations.add({
     })
 
     // Remove the AgentHistories collection
-    AgentsHistories.rawCollection().drop()
+    const rawAgentsHistories = AgentsHistories.rawCollection()
+
+    // Dropping a missing namespace fails with code 26 (NamespaceNotFound).
+    const db = MongoInternals.defaultRemoteCollectionDriver().mongo.db
+    const collectionNames = (await db.listCollections().toArray()).map(collection => collection.name)
+    if (!collectionNames.includes(rawAgentsHistories.collectionName)) return
+
+    await rawAgentsHistories.drop()
   },
 })
 
